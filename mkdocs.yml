@@ -1,9 +1,9 @@
 site_name: Apuntes DAW
 site_description: Apuntes de los módulos del CFGS Desarrollo de Aplicaciones Web
 site_author: Arba
-# Tras crear el repo, descomenta y ajusta estas dos líneas:
-# site_url: https://TU-USUARIO.github.io/apuntes-daw/
-# repo_url: https://github.com/TU-USUARIO/apuntes-daw
+
+site_url: https://codigoronin.github.io/apuntes-daw/
+repo_url: https://github.com/codigoronin/apuntes-daw
 
 theme:
   name: material
