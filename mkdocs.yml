@@ -1,0 +1,46 @@
+site_name: Apuntes DAW
+site_description: Apuntes de los módulos del CFGS Desarrollo de Aplicaciones Web
+site_author: Arba
+# Tras crear el repo, descomenta y ajusta estas dos líneas:
+# site_url: https://TU-USUARIO.github.io/apuntes-daw/
+# repo_url: https://github.com/TU-USUARIO/apuntes-daw
+
+theme:
+  name: material
+  language: es
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Modo oscuro
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Modo claro
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - content.code.copy
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.details
+
+nav:
+  - Inicio: index.md
+  - Bases de Datos:
+      - Presentación del módulo: bases-de-datos/index.md
+      - "UD4 — Consultas SQL (SELECT)": bases-de-datos/ud4-consultas-sql.md
