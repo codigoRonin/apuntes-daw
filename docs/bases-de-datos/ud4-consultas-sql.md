@@ -1,3 +1,5 @@
+> **BORRADOR v2 (08/08/2026)** — actualización a la redacción del RD 405/2023, pendiente de validación docente. **No publicar** con esta marca.
+
 # Bases de Datos — UD4: Consultas de datos con SQL (SELECT)
 
 **Ciclo:** CFGS Desarrollo de Aplicaciones Web (DAW) — 1.º curso
@@ -7,12 +9,18 @@
 
 ## Vinculación con RA y CE
 
-| RA | CE trabajados en esta unidad | Apartado |
-|----|------------------------------|----------|
-| RA3 — Realiza consultas de datos interpretando su alcance | CE relativos a: identificación de herramientas y sentencias de consulta; consultas simples sobre una tabla; consultas con filtrado y ordenación; funciones del lenguaje sobre filas; funciones de agregado y agrupamiento; consultas sobre varias tablas (composiciones internas y externas); subconsultas | §1–§8 |
+**RA3.** *Consulta la información almacenada en una base de datos empleando asistentes, herramientas gráficas y el lenguaje de manipulación de datos* (RD 686/2010, en la redacción dada por el RD 405/2023, anexo I).
 
-!!! warning "Pendiente de verificar"
-    Sustituir por la redacción literal de los CE del módulo 0484 cuando la Orden ECD/843/2024 / Catálogo Modular de Aragón esté disponible en el Proyecto.
+| CE | Criterio de evaluación (redacción vigente) | Apartado |
+|----|--------------------------------------------|----------|
+| RA3.a | Se han identificado las herramientas y sentencias para realizar consultas | §0, §1 |
+| RA3.b | Se han realizado consultas simples sobre una tabla | §1–§4 |
+| RA3.c | Se han realizado consultas sobre el contenido de varias tablas mediante composiciones internas | §7.1, §7.4 |
+| RA3.d | Se han realizado consultas sobre el contenido de varias tablas mediante composiciones externas | §7.2 |
+| RA3.e | Se han realizado consultas resumen | §5, §6 |
+| RA3.f | Se han realizado consultas con subconsultas | §8 |
+| RA3.g | Se han realizado consultas que implican múltiples selecciones | §9 |
+| RA3.h | Se han aplicado criterios de optimización de consultas | §10 (avance en §4) |
 
 ## Al terminar esta unidad sabrás...
 
@@ -22,6 +30,8 @@
 - Calcular totales, medias y recuentos agrupando filas, y filtrar sobre esos cálculos.
 - Combinar datos de varias tablas con JOIN, entendiendo qué pasa con las filas que "no casan".
 - Escribir subconsultas y decidir cuándo son mejores (o peores) que un JOIN.
+- Combinar los resultados de varias consultas en uno solo con UNION, sabiendo qué pasa con los duplicados.
+- Leer el plan de ejecución de una consulta con EXPLAIN, proponer un índice y justificar por qué una consulta es lenta — y cómo dejarla rápida.
 - Leer una consulta ajena y explicar qué devuelve — que es lo que defenderás oralmente.
 
 ---
@@ -102,6 +112,16 @@ clientes 1───∞ pedidos 1───∞ lineas_pedido ∞───1 product
 ```
 
 Observa dos detalles del juego de datos que usaremos constantemente: **Sara no tiene provincia** (NULL) y **Sara y Ana no tienen ningún pedido**. Están puestos a propósito: son los casos límite donde las consultas mal escritas fallan en silencio.
+
+### ¿Y dónde ejecuto esto? Herramientas para consultar
+
+Tienes tres familias de herramientas, y conviene haber tocado las tres:
+
+1. **El cliente de línea de comandos** (`mysql`). Es el mínimo común: está en cualquier servidor al que te conectes por SSH, no falla y es el que usaremos en las correcciones. Escribes la sentencia, terminas en `;` y ves el resultado en texto.
+2. **Clientes gráficos**: MySQL Workbench, DBeaver o phpMyAdmin. Añaden editor con coloreado, autocompletado de nombres de tablas, resultados en rejilla navegable y exportación. Para explorar una base de datos que no conoces son muy superiores a la consola.
+3. **Asistentes de consultas** (el *query builder* de Workbench o phpMyAdmin): construyes la consulta marcando tablas y columnas con el ratón y la herramienta genera el SQL. Son útiles para ver cómo se escribe algo que ya sabes expresar como idea — y para poco más.
+
+Postura del módulo: usa el asistente y el cliente gráfico todo lo que quieras **para explorar**; lo que se entrega, se corrige y se defiende es siempre **el texto SQL**, porque es lo único que viaja a tu aplicación web, a un script o a un repositorio. Un asistente nunca te escribirá el LEFT JOIN + IS NULL de §7 ni la subconsulta correlada de §8: en cuanto la pregunta es interesante, el SQL se escribe a mano.
 
 ---
 
@@ -313,7 +333,7 @@ FROM clientes;
 
 Las funciones de fecha varían entre SGBD más que ninguna otra parte del SQL (lo que aquí es `DATEDIFF`, en PostgreSQL es una resta de fechas). Concepto estable, sintaxis a consultar en el manual del SGBD que toque.
 
-Un matiz de rendimiento que os pedirán explicar en 2.º: aplicar funciones a una columna **dentro del WHERE** (`WHERE YEAR(alta) = 2026`) impide al SGBD usar índices sobre esa columna. La versión eficiente es el rango: `WHERE alta BETWEEN '2026-01-01' AND '2026-12-31'`. De momento, quédate con la idea; la desarrollaremos en la UD de optimización.
+Un matiz de rendimiento que os pedirán explicar en 2.º: aplicar funciones a una columna **dentro del WHERE** (`WHERE YEAR(alta) = 2026`) impide al SGBD usar índices sobre esa columna. La versión eficiente es el rango: `WHERE alta BETWEEN '2026-01-01' AND '2026-12-31'`. De momento, quédate con la idea; la desarrollaremos en el §10 de esta misma unidad, con una tabla lo bastante grande como para *medir* la diferencia.
 
 ### Ejercicios del apartado
 
@@ -572,6 +592,212 @@ Cuidado con la trampa clásica de `NOT IN`: si la subconsulta puede devolver alg
 
 <div style="page-break-before: always;"></div>
 
+## §9. Combinar resultados: UNION y las operaciones de conjuntos
+
+Todo lo anterior produce **una** consulta con **un** resultado. Pero hay preguntas que se responden mejor con dos o tres consultas distintas cuyas filas quieres ver **juntas, apiladas en una sola tabla**. Eso es una consulta de múltiples selecciones, y el operador es `UNION`:
+
+```sql
+-- Contactos para la campaña de primavera: clientes de Zaragoza
+-- MÁS clientes que hayan comprado desde junio
+SELECT nombre, email
+FROM clientes
+WHERE provincia = 'Zaragoza'
+UNION
+SELECT c.nombre, c.email
+FROM clientes c
+INNER JOIN pedidos p ON p.cliente_id = c.id
+WHERE p.fecha >= '2026-06-01';
+```
+
+Fíjate en que las dos mitades son consultas completas e independientes — cada una podría ejecutarse sola — y `UNION` apila sus resultados. Ejecútala: devuelve **2 filas** (Lucía y Raúl), aunque la primera rama devuelve 2 y la segunda otras 2. `UNION` elimina las filas duplicadas del resultado combinado, y Raúl cumplía las dos condiciones.
+
+### UNION ALL: sin eliminar duplicados
+
+```sql
+SELECT nombre, email FROM clientes WHERE provincia = 'Zaragoza'
+UNION ALL
+SELECT c.nombre, c.email
+FROM clientes c
+INNER JOIN pedidos p ON p.cliente_id = c.id
+WHERE p.fecha >= '2026-06-01';
+```
+
+Ahora salen 4 filas: Raúl dos veces (y Lucía dos veces — también compró en junio). `UNION ALL` apila sin comparar nada, y por eso es **más rápido**: `UNION` tiene que ordenar o indexar internamente el resultado completo para detectar duplicados. Criterio del módulo: usa `UNION ALL` por defecto y cambia a `UNION` solo cuando la eliminación de duplicados sea parte de la pregunta. Escribir `UNION` "por si acaso" es pagar un coste por un trabajo que no has pedido conscientemente — y en §10 veremos que los costes se miden.
+
+### Las reglas de compatibilidad
+
+Para que dos SELECT se puedan apilar:
+
+1. **Mismo número de columnas** en todas las ramas. Si no, MySQL corta con `ERROR 1222: The used SELECT statements have a different number of columns`.
+2. **Tipos compatibles** columna a columna (la 1.ª con la 1.ª, la 2.ª con la 2.ª...). El SGBD intenta convertir, y a veces lo consigue con resultados absurdos: apilar `precio` sobre `nombre` no da error, da basura. La compatibilidad correcta es responsabilidad tuya.
+3. **Los nombres de columna del resultado los pone la primera rama.** Los alias de las demás ramas se ignoran.
+
+Cuando las ramas no tienen la misma forma natural, se rellena con literales — incluida una columna etiqueta, que es el uso más habitual en informes reales:
+
+```sql
+-- Panel de revisión del catálogo: dos problemas distintos, una sola lista
+SELECT 'AGOTADO'   AS incidencia, nombre, stock
+FROM productos
+WHERE stock = 0
+UNION ALL
+SELECT 'SIN VENTAS' AS incidencia, pr.nombre, pr.stock
+FROM productos pr
+LEFT JOIN lineas_pedido lp ON lp.producto_id = pr.id
+WHERE lp.producto_id IS NULL
+ORDER BY incidencia, nombre;
+```
+
+El Hub USB-C aparece **dos veces** — está agotado *y* nunca se ha vendido — y eso es correcto: son dos incidencias distintas. Observa que ni siquiera `UNION` las fusionaría, porque la columna `incidencia` hace las filas diferentes: la eliminación de duplicados compara la **fila completa**, igual que el DISTINCT de §1.
+
+### ORDER BY y LIMIT en una consulta con UNION
+
+El `ORDER BY` final (como el del ejemplo anterior) ordena **el resultado combinado**, no cada rama. Si necesitas limitar u ordenar una rama por separado ("los 2 productos más caros más los 2 más baratos"), en MySQL cada rama va entre paréntesis:
+
+```sql
+(SELECT nombre, precio FROM productos ORDER BY precio DESC LIMIT 2)
+UNION ALL
+(SELECT nombre, precio FROM productos ORDER BY precio ASC  LIMIT 2)
+ORDER BY precio DESC;
+```
+
+### INTERSECT y EXCEPT: el resto de la familia
+
+`UNION` es la suma de conjuntos; sus hermanas son `INTERSECT` (filas que están en **ambos** resultados) y `EXCEPT` (filas del primero que **no** están en el segundo). MySQL las incorpora desde la versión **8.0.31** (PostgreSQL las tiene desde siempre):
+
+```sql
+-- Productos del catálogo que nunca aparecen en una línea de pedido
+SELECT id, nombre FROM productos
+EXCEPT
+SELECT pr.id, pr.nombre
+FROM productos pr
+INNER JOIN lineas_pedido lp ON lp.producto_id = pr.id;
+```
+
+Sí: es la **tercera** manera de resolver "productos nunca vendidos", junto al LEFT JOIN + IS NULL de §7 y al NOT EXISTS de §8. En versiones sin INTERSECT/EXCEPT, los patrones de §7 y §8 son el sustituto. En la defensa se te puede pedir traducir entre las tres formas.
+
+### Ejercicios del apartado
+
+- **E37.** Directorio unificado: una sola consulta que devuelva dos columnas (`tipo`, `nombre`) con todos los clientes etiquetados como `'CLIENTE'` y todos los productos etiquetados como `'PRODUCTO'`, ordenado por tipo y nombre.
+- **E38.** Ejecuta la consulta de la campaña de primavera con `UNION` y con `UNION ALL`, anota cuántas filas devuelve cada una y explica, nombre a nombre, de dónde sale la diferencia.
+- **E39.** Ejecuta `SELECT nombre, precio FROM productos UNION SELECT nombre FROM clientes;`, copia el error exacto que devuelve y arréglalo para obtener un directorio de nombres donde los clientes muestren `NULL` como precio.
+- **E40.** Resuelve "productos que se han vendido alguna vez **y** siguen teniendo stock" con `INTERSECT`. Indica qué versión mínima de MySQL necesitas y escribe la alternativa con `IN` para versiones anteriores.
+- **E41.** Razonamiento (3-4 líneas): un compañero calcula "clientes totales de dos campañas" con `UNION` y le sale un número menor que la suma de ambas listas. ¿Qué está pasando, es un error, y cuándo debería usar `UNION ALL`?
+
+---
+
+<div style="page-break-before: always;"></div>
+
+## §10. Optimización de consultas: criterios y medida
+
+Hasta aquí hemos juzgado las consultas por una sola cosa: si devuelven el resultado correcto. Ese es el 90% de la nota — pero el SQL correcto que tarda 30 segundos en responder **rompe la aplicación web** igual que el incorrecto. Este apartado te da el 10% restante: criterios para escribir consultas eficientes y, más importante, la herramienta para **medir** en lugar de opinar.
+
+### 10.1 Un juego de datos donde el tiempo se note
+
+Con las 4 filas de `pedidos` todo es instantáneo. Carga este script, que crea un histórico sintético de **100.000 pedidos** — y fíjate: solo usa piezas de esta unidad (`CROSS JOIN` de §7.3 para multiplicar filas y `UNION ALL` de §9 para fabricar los dígitos 0-9); la sentencia `INSERT ... SELECT` que lo envuelve la estudiaremos a fondo en la UD6, hoy basta con ejecutarla:
+
+```sql
+DROP TABLE IF EXISTS pedidos_hist;
+
+CREATE TABLE pedidos_hist (
+    id         INT PRIMARY KEY AUTO_INCREMENT,
+    cliente_id INT  NOT NULL,
+    fecha      DATE NOT NULL
+);
+
+INSERT INTO pedidos_hist (cliente_id, fecha)
+SELECT 1 + (seq MOD 5),
+       DATE_ADD('2024-01-01', INTERVAL (seq MOD 1000) DAY)
+FROM (
+    SELECT a.n + 10*b.n + 100*c.n + 1000*d.n + 10000*e.n AS seq
+    FROM (SELECT 0 AS n UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4
+          UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) a
+    CROSS JOIN (SELECT 0 AS n UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4
+          UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) b
+    CROSS JOIN (SELECT 0 AS n UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4
+          UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) c
+    CROSS JOIN (SELECT 0 AS n UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4
+          UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) d
+    CROSS JOIN (SELECT 0 AS n UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4
+          UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) e
+) t;
+
+SELECT COUNT(*) FROM pedidos_hist;   -- debe devolver 100000
+```
+
+### 10.2 EXPLAIN: preguntarle al SGBD qué piensa hacer
+
+Anteponer `EXPLAIN` a un SELECT no lo ejecuta: devuelve el **plan de ejecución**, la estrategia que el optimizador ha elegido. Recuerda §1: en SQL describes *qué* quieres y el SGBD decide *cómo* — EXPLAIN es la ventana a ese *cómo*.
+
+```sql
+EXPLAIN SELECT COUNT(*) FROM pedidos_hist WHERE YEAR(fecha) = 2025;
+```
+
+De todas las columnas que devuelve, este curso nos quedamos con tres:
+
+| Columna | Qué te dice | Qué quieres ver |
+|---------|-------------|-----------------|
+| `type` | Estrategia de acceso a la tabla | `ALL` = recorrido completo (malo en tablas grandes); `range` = usa un índice para leer solo un rango; `ref`/`eq_ref` = acceso por índice a filas concretas |
+| `key` | Índice que va a usar | `NULL` = ninguno |
+| `rows` | Estimación de filas que examinará | Cuanto más cerca del tamaño real del resultado, mejor |
+
+En la consulta de arriba verás `type: ALL`, `key: NULL` y `rows` ≈ 100.000: para responder va a leer **la tabla entera** y aplicar `YEAR()` a cada fila. Eso se llama *full table scan*, y es el enemigo a batir.
+
+### 10.3 Índices: el orden que compra velocidad
+
+Un **índice** es una estructura ordenada auxiliar (en MySQL, un árbol B) que el SGBD mantiene sobre una o varias columnas. La analogía exacta es el índice alfabético de un libro: para encontrar "JOIN" no lees las 600 páginas, vas al índice, que está ordenado, y saltas a la página. Sin índice, toda búsqueda es leer el libro entero.
+
+```sql
+CREATE INDEX idx_pedidos_hist_fecha ON pedidos_hist (fecha);
+```
+
+(`CREATE INDEX` es formalmente DDL y lo situaremos en la UD5 con el resto de la definición de datos; aquí lo usamos como herramienta.) Las claves primarias y las UNIQUE ya llevan índice automático — por eso `WHERE id = 7` siempre ha sido instantáneo.
+
+Ahora, la lección central del apartado. Con el índice creado, compara:
+
+```sql
+EXPLAIN SELECT COUNT(*) FROM pedidos_hist WHERE YEAR(fecha) = 2025;
+
+EXPLAIN SELECT COUNT(*) FROM pedidos_hist
+WHERE fecha BETWEEN '2025-01-01' AND '2025-12-31';
+```
+
+La primera **sigue en `type: ALL`** aunque el índice existe: al envolver la columna en `YEAR(...)`, el SGBD ya no busca valores de `fecha` (que es lo que está ordenado en el índice) sino resultados de una función, y para calcularla tiene que visitar cada fila. La segunda pasa a `type: range`, `key: idx_pedidos_hist_fecha` y `rows` ≈ un tercio: lee solo el tramo 2025 del índice. Misma pregunta, mismo resultado, un orden de magnitud menos de trabajo — es la promesa que te hice en §4.
+
+Una condición que permite usar el índice se llama **sargable** (*Search ARGument able*). Las reglas prácticas:
+
+- **Sargable**: `columna = valor`, `columna BETWEEN a AND b`, `columna > valor`, `columna IN (...)`, `columna LIKE 'texto%'` (el prefijo fijo permite acotar en el árbol ordenado).
+- **No sargable**: `FUNCION(columna) = valor` (cualquier función: `YEAR`, `UPPER`, cálculos como `precio * 1.21 > 50`), y `columna LIKE '%texto'` — con el comodín delante no hay prefijo por el que acotar, igual que no puedes usar el índice de un libro para encontrar "las palabras que terminan en -ción".
+
+La transformación mental es siempre la misma: **mueve el cálculo al lado del valor, deja la columna desnuda.** `YEAR(fecha) = 2025` → rango de fechas; `precio * 1.21 > 50` → `precio > 50 / 1.21`.
+
+### 10.4 Todo tiene un precio: por qué no indexar todo
+
+Si los índices aceleran, ¿por qué no crear uno por columna? Porque un índice se paga en cada escritura: cada `INSERT`, `UPDATE` o `DELETE` sobre la tabla debe actualizar además **todos** sus índices, y cada uno ocupa espacio comparable a la columna que indexa. Una tabla con diez índices lee rápido y escribe lento — y `pedidos` en una tienda real es una tabla que **escribe** constantemente. Criterio: se indexan las columnas por las que se **busca, filtra, ordena o enlaza** con frecuencia (las claves ajenas de los JOIN son las primeras candidatas), y se comprueba con EXPLAIN que el índice se usa de verdad. Un índice que ningún plan utiliza es coste puro.
+
+### 10.5 La checklist de optimización del módulo
+
+Ante una consulta lenta, en este orden:
+
+1. **¿Pides solo lo que necesitas?** Columnas concretas en el SELECT (la regla anti-`*` de §1 era también una regla de rendimiento) y `LIMIT` si no necesitas todo el resultado.
+2. **¿Tus condiciones son sargables?** Columna desnuda a un lado, cálculo al otro (§10.3).
+3. **¿Hay índice en las columnas de búsqueda y de enlace?** Las columnas del WHERE, del ORDER BY y de los ON de tus JOIN.
+4. **¿Lo confirma EXPLAIN?** Antes y después de cada cambio: si `type` y `rows` no mejoran, tu "optimización" es superstición. Se mide, no se opina.
+5. **¿La consulta pide trabajo que no usas?** `UNION` donde bastaba `UNION ALL` (§9), `DISTINCT` que tapa un JOIN duplicador (§8), ordenaciones que nadie lee.
+
+Esto es el nivel de 1.º: criterios y medida. El afinado profesional (índices compuestos, cobertura, estadísticas del optimizador) llegará con las aplicaciones reales de 2.º — pero llegará *sobre* esta checklist, no en su lugar.
+
+### Ejercicios del apartado
+
+- **E42.** Carga el script de 10.1. Ejecuta `EXPLAIN SELECT * FROM pedidos_hist WHERE YEAR(fecha) = 2024;` y anota `type`, `key` y `rows`. Explica en una línea qué va a hacer el SGBD.
+- **E43.** Crea el índice sobre `fecha`, reescribe la consulta de E42 en forma sargable y vuelve a ejecutar EXPLAIN. Documenta en un comentario la comparación antes/después de las tres columnas.
+- **E44.** "Los 10 pedidos más recientes del histórico": escribe la consulta y comprueba con EXPLAIN si aprovecha `idx_pedidos_hist_fecha`. ¿Qué relación hay entre el ORDER BY y el índice?
+- **E45.** Convierte en sargables, sin ejecutar: (a) `WHERE MONTH(fecha) = 1 AND YEAR(fecha) = 2025`; (b) `WHERE precio * 1.21 > 100`; (c) `WHERE UPPER(provincia) = 'ZARAGOZA'`. Indica cuál de las tres tiene truco y por qué.
+- **E46.** Razonamiento (4-5 líneas): un compañero propone "creamos un índice por cada columna de cada tabla y así todo va rápido". Rebátelo con los dos costes de §10.4 y di qué criterio usarías en la tabla `lineas_pedido` de TiendaDAW.
+
+---
+
+<div style="page-break-before: always;"></div>
+
 ## Errores frecuentes y cómo depurarlos
 
 **1. `ERROR 1052: Column 'id' in field list is ambiguous`**
@@ -595,13 +821,16 @@ Algunos SGBD lo toleran, pero es conceptualmente erróneo y penaliza en la corre
 **7. Comillas dobles vs. simples.**
 En SQL estándar las cadenas van con comillas **simples** (`'Zaragoza'`). MySQL es permisivo con las dobles; PostgreSQL (que usaréis en Entorno Servidor) las reserva para identificadores y te dará `column "Zaragoza" does not exist`.
 
+**8. `ERROR 1222: The used SELECT statements have a different number of columns`**
+Las ramas de un UNION no tienen el mismo número de columnas (§9). Solución: alinear las listas de columnas rama a rama, rellenando con `NULL` o literales donde una rama no tenga el dato. Y revisa de paso que los *tipos* casen posición a posición: eso MySQL no siempre lo avisa — lo convierte en silencio.
+
 ---
 
 <div style="page-break-before: always;"></div>
 
 ## La IA en esta unidad
 
-Un asistente de IA escribe consultas SELECT correctas para casos sencillos con total soltura, y lo sabéis. Uso razonable en esta unidad: pedirle consultas alternativas a la tuya para comparar enfoques, o que te explique una consulta que no entiendes. Lo que es responsabilidad tuya, la use quien la use: (1) **verificar el resultado contra los datos** — ejecuta la consulta sobre el juego de datos de §0 y comprueba con casos que conozcas que devuelve lo que debe, especialmente con los NULL de Sara y con las filas sin pareja en los JOIN, que es donde más falla el código generado; (2) **poder explicar cada cláusula**. En la defensa de la práctica se te pedirá justificar por qué un JOIN es LEFT y no INNER, o reescribir una subconsulta como JOIN, con el guion cerrado. "Me lo dio la IA" no es una explicación; "lo verifiqué así" sí lo es.
+Un asistente de IA escribe consultas SELECT correctas para casos sencillos con total soltura, y lo sabéis. Uso razonable en esta unidad: pedirle consultas alternativas a la tuya para comparar enfoques, o que te explique una consulta que no entiendes. Lo que es responsabilidad tuya, la use quien la use: (1) **verificar el resultado contra los datos** — ejecuta la consulta sobre el juego de datos de §0 y comprueba con casos que conozcas que devuelve lo que debe, especialmente con los NULL de Sara y con las filas sin pareja en los JOIN, que es donde más falla el código generado; (2) **poder explicar cada cláusula**. En la defensa de la práctica se te pedirá justificar por qué un JOIN es LEFT y no INNER, reescribir una subconsulta como JOIN, elegir entre UNION y UNION ALL, o interpretar el EXPLAIN de una de tus consultas, con el guion cerrado. "Me lo dio la IA" no es una explicación; "lo verifiqué así" sí lo es.
 
 ---
 
@@ -609,23 +838,20 @@ Un asistente de IA escribe consultas SELECT correctas para casos sencillos con t
 
 ## Actividad evaluativa final
 
-**Contexto:** la dirección de TiendaDAW te pide un pequeño cuadro de mando de ventas. Trabajas sobre el esquema y los datos de §0. **Tiempo estimado:** 2 horas. **Entrega:** un único script `.sql` con las consultas numeradas y comentadas, en tu repositorio de la práctica. Cada consulta debe ejecutar sin errores y devolver exactamente lo pedido — se corrige ejecutando.
+**Contexto:** la dirección de TiendaDAW te pide un pequeño cuadro de mando de ventas y una revisión de rendimiento. Trabajas sobre el esquema y los datos de §0 (para AE10 necesitas además el histórico de §10.1). **Tiempo estimado:** 2 horas 30 minutos. **Entrega:** un único script `.sql` con las consultas numeradas y comentadas, en tu repositorio de la práctica. Cada consulta debe ejecutar sin errores y devolver exactamente lo pedido — se corrige ejecutando.
 
-**Calificación:** 10 ejercicios, **1 punto cada uno** (nota sobre 10). Cada ejercicio indica el CE que evalúa. La dificultad es creciente: los primeros consolidan, los últimos distinguen.
+**Calificación:** 10 ejercicios, **1 punto cada uno** (nota sobre 10). Cada ejercicio indica el criterio de evaluación oficial que evalúa (RA3 del módulo 0484, redacción del RD 405/2023). La dificultad es creciente: los primeros consolidan, los últimos distinguen. El CE **RA3.a** (herramientas y sentencias) se evalúa en la defensa de esta práctica y en la prueba escrita, no en el script.
 
-- **AE1.** *(CE: filtrado y ordenación)* "Buscador del catálogo": productos disponibles (con stock) cuyo nombre contenga una palabra dada (usa `'usb'` para la entrega), mostrando nombre, categoría y precio con IVA (21%, redondeado a 2 decimales), ordenados del más barato al más caro.
-- **AE2.** *(CE: ordenación y limitación)* Los 3 productos más caros que están disponibles para la venta (nombre y precio).
-- **AE3.** *(CE: funciones sobre filas)* Ficha de clientes para atención al cliente: nombre, email, provincia (mostrando `'(desconocida)'` si no consta) y años completos como cliente.
-- **AE4.** *(CE: agregación y agrupamiento)* Resumen por pedido: id, número de líneas y unidades totales, pero solo de los pedidos con 2 o más líneas.
-- **AE5.** *(CE: composiciones externas + agregación)* Informe de ventas por categoría: para cada categoría, unidades vendidas e importe facturado, ordenado por importe descendente. Las categorías sin ventas deben aparecer con 0 en ambas columnas — decide y justifica en un comentario el tipo de JOIN.
-- **AE6.** *(CE: composiciones internas + agregación)* Ticket medio por cliente: para cada cliente con compras, número de pedidos y gasto medio por pedido (dos decimales). Cuidado: el gasto medio por pedido no es el gasto total entre líneas, sino entre pedidos.
-- **AE7.** *(CE: composiciones externas + agrupamiento)* "Clientes dormidos": clientes cuyo último pedido es anterior al 1 de junio de 2026 **o** que no han comprado nunca, con nombre, email y fecha del último pedido (NULL si no existe). Una sola consulta.
-- **AE8.** *(CE: subconsultas + agregación)* El producto estrella: nombre del producto con más unidades vendidas, resuelto **dos veces**: una con `ORDER BY ... LIMIT` y otra con subconsulta (sin LIMIT). Comenta en el script qué pasaría en cada versión si hubiera empate.
-- **AE9.** *(CE: composiciones + agregación con DISTINCT)* Productos comprados por más de un cliente distinto (nombre del producto y número de clientes distintos que lo han comprado).
-- **AE10.** *(CE: subconsultas, razonamiento)* Pregunta de razonamiento (respuesta en comentario, 5-8 líneas): un compañero propone `SELECT c.nombre FROM clientes c WHERE c.id NOT IN (SELECT p.cliente_id FROM pedidos p WHERE p.fecha >= '2026-06-01');` para obtener los clientes sin compras desde junio. Explica en qué situación de datos esta consulta dejaría de funcionar correctamente, por qué, y escribe la versión segura.
-
-!!! warning "Pendiente de verificar"
-    Al disponer de los CE literales de la Orden, sustituir las etiquetas de CE por su codificación oficial (p. ej. RA3.c).
+- **AE1.** *(RA3.b)* "Buscador del catálogo": productos disponibles (con stock) cuyo nombre contenga una palabra dada (usa `'usb'` para la entrega), mostrando nombre, categoría y precio con IVA (21%, redondeado a 2 decimales), ordenados del más barato al más caro.
+- **AE2.** *(RA3.b)* Ficha de clientes para atención al cliente: nombre, email, provincia (mostrando `'(desconocida)'` si no consta) y años completos como cliente.
+- **AE3.** *(RA3.e)* Resumen por pedido: id, número de líneas y unidades totales, pero solo de los pedidos con 2 o más líneas.
+- **AE4.** *(RA3.c, RA3.e)* Ticket medio por cliente: para cada cliente con compras, número de pedidos y gasto medio por pedido (dos decimales). Cuidado: el gasto medio por pedido no es el gasto total entre líneas, sino entre pedidos.
+- **AE5.** *(RA3.d, RA3.e)* Informe de ventas por categoría: para cada categoría, unidades vendidas e importe facturado, ordenado por importe descendente. Las categorías sin ventas deben aparecer con 0 en ambas columnas — decide y justifica en un comentario el tipo de JOIN.
+- **AE6.** *(RA3.d)* "Clientes dormidos": clientes cuyo último pedido es anterior al 1 de junio de 2026 **o** que no han comprado nunca, con nombre, email y fecha del último pedido (NULL si no existe). Una sola consulta.
+- **AE7.** *(RA3.g)* Panel de incidencias del catálogo: una sola consulta con múltiples selecciones que devuelva las columnas (`incidencia`, `nombre`, `stock`), apilando los productos agotados con la etiqueta `'AGOTADO'` y los productos que nunca se han vendido con la etiqueta `'SIN VENTAS'`, ordenado por incidencia y nombre. Justifica en un comentario tu elección entre `UNION` y `UNION ALL` y si aquí cambiaría algo el resultado.
+- **AE8.** *(RA3.f, RA3.e)* El producto estrella: nombre del producto con más unidades vendidas, resuelto **dos veces**: una con `ORDER BY ... LIMIT` y otra con subconsulta (sin LIMIT). Comenta en el script qué pasaría en cada versión si hubiera empate.
+- **AE9.** *(RA3.f)* Pregunta de razonamiento (respuesta en comentario, 5-8 líneas): un compañero propone `SELECT c.nombre FROM clientes c WHERE c.id NOT IN (SELECT p.cliente_id FROM pedidos p WHERE p.fecha >= '2026-06-01');` para obtener los clientes sin compras desde junio. Explica en qué situación de datos esta consulta dejaría de funcionar correctamente, por qué, y escribe la versión segura.
+- **AE10.** *(RA3.h)* Auditoría de rendimiento sobre `pedidos_hist` (script de §10.1): te pasan la consulta lenta `SELECT COUNT(*) FROM pedidos_hist WHERE YEAR(fecha) = 2026;`. Entrega, en este orden y con los EXPLAIN documentados en comentarios: (1) el plan de la consulta original anotando `type`, `key` y `rows`; (2) el índice adecuado; (3) la reescritura sargable; (4) el plan de la versión final con la comparación antes/después. Se corrige ejecutando el bloque completo.
 
 ---
 
@@ -634,5 +860,6 @@ Un asistente de IA escribe consultas SELECT correctas para casos sencillos con t
 ## Para ampliar
 
 - Manual de referencia de MySQL 8 — capítulo *SELECT Statement* (dev.mysql.com).
+- Manual de referencia de MySQL 8 — *Set Operations* (UNION, INTERSECT, EXCEPT) y *EXPLAIN Output Format* (dev.mysql.com).
 - Documentación de PostgreSQL — *Queries* (postgresql.org/docs), útil porque es el SGBD de Entorno Servidor y es más estricto.
 - Estándar de estilo SQL del módulo (repositorio de clase).
