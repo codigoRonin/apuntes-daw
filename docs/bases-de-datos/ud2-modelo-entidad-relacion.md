@@ -1,8 +1,3 @@
-> **BORRADOR — pendiente de validación del docente. No publicar al alumnado con esta marca.**
-> Destino en el sitio: `docs/bases-de-datos/ud2-modelo-entidad-relacion.md` · Imágenes: `docs/bases-de-datos/img/`
-> **v3 (15/08/2026):** etiqueta de tipo (1:1, 1:N, N:M) sobre el rombo en todas las figuras, con la regla de derivación en el apartado 1.2; cardinalidades ampliadas para proyección; figuras Chen conceptuales en su apartado (relaciones — figura 2 —, debilidad por identificación y por existencia — figuras 3 y 4 —, jerarquía — figura 5 —, agregación — figura 6 — y ternaria — figura 7); la figura de lectura pasa a ser la 8. Alcance congelado tras esta versión.
-> **v2 (15/08/2026):** doble notación con papeles declarados (Chen para conceptos y lectura; pata de gallo para herramienta y entrega), taxonomía gráfica de atributos en Chen (figura 1), ejercicios de lectura de diagramas Chen (E7, E14, renumeración E1-E23) y AE3 como interpretación de un diagrama Chen dado. Los diagramas Chen son imágenes SVG del repositorio: Mermaid no dibuja Chen y no se finge lo contrario.
-
 # UD2. Modelo entidad-relación: diseño conceptual
 
 **Módulo 0484 — Bases de Datos · 1.º DAW · IES Río Arba · Curso 2026-27 · 22 horas · 1.ª evaluación**
@@ -45,10 +40,30 @@ El modelo E/R tiene varias notaciones, y en este módulo trabajarás **dos, cada
 
 Traducción práctica: **lees y razonas en Chen; construyes y entregas en pata de gallo** — y sabes pasar de una a otra, porque son el mismo modelo con dos ortografías. La regla profesional se mantiene: notación consistente **dentro de cada diagrama**; lo prohibido es mezclarlas en uno mismo, no dominar ambas.
 
-En cuanto a herramientas (aquí arranca RA6.a): esta unidad usa **draw.io** para tus entregas; en la UD3 consolidarás la herramienta representando diseños lógicos completos, que es donde ese criterio se evalúa definitivamente.
+En cuanto a herramientas (aquí arranca RA6.a): esta unidad usa **draw.io** (app.diagrams.net) para tus entregas, con su **biblioteca de formas Entidad-Relación** — si no aparece en el panel lateral, actívala desde "Más formas"; el detalle fino de manejo va en la práctica de la unidad y en la guía enlazada más abajo, no en estos apuntes. En la UD3 consolidarás la herramienta representando diseños lógicos completos, que es donde ese criterio se evalúa definitivamente.
 
 !!! info "Cómo están hechos los diagramas de estos apuntes"
     Los diagramas en **pata de gallo** están escritos en Mermaid y el sitio los renderiza. Los diagramas en **Chen** son **imágenes SVG** alojadas en el repositorio del sitio (carpeta `img/`), porque Mermaid no dibuja notación de Chen: cuando veas una figura numerada, es una imagen; cuando veas un bloque de código renderizado, es Mermaid en pata de gallo.
+
+### Apartado 1.3. Tabla de equivalencias y límites — tu chuleta para las entregas
+
+Cada concepto de la unidad, en las dos notaciones, y **cómo se resuelve en tu entrega con draw.io cuando la pata de gallo no lo dibuja**. Vuelve a esta tabla en cada práctica:
+
+| Concepto | En Chen | En pata de gallo | Cómo se entrega cuando no hay equivalente |
+|---|---|---|---|
+| Entidad | Rectángulo | Rectángulo con lista de atributos dentro | — |
+| Clave primaria | Nombre subrayado en su elipse | Marca PK junto al atributo | — |
+| Taxonomía de atributos (compuesto, multivalorado, derivado) | Elipses: con partes colgando, doble, punteada | **No se dibuja** (todos los atributos se listan igual) | Anotación textual junto al atributo ("multivalorado", "derivado: no almacenar") o en la documentación de la práctica |
+| Relación y cardinalidades (mín, máx) | Rombo + parejas en los extremos | Línea + símbolos de pata en los extremos (solo la información de mín/máx que la pata codifica) | Si necesitas una mínima que el símbolo no capture, anótala como etiqueta de línea |
+| Etiqueta de tipo (1:1, 1:N, N:M) | Sobre el rombo | Implícita en los símbolos de los extremos | Puedes añadirla como etiqueta de la línea (recomendado en esta unidad) |
+| Atributo de relación | Elipse colgando del rombo | **No existe** (las líneas no llevan atributos) | Anotación en la línea o, mejor, adelanta la solución de la UD3: entidad asociativa con el atributo dentro |
+| Reflexiva con roles | Rombo con la misma entidad en ambos extremos y roles en las líneas | Línea de la entidad a sí misma | Los roles, como etiquetas de línea |
+| Entidad débil e identificativa | Trazos dobles + discriminante en subrayado discontinuo | Línea **continua** (identificativa) frente a **discontinua** (no identificativa); el discriminante, como parte de la clave | Marca el discriminante como "PK parcial" o anótalo textualmente |
+| Jerarquía (total/parcial, exclusiva/solapada) | Triángulo con anotación | **No se dibuja** (a lo sumo, relaciones "es-un" aproximadas) | Triángulo con formas básicas de draw.io + anotación textual de las dos decisiones + constancia en la documentación |
+| Agregación | Recuadro englobando la relación | **No existe** | Contenedor de draw.io alrededor del fragmento + nota; y documenta la decisión (en la UD3 verás su traducción natural) |
+| Ternaria | Un rombo con tres patas | **No existe** (solo binarias) | Descomposición en binarias contra una entidad asociativa (ver la nota bajo la figura 7) |
+
+Cómo hacerlo, paso a paso: [guía rápida de draw.io para las entregas de diagramas](../recursos/guia-drawio.md).
 
 Un primer vistazo del caso hilo, en Mermaid (lo iremos construyendo pieza a pieza):
 
@@ -109,6 +124,8 @@ erDiagram
     }
 ```
 
+**Nota de entrega (draw.io):** la taxonomía que la pata de gallo no dibuja se resuelve en tus entregas con **anotación textual junto al atributo** ("multivalorado", "derivado: no se almacena", "compuesto: calle, numero, localidad") o en la documentación de la práctica — fila correspondiente de la tabla del apartado 1.3.
+
 Los multivalorados y los derivados son señales de alarma bien conocidas: el multivalorado desaparecerá al pasar al modelo relacional (UD3) convertido en otra cosa, y el derivado no debe almacenarse (almacenarlo crea la inconsistencia de la UD1: edad guardada 17, fecha de nacimiento que dice 18).
 
 ### Apartado 2.3. Claves en el nivel conceptual
@@ -147,6 +164,17 @@ Los tres tipos, con la convención completa de la unidad (parejas en los extremo
 ![Figura 2. Relaciones en notación de Chen: realiza como 1:N con sus parejas de cardinalidad, valora como N:M con el atributo puntuacion colgando del rombo, y la reflexiva supervisa con los roles supervisor y supervisado](img/ud2-fig2-chen-relaciones.svg)
 
 *Figura 2. Tres relaciones en Chen con la convención de la unidad: la etiqueta de tipo sobre el rombo se deriva de los máximos (0,N)-(1,1) → 1:N; el atributo `puntuacion` cuelga del rombo de `valora` (es de la pareja); la reflexiva `supervisa` lleva sus dos roles anotados en las líneas.*
+
+Las mismas tres relaciones en pata de gallo:
+
+```mermaid
+erDiagram
+    LECTOR ||--o{ PRESTAMO : realiza
+    LECTOR }o--o{ LIBRO : valora
+    TECNICO |o--o{ TECNICO : supervisa
+```
+
+*Lectura comparada*: lo que en Chen son las parejas (0,N)-(1,1) aquí son los símbolos de los extremos (la "pata" es el lado muchos; el círculo, el cero opcional). **Nota de entrega (draw.io):** los **roles** de la reflexiva y el **atributo de relación** (`puntuacion`) no tienen dibujo en pata de gallo — los roles van como etiquetas de línea, y el atributo de relación se anota en la línea o, mejor, anticipa la entidad asociativa que la UD3 hará oficial.
 
 El método fiable para no equivocarse: **fija una ocurrencia y pregunta por la otra entidad, en los dos sentidos, con frases completas**. "Dado UN préstamo, ¿cuántos lectores?" → uno. "Dado UN lector, ¿cuántos préstamos?" → muchos. Anota cada respuesta en el extremo **opuesto** a la entidad fijada (en notación clásica; la pata de gallo lo pone en el extremo propio — otra razón para no mezclar notaciones).
 
@@ -188,11 +216,29 @@ El caso completo, dibujado en Chen con toda la notación de debilidad:
 
 *Figura 3. Debilidad por identificación: los trazos dobles (rectángulo y rombo) y el subrayado discontinuo del discriminante son los tres delatores gráficos. Un ejemplar concreto se identifica como `isbn` + `num_ejemplar`.*
 
+El mismo caso en pata de gallo:
+
+```mermaid
+erDiagram
+    LIBRO ||--|{ EJEMPLAR : tiene
+```
+
+*Lectura comparada*: la pata de gallo sí distingue la relación **identificativa**: se dibuja con línea **continua** (frente a la discontinua de la no identificativa — compárala con el puente de la figura 4). **Nota de entrega (draw.io):** el discriminante no tiene símbolo propio: márcalo como parte de la clave ("PK parcial") o con anotación textual.
+
 La confusión típica que debes evitar: no toda relación 1:N con participación obligatoria crea una entidad débil. PRESTAMO exige un lector (1,1) y sin embargo puede diseñarse con clave propia (`num_prestamo`): entonces es entidad **fuerte** con relación normal. La debilidad es una **decisión de identificación**: ¿quiero identificar esto por sí mismo o dentro de su padre? Ambas opciones pueden ser legítimas; lo que se evalúa es que sepas cuál has tomado y por qué. La figura gemela de la anterior muestra el contraste exacto:
 
 ![Figura 4. Dependencia solo en existencia: PRESTAMO exige un lector con participación obligatoria pero tiene clave propia num_prestamo, de modo que la relación es normal y no hay trazos dobles](img/ud2-fig4-chen-existencia-sin-identificacion.svg)
 
 *Figura 4. Dependencia en existencia sin identificación: PRESTAMO no puede existir sin lector — su participación es (1,1) — pero se identifica por su clave propia `num_prestamo`, así que ni el rectángulo ni el rombo se doblan y no hay discriminante.*
+
+El gemelo en pata de gallo:
+
+```mermaid
+erDiagram
+    LECTOR ||..o{ PRESTAMO : realiza
+```
+
+*Lectura comparada*: la línea **discontinua** declara la relación **no identificativa** — PRESTAMO tiene clave propia. El par de puentes de las figuras 3 y 4 es la traducción exacta de "trazos dobles frente a trazos simples" de Chen: continua frente a discontinua.
 
 **Cómo se examina esto** (avisado queda): el enunciado típico te da una relación con (1,1) obligatorio y te pregunta si la entidad es débil. La respuesta nunca está en la obligatoriedad — está en la **identificación**: busca si la entidad tiene clave completa propia (figura 4: fuerte) o se identifica con la clave del padre más un discriminante (figura 3: débil). Los delatores gráficos, cuando te dan el diagrama hecho, son los trazos dobles y el subrayado discontinuo; cuando te dan el texto, la pregunta que resuelve es "¿cómo nombro sin ambigüedad una ocurrencia concreta?".
 
@@ -231,6 +277,16 @@ En la biblioteca: parcial (el adulto normal es USUARIO sin subtipo) y disjunta �
 
 *Figura 5. La jerarquía de usuarios en la convención española del triángulo: los atributos comunes (`carne`, `nombre`) viven en el supertipo y se heredan; cada subtipo aporta lo suyo; la anotación (parcial, exclusiva) declara las dos decisiones del enunciado.*
 
+La aproximación en pata de gallo, con su límite declarado:
+
+```mermaid
+erDiagram
+    USUARIO ||--o| LECTOR_INFANTIL : es_un
+    USUARIO ||--o| CENTRO : es_un
+```
+
+*Lectura comparada*: la pata de gallo **no tiene jerarquías** — esto es una aproximación con relaciones "es-un" que pierde precisamente lo importante: la totalidad y la exclusividad no están en ningún símbolo. **Nota de entrega (draw.io):** dibuja el triángulo con formas básicas, anota "(parcial, exclusiva)" como texto junto a él y deja constancia de las dos decisiones en la documentación de la práctica — fila correspondiente de la tabla del apartado 1.3.
+
 Cuándo **no** especializar: si los subtipos no aportan atributos ni relaciones propias, basta un atributo `tipo` en la entidad. Especializar "por elegancia" añade complejidad que la UD3 te cobrará al traducir. La jerarquía se gana con diferencias reales, no con taxonomía decorativa.
 
 **Ejercicios del apartado.**
@@ -251,11 +307,24 @@ Caso comarcal: la relación BIBLIOTECA—*organiza*—ACTIVIDAD (cada biblioteca
 
 *Figura 6. La agregación dibujada de verdad — esta es la figura que Mermaid no puede producir, por eso es una imagen: el recuadro engloba la relación `organiza` con sus dos entidades, y ese conjunto, tratado como entidad de orden superior, se relaciona con MONITOR. La (0,1) del lado agregado dice que la pareja puede existir sin monitor asignado — la clave semántica frente a la ternaria.*
 
+**Nota de entrega (draw.io):** la agregación **no existe en pata de gallo** y no se fuerza: en tu entrega, usa un contenedor de draw.io alrededor del fragmento agregado con una nota ("relación agregada"), y documenta la decisión en la memoria de la práctica. En la UD3 verás que la traducción a tablas la resuelve con naturalidad.
+
 La alternativa que siempre debe considerarse es la **relación ternaria** BIBLIOTECA—ACTIVIDAD—MONITOR — su aspecto general, con otro ejemplo que ya conoces del ejercicio E18 en adelante:
 
 ![Figura 7. Relación ternaria en Chen: PROFESOR, MODULO y GRUPO unidos por un único rombo imparte con el atributo horas_semanales de la terna](img/ud2-fig7-chen-ternaria.svg)
 
 *Figura 7. Una ternaria genuina: un único rombo une a los tres participantes a la vez, y el atributo `horas_semanales` pertenece a la terna completa. Contrasta con la figura 6: aquí no hay pareja previa que exista por sí sola.* La diferencia semántica: la ternaria exige que las tres cosas aparezcan **a la vez** (no hay pareja biblioteca-actividad sin monitor); la agregación permite que la pareja exista primero (una biblioteca organiza la actividad, con o sin monitor asignado todavía) y algo se le asocie después. De nuevo: el enunciado decide — "las actividades se programan y el monitor se asigna más tarde" pide agregación.
+
+**Nota de entrega (draw.io):** la ternaria tampoco existe en pata de gallo (solo hay binarias): se entrega **descompuesta** en binarias contra una entidad asociativa que representa la terna —
+
+```mermaid
+erDiagram
+    PROFESOR ||--o{ IMPARTICION : realiza
+    MODULO ||--o{ IMPARTICION : concreta
+    GRUPO ||--o{ IMPARTICION : recibe
+```
+
+*Lectura comparada*: IMPARTICION representa cada terna concreta y aloja `horas_semanales`; las tres patas 1:N sustituyen al rombo triple. No es una traición al modelo: es exactamente lo que la UD3 hará al traducir la ternaria a tablas — aquí lo usas solo como formato de entrega, dejando constancia en la documentación de que el concepto modelado es una ternaria.
 
 Regla de higiene: la agregación es el recurso **excepcional** del modelo, no un adorno. Si puedes modelar con entidades y relaciones simples sin perder semántica, hazlo: cada nivel de sofisticación del diagrama es complejidad que la UD3 traducirá y la UD5 implementará.
 
