@@ -341,7 +341,7 @@ Puedes usar un asistente de IA en esta unidad, con cabeza y responsabilidad sobr
 
 ## Apartado 11. Para ampliar
 
-- Manual de referencia de MySQL (capítulos introductorios sobre qué es MySQL y su arquitectura): https://dev.mysql.com/doc/
-- Texto consolidado del RGPD — Reglamento (UE) 2016/679: https://eur-lex.europa.eu/eli/reg/2016/679
-- Agencia Española de Protección de Datos — guías para responsables y ciudadanía: https://www.aepd.es/
-- Documentación de MongoDB (introducción a bases de datos documentales, como anticipo de la UD8): https://www.mongodb.com/docs/
+- [Manual de referencia de MySQL](https://dev.mysql.com/doc/) — capítulos introductorios sobre qué es MySQL y su arquitectura.
+- [Texto consolidado del RGPD — Reglamento (UE) 2016/679](https://eur-lex.europa.eu/eli/reg/2016/679)
+- [Agencia Española de Protección de Datos](https://www.aepd.es/) — guías para responsables y ciudadanía.
+- [Documentación de MongoDB](https://www.mongodb.com/docs/) — introducción a bases de datos documentales, como anticipo de la UD8.
