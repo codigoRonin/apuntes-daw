@@ -1,5 +1,6 @@
 > **BORRADOR — pendiente de validación del docente. No publicar al alumnado con esta marca.**
 > Destino en el sitio: `docs/bases-de-datos/ud2-modelo-entidad-relacion.md` · Imágenes: `docs/bases-de-datos/img/`
+> **v3 (15/08/2026):** etiqueta de tipo (1:1, 1:N, N:M) sobre el rombo en todas las figuras, con la regla de derivación en el apartado 1.2; cardinalidades ampliadas para proyección; figuras Chen conceptuales en su apartado (relaciones — figura 2 —, debilidad por identificación y por existencia — figuras 3 y 4 —, jerarquía — figura 5 —, agregación — figura 6 — y ternaria — figura 7); la figura de lectura pasa a ser la 8. Alcance congelado tras esta versión.
 > **v2 (15/08/2026):** doble notación con papeles declarados (Chen para conceptos y lectura; pata de gallo para herramienta y entrega), taxonomía gráfica de atributos en Chen (figura 1), ejercicios de lectura de diagramas Chen (E7, E14, renumeración E1-E23) y AE3 como interpretación de un diagrama Chen dado. Los diagramas Chen son imágenes SVG del repositorio: Mermaid no dibuja Chen y no se finge lo contrario.
 
 # UD2. Modelo entidad-relación: diseño conceptual
@@ -39,6 +40,8 @@ El modelo E/R tiene varias notaciones, y en este módulo trabajarás **dos, cada
 
 - **Notación clásica (Chen) — la notación de conceptos y de lectura.** Entidades en rectángulos, atributos en elipses, relaciones en rombos, cardinalidades como pares (mín, máx) junto a las líneas. Es la notación en la que razonaremos en clase y, sobre todo, la que **debes saber leer**: el RA6 exige interpretar diagramas E/R, y los enunciados académicos de otros centros y de las pruebas oficiales están escritos casi siempre en Chen. Además, es la única de las dos que **dibuja la taxonomía completa de los atributos** (apartado 2.2): elipses, elipses dobles, elipses punteadas y subrayados.
 - **Notación pata de gallo (*crow's foot*) — la notación de herramienta y de entrega.** La habitual en las herramientas profesionales: las cardinalidades se dibujan en los extremos de las líneas (la "pata" es el lado muchos) y los atributos se listan dentro del rectángulo, sin distinción gráfica de su tipo. La usan draw.io, MySQL Workbench y Mermaid; tus entregas de diagramas con herramienta irán en ella.
+
+**Convención de esta unidad — la etiqueta de tipo sobre el rombo.** Además de las parejas (mín, máx) en los extremos, cada relación lleva **sobre su rombo la etiqueta de su tipo**: 1:1, 1:N o N:M. La regla de derivación: **el tipo se forma con el máximo de cada extremo**. Ejemplo con *realiza*: LECTOR participa con (0,N) y PRESTAMO con (1,1) → máximos N y 1 → tipo **1:N** (las mínimas no intervienen en el tipo: informan de la obligatoriedad, no de la multiplicidad). Guárdate esta etiqueta con cariño: es exactamente **la regla con la que la UD3 decidirá cómo se traduce cada relación a tablas** — 1:N y 1:1 de una manera, N:M de otra.
 
 Traducción práctica: **lees y razonas en Chen; construyes y entregas en pata de gallo** — y sabes pasar de una a otra, porque son el mismo modelo con dos ortografías. La regla profesional se mantiene: notación consistente **dentro de cada diagrama**; lo prohibido es mezclarlas en uno mismo, no dominar ambas.
 
@@ -139,6 +142,12 @@ La **cardinalidad máxima** dice con cuántas ocurrencias de la otra entidad pue
 - LECTOR—LIBRO mediante *valora* es **N:M**: un lector valora muchos libros; un libro lo valoran muchos lectores.
 - BIBLIOTECA—DIRECTOR sería **1:1**: cada biblioteca tiene un director y cada director dirige una biblioteca.
 
+Los tres tipos, con la convención completa de la unidad (parejas en los extremos y etiqueta de tipo sobre el rombo), más los dos rasgos estructurales del apartado 3.1 — el atributo de relación y la reflexiva con roles — dibujados en Chen:
+
+![Figura 2. Relaciones en notación de Chen: realiza como 1:N con sus parejas de cardinalidad, valora como N:M con el atributo puntuacion colgando del rombo, y la reflexiva supervisa con los roles supervisor y supervisado](img/ud2-fig2-chen-relaciones.svg)
+
+*Figura 2. Tres relaciones en Chen con la convención de la unidad: la etiqueta de tipo sobre el rombo se deriva de los máximos (0,N)-(1,1) → 1:N; el atributo `puntuacion` cuelga del rombo de `valora` (es de la pareja); la reflexiva `supervisa` lleva sus dos roles anotados en las líneas.*
+
 El método fiable para no equivocarse: **fija una ocurrencia y pregunta por la otra entidad, en los dos sentidos, con frases completas**. "Dado UN préstamo, ¿cuántos lectores?" → uno. "Dado UN lector, ¿cuántos préstamos?" → muchos. Anota cada respuesta en el extremo **opuesto** a la entidad fijada (en notación clásica; la pata de gallo lo pone en el extremo propio — otra razón para no mezclar notaciones).
 
 ### Apartado 3.3. Cardinalidad mínima (participación)
@@ -173,18 +182,30 @@ Eso es una **entidad débil**: depende de una entidad fuerte a través de una **
 
 Notación clásica: rectángulo doble para la entidad débil, rombo doble para la relación identificativa, discriminante subrayado con línea discontinua. La participación de la débil en su relación identificativa es siempre **(1,1)**: obligatoria y con una sola fuerte.
 
-La confusión típica que debes evitar: no toda relación 1:N con participación obligatoria crea una entidad débil. PRESTAMO exige un lector (1,1) y sin embargo puede diseñarse con clave propia (`num_prestamo`): entonces es entidad **fuerte** con relación normal. La debilidad es una **decisión de identificación**: ¿quiero identificar esto por sí mismo o dentro de su padre? Ambas opciones pueden ser legítimas; lo que se evalúa es que sepas cuál has tomado y por qué.
+El caso completo, dibujado en Chen con toda la notación de debilidad:
+
+![Figura 3. Entidad débil por identificación: LIBRO con clave isbn, relación identificativa tiene en rombo doble, EJEMPLAR en rectángulo doble con discriminante num_ejemplar en subrayado discontinuo](img/ud2-fig3-chen-debil-identificacion.svg)
+
+*Figura 3. Debilidad por identificación: los trazos dobles (rectángulo y rombo) y el subrayado discontinuo del discriminante son los tres delatores gráficos. Un ejemplar concreto se identifica como `isbn` + `num_ejemplar`.*
+
+La confusión típica que debes evitar: no toda relación 1:N con participación obligatoria crea una entidad débil. PRESTAMO exige un lector (1,1) y sin embargo puede diseñarse con clave propia (`num_prestamo`): entonces es entidad **fuerte** con relación normal. La debilidad es una **decisión de identificación**: ¿quiero identificar esto por sí mismo o dentro de su padre? Ambas opciones pueden ser legítimas; lo que se evalúa es que sepas cuál has tomado y por qué. La figura gemela de la anterior muestra el contraste exacto:
+
+![Figura 4. Dependencia solo en existencia: PRESTAMO exige un lector con participación obligatoria pero tiene clave propia num_prestamo, de modo que la relación es normal y no hay trazos dobles](img/ud2-fig4-chen-existencia-sin-identificacion.svg)
+
+*Figura 4. Dependencia en existencia sin identificación: PRESTAMO no puede existir sin lector — su participación es (1,1) — pero se identifica por su clave propia `num_prestamo`, así que ni el rectángulo ni el rombo se doblan y no hay discriminante.*
+
+**Cómo se examina esto** (avisado queda): el enunciado típico te da una relación con (1,1) obligatorio y te pregunta si la entidad es débil. La respuesta nunca está en la obligatoriedad — está en la **identificación**: busca si la entidad tiene clave completa propia (figura 4: fuerte) o se identifica con la clave del padre más un discriminante (figura 3: débil). Los delatores gráficos, cuando te dan el diagrama hecho, son los trazos dobles y el subrayado discontinuo; cuando te dan el texto, la pregunta que resuelve es "¿cómo nombro sin ambigüedad una ocurrencia concreta?".
 
 **Ejercicios del apartado.**
 
-- **E11.** Modela LIBRO—EJEMPLAR con notación de entidad débil completa (dobles trazos, discriminante, cardinalidades). Añade la relación PRESTAMO—EJEMPLAR (se presta un ejemplar concreto, no la obra) con sus cardinalidades y justifica el cambio respecto al diagrama del apartado 3.
+- **E11.** Partiendo del diagrama **dado** en la figura 3, amplíalo: añade la relación PRESTAMO—EJEMPLAR (se presta un ejemplar concreto, no la obra) con sus parejas de cardinalidad y su etiqueta de tipo, y justifica el cambio respecto al diagrama del apartado 3 (donde el préstamo era "de un libro"). Indica además, leyendo la figura 3, por qué PRESTAMO **no** debe llevar trazos dobles pese a su (1,1) — apóyate en la figura 4.
 - **E12.** Decide razonadamente si son entidades débiles (y con qué discriminante) o fuertes: (a) las AULAS de un edificio, numeradas por planta; (b) las FACTURAS de una empresa, con numeración única anual legal; (c) las LÍNEAS de una factura.
-- **E13.** Da un ejemplo (fuera de la biblioteca) de dependencia en existencia **sin** dependencia en identificación, y explica por qué el diagrama resultante no lleva dobles trazos.
-- **E14.** *(Lectura de Chen.)* La figura 2 muestra un diagrama en notación de Chen del circuito de préstamos de la biblioteca:
+- **E13.** La figura 4 muestra el patrón con PRESTAMO. Da un ejemplo **de otro dominio distinto de la biblioteca** con la misma estructura (dependencia en existencia sin dependencia en identificación) y explica por qué su diagrama tampoco lleva dobles trazos.
+- **E14.** *(Lectura de Chen.)* La figura 8 muestra un diagrama en notación de Chen del circuito de préstamos de la biblioteca:
 
-    ![Figura 2. Diagrama Chen para interpretar: LECTOR, PRESTAMO, EJEMPLAR como entidad débil y LIBRO, con cardinalidades y discriminante](img/ud2-fig2-chen-lectura-biblioteca.svg)
+    ![Figura 8. Diagrama Chen para interpretar: LECTOR, PRESTAMO, EJEMPLAR como entidad débil y LIBRO, con cardinalidades, etiquetas de tipo y discriminante](img/ud2-fig8-chen-lectura-biblioteca.svg)
 
-    *(a)* Escribe las **ocho frases de cardinalidad** (mínimo y máximo de cada extremo de las tres relaciones); *(b)* identifica la entidad débil, su relación identificativa y su discriminante, explicando por qué símbolo lo sabes; *(c)* di cómo se identifica completamente un ejemplar concreto; *(d)* señala una regla razonable del negocio que este diagrama **no** captura y que iría a la documentación del paso 7 del apartado 7.
+    *(a)* Escribe las **ocho frases de cardinalidad** (mínimo y máximo de cada extremo de las tres relaciones) y comprueba que la etiqueta de tipo de cada rombo se deriva de los máximos que has leído; *(b)* identifica la entidad débil, su relación identificativa y su discriminante, explicando por qué símbolo lo sabes; *(c)* di cómo se identifica completamente un ejemplar concreto; *(d)* señala una regla razonable del negocio que este diagrama **no** captura y que iría a la documentación del paso 7 del apartado 7.
 
 <div style="page-break-before: always;"></div>
 
@@ -204,7 +225,11 @@ Toda jerarquía se anota con dos decisiones, siempre extraídas del enunciado:
 | **Totalidad** | Total (todo supertipo es de algún subtipo) / Parcial (puede haber supertipos "a secas") | ¿Existe algún usuario que no sea ni infantil ni centro? |
 | **Solapamiento** | Disjunta (a lo sumo un subtipo) / Solapada (puede ser varios a la vez) | ¿Puede alguien ser dos cosas a la vez? |
 
-En la biblioteca: parcial (el adulto normal es USUARIO sin subtipo) y disjunta (nadie es a la vez menor y centro educativo).
+En la biblioteca: parcial (el adulto normal es USUARIO sin subtipo) y disjunta —también llamada **exclusiva**— (nadie es a la vez menor y centro educativo). El caso, dibujado con la convención del triángulo:
+
+![Figura 5. Jerarquía de generalización: USUARIO con sus atributos comunes arriba, triángulo es-un, y los subtipos LECTOR_INFANTIL con tutor_legal y CENTRO con cif; anotación parcial y exclusiva](img/ud2-fig5-chen-jerarquia-usuario.svg)
+
+*Figura 5. La jerarquía de usuarios en la convención española del triángulo: los atributos comunes (`carne`, `nombre`) viven en el supertipo y se heredan; cada subtipo aporta lo suyo; la anotación (parcial, exclusiva) declara las dos decisiones del enunciado.*
 
 Cuándo **no** especializar: si los subtipos no aportan atributos ni relaciones propias, basta un atributo `tipo` en la entidad. Especializar "por elegancia" añade complejidad que la UD3 te cobrará al traducir. La jerarquía se gana con diferencias reales, no con taxonomía decorativa.
 
@@ -212,7 +237,7 @@ Cuándo **no** especializar: si los subtipos no aportan atributos ni relaciones 
 
 - **E15.** Un polideportivo municipal tiene actividades dirigidas y alquiler de pistas. Sus USUARIOS: abonados (cuota mensual, fecha de alta) y usuarios puntuales (sin datos extra: pagan por uso). Además, algunos abonados son también monitores (titulación, cuenta bancaria). Modela la jerarquía o jerarquías, decidiendo y justificando totalidad y solapamiento en cada una.
 - **E16.** Critica este diseño: VEHICULO especializado en COCHE_ROJO, COCHE_AZUL y MOTO. Señala qué regla del apartado incumple cada parte y propón el diseño correcto.
-- **E17.** En la jerarquía USUARIO de la biblioteca, indica dos atributos y una relación que se colocan en el supertipo y un atributo que se coloca en cada subtipo, explicando el criterio general de colocación ("cada cosa en el nivel más alto donde es común a todos").
+- **E17.** Sobre la figura 5: indica dos atributos y una relación que se colocan en el supertipo y un atributo que se coloca en cada subtipo, explicando el criterio general de colocación ("cada cosa en el nivel más alto donde es común a todos").
 
 <div style="page-break-before: always;"></div>
 
@@ -222,16 +247,15 @@ Hay situaciones donde necesitas relacionar algo **con una relación**, y el E/R 
 
 Caso comarcal: la relación BIBLIOTECA—*organiza*—ACTIVIDAD (cada biblioteca organiza actividades de un catálogo común: club de lectura, cuentacuentos). Ahora el ayuntamiento quiere registrar qué MONITOR conduce **cada actividad en cada biblioteca** — el monitor no se asigna a la actividad "club de lectura" en abstracto, ni a la biblioteca, sino a la **pareja concreta** organiza(biblioteca, actividad). Agregamos la relación *organiza* y la relacionamos con MONITOR:
 
-```mermaid
-erDiagram
-    BIBLIOTECA }o--o{ ACTIVIDAD : organiza
-    ORGANIZA_AGREGADA ||--o{ ASIGNACION : recibe
-    MONITOR ||--o{ ASIGNACION : conduce
-```
+![Figura 6. Agregación en Chen: un recuadro discontinuo engloba BIBLIOTECA, el rombo organiza y ACTIVIDAD; la pareja agregada se relaciona mediante asignada-a con MONITOR](img/ud2-fig6-chen-agregacion.svg)
 
-*(Mermaid no dibuja el recuadro de agregación: en tus diagramas de draw.io sí debe verse el rectángulo englobando BIBLIOTECA—organiza—ACTIVIDAD; aquí lo representamos con la pseudoentidad ORGANIZA_AGREGADA.)*
+*Figura 6. La agregación dibujada de verdad — esta es la figura que Mermaid no puede producir, por eso es una imagen: el recuadro engloba la relación `organiza` con sus dos entidades, y ese conjunto, tratado como entidad de orden superior, se relaciona con MONITOR. La (0,1) del lado agregado dice que la pareja puede existir sin monitor asignado — la clave semántica frente a la ternaria.*
 
-La alternativa que siempre debe considerarse es la **relación ternaria** BIBLIOTECA—ACTIVIDAD—MONITOR. La diferencia semántica: la ternaria exige que las tres cosas aparezcan **a la vez** (no hay pareja biblioteca-actividad sin monitor); la agregación permite que la pareja exista primero (una biblioteca organiza la actividad, con o sin monitor asignado todavía) y algo se le asocie después. De nuevo: el enunciado decide — "las actividades se programan y el monitor se asigna más tarde" pide agregación.
+La alternativa que siempre debe considerarse es la **relación ternaria** BIBLIOTECA—ACTIVIDAD—MONITOR — su aspecto general, con otro ejemplo que ya conoces del ejercicio E18 en adelante:
+
+![Figura 7. Relación ternaria en Chen: PROFESOR, MODULO y GRUPO unidos por un único rombo imparte con el atributo horas_semanales de la terna](img/ud2-fig7-chen-ternaria.svg)
+
+*Figura 7. Una ternaria genuina: un único rombo une a los tres participantes a la vez, y el atributo `horas_semanales` pertenece a la terna completa. Contrasta con la figura 6: aquí no hay pareja previa que exista por sí sola.* La diferencia semántica: la ternaria exige que las tres cosas aparezcan **a la vez** (no hay pareja biblioteca-actividad sin monitor); la agregación permite que la pareja exista primero (una biblioteca organiza la actividad, con o sin monitor asignado todavía) y algo se le asocie después. De nuevo: el enunciado decide — "las actividades se programan y el monitor se asigna más tarde" pide agregación.
 
 Regla de higiene: la agregación es el recurso **excepcional** del modelo, no un adorno. Si puedes modelar con entidades y relaciones simples sin perder semántica, hazlo: cada nivel de sofisticación del diagrama es complejidad que la UD3 traducirá y la UD5 implementará.
 
@@ -294,7 +318,7 @@ Puedes apoyarte en un asistente de IA, con la misma regla de siempre: el resulta
 - **AE2** `[prepara RA6.e]` Propón clave primaria para PARQUE, ACTIVO, TECNICO y REPUESTO, defendiendo cada una con los tres criterios (conocida, estable, mínima) y descartando explícitamente una candidata en TECNICO.
 - **AE3** `[prepara RA6.d — interpretación de Chen]` La figura AE (imagen adjunta a la tarea) muestra en **notación de Chen** el fragmento PARQUE—*contiene*—ACTIVO—*instala*—SENSOR, con SENSOR como entidad débil numerada dentro de cada activo:
 
-    ![Figura AE. Fragmento del dominio del curso en notación de Chen: PARQUE, ACTIVO y SENSOR como entidad débil con su discriminante](img/ud2-fig3-chen-ae3-parque-activo-sensor.svg)
+    ![Figura AE. Fragmento del dominio del curso en notación de Chen: PARQUE, ACTIVO y SENSOR como entidad débil con su discriminante, con etiquetas de tipo sobre los rombos](img/ud2-figAE-chen-parque-activo-sensor.svg)
 
     Interprétalo por escrito: (a) las frases de cardinalidad de los cuatro extremos; (b) qué elementos gráficos declaran la debilidad de SENSOR y cuál es su discriminante; (c) cómo se identifica un sensor concreto según este diagrama; (d) una regla del contexto de la empresa que el diagrama no captura.
 - **AE4** `[prepara RA6.d, e]` El diagrama de AE3 tomó una decisión: SENSOR débil. Cuestiónala profesionalmente: modela la alternativa (SENSOR **fuerte** con clave propia `num_serie` del fabricante) en la notación que prefieras, explica qué cambia en la identificación respecto del diagrama dado, y pronúnciate razonadamente por una de las dos opciones para esta empresa.
