@@ -1,7 +1,3 @@
-> **BORRADOR — pendiente de validación del docente. No publicar al alumnado con esta marca.**
-> Destino en el sitio: `docs/bases-de-datos/ud2-modelo-entidad-relacion.md` · Imágenes: `docs/bases-de-datos/img/`
-> **v2 (15/08/2026):** doble notación con papeles declarados (Chen para conceptos y lectura; pata de gallo para herramienta y entrega), taxonomía gráfica de atributos en Chen (figura 1), ejercicios de lectura de diagramas Chen (E7, E14, renumeración E1-E23) y AE3 como interpretación de un diagrama Chen dado. Los diagramas Chen son imágenes SVG del repositorio: Mermaid no dibuja Chen y no se finge lo contrario.
-
 # UD2. Modelo entidad-relación: diseño conceptual
 
 **Módulo 0484 — Bases de Datos · 1.º DAW · IES Río Arba · Curso 2026-27 · 22 horas · 1.ª evaluación**
@@ -35,17 +31,12 @@ La razón del orden es económica: un error de diseño detectado en el diagrama 
 
 ### Apartado 1.2. Notaciones y herramientas gráficas
 
-El modelo E/R tiene varias notaciones, y en este módulo trabajarás **dos, cada una con su papel declarado**:
+El modelo E/R tiene varias notaciones. Las dos que debes reconocer:
 
-- **Notación clásica (Chen) — la notación de conceptos y de lectura.** Entidades en rectángulos, atributos en elipses, relaciones en rombos, cardinalidades como pares (mín, máx) junto a las líneas. Es la notación en la que razonaremos en clase y, sobre todo, la que **debes saber leer**: el RA6 exige interpretar diagramas E/R, y los enunciados académicos de otros centros y de las pruebas oficiales están escritos casi siempre en Chen. Además, es la única de las dos que **dibuja la taxonomía completa de los atributos** (apartado 2.2): elipses, elipses dobles, elipses punteadas y subrayados.
-- **Notación pata de gallo (*crow's foot*) — la notación de herramienta y de entrega.** La habitual en las herramientas profesionales: las cardinalidades se dibujan en los extremos de las líneas (la "pata" es el lado muchos) y los atributos se listan dentro del rectángulo, sin distinción gráfica de su tipo. La usan draw.io, MySQL Workbench y Mermaid; tus entregas de diagramas con herramienta irán en ella.
+- **Notación clásica (Chen)**: entidades en rectángulos, atributos en elipses, relaciones en rombos, cardinalidades como etiquetas 1/N junto a las líneas. Es la habitual en educación y la que usaremos para razonar.
+- **Notación pata de gallo (*crow's foot*)**: la habitual en herramientas profesionales; las cardinalidades se dibujan en los extremos de las líneas (la "pata" es el lado N). La usan draw.io, MySQL Workbench y Mermaid.
 
-Traducción práctica: **lees y razonas en Chen; construyes y entregas en pata de gallo** — y sabes pasar de una a otra, porque son el mismo modelo con dos ortografías. La regla profesional se mantiene: notación consistente **dentro de cada diagrama**; lo prohibido es mezclarlas en uno mismo, no dominar ambas.
-
-En cuanto a herramientas (aquí arranca RA6.a): esta unidad usa **draw.io** para tus entregas; en la UD3 consolidarás la herramienta representando diseños lógicos completos, que es donde ese criterio se evalúa definitivamente.
-
-!!! info "Cómo están hechos los diagramas de estos apuntes"
-    Los diagramas en **pata de gallo** están escritos en Mermaid y el sitio los renderiza. Los diagramas en **Chen** son **imágenes SVG** alojadas en el repositorio del sitio (carpeta `img/`), porque Mermaid no dibuja notación de Chen: cuando veas una figura numerada, es una imagen; cuando veas un bloque de código renderizado, es Mermaid en pata de gallo.
+En cuanto a herramientas (aquí arranca RA6.a): esta unidad usa **draw.io** para tus entregas y **Mermaid** en los apuntes; en la UD3 consolidarás la herramienta representando diseños lógicos completos, que es donde ese criterio se evalúa definitivamente. La regla profesional desde hoy: **notación consistente en todo el diagrama** — mezclar notaciones en un mismo diagrama es el equivalente gráfico de escribir con dos ortografías.
 
 Un primer vistazo del caso hilo, en Mermaid (lo iremos construyendo pieza a pieza):
 
@@ -83,28 +74,7 @@ Los **atributos** son las propiedades que se guardan de cada entidad, cada uno c
 | Compuesto | Se descompone en partes con significado propio | `direccion` (calle, número, localidad, CP) |
 | Monovalorado | Un valor por ocurrencia | `fecha_nacimiento` |
 | **Multivalorado** | Varios valores por ocurrencia | `telefonos` de un lector (fijo, móvil…) — se dibuja con elipse doble |
-| **Derivado** | Se calcula a partir de otros; no se almacena | `edad` (deriva de `fecha_nacimiento`) — elipse punteada (discontinua) |
-| **Identificador (clave)** | Identifica cada ocurrencia sin ambigüedad (apartado 2.3) | `carne` — nombre **subrayado** en su elipse |
-
-La taxonomía completa, dibujada en Chen sobre la entidad del caso hilo:
-
-![Figura 1. LECTOR en notación de Chen con la taxonomía completa de atributos: clave subrayada, atributo compuesto con sus partes, multivalorado en elipse doble y derivado en elipse punteada conectado a su fuente](img/ud2-fig1-chen-taxonomia-lector.svg)
-
-*Figura 1. La entidad LECTOR con los cinco tipos de atributo en notación de Chen: `carne` subrayado (identificador), `nombre` y `fecha_nacimiento` simples, `direccion` compuesto (con `calle`, `numero` y `localidad` colgando), `telefonos` en elipse doble (multivalorado) y `edad` en elipse punteada (derivado de `fecha_nacimiento`).*
-
-La misma entidad en pata de gallo se escribe como un rectángulo con la lista de atributos dentro — y ahí está el matiz honesto de la doble notación: **la pata de gallo no distingue gráficamente esta taxonomía** (a lo sumo marca la clave), de modo que compuestos, multivalorados y derivados se anotan textualmente o se documentan aparte. Por eso Chen es la notación donde esta taxonomía **se lee y se evalúa**:
-
-```mermaid
-erDiagram
-    LECTOR {
-        int carne PK
-        string nombre
-        string direccion "compuesto: calle, numero, localidad"
-        string telefonos "multivalorado"
-        date fecha_nacimiento
-        int edad "derivado: no se almacena"
-    }
-```
+| **Derivado** | Se calcula a partir de otros; no se almacena | `edad` (deriva de `fecha_nacimiento`) — elipse discontinua |
 
 Los multivalorados y los derivados son señales de alarma bien conocidas: el multivalorado desaparecerá al pasar al modelo relacional (UD3) convertido en otra cosa, y el derivado no debe almacenarse (almacenarlo crea la inconsistencia de la UD1: edad guardada 17, fecha de nacimiento que dice 18).
 
@@ -119,7 +89,6 @@ Criterios de elección que se defienden en voz alta: valor **siempre conocido**,
 - **E4.** Del enunciado: "De cada libro se guarda su ISBN, título, autores, año y la edad recomendada calculada a partir de su clasificación". Clasifica cada atributo (simple/compuesto, mono/multivalorado, derivado) y elige clave primaria justificando con los tres criterios.
 - **E5.** Un gimnasio guarda de cada socio: número de socio, DNI, nombre, teléfonos de contacto, cuota mensual y años de antigüedad. Dibuja la entidad con la notación clásica (elipses, doble elipse, discontinua, subrayado) — entrega foto o diagrama de herramienta.
 - **E6.** Discute con el enunciado en la mano: en el sistema de la biblioteca municipal (una sola villa), ¿EDITORIAL debe ser entidad o atributo de LIBRO? Da la condición del enunciado que te haría cambiar de respuesta.
-- **E7.** *(Lectura de Chen.)* Sobre la figura 1: (a) escribe, para cada atributo, su tipo completo justificado por su representación gráfica (qué te dice cada elipse, doble, punteada o subrayado); (b) explica qué información **pierde** la versión en pata de gallo del mismo diagrama y cómo debería compensarse en una entrega; (c) señala qué atributo no debe almacenarse y qué atributo lo sustituye como fuente.
 
 <div style="page-break-before: always;"></div>
 
@@ -156,9 +125,9 @@ erDiagram
 
 **Ejercicios del apartado.**
 
-- **E8.** Para un centro de FP: MODULO—PROFESOR (*imparte*), ALUMNO—MODULO (*se matricula*), PROFESOR—GRUPO (*tutoriza*). Decide máximas y mínimas de las tres relaciones con el método de fijar-y-preguntar, escribiendo las frases que usas; señala qué suposición tuviste que hacer por silencio del enunciado.
-- **E9.** Modela con una relación reflexiva: "cada técnico de una empresa puede supervisar a varios técnicos, y cada técnico tiene como mucho un supervisor; los recién llegados pueden no tener supervisor todavía". Indica roles y cardinalidades (mín, máx) en ambos extremos.
-- **E10.** En LECTOR—*valora*—LIBRO, con `puntuacion` y `fecha_valoracion` como atributos de la relación: explica qué se rompe si `puntuacion` se coloca como atributo de LIBRO, y qué pregunta del negocio dejaría de poder responderse.
+- **E7.** Para un centro de FP: MODULO—PROFESOR (*imparte*), ALUMNO—MODULO (*se matricula*), PROFESOR—GRUPO (*tutoriza*). Decide máximas y mínimas de las tres relaciones con el método de fijar-y-preguntar, escribiendo las frases que usas; señala qué suposición tuviste que hacer por silencio del enunciado.
+- **E8.** Modela con una relación reflexiva: "cada técnico de una empresa puede supervisar a varios técnicos, y cada técnico tiene como mucho un supervisor; los recién llegados pueden no tener supervisor todavía". Indica roles y cardinalidades (mín, máx) en ambos extremos.
+- **E9.** En LECTOR—*valora*—LIBRO, con `puntuacion` y `fecha_valoracion` como atributos de la relación: explica qué se rompe si `puntuacion` se coloca como atributo de LIBRO, y qué pregunta del negocio dejaría de poder responderse.
 
 <div style="page-break-before: always;"></div>
 
@@ -177,14 +146,9 @@ La confusión típica que debes evitar: no toda relación 1:N con participación
 
 **Ejercicios del apartado.**
 
-- **E11.** Modela LIBRO—EJEMPLAR con notación de entidad débil completa (dobles trazos, discriminante, cardinalidades). Añade la relación PRESTAMO—EJEMPLAR (se presta un ejemplar concreto, no la obra) con sus cardinalidades y justifica el cambio respecto al diagrama del apartado 3.
-- **E12.** Decide razonadamente si son entidades débiles (y con qué discriminante) o fuertes: (a) las AULAS de un edificio, numeradas por planta; (b) las FACTURAS de una empresa, con numeración única anual legal; (c) las LÍNEAS de una factura.
-- **E13.** Da un ejemplo (fuera de la biblioteca) de dependencia en existencia **sin** dependencia en identificación, y explica por qué el diagrama resultante no lleva dobles trazos.
-- **E14.** *(Lectura de Chen.)* La figura 2 muestra un diagrama en notación de Chen del circuito de préstamos de la biblioteca:
-
-    ![Figura 2. Diagrama Chen para interpretar: LECTOR, PRESTAMO, EJEMPLAR como entidad débil y LIBRO, con cardinalidades y discriminante](img/ud2-fig2-chen-lectura-biblioteca.svg)
-
-    *(a)* Escribe las **ocho frases de cardinalidad** (mínimo y máximo de cada extremo de las tres relaciones); *(b)* identifica la entidad débil, su relación identificativa y su discriminante, explicando por qué símbolo lo sabes; *(c)* di cómo se identifica completamente un ejemplar concreto; *(d)* señala una regla razonable del negocio que este diagrama **no** captura y que iría a la documentación del paso 7 del apartado 7.
+- **E10.** Modela LIBRO—EJEMPLAR con notación de entidad débil completa (dobles trazos, discriminante, cardinalidades). Añade la relación PRESTAMO—EJEMPLAR (se presta un ejemplar concreto, no la obra) con sus cardinalidades y justifica el cambio respecto al diagrama del apartado 3.
+- **E11.** Decide razonadamente si son entidades débiles (y con qué discriminante) o fuertes: (a) las AULAS de un edificio, numeradas por planta; (b) las FACTURAS de una empresa, con numeración única anual legal; (c) las LÍNEAS de una factura.
+- **E12.** Da un ejemplo (fuera de la biblioteca) de dependencia en existencia **sin** dependencia en identificación, y explica por qué el diagrama resultante no lleva dobles trazos.
 
 <div style="page-break-before: always;"></div>
 
@@ -210,9 +174,9 @@ Cuándo **no** especializar: si los subtipos no aportan atributos ni relaciones 
 
 **Ejercicios del apartado.**
 
-- **E15.** Un polideportivo municipal tiene actividades dirigidas y alquiler de pistas. Sus USUARIOS: abonados (cuota mensual, fecha de alta) y usuarios puntuales (sin datos extra: pagan por uso). Además, algunos abonados son también monitores (titulación, cuenta bancaria). Modela la jerarquía o jerarquías, decidiendo y justificando totalidad y solapamiento en cada una.
-- **E16.** Critica este diseño: VEHICULO especializado en COCHE_ROJO, COCHE_AZUL y MOTO. Señala qué regla del apartado incumple cada parte y propón el diseño correcto.
-- **E17.** En la jerarquía USUARIO de la biblioteca, indica dos atributos y una relación que se colocan en el supertipo y un atributo que se coloca en cada subtipo, explicando el criterio general de colocación ("cada cosa en el nivel más alto donde es común a todos").
+- **E13.** Un polideportivo municipal tiene actividades dirigidas y alquiler de pistas. Sus USUARIOS: abonados (cuota mensual, fecha de alta) y usuarios puntuales (sin datos extra: pagan por uso). Además, algunos abonados son también monitores (titulación, cuenta bancaria). Modela la jerarquía o jerarquías, decidiendo y justificando totalidad y solapamiento en cada una.
+- **E14.** Critica este diseño: VEHICULO especializado en COCHE_ROJO, COCHE_AZUL y MOTO. Señala qué regla del apartado incumple cada parte y propón el diseño correcto.
+- **E15.** En la jerarquía USUARIO de la biblioteca, indica dos atributos y una relación que se colocan en el supertipo y un atributo que se coloca en cada subtipo, explicando el criterio general de colocación ("cada cosa en el nivel más alto donde es común a todos").
 
 <div style="page-break-before: always;"></div>
 
@@ -237,9 +201,9 @@ Regla de higiene: la agregación es el recurso **excepcional** del modelo, no un
 
 **Ejercicios del apartado.**
 
-- **E18.** "Los profesores imparten módulos en grupos concretos; de cada asignación profesor-módulo-grupo se guarda el número de horas semanales." Modela con relación ternaria y justifica por qué aquí no procede la agregación (pista: ¿puede existir la pareja módulo-grupo sin profesor en este enunciado?).
-- **E19.** Modifica el enunciado de E18 lo mínimo para que la agregación pase a ser el modelo correcto, y dibuja el resultado.
-- **E20.** En el caso comarcal del apartado, añade la regla "cada asignación de monitor tiene fecha de inicio y fin". Indica dónde viven esos atributos y por qué no pueden ser de MONITOR ni de ACTIVIDAD.
+- **E16.** "Los profesores imparten módulos en grupos concretos; de cada asignación profesor-módulo-grupo se guarda el número de horas semanales." Modela con relación ternaria y justifica por qué aquí no procede la agregación (pista: ¿puede existir la pareja módulo-grupo sin profesor en este enunciado?).
+- **E17.** Modifica el enunciado de E16 lo mínimo para que la agregación pase a ser el modelo correcto, y dibuja el resultado.
+- **E18.** En el caso comarcal del apartado, añade la regla "cada asignación de monitor tiene fecha de inicio y fin". Indica dónde viven esos atributos y por qué no pueden ser de MONITOR ni de ACTIVIDAD.
 
 <div style="page-break-before: always;"></div>
 
@@ -257,9 +221,9 @@ El examen y la vida profesional te darán **texto**, no diagramas. El procedimie
 
 **Ejercicios del apartado.**
 
-- **E21.** Aplica el método completo (los 7 pasos, entregando también la lista de preguntas al cliente y la de restricciones no capturadas) a: "La escuela municipal de música gestiona alumnos que se matriculan cada curso en una o varias asignaturas; cada asignatura la imparte un profesor en un aula con horario semanal; los instrumentos del almacén se prestan a alumnos por trimestres, y de cada préstamo importa el estado del instrumento a la entrega y a la devolución."
-- **E22.** Intercambia tu diagrama de E21 con un compañero y audita el suyo solo con el paso 6 y el paso 7: entrega la lista de defectos de calidad y de restricciones que su documentación olvidó.
-- **E23.** El enunciado de E21 calla tres cosas que cambian el diagrama según la respuesta. Identifica al menos dos, formula la pregunta al cliente y dibuja cómo queda cada alternativa (mini-diagramas del fragmento afectado).
+- **E19.** Aplica el método completo (los 7 pasos, entregando también la lista de preguntas al cliente y la de restricciones no capturadas) a: "La escuela municipal de música gestiona alumnos que se matriculan cada curso en una o varias asignaturas; cada asignatura la imparte un profesor en un aula con horario semanal; los instrumentos del almacén se prestan a alumnos por trimestres, y de cada préstamo importa el estado del instrumento a la entrega y a la devolución."
+- **E20.** Intercambia tu diagrama de E19 con un compañero y audita el suyo solo con el paso 6 y el paso 7: entrega la lista de defectos de calidad y de restricciones que su documentación olvidó.
+- **E21.** El enunciado de E19 calla tres cosas que cambian el diagrama según la respuesta. Identifica al menos dos, formula la pregunta al cliente y dibuja cómo queda cada alternativa (mini-diagramas del fragmento afectado).
 
 <div style="page-break-before: always;"></div>
 
@@ -288,16 +252,12 @@ Puedes apoyarte en un asistente de IA, con la misma regla de siempre: el resulta
 
 **Contexto — la empresa del curso.** La empresa comarcal de **mantenimiento de parques renovables** gestiona 15 parques (eólicos y fotovoltaicos) con unos 450 activos (aerogeneradores, seguidores, inversores); cada activo lleva instalados sensores (unos 5.000 en total) que emiten lecturas periódicas (5 millones acumuladas). Trabajan 60 técnicos organizados en cuadrillas; el mantenimiento se articula en 30.000 órdenes de trabajo — **preventivas** (programadas por calendario) y **correctivas** (responden a una avería registrada) — que se ejecutan mediante partes de **intervención** (80.000) donde los técnicos consumen **repuestos** del almacén (2.500 referencias).
 
-**Instrucciones.** 10 ejercicios, 1 punto cada uno. La actividad construye por piezas **el diagrama E/R completo de la empresa**: los primeros consolidan y los últimos distinguen. Todo diagrama de construcción en notación consistente (Chen o pata de gallo, elige y mantén) hecho con herramienta gráfica; AE3 es de **lectura** sobre un diagrama Chen dado; toda decisión de cardinalidad, con su frase del contexto. Conforme al desglose del módulo, cada ejercicio se etiqueta con el CE del RA6 que **prepara** (evaluación definitiva por CE: UD3). **Tiempo estimado: 2 horas.** Entrega: diagrama(s) exportados + documento de justificaciones en la tarea de Classroom. Defensa oral por muestreo.
+**Instrucciones.** 10 ejercicios, 1 punto cada uno. La actividad construye por piezas **el diagrama E/R completo de la empresa**: los primeros consolidan y los últimos distinguen. Todo diagrama en notación consistente (clásica o pata de gallo, elige y mantén) hecho con herramienta gráfica; toda decisión de cardinalidad, con su frase del contexto. Conforme al desglose del módulo, cada ejercicio se etiqueta con el CE del RA6 que **prepara** (evaluación definitiva por CE: UD3). **Tiempo estimado: 2 horas.** Entrega: diagrama(s) exportados + documento de justificaciones en la tarea de Classroom. Defensa oral por muestreo.
 
 - **AE1** `[prepara RA6.b, c — evaluación definitiva en UD3]` Extrae del contexto las entidades con sus atributos razonables (inventa los atributos obvios que el contexto no lista: nombres, fechas, descripciones), aplicando el filtro entidad/atributo. Justifica dos casos dudosos.
 - **AE2** `[prepara RA6.e]` Propón clave primaria para PARQUE, ACTIVO, TECNICO y REPUESTO, defendiendo cada una con los tres criterios (conocida, estable, mínima) y descartando explícitamente una candidata en TECNICO.
-- **AE3** `[prepara RA6.d — interpretación de Chen]` La figura AE (imagen adjunta a la tarea) muestra en **notación de Chen** el fragmento PARQUE—*contiene*—ACTIVO—*instala*—SENSOR, con SENSOR como entidad débil numerada dentro de cada activo:
-
-    ![Figura AE. Fragmento del dominio del curso en notación de Chen: PARQUE, ACTIVO y SENSOR como entidad débil con su discriminante](img/ud2-fig3-chen-ae3-parque-activo-sensor.svg)
-
-    Interprétalo por escrito: (a) las frases de cardinalidad de los cuatro extremos; (b) qué elementos gráficos declaran la debilidad de SENSOR y cuál es su discriminante; (c) cómo se identifica un sensor concreto según este diagrama; (d) una regla del contexto de la empresa que el diagrama no captura.
-- **AE4** `[prepara RA6.d, e]` El diagrama de AE3 tomó una decisión: SENSOR débil. Cuestiónala profesionalmente: modela la alternativa (SENSOR **fuerte** con clave propia `num_serie` del fabricante) en la notación que prefieras, explica qué cambia en la identificación respecto del diagrama dado, y pronúnciate razonadamente por una de las dos opciones para esta empresa.
+- **AE3** `[prepara RA6.d]` Modela PARQUE—ACTIVO y ACTIVO—SENSOR con cardinalidades máximas y mínimas completas, citando la frase del contexto (o la suposición razonable, marcada como pregunta al cliente) que sostiene cada mínima.
+- **AE4** `[prepara RA6.d, e]` Decide si SENSOR es entidad débil respecto de ACTIVO (los sensores se numeran dentro de cada activo) o fuerte con clave propia (número de serie del fabricante). Modela la opción que elijas con notación completa y explica qué cambiaría en la identificación con la otra.
 - **AE5** `[prepara RA6.d]` Modela la relación entre TECNICO y CUADRILLA sabiendo que "cada técnico pertenece a una cuadrilla, cada cuadrilla tiene un jefe que es uno de sus técnicos". Resuelve el doble papel del jefe (dos relaciones con roles) y anota todas las cardinalidades.
 - **AE6** `[prepara RA6.b, d — jerarquía]` Modela ORDEN_DE_TRABAJO con especialización en PREVENTIVA (atributos: periodicidad, fecha programada) y CORRECTIVA (atributo: avería registrada que la origina). Decide y justifica totalidad y solapamiento con el contexto.
 - **AE7** `[prepara RA6.d]` Incorpora INTERVENCION: cada orden se ejecuta mediante una o varias intervenciones; cada intervención pertenece a una orden, la realizan uno o varios técnicos y tiene fecha y horas empleadas. Modela con cardinalidades completas y justifica dónde vive `horas_empleadas`.
