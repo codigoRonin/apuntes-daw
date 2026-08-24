@@ -1,3 +1,6 @@
+> **BORRADOR — pendiente de validación del docente. No publicar al alumnado con esta marca.**
+> Destino en el sitio: `docs/bases-de-datos/index.md` · **v2 con fila de la UD3 (16/08/2026; regla de circuito). Base: versión final validada del 16/08. Sustituye íntegramente a la versión de julio** (defectos corregidos: listaba solo la UD4 y afirmaba una entrega por repositorio que contradice el escalonado publicado). · **Corrección de coherencia (24/08, auditoría): párrafo de unidades restantes actualizado (UD5-UD8).**
+
 # Bases de Datos (0484) — Apuntes del módulo
 
 **1.º DAW · IES Río Arba · Curso 2026-27 · 200 horas (6 semanales)**
@@ -27,3 +30,4 @@ Las unidades restantes (de la UD5 a la UD8) **se publicarán progresivamente** a
 ## Apartado 3. Recursos transversales
 
 - [Guía rápida de draw.io para las entregas de diagramas](../recursos/guia-drawio.md) — herramienta, convención de nombrado y formato de entrega doble.
+- [Estándar de estilo SQL del módulo](../recursos/estandar-estilo-sql.md) — cómo se escribe y se corrige el SQL de todas las entregas.

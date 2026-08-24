@@ -860,4 +860,4 @@ Un asistente de IA escribe consultas SELECT correctas para casos sencillos con t
 - [Manual de referencia de MySQL 8 — capítulo *SELECT Statement*](https://dev.mysql.com/doc/refman/8.4/en/select.html).
 - Manual de referencia de MySQL 8 — [*Set Operations* (UNION, INTERSECT, EXCEPT)](https://dev.mysql.com/doc/refman/8.4/en/set-operations.html) y [*EXPLAIN Output Format*](https://dev.mysql.com/doc/refman/8.4/en/explain-output.html).
 - [Documentación de PostgreSQL — *Queries*](https://www.postgresql.org/docs/current/queries.html), útil porque es el SGBD de Entorno Servidor y es más estricto.
-- Estándar de estilo SQL del módulo — se publica en el Classroom del módulo al arrancar la unidad.
+- [Estándar de estilo SQL del módulo](../recursos/estandar-estilo-sql.md) — las convenciones con las que se escribe y se corrige todo el SQL del curso.
