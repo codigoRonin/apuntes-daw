@@ -11,9 +11,10 @@ Este módulo te enseña a **diseñar, construir, consultar y proteger** bases de
 | [UD0. Presentación del módulo](ud0-presentacion.md) | Qué se aprende, cómo se trabaja, cómo se califica (con la tabla de casos "¿aprueba o no?") y el dominio del curso |
 | [UD1. Sistemas de almacenamiento, SGBD y el valor del dato](ud1-almacenamiento-sgbd-valor-del-dato.md) | Ficheros y sus límites, tipos de bases de datos, sistemas gestores, distribuidas y fragmentación, protección de datos, Big Data e inteligencia de negocios |
 | [UD2. Modelo entidad-relación: diseño conceptual](ud2-modelo-entidad-relacion.md) | Entidades, atributos, relaciones y cardinalidades, entidades débiles, jerarquías y agregación — en doble notación (Chen y pata de gallo) |
+| [UD3. Modelo relacional y normalización](ud3-modelo-relacional-normalizacion.md) | Terminología relacional, traducción del E/R a tablas, claves e integridad, restricciones semánticas y normalización hasta 3FN |
 | [UD4. Consultas SQL](ud4-consultas-sql.md) | De la consulta simple a las composiciones, subconsultas, operaciones de conjuntos y optimización |
 
-Las unidades restantes (la UD3 y las demás hasta la UD8) **se publicarán progresivamente** a lo largo del curso, siempre antes de comenzar a impartirlas. Si una unidad no aparece aquí, aún no está publicada — no la busques en otros canales.
+Las unidades restantes (de la UD5 a la UD8) **se publicarán progresivamente** a lo largo del curso, siempre antes de comenzar a impartirlas. Si una unidad no aparece aquí, aún no está publicada — no la busques en otros canales.
 
 ## Apartado 2. Cómo trabajar con estos apuntes
 

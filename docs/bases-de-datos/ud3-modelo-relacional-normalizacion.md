@@ -143,6 +143,56 @@ Aquí se cosecha la UD2. La traducción es un **algoritmo**, y su variable de co
 
 - **Agregación** → la relación agregada se traduce primero (si era N:M, su tabla intermedia); esa tabla, que ya tiene PK propia, recibe las relaciones de la agregación como cualquier entidad. La promesa de la UD2 ("la UD3 lo resuelve con naturalidad") era esto: `organizaciones(cod_biblioteca → bibliotecas, cod_actividad → actividades)` y sobre ella `…, cod_monitor → monitores` (NULL permitido: la pareja existía antes que el monitor).
 
+### Apartado 4.4. Ejemplo resuelto: del diagrama al esquema, decisión a decisión
+
+El **club deportivo municipal**: socios que se inscriben en cursos dirigidos por monitores, con sesiones programadas por curso. El diagrama, en pata de gallo (la débil, con línea continua):
+
+```mermaid
+erDiagram
+    MONITOR ||--o{ CURSO : dirige
+    SOCIO }o--o{ CURSO : inscrito
+    CURSO ||--|{ SESION : programa
+    SOCIO {
+        int num_socio PK
+        string nombre
+        string telefonos "multivalorado"
+    }
+    MONITOR {
+        int cod_monitor PK
+        string nombre
+    }
+    CURSO {
+        int cod_curso PK
+        string nombre
+    }
+    SESION {
+        int num_sesion "discriminante"
+        date fecha
+        string aula
+    }
+```
+
+Reglas del enunciado que completan el dibujo: *dirige* es **1:N** con atributo `fecha_asignacion` (cuándo se asignó el monitor al curso); *inscrito* es **N:M** con atributo `fecha_inscripcion`; todo curso tiene monitor; SESION es débil de CURSO, numerada dentro de cada curso.
+
+**La traducción, narrada con el algoritmo:**
+
+1. **Entidades fuertes** (4.1): `socios`, `monitores`, `cursos` — cada una a su tabla con sus simples y su primaria.
+2. **Multivalorado** (4.1): `telefonos` no cabe en una celda (atomicidad) → tabla aparte con FK al socio y el valor; su PK, la pareja (un socio no repite el mismo teléfono).
+3. ***dirige*, etiqueta 1:N** (4.2): la clave del lado uno viaja como FK al lado muchos → `cod_monitor` entra en `cursos`, **NOT NULL** (todo curso tiene monitor: la mínima legisla). Su atributo viaja con la FK: `fecha_asignacion` también a `cursos`.
+4. ***inscrito*, etiqueta N:M** (4.2): tabla intermedia con las dos FK; su PK, la pareja; el atributo de la relación vive en ella → nace `inscripciones`.
+5. **SESION, débil** (4.3): PK compuesta = clave del padre (que además es FK) + discriminante → (`cod_curso`, `num_sesion`).
+
+**El esquema íntegro, en la notación de entrega** (política de borrado justificada en cada FK):
+
+- `socios(`**num_socio**`, nombre)`
+- `monitores(`**cod_monitor**`, nombre)`
+- `cursos(`**cod_curso**`, nombre, cod_monitor → monitores, fecha_asignacion)` — borrado de monitor: **rechazar** (todo curso exige monitor: primero se reasigna, luego se da de baja; la reasignación pendiente, a la lista RS del apartado 5).
+- `telefonos_socio(`**num_socio** `→ socios,` **telefono**`)` — borrado de socio: **propagar** (los teléfonos no sobreviven a su dueño; además, minimización de la UD1: datos de contacto sin titular sobran).
+- `inscripciones(`**num_socio** `→ socios,` **cod_curso** `→ cursos, fecha_inscripcion)` — borrado de socio: **propagar** (baja del club arrastra sus inscripciones); borrado de curso: **rechazar** (un curso con inscritos no se elimina sin resolverlos antes).
+- `sesiones(`**cod_curso** `→ cursos,` **num_sesion**`, fecha, aula)` — borrado de curso: **propagar** (la dependencia en existencia de la débil, hecha política).
+
+Este es, exactamente, el artefacto que E10 y la actividad evaluativa te pedirán producir por tu cuenta: mismo formato, mismas justificaciones, mismo nivel de detalle.
+
 **Ejercicios del apartado.**
 
 - **E10.** Traduce completa la **figura 8 de la UD2** (el diagrama Chen de lectura: LECTOR, PRESTAMO, EJEMPLAR débil, LIBRO) a esquema relacional en la notación de la unidad, con políticas de borrado justificadas en cada FK.
@@ -200,16 +250,47 @@ Una **dependencia funcional** X → Y se lee "X determina Y": conocido el valor 
 
 - **1FN**: valores atómicos y sin grupos repetidos — la regla 4 del apartado 1.2. Los multivalorados, a su tabla (apartado 4.1). Toda relación auténtica ya está en 1FN.
 - **2FN**: en 1FN y, además, **ningún atributo no clave depende de una parte de la clave** (solo importa con claves compuestas). En `prestamos_todo`, `nombre` depende solo de `carne` (parte de la clave): violación. Cura: extraer el hecho a su tabla — nace `lectores`.
-- **3FN**: en 2FN y, además, **ningún atributo no clave depende de otro atributo no clave** (dependencias transitivas). Ejemplo: `ejemplares(isbn, num_ejemplar, cod_estante, planta_estante)` donde `cod_estante → planta_estante`: la planta no depende del ejemplar sino del estante. Cura: nace `estantes`.
-- **FNBC** (mención): versión estricta de la 3FN para casos con varias candidatas solapadas; en este módulo, saber que existe y reconocer el nombre basta — el objetivo operativo del curso es **3FN**, que es también el alcance mínimo declarado del artefacto del curso.
+- **3FN**: en 2FN y, además, **ningún atributo no clave depende de otro atributo no clave** (dependencias transitivas). El diagnóstico y la cura, trabajados de principio a fin en el apartado 6.4.
+- **Formas superiores** (mención, bajo una convención que conviene dejar clara): en la práctica profesional, **una base de datos se considera normalizada cuando alcanza la 3FN** — ese es el objetivo operativo del curso y el alcance mínimo declarado del artefacto. Por encima existen, y basta con reconocer sus nombres: la **FNBC**, versión estricta de la 3FN para casos con varias claves candidatas solapadas; la **4FN**, que ataca las dependencias multivaloradas independientes conviviendo en una misma tabla (dos hechos multivalorados sin relación entre sí, multiplicados en filas); y la **5FN**, que trata las dependencias de reunión (tablas solo reconstruibles combinando todas sus piezas a la vez). Ninguna de las tres es exigible en este módulo: se citan para que sus nombres no te asusten en documentación ajena, no para practicarlas.
 
 El procedimiento práctico, que es lo que se examina: **(1)** lista las dependencias funcionales del enunciado; **(2)** localiza la que viola la forma normal (¿parcial? ¿transitiva?); **(3)** extrae el hecho a una tabla nueva con su determinante como clave, dejando una FK; **(4)** repite hasta 3FN; **(5)** comprueba que no has perdido información (podrías reconstruir la tabla original combinando las piezas).
 
-Y el cierre del círculo: si haces bien la UD2 y traduces bien el apartado 4, **el esquema sale casi normalizado de serie** — la normalización es tu control de calidad y tu herramienta de rescate de diseños ajenos, no tu método de diseño principal.
+Y el cierre del círculo: si haces bien la UD2 y traduces bien el apartado 4, **el esquema sale casi normalizado de serie** — la normalización es tu control de calidad y tu herramienta de rescate de diseños ajenos, no tu método de diseño principal. No te lo creas por fe: el apartado 6.4 lo demuestra.
+
+### Apartado 6.4. Ejemplo resuelto: `prestamos_todo`, de la hoja enferma a la 3FN
+
+La hoja real del mostrador, con la ubicación detallada de los libros:
+
+`prestamos_todo(carne, nombre, telefono, isbn, titulo, cod_estante, planta_estante, fecha_prest)`
+
+**Paso 1 — dependencias funcionales** (del negocio, no de los datos): `carne → nombre, telefono` · `isbn → titulo, cod_estante` · `cod_estante → planta_estante` · clave de la hoja: (**carne, isbn, fecha_prest**) → todo.
+
+**Paso 2 — localizar violaciones.** Hay de los dos tipos, y conviene verlos juntos: `carne → nombre, telefono` e `isbn → titulo, cod_estante` son dependencias de **parte de la clave** (violan 2FN); `cod_estante → planta_estante` es una dependencia **entre atributos no clave** — la planta no depende del préstamo ni del libro directamente, sino del estante: transitiva (violará 3FN cuando lleguemos).
+
+**Paso 3 — extraer los hechos parciales.** Cada determinante parcial se lleva su hecho a una tabla propia, dejando FK:
+
+**Estado intermedio en 2FN:**
+- `lectores(`**carne**`, nombre, telefono)`
+- `libros(`**isbn**`, titulo, cod_estante, planta_estante)`
+- `prestamos(`**carne** `→ lectores,` **isbn** `→ libros,` **fecha_prest**`)`
+
+Ya no hay dependencias parciales — pero `libros` arrastra la transitiva: si la biblioteca reordena la planta de un estante, hay que tocar todos los libros de ese estante (anomalía de modificación en miniatura), y un estante vacío no existe en ninguna parte (inserción).
+
+**Paso 4 — extraer la transitiva.** `cod_estante → planta_estante` se va a su tabla:
+
+**Esquema final en 3FN, en la notación de entrega:**
+- `lectores(`**carne**`, nombre, telefono)`
+- `estantes(`**cod_estante**`, planta_estante)`
+- `libros(`**isbn**`, titulo, cod_estante → estantes)`
+- `prestamos(`**carne** `→ lectores,` **isbn** `→ libros,` **fecha_prest**`)`
+
+**Paso 5 — comprobación de no-pérdida.** Combinando `prestamos` con `lectores` (por carne), `libros` (por isbn) y `estantes` (por cod_estante) se reconstruye exactamente cada fila original de la hoja: ninguna información se ha perdido — solo ha dejado de repetirse.
+
+**El cierre del círculo, demostrado.** Ahora traduce mentalmente con el apartado 4 el E/R evidente de este dominio — LECTOR y LIBRO fuertes, ESTANTE como entidad (un libro está en un estante: 1:N), *realiza/es objeto de* alrededor del préstamo: obtienes **este mismo esquema**, tabla por tabla y flecha por flecha, sin haber normalizado nada. Diseñar bien y normalizar convergen en el mismo sitio; la diferencia es que el buen E/R llega a la primera y la normalización llega rescatando. Las dos rutas debes dominarlas — los exámenes y la vida traen de las dos.
 
 **Ejercicios del apartado.**
 
-- **E17.** Sobre `prestamos_todo`: escribe sus dependencias funcionales, provoca con filas concretas una anomalía de cada tipo, y normaliza hasta 3FN mostrando el paso 2FN intermedio. Compara el resultado con el esquema del E10: deberían darse un aire.
+- **E17.** La clínica veterinaria municipal apunta cada visita en una hoja plana: `visitas_todo(cod_mascota, nombre_mascota, especie, nombre_dueno, telefono_dueno, fecha_visita, cod_veterinario, nombre_veterinario, diagnostico)`. Escribe sus dependencias funcionales, provoca con filas concretas una anomalía de cada tipo (modificación, inserción, borrado), y normaliza hasta 3FN mostrando el paso 2FN intermedio en la notación de entrega.
 - **E18.** `matriculas(cod_alumno, cod_modulo, nombre_modulo, curso, nota, tutor_grupo)` con las dependencias razonables de un instituto: identifica en qué forma normal está, qué dependencia viola la siguiente, y normaliza justificando cada extracción.
 - **E19.** Diagnóstico inverso: un esquema en 3FN de la biblioteca se "desnormaliza" fusionando `libros` e `ejemplares` "para hacer menos consultas". Describe qué anomalías reaparecen exactamente y qué preguntas de negocio se vuelven peligrosas de responder.
 - **E20.** ¿Verdadero o falso, con contraejemplo o justificación?: (a) "toda tabla con clave simple está en 2FN"; (b) "una tabla con dos columnas siempre está en 3FN"; (c) "si los datos actuales no repiten nada, la tabla está normalizada".
