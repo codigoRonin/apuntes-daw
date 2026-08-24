@@ -53,3 +53,4 @@ nav:
       - "UD4 · Consultas de datos con SQL": bases-de-datos/ud4-consultas-sql.md
   - Recursos:
       - "Guía rápida de draw.io": recursos/guia-drawio.md
+      - "Estándar de estilo SQL": recursos/estandar-estilo-sql.md
