@@ -836,7 +836,7 @@ Un asistente de IA escribe consultas SELECT correctas para casos sencillos con t
 
 ## Actividad evaluativa final
 
-**Contexto:** la dirección de TiendaDAW te pide un pequeño cuadro de mando de ventas y una revisión de rendimiento. Trabajas sobre el esquema y los datos del apartado 0 (para AE10 necesitas además el histórico del apartado 10.1). **Tiempo estimado:** 2 horas 30 minutos. **Entrega:** un único script `.sql` con las consultas numeradas y comentadas, en tu repositorio de la práctica. Cada consulta debe ejecutar sin errores y devolver exactamente lo pedido — se corrige ejecutando.
+**Contexto:** la dirección de TiendaDAW te pide un pequeño cuadro de mando de ventas y una revisión de rendimiento. Trabajas sobre el esquema y los datos del apartado 0 (para AE10 necesitas además el histórico del apartado 10.1). **Tiempo estimado:** 2 horas 30 minutos. **Entrega:** un único script `.sql` con las consultas numeradas y comentadas, por el canal vigente de la evaluación según el escalonado publicado en la programación — consulta el [kit de arranque de la UD0](ud0-presentacion.md) y el manual del alumnado; en caso de duda, manda lo anunciado en el Classroom del módulo. Cada consulta debe ejecutar sin errores y devolver exactamente lo pedido — se corrige ejecutando.
 
 **Calificación:** 10 ejercicios, **1 punto cada uno** (nota sobre 10). Cada ejercicio indica el criterio de evaluación oficial que evalúa (RA3 del módulo 0484, redacción del RD 405/2023). La dificultad es creciente: los primeros consolidan, los últimos distinguen. El CE **RA3.a** (herramientas y sentencias) se evalúa en la defensa de esta práctica y en la prueba escrita, no en el script.
 
@@ -860,4 +860,4 @@ Un asistente de IA escribe consultas SELECT correctas para casos sencillos con t
 - Manual de referencia de MySQL 8 — capítulo *SELECT Statement* (dev.mysql.com).
 - Manual de referencia de MySQL 8 — *Set Operations* (UNION, INTERSECT, EXCEPT) y *EXPLAIN Output Format* (dev.mysql.com).
 - Documentación de PostgreSQL — *Queries* (postgresql.org/docs), útil porque es el SGBD de Entorno Servidor y es más estricto.
-- Estándar de estilo SQL del módulo (repositorio de clase).
+- Estándar de estilo SQL del módulo — se publica en el Classroom del módulo al arrancar la unidad.
