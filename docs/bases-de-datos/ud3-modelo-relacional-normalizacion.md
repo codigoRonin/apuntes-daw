@@ -95,13 +95,17 @@ Diseñar es también declarar qué estados de la base de datos son **ilegales**.
 
 La integridad referencial obliga además a legislar el **borrado y la modificación de lo referenciado**: ¿qué pasa con los préstamos de un lector que se da de baja? Las políticas, que decidirás caso a caso y documentarás en el esquema:
 
-| Política | Efecto al borrar la fila referenciada | Cuándo suele ser la correcta |
-|---|---|---|
-| **Rechazar** (restringir) | El borrado falla si hay filas que apuntan | Lo referenciado tiene historia que debe conservarse (lectores con préstamos) |
-| **Propagar** (en cascada) | Se borran también las filas que apuntan | Las hijas no tienen sentido sin el padre (ejemplares de una obra descatalogada, líneas de una factura) |
-| **Poner a NULL** | La FK de las filas que apuntan pasa a NULL | La referencia era opcional y lo demás sobrevive (técnicos cuyo supervisor causa baja) |
+| Política | Efecto al borrar la fila referenciada | Cuándo suele ser la correcta | Cláusula que teclearás (UD5) |
+|---|---|---|---|
+| **Rechazar** (restringir) | El borrado falla si hay filas que apuntan | Lo referenciado tiene historia que debe conservarse (lectores con préstamos) | `ON DELETE RESTRICT` |
+| **Propagar** (en cascada) | Se borran también las filas que apuntan | Las hijas no tienen sentido sin el padre (ejemplares de una obra descatalogada, líneas de una factura) | `ON DELETE CASCADE` |
+| **Poner a NULL** | La FK de las filas que apuntan pasa a NULL | La referencia era opcional y lo demás sobrevive (técnicos cuyo supervisor causa baja) | `ON DELETE SET NULL` |
+
+La última columna es **vocabulario, no sintaxis**: son los nombres que MySQL Workbench te mostrará tal cual si lo usas para el diagrama de la actividad evaluativa (junto a `NO ACTION`, que en MySQL equivale a rechazar). Aquí basta con reconocerlos; en la UD5 los teclearás.
 
 La elección **nunca es técnica: es de negocio** — "¿debe poder borrarse?" y "¿qué debe sobrevivir?" son preguntas para el cliente, y la respuesta se anota junto a cada FK.
+
+¿Y la **modificación** de la clave referenciada? La respuesta profesional es evitarla de raíz: una primaria bien elegida **no cambia** — la estabilidad es uno de los cuatro criterios del apartado 2.1. Por eso la política de actualización (`ON UPDATE ...`, UD5) es una palanca de emergencia, no una herramienta de diseño: si te descubres necesitándola a menudo, el problema no es la política — es la clave.
 
 **Ejercicios del apartado.**
 
