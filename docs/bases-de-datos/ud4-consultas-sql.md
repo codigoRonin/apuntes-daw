@@ -857,7 +857,7 @@ Un asistente de IA escribe consultas SELECT correctas para casos sencillos con t
 
 ## Para ampliar
 
-- Manual de referencia de MySQL 8 — capítulo *SELECT Statement* (dev.mysql.com).
-- Manual de referencia de MySQL 8 — *Set Operations* (UNION, INTERSECT, EXCEPT) y *EXPLAIN Output Format* (dev.mysql.com).
-- Documentación de PostgreSQL — *Queries* (postgresql.org/docs), útil porque es el SGBD de Entorno Servidor y es más estricto.
+- [Manual de referencia de MySQL 8 — capítulo *SELECT Statement*](https://dev.mysql.com/doc/refman/8.4/en/select.html).
+- Manual de referencia de MySQL 8 — [*Set Operations* (UNION, INTERSECT, EXCEPT)](https://dev.mysql.com/doc/refman/8.4/en/set-operations.html) y [*EXPLAIN Output Format*](https://dev.mysql.com/doc/refman/8.4/en/explain-output.html).
+- [Documentación de PostgreSQL — *Queries*](https://www.postgresql.org/docs/current/queries.html), útil porque es el SGBD de Entorno Servidor y es más estricto.
 - Estándar de estilo SQL del módulo — se publica en el Classroom del módulo al arrancar la unidad.
