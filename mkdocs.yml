@@ -46,11 +46,16 @@ markdown_extensions:
 nav:
   - Inicio: index.md
   - Bases de Datos (0484):
+      - "Portada del módulo": bases-de-datos/index.md
       - "UD0 · Presentación del módulo": bases-de-datos/ud0-presentacion.md
       - "UD1 · Almacenamiento, SGBD y el valor del dato": bases-de-datos/ud1-almacenamiento-sgbd-valor-del-dato.md
       - "UD2 · Modelo entidad-relación": bases-de-datos/ud2-modelo-entidad-relacion.md
       - "UD3 · Modelo relacional y normalización": bases-de-datos/ud3-modelo-relacional-normalizacion.md
       - "UD4 · Consultas de datos con SQL": bases-de-datos/ud4-consultas-sql.md
+  - Desarrollo Web en Entorno Servidor (0613):
+      - "Portada del módulo": desarrollo-web-en-entorno-servidor/index.md
+      - "UD0 · Presentación del módulo": desarrollo-web-en-entorno-servidor/ud0-presentacion.md
+      - "UD1 · Arquitecturas y tecnologías de programación en servidor": desarrollo-web-en-entorno-servidor/ud1-arquitecturas-tecnologias-servidor.md
   - Recursos:
       - "Guía rápida de draw.io": recursos/guia-drawio.md
       - "Estándar de estilo SQL": recursos/estandar-estilo-sql.md
