@@ -1,5 +1,6 @@
 > **BORRADOR — pendiente de validación del docente. No publicar al alumnado con esta marca.**
 > Destino en el sitio: `docs/desarrollo-web-en-entorno-servidor/ud0-presentacion.md` · v1.1 (25/08/2026, Bloque 1 VALIDADO; kit sin marcadores conforme a la regla de canales: el sitio no enlaza artefactos cuyo canal es Classroom o el aula de código — la celda nombra canal y momento). Patrón: UD0 de BBDD. Calificación, canales y funcionamiento: PD 0613 (BORRADOR cerrada, apartados 9 y 11.2). Secuenciación: desglose validado. Artefacto: coherente con el banco v3.
+> **v1.2 (25/08/2026):** dos retoques de redacción — la defensa específica de la verificación de autoría se marca como adicional a la ordinaria (apartado 2, regla 4) y la base de datos de partida pasa a formulación sin agente (apartado 4). Nada más cambia.
 
 # UD0. Presentación del módulo
 
@@ -52,7 +53,7 @@ Reglas de funcionamiento que te interesan desde el día 1:
 1. **Google Classroom es la plataforma del módulo** (materiales, calendario, avisos y comunicación), pero **el canal oficial de entrega es el repositorio**: en segundo no hay periodo de adaptación — desde la primera entrega evaluable, entregas en tu repositorio Git del aula de código, con un **historial de commits significativos**. El historial es evidencia de tu proceso y de tu autoría: un volcado único de última hora no cuenta la misma historia que un trabajo real.
 2. **Toda entrega viaja con su `DECISIONES.md`**: un registro breve de las decisiones técnicas que has tomado y de las herramientas que has usado (incluida la IA, ver regla 4). Es obligatorio en toda entrega; no puntúa por sí mismo, pero sin él la entrega no está completa.
 3. **Todo se defiende.** Cada entrega evaluable incluye una defensa breve (4–5 minutos, con rúbrica publicada) sobre tus decisiones técnicas. **Una práctica sin defensa puntúa 0**; para ausencias justificadas hay una única convocatoria alternativa de defensa por evaluación.
-4. **La IA se usa a cara descubierta.** Los asistentes de IA son herramientas profesionales legítimas y puedes usarlos; lo que no es admisible es no poder explicar, justificar y sostener lo entregado. El uso se declara en `DECISIONES.md`, y ante indicios de falta de autoría se aplica el procedimiento de verificación publicado en la programación (contraste de evidencias y defensa específica).
+4. **La IA se usa a cara descubierta.** Los asistentes de IA son herramientas profesionales legítimas y puedes usarlos; lo que no es admisible es no poder explicar, justificar y sostener lo entregado. El uso se declara en `DECISIONES.md`, y ante indicios de falta de autoría se aplica el procedimiento de verificación publicado en la programación (contraste de evidencias y defensa específica, **adicional a la defensa ordinaria que toda entrega ya incluye**).
 5. **Trabajarás con alias**, nunca con tu nombre real, en las herramientas externas (GitHub, aula de código), conforme a la política de identidad digital y protección de datos del centro.
 6. **Hay refuerzo y ampliación**: si una unidad se te atraganta habrá actividades para consolidar la base; si vas sobrado, habrá retos de nivel para subir nota de verdad.
 
@@ -104,7 +105,7 @@ Si suspendes una evaluación, la recuperación se organiza sobre los **RA no sup
 
 ## Apartado 4. La aplicación ancla del curso
 
-Casi todo lo que construyas este año girará sobre una misma **aplicación web ancla**: un dominio realista de nuestro entorno productivo, con una **base de datos de partida que te dará el docente** como sistema heredado — esquema y datos incluidos, como cuando llegas a una empresa y el sistema ya existe antes que tú. El dominio concreto se presenta y se decide en el aula en las primeras semanas; lo que no cambia es el recorrido: la aplicación crece unidad a unidad hasta convertirse en un producto completo.
+Casi todo lo que construyas este año girará sobre una misma **aplicación web ancla**: un dominio realista de nuestro entorno productivo, con una **base de datos de partida** — un sistema heredado que recibirás al arrancar el proyecto, esquema y datos incluidos, como cuando llegas a una empresa y el sistema ya existe antes que tú. El dominio concreto se presenta y se decide en el aula en las primeras semanas; lo que no cambia es el recorrido: la aplicación crece unidad a unidad hasta convertirse en un producto completo.
 
 | Tramo | Qué le pasa a la aplicación |
 |---|---|
