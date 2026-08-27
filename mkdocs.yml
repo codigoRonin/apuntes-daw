@@ -56,6 +56,10 @@ nav:
       - "Portada del módulo": desarrollo-web-en-entorno-servidor/index.md
       - "UD0 · Presentación del módulo": desarrollo-web-en-entorno-servidor/ud0-presentacion.md
       - "UD1 · Arquitecturas y tecnologías de programación en servidor": desarrollo-web-en-entorno-servidor/ud1-arquitecturas-tecnologias-servidor.md
+  - Big Data e Inteligencia Artificial (AOP1089):
+      - "Portada del módulo": big-data-e-inteligencia-artificial/index.md
+      - "UD0 · Presentación del módulo": big-data-e-inteligencia-artificial/ud0-presentacion.md
+      - "UD1 · Python para datos e IA: lenguaje especializado, entorno y librerías": big-data-e-inteligencia-artificial/ud1-python-datos-ia.md
   - Recursos:
       - "Guía rápida de draw.io": recursos/guia-drawio.md
       - "Estándar de estilo SQL": recursos/estandar-estilo-sql.md
