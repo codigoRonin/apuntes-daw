@@ -1,7 +1,3 @@
-> **BORRADOR — pendiente de validación del docente. No publicar al alumnado con esta marca.**
-> Destino en el sitio: `docs/desarrollo-web-en-entorno-servidor/ud1-arquitecturas-tecnologias-servidor.md` · v1 (25/08/2026, sesión Arranque DWES, Bloque 2). Molde de género: UD1 de BBDD. RA/CE: literal de la PD 0613, Apartado 4 (RD 686/2010 en la redacción del RD 405/2023); fila UD1 del desglose validado.
-> **v2 (26/08/2026) — BORRADOR:** repivotaje de pila del módulo (Revisión 02 de la PD): entorno de la portada a PHP con `php -S`; frase de elección del apartado 5; apartado 6 re-basado al mecanismo embebido nativo de PHP con experimentos ejecutables (Node queda como contraste, no vehículo); ejemplo trabajado del apartado 7 sobre Laravel; errores 5 y 6 del apartado 8 al entorno nuevo; contexto de la academia y AE6-AE8 coherentes con PHP; enlaces del Para ampliar al manual de PHP y a Laravel. Numeración E1–E21 y AE1–AE10 intacta.
-
 # UD1. Arquitecturas y tecnologías de programación en servidor
 
 **Módulo 0613 — Desarrollo Web en Entorno Servidor · 2.º DAW · IES Río Arba · Curso 2026-27 · 14 horas · 1.ª evaluación**
