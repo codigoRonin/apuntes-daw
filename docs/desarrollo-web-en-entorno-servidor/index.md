@@ -1,6 +1,3 @@
-> **BORRADOR — pendiente de validación del docente. No publicar al alumnado con esta marca.**
-> Destino en el sitio: `docs/desarrollo-web-en-entorno-servidor/index.md` · v1 (25/08/2026, sesión Arranque DWES, Bloque 3). **Estrena el módulo en el sitio**: publicar en el mismo commit que la UD0 v1.1, la UD1 v1, el bloque `nav:` y la línea de la portada raíz (circuito de unidades). **Sin sección de recursos**: ninguna de las unidades publicadas usa un recurso de sitio, y el manual y los materiales de Classroom no se enlazan (regla de canales).
-
 # Desarrollo Web en Entorno Servidor (0613) — Apuntes del módulo
 
 **2.º DAW · IES Río Arba · Curso 2026-27 · 267 horas (8 semanales)**

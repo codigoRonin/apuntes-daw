@@ -11,7 +11,7 @@ Este sitio reúne los apuntes y recursos de los módulos del ciclo impartidos po
 | [Bases de Datos (0484)](bases-de-datos/index.md) | 1.º DAW | Publicándose por unidades |
 | [Desarrollo Web en Entorno Servidor (0613)](desarrollo-web-en-entorno-servidor/index.md) | 2.º DAW | Publicándose por unidades |
 | [Big Data e Inteligencia Artificial (AOP1089, optativo)](big-data-e-inteligencia-artificial/index.md) | 2.º DAW | Publicándose por unidades |
-| Proyecto Intermodular (0616) | 2.º DAW | En preparación — arranca en septiembre |
+| [Proyecto Intermodular (0616)](proyecto-intermodular/index.md) | 2.º DAW | Publicándose por hitos |
 
 ## Apartado 2. Recursos transversales
 
