@@ -1,0 +1,2182 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Apuntes de los módulos del CFGS Desarrollo de Aplicaciones Web">
+      
+      
+        <meta name="author" content="Arba">
+      
+      
+        <link rel="canonical" href="https://codigoronin.github.io/apuntes-daw/bases-de-datos/ud3-modelo-relacional-normalizacion/">
+      
+      
+        <link rel="prev" href="../ud2-modelo-entidad-relacion/">
+      
+      
+        <link rel="next" href="../ud4-consultas-sql/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>UD3 · Modelo relacional y normalización - Apuntes DAW</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ud3-modelo-relacional-y-normalizacion" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Apuntes DAW" class="md-header__button md-logo" aria-label="Apuntes DAW" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Apuntes DAW
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              UD3 · Modelo relacional y normalización
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/codigoronin/apuntes-daw" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Inicio
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Bases de Datos (0484)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../desarrollo-web-en-entorno-servidor/" class="md-tabs__link">
+          
+  
+  
+  Desarrollo Web en Entorno Servidor (0613)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../big-data-e-inteligencia-artificial/" class="md-tabs__link">
+          
+  
+  
+  Big Data e Inteligencia Artificial (AOP1089)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../recursos/entorno-vscode-php/" class="md-tabs__link">
+          
+  
+  
+  Recursos
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Apuntes DAW" class="md-nav__button md-logo" aria-label="Apuntes DAW" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Apuntes DAW
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/codigoronin/apuntes-daw" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bases de Datos (0484)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bases de Datos (0484)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ud1-almacenamiento-sgbd-valor-del-dato/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Almacenamiento, SGBD y el valor del dato
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ud2-modelo-entidad-relacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2 · Modelo entidad-relación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3 · Modelo relacional y normalización
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3 · Modelo relacional y normalización
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-1-el-modelo-relacional-terminologia-y-reglas-del-juego" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1. El modelo relacional: terminología y reglas del juego
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 1. El modelo relacional: terminología y reglas del juego">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-11-la-terminologia-con-su-traduccion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1.1. La terminología, con su traducción
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-12-las-reglas-que-la-separan-de-una-hoja-de-calculo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1.2. Las reglas que la separan de una hoja de cálculo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-2-claves-quien-identifica-a-quien" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2. Claves: quién identifica a quién
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 2. Claves: quién identifica a quién">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-21-la-escalera-de-claves" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2.1. La escalera de claves
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-22-la-clave-ajena-el-pegamento-del-modelo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2.2. La clave ajena: el pegamento del modelo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-3-integridad-las-reglas-que-el-gestor-vigilara-por-ti" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3. Integridad: las reglas que el gestor vigilará por ti
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-4-del-diagrama-er-al-esquema-relacional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4. Del diagrama E/R al esquema relacional
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 4. Del diagrama E/R al esquema relacional">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-41-entidades-y-atributos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4.1. Entidades y atributos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-42-relaciones-por-su-etiqueta-de-tipo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4.2. Relaciones, por su etiqueta de tipo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-43-debiles-jerarquias-y-agregacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4.3. Débiles, jerarquías y agregación
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-44-ejemplo-resuelto-del-diagrama-al-esquema-decision-a-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4.4. Ejemplo resuelto: del diagrama al esquema, decisión a decisión
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-5-restricciones-semanticas-lo-que-las-tablas-no-pueden-vigilar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5. Restricciones semánticas: lo que las tablas no pueden vigilar
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-6-normalizacion-diagnosticar-y-curar-disenos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6. Normalización: diagnosticar y curar diseños
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 6. Normalización: diagnosticar y curar diseños">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-61-la-enfermedad-redundancia-y-sus-anomalias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6.1. La enfermedad: redundancia y sus anomalías
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-62-dependencias-funcionales-el-instrumento-de-diagnostico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6.2. Dependencias funcionales: el instrumento de diagnóstico
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-63-las-formas-normales-como-escalera" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6.3. Las formas normales, como escalera
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-64-ejemplo-resuelto-prestamos_todo-de-la-hoja-enferma-a-la-3fn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6.4. Ejemplo resuelto: prestamos_todo, de la hoja enferma a la 3FN
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-7-errores-frecuentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 7. Errores frecuentes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-8-la-ia-en-esta-unidad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 8. La IA en esta unidad
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-9-actividad-evaluativa-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 9. Actividad evaluativa final
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-10-para-ampliar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 10. Para ampliar
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ud4-consultas-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD4 · Consultas de datos con SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desarrollo Web en Entorno Servidor (0613)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Desarrollo Web en Entorno Servidor (0613)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud1-arquitecturas-tecnologias-servidor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Arquitecturas y tecnologías de programación en servidor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud2-codigo-embebido-php/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2 · Código embebido en lenguajes de marcas: sintaxis, estructuras, funciones y formularios
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Big Data e Inteligencia Artificial (AOP1089)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Big Data e Inteligencia Artificial (AOP1089)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/ud1-python-datos-ia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Python para datos e IA: lenguaje especializado, entorno y librerías
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recursos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Recursos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/entorno-vscode-php/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entorno de trabajo: VS Code para PHP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/guia-drawio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía rápida de draw.io
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/estandar-estilo-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estándar de estilo SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-1-el-modelo-relacional-terminologia-y-reglas-del-juego" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1. El modelo relacional: terminología y reglas del juego
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 1. El modelo relacional: terminología y reglas del juego">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-11-la-terminologia-con-su-traduccion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1.1. La terminología, con su traducción
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-12-las-reglas-que-la-separan-de-una-hoja-de-calculo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1.2. Las reglas que la separan de una hoja de cálculo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-2-claves-quien-identifica-a-quien" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2. Claves: quién identifica a quién
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 2. Claves: quién identifica a quién">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-21-la-escalera-de-claves" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2.1. La escalera de claves
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-22-la-clave-ajena-el-pegamento-del-modelo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2.2. La clave ajena: el pegamento del modelo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-3-integridad-las-reglas-que-el-gestor-vigilara-por-ti" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3. Integridad: las reglas que el gestor vigilará por ti
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-4-del-diagrama-er-al-esquema-relacional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4. Del diagrama E/R al esquema relacional
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 4. Del diagrama E/R al esquema relacional">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-41-entidades-y-atributos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4.1. Entidades y atributos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-42-relaciones-por-su-etiqueta-de-tipo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4.2. Relaciones, por su etiqueta de tipo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-43-debiles-jerarquias-y-agregacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4.3. Débiles, jerarquías y agregación
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-44-ejemplo-resuelto-del-diagrama-al-esquema-decision-a-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4.4. Ejemplo resuelto: del diagrama al esquema, decisión a decisión
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-5-restricciones-semanticas-lo-que-las-tablas-no-pueden-vigilar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5. Restricciones semánticas: lo que las tablas no pueden vigilar
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-6-normalizacion-diagnosticar-y-curar-disenos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6. Normalización: diagnosticar y curar diseños
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 6. Normalización: diagnosticar y curar diseños">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-61-la-enfermedad-redundancia-y-sus-anomalias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6.1. La enfermedad: redundancia y sus anomalías
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-62-dependencias-funcionales-el-instrumento-de-diagnostico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6.2. Dependencias funcionales: el instrumento de diagnóstico
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-63-las-formas-normales-como-escalera" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6.3. Las formas normales, como escalera
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-64-ejemplo-resuelto-prestamos_todo-de-la-hoja-enferma-a-la-3fn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6.4. Ejemplo resuelto: prestamos_todo, de la hoja enferma a la 3FN
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-7-errores-frecuentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 7. Errores frecuentes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-8-la-ia-en-esta-unidad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 8. La IA en esta unidad
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-9-actividad-evaluativa-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 9. Actividad evaluativa final
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-10-para-ampliar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 10. Para ampliar
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="ud3-modelo-relacional-y-normalizacion">UD3. Modelo relacional y normalización<a class="headerlink" href="#ud3-modelo-relacional-y-normalizacion" title="Permanent link">&para;</a></h1>
+<p><strong>Módulo 0484 — Bases de Datos · 1.º DAW · IES Río Arba · Curso 2026-27 · 24 horas · 1.ª evaluación</strong></p>
+<p><strong>Vinculación con el resultado de aprendizaje.</strong> Esta unidad completa el <strong>RA6</strong>: <em>"Diseña modelos relacionales normalizados interpretando diagramas entidad/relación"</em> (RD 686/2010 en la redacción dada por el RD 405/2023). Aquí se evalúan <strong>definitivamente los ocho criterios</strong>, incluido el RA6.a iniciado en la UD2:</p>
+<table>
+<thead>
+<tr>
+<th>CE</th>
+<th>Qué exige (literal resumido)</th>
+<th>Apartado donde se trabaja y evalúa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RA6.a</td>
+<td>Utilizar herramientas gráficas para representar el diseño lógico</td>
+<td>Apartado 4 (y entrega de la AE) — consolidación de lo iniciado en UD2</td>
+</tr>
+<tr>
+<td>RA6.b</td>
+<td>Identificar las tablas del diseño lógico</td>
+<td>Apartados 1 y 4</td>
+</tr>
+<tr>
+<td>RA6.c</td>
+<td>Identificar los campos que forman parte de las tablas</td>
+<td>Apartados 1 y 4</td>
+</tr>
+<tr>
+<td>RA6.d</td>
+<td>Analizar las relaciones entre las tablas</td>
+<td>Apartados 2 y 4</td>
+</tr>
+<tr>
+<td>RA6.e</td>
+<td>Identificar los campos clave</td>
+<td>Apartado 2</td>
+</tr>
+<tr>
+<td>RA6.f</td>
+<td>Aplicar reglas de integridad</td>
+<td>Apartado 3</td>
+</tr>
+<tr>
+<td>RA6.g</td>
+<td>Aplicar reglas de normalización</td>
+<td>Apartado 6</td>
+</tr>
+<tr>
+<td>RA6.h</td>
+<td>Analizar y documentar las restricciones que no pueden plasmarse en el diseño lógico</td>
+<td>Apartado 5</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Al terminar esta unidad sabrás:</strong> hablar el idioma del modelo relacional sin mezclarlo con el de las hojas de cálculo; traducir cualquier diagrama E/R —el tuyo de la UD2 incluido— a un esquema de tablas correcto, aplicando la regla adecuada a cada tipo de relación, a las débiles, a las jerarquías y a las agregaciones; elegir y justificar claves primarias y ajenas, y decidir qué debe pasar cuando se borra una fila referenciada; detectar diseños enfermos por sus síntomas y curarlos con la normalización hasta la tercera forma normal; y documentar con oficio lo que ninguna tabla puede vigilar por sí sola.</p>
+<p><strong>Entorno de trabajo de la unidad.</strong> Seguimos en el nivel lógico: todavía sin MySQL (el DDL llega en la UD5; aquí decidimos <strong>qué</strong> tablas, no las tecleamos). Herramientas: draw.io o MySQL Workbench para los diagramas lógicos en pata de gallo — aquí se consolida y evalúa el RA6.a — y una <strong>notación textual de esquemas</strong> que usaremos constantemente:</p>
+<blockquote>
+<p><code>prestamos(num_prestamo, carne → lectores, isbn, num_ejemplar, fecha_prest, fecha_dev)</code>
+La <strong>clave primaria va en negrita</strong> (aquí: <strong>num_prestamo</strong>), y cada <strong>clave ajena lleva una flecha</strong> a la tabla a la que apunta. Practica esta notación desde el primer ejercicio: es la taquigrafía profesional de la unidad y la que usarás en el examen.</p>
+</blockquote>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-1-el-modelo-relacional-terminologia-y-reglas-del-juego">Apartado 1. El modelo relacional: terminología y reglas del juego<a class="headerlink" href="#apartado-1-el-modelo-relacional-terminologia-y-reglas-del-juego" title="Permanent link">&para;</a></h2>
+<h3 id="apartado-11-la-terminologia-con-su-traduccion">Apartado 1.1. La terminología, con su traducción<a class="headerlink" href="#apartado-11-la-terminologia-con-su-traduccion" title="Permanent link">&para;</a></h3>
+<p>El modelo relacional organiza los datos en <strong>relaciones</strong> — lo que informalmente llamamos tablas. La terminología formal convive con la informal y debes manejar ambas:</p>
+<table>
+<thead>
+<tr>
+<th>Término formal</th>
+<th>Término informal</th>
+<th>Qué es</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Relación</td>
+<td>Tabla</td>
+<td>El conjunto de datos sobre un mismo tipo de cosa</td>
+</tr>
+<tr>
+<td>Tupla</td>
+<td>Fila (registro)</td>
+<td>Cada elemento concreto</td>
+</tr>
+<tr>
+<td>Atributo</td>
+<td>Columna (campo)</td>
+<td>Cada propiedad</td>
+</tr>
+<tr>
+<td>Dominio</td>
+<td>—</td>
+<td>Conjunto de valores válidos de un atributo</td>
+</tr>
+<tr>
+<td>Grado</td>
+<td>—</td>
+<td>Número de atributos de la relación</td>
+</tr>
+<tr>
+<td>Cardinalidad</td>
+<td>—</td>
+<td>Número de tuplas (¡ojo!: en la UD2 "cardinalidad" era otra cosa — el contexto desambigua)</td>
+</tr>
+</tbody>
+</table>
+<p>Y la distinción estructural que ordena toda la unidad: el <strong>esquema</strong> de la relación es su definición (<code>lectores(carne, nombre, telefono)</code> — estable, se diseña una vez) y la <strong>instancia</strong> es su contenido en un momento dado (las filas de hoy — cambia sin parar). Esta unidad diseña esquemas; las instancias llegarán en las UD siguientes.</p>
+<h3 id="apartado-12-las-reglas-que-la-separan-de-una-hoja-de-calculo">Apartado 1.2. Las reglas que la separan de una hoja de cálculo<a class="headerlink" href="#apartado-12-las-reglas-que-la-separan-de-una-hoja-de-calculo" title="Permanent link">&para;</a></h3>
+<p>Una relación no es una pestaña de hoja de cálculo con ínfulas. Sus propiedades:</p>
+<ol>
+<li><strong>No hay tuplas duplicadas.</strong> Dos filas idénticas son la misma información dicha dos veces: prohibido. (Consecuencia inmediata: toda relación tiene clave — apartado 2.)</li>
+<li><strong>Las tuplas no tienen orden.</strong> "La primera fila" no significa nada; si el orden importa (llegada, ranking), es un <strong>dato</strong> y merece su atributo.</li>
+<li><strong>Los atributos no tienen orden</strong> y cada uno tiene nombre único dentro de su relación.</li>
+<li><strong>Los valores son atómicos</strong>: en cada celda, un solo valor del dominio. Ni listas ("600111222, 976555444"), ni estructuras. Esta regla es la 1FN y la retomaremos en el apartado 6 — los atributos multivalorados de la UD2 chocan exactamente aquí.</li>
+<li><strong>NULL existe y es traicionero.</strong> NULL significa "valor desconocido o no aplicable" — no es cero, no es cadena vacía, no es "no". Dos NULL no son iguales entre sí. Decidir qué atributos admiten NULL es una decisión de diseño que se toma en esta unidad y se declara en la UD5.</li>
+</ol>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E1.</strong> Traduce a terminología formal e informal: en <code>libros</code>, con 6 filas y 4 columnas, indica grado y cardinalidad; señala esquema e instancia; y di qué término de esta tabla chocaría con el significado que "cardinalidad" tenía en la UD2.</li>
+<li><strong>E2.</strong> Una "tabla" de hoja de cálculo de la biblioteca tiene: filas duplicadas de un mismo préstamo, la columna <code>telefonos</code> con "600111222 / 976555444", y las filas ordenadas "por importancia del lector". Señala qué propiedad del apartado 1.2 viola cada cosa y qué transformación la arreglaría.</li>
+<li><strong>E3.</strong> Para <code>prestamos(num_prestamo, carne, isbn, num_ejemplar, fecha_prest, fecha_dev)</code>: razona atributo a atributo cuáles deberían admitir NULL y cuáles jamás, y explica la diferencia entre "fecha_dev es NULL" y "fecha_dev es la cadena vacía".</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-2-claves-quien-identifica-a-quien">Apartado 2. Claves: quién identifica a quién<a class="headerlink" href="#apartado-2-claves-quien-identifica-a-quien" title="Permanent link">&para;</a></h2>
+<h3 id="apartado-21-la-escalera-de-claves">Apartado 2.1. La escalera de claves<a class="headerlink" href="#apartado-21-la-escalera-de-claves" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Superclave</strong>: cualquier conjunto de atributos que identifica sin ambigüedad cada tupla. <code>{carne}</code> lo es en <code>lectores</code>; también <code>{carne, nombre}</code> — sobrada, pero superclave.</li>
+<li><strong>Clave candidata</strong>: superclave <strong>mínima</strong> (si le quitas un atributo, deja de identificar). <code>{carne}</code> y <code>{dni}</code> son candidatas en <code>lectores</code>; <code>{carne, nombre}</code> no (le sobra <code>nombre</code>).</li>
+<li><strong>Clave primaria (PK)</strong>: la candidata elegida para identificar oficialmente. Criterios heredados de la UD2 — conocida siempre, estable, mínima — más uno nuevo del nivel lógico: <strong>sin NULL jamás</strong> (apartado 3).</li>
+<li><strong>Claves alternativas</strong>: las candidatas no elegidas. No se tiran: se declararán únicas en la UD5.</li>
+<li><strong>Clave compuesta</strong>: primaria formada por varios atributos. No es un defecto — es la forma natural de las tablas que traducen débiles y N:M (apartado 4).</li>
+</ul>
+<h3 id="apartado-22-la-clave-ajena-el-pegamento-del-modelo">Apartado 2.2. La clave ajena: el pegamento del modelo<a class="headerlink" href="#apartado-22-la-clave-ajena-el-pegamento-del-modelo" title="Permanent link">&para;</a></h3>
+<p>Una <strong>clave ajena (FK)</strong> es un atributo (o conjunto) de una tabla cuyos valores <strong>deben existir como clave primaria en otra</strong> (o en la misma: reflexivas). Es el mecanismo con el que el modelo relacional materializa las relaciones del E/R: donde la UD2 dibujaba un rombo, aquí habrá una FK — o una tabla con dos.</p>
+<p>En la notación de la unidad: <code>ejemplares(isbn → libros, num_ejemplar, estado)</code> — la pareja <strong>isbn, num_ejemplar</strong> en negrita como PK compuesta, con <code>isbn</code> haciendo doble servicio: parte de la clave propia <strong>y</strong> ajena hacia <code>libros</code>. Ese doble papel es la firma de las entidades débiles traducidas, y entenderlo ahora te ahorra media UD5.</p>
+<p>Matiz que separa niveles: la FK puede <strong>admitir NULL</strong> cuando la participación era opcional en el E/R — un técnico sin supervisor lleva <code>supervisor</code> a NULL. La mínima (0 o 1) de la UD2 se convierte aquí en una decisión NULL/NOT NULL: las cardinalidades que anotaste con frases ahora legislan.</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E4.</strong> En <code>tecnicos(cod_tecnico, dni, nombre, cod_cuadrilla, supervisor)</code>: lista todas las superclaves razonables, identifica las candidatas, elige primaria justificando con los cuatro criterios, y señala las dos claves ajenas presentes con su tabla destino (una es reflexiva).</li>
+<li><strong>E5.</strong> Escribe en la notación de la unidad el esquema de <code>valoraciones</code> que traduce la relación N:M <em>valora</em> de la UD2 (figura 2 de aquella unidad) con sus atributos <code>puntuacion</code> y <code>fecha</code>. Justifica por qué su PK debe ser compuesta y qué pasaría con las propiedades del apartado 1.2 si usaras solo <code>carne</code> como primaria.</li>
+<li><strong>E6.</strong> Un compañero propone <code>dni</code> como PK de <code>tecnicos</code> "porque nunca se repite". Rebátelo (o dale la razón) usando los cuatro criterios y lo aprendido sobre minimización en la UD1 — y di qué se hace con <code>dni</code> si no es primaria.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-3-integridad-las-reglas-que-el-gestor-vigilara-por-ti">Apartado 3. Integridad: las reglas que el gestor vigilará por ti<a class="headerlink" href="#apartado-3-integridad-las-reglas-que-el-gestor-vigilara-por-ti" title="Permanent link">&para;</a></h2>
+<p>Diseñar es también declarar qué estados de la base de datos son <strong>ilegales</strong>. Las tres reglas de integridad del modelo (RA6.f) — que en la UD5 se convertirán en cláusulas de MySQL, pero cuya decisión se toma aquí:</p>
+<ol>
+<li><strong>Integridad de entidad</strong>: ningún atributo de la clave primaria admite NULL. Una fila sin identidad completa no es identificable — y una tabla con filas no identificables viola el apartado 1.2. Por eso la PK compuesta de <code>ejemplares</code> obliga a conocer siempre isbn <strong>y</strong> número.</li>
+<li><strong>Integridad referencial</strong>: toda clave ajena, o es NULL (si se permitió), o <strong>apunta a una primaria existente</strong>. Prohibido el préstamo del carné 999 si no hay lector 999; prohibido el ejemplar de una obra fantasma. Es la regla que mata para siempre las inconsistencias del cuaderno de la UD1.</li>
+<li><strong>Integridad de dominio</strong>: cada valor, dentro de su dominio — fechas que son fechas, cantidades no negativas, estados dentro del catálogo permitido. Parte se declara con tipos (UD5) y parte con restricciones de validación; lo que ningún mecanismo cubra pasará a la lista del apartado 5.</li>
+</ol>
+<p>La integridad referencial obliga además a legislar el <strong>borrado y la modificación de lo referenciado</strong>: ¿qué pasa con los préstamos de un lector que se da de baja? Las políticas, que decidirás caso a caso y documentarás en el esquema:</p>
+<table>
+<thead>
+<tr>
+<th>Política</th>
+<th>Efecto al borrar la fila referenciada</th>
+<th>Cuándo suele ser la correcta</th>
+<th>Cláusula que teclearás (UD5)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Rechazar</strong> (restringir)</td>
+<td>El borrado falla si hay filas que apuntan</td>
+<td>Lo referenciado tiene historia que debe conservarse (lectores con préstamos)</td>
+<td><code>ON DELETE RESTRICT</code></td>
+</tr>
+<tr>
+<td><strong>Propagar</strong> (en cascada)</td>
+<td>Se borran también las filas que apuntan</td>
+<td>Las hijas no tienen sentido sin el padre (ejemplares de una obra descatalogada, líneas de una factura)</td>
+<td><code>ON DELETE CASCADE</code></td>
+</tr>
+<tr>
+<td><strong>Poner a NULL</strong></td>
+<td>La FK de las filas que apuntan pasa a NULL</td>
+<td>La referencia era opcional y lo demás sobrevive (técnicos cuyo supervisor causa baja)</td>
+<td><code>ON DELETE SET NULL</code></td>
+</tr>
+</tbody>
+</table>
+<p>La última columna es <strong>vocabulario, no sintaxis</strong>: son los nombres que MySQL Workbench te mostrará tal cual si lo usas para el diagrama de la actividad evaluativa (junto a <code>NO ACTION</code>, que en MySQL equivale a rechazar). Aquí basta con reconocerlos; en la UD5 los teclearás.</p>
+<p>La elección <strong>nunca es técnica: es de negocio</strong> — "¿debe poder borrarse?" y "¿qué debe sobrevivir?" son preguntas para el cliente, y la respuesta se anota junto a cada FK.</p>
+<p>¿Y la <strong>modificación</strong> de la clave referenciada? La respuesta profesional es evitarla de raíz: una primaria bien elegida <strong>no cambia</strong> — la estabilidad es uno de los cuatro criterios del apartado 2.1. Por eso la política de actualización (<code>ON UPDATE ...</code>, UD5) es una palanca de emergencia, no una herramienta de diseño: si te descubres necesitándola a menudo, el problema no es la política — es la clave.</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E7.</strong> Sobre el esquema de la biblioteca (<code>lectores</code>, <code>libros</code>, <code>ejemplares</code>, <code>prestamos</code>): pon un ejemplo concreto de violación de cada una de las tres reglas de integridad, con los valores exactos que la provocarían.</li>
+<li><strong>E8.</strong> Decide y justifica la política de borrado de cada FK del esquema anterior (cuatro decisiones). Al menos una debe ser distinta de las demás, o tu justificación deberá explicar por qué todas coinciden.</li>
+<li><strong>E9.</strong> Un instituto tiene <code>alumnos</code>, <code>grupos(cod_grupo, tutor → profesores)</code> y <code>profesores</code>. El profesor tutor de 1.º A se jubila. Analiza qué permite o impide cada política aplicada a <code>grupos.tutor</code>, y cuál elegirías sabiendo que "todo grupo debe tener tutor" es norma del centro — y dónde acaba esa norma si ninguna política la garantiza del todo (pista: apartado 5).</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-4-del-diagrama-er-al-esquema-relacional">Apartado 4. Del diagrama E/R al esquema relacional<a class="headerlink" href="#apartado-4-del-diagrama-er-al-esquema-relacional" title="Permanent link">&para;</a></h2>
+<p>Aquí se cosecha la UD2. La traducción es un <strong>algoritmo</strong>, y su variable de control es la <strong>etiqueta de tipo</strong> que pusiste sobre cada rombo (apartado 1.2 de la UD2: el tipo se forma con los máximos — te avisamos de que esta regla decidiría la traducción; es ahora).</p>
+<h3 id="apartado-41-entidades-y-atributos">Apartado 4.1. Entidades y atributos<a class="headerlink" href="#apartado-41-entidades-y-atributos" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Entidad fuerte</strong> → tabla con sus atributos simples; su clave primaria, la elegida en el diagrama.</li>
+<li><strong>Atributo compuesto</strong> → se descompone en sus partes simples (<code>direccion</code> → <code>calle</code>, <code>numero</code>, <code>localidad</code>): la atomicidad del apartado 1.2 no negocia.</li>
+<li><strong>Atributo multivalorado</strong> → <strong>tabla aparte</strong> con FK a su entidad y el valor: <code>telefonos_lector(carne → lectores, telefono)</code>. La señal de alarma de la UD2 explota exactamente aquí, y esta es su solución.</li>
+<li><strong>Atributo derivado</strong> → no se traduce (no se almacena); se documenta cómo se calcula (apartado 5).</li>
+</ul>
+<h3 id="apartado-42-relaciones-por-su-etiqueta-de-tipo">Apartado 4.2. Relaciones, por su etiqueta de tipo<a class="headerlink" href="#apartado-42-relaciones-por-su-etiqueta-de-tipo" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>1:N</strong> → la clave del lado <strong>uno</strong> viaja como FK al lado <strong>muchos</strong>. LECTOR—realiza—PRESTAMO: <code>prestamos</code> lleva <code>carne → lectores</code>. Si la relación tenía atributos, viajan con la FK al lado muchos.</li>
+<li><strong>N:M</strong> → <strong>tabla intermedia</strong> con las dos FK, cuya PK es (normalmente) la pareja; los atributos de la relación viven en ella. <em>valora</em> → <code>valoraciones(carne → lectores, isbn → libros, puntuacion, fecha)</code>. Ninguna otra opción conserva las propiedades del apartado 1.2 — es el motivo profundo por el que la UD2 prohibía "resolver" N:M con multivalorados.</li>
+<li><strong>1:1</strong> → FK en uno de los dos lados (única, y NOT NULL si su participación era obligatoria). ¿En cuál? En el lado de participación <strong>más obligatoria</strong> (menos NULL) o, si empatan, en el que más se consulte desde el otro. Si ambas participaciones son totales y las entidades viven y mueren juntas, cabe incluso <strong>fusionar</strong> en una tabla — decisión a justificar, no a improvisar.</li>
+<li><strong>Reflexiva</strong> → mismo mecanismo según su tipo, con la FK apuntando a la propia tabla y nombre de rol: <code>tecnicos(…, supervisor → tecnicos)</code> para la 1:N de la UD2.</li>
+<li><strong>Ternaria</strong> → tabla asociativa con las tres FK (la descomposición que la UD2 te enseñó como formato de entrega era, literalmente, esta traducción): <code>imparticiones(cod_profesor → profesores, cod_modulo → modulos, cod_grupo → grupos, horas_semanales)</code>.</li>
+</ul>
+<h3 id="apartado-43-debiles-jerarquias-y-agregacion">Apartado 4.3. Débiles, jerarquías y agregación<a class="headerlink" href="#apartado-43-debiles-jerarquias-y-agregacion" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Entidad débil</strong> → tabla cuya PK es <strong>compuesta</strong>: clave del padre (que además es FK) + discriminante. <code>ejemplares(isbn → libros, num_ejemplar, estado)</code>. Borrado del padre: casi siempre en cascada — la dependencia en existencia de la UD2, hecha política.</li>
+<li><strong>Jerarquía (generalización/especialización)</strong> → tres estrategias, y la elección depende de las anotaciones (total/parcial, exclusiva/solapada) que decidiste en la UD2:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Estrategia</th>
+<th>Cómo</th>
+<th>Encaja bien cuando</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tabla única</td>
+<td>Una tabla con todos los atributos + columna <code>tipo</code>; los no aplicables, a NULL</td>
+<td>Pocos atributos propios; consultas casi siempre sobre el conjunto</td>
+</tr>
+<tr>
+<td>Tabla por subtipo (padre + hijas)</td>
+<td>Tabla del supertipo + una por subtipo con PK = FK al padre</td>
+<td>La general: conserva la jerarquía tal cual; funciona con parcial y con solapada</td>
+</tr>
+<tr>
+<td>Solo tablas hija</td>
+<td>Una tabla por subtipo repitiendo los atributos comunes; sin tabla padre</td>
+<td>Solo si la jerarquía es <strong>total y exclusiva</strong> y nadie consulta el conjunto</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Agregación</strong> → la relación agregada se traduce primero (si era N:M, su tabla intermedia); esa tabla, que ya tiene PK propia, recibe las relaciones de la agregación como cualquier entidad. La promesa de la UD2 ("la UD3 lo resuelve con naturalidad") era esto: <code>organizaciones(cod_biblioteca → bibliotecas, cod_actividad → actividades)</code> y sobre ella <code>…, cod_monitor → monitores</code> (NULL permitido: la pareja existía antes que el monitor).</li>
+</ul>
+<h3 id="apartado-44-ejemplo-resuelto-del-diagrama-al-esquema-decision-a-decision">Apartado 4.4. Ejemplo resuelto: del diagrama al esquema, decisión a decisión<a class="headerlink" href="#apartado-44-ejemplo-resuelto-del-diagrama-al-esquema-decision-a-decision" title="Permanent link">&para;</a></h3>
+<p>El <strong>club deportivo municipal</strong>: socios que se inscriben en cursos dirigidos por monitores, con sesiones programadas por curso. El diagrama, en pata de gallo (la débil, con línea continua):</p>
+<pre class="mermaid"><code>erDiagram
+    MONITOR ||--o{ CURSO : dirige
+    SOCIO }o--o{ CURSO : inscrito
+    CURSO ||--|{ SESION : programa
+    SOCIO {
+        int num_socio PK
+        string nombre
+        string telefonos "multivalorado"
+    }
+    MONITOR {
+        int cod_monitor PK
+        string nombre
+    }
+    CURSO {
+        int cod_curso PK
+        string nombre
+    }
+    SESION {
+        int num_sesion "discriminante"
+        date fecha
+        string aula
+    }</code></pre>
+<p>Reglas del enunciado que completan el dibujo: <em>dirige</em> es <strong>1:N</strong> con atributo <code>fecha_asignacion</code> (cuándo se asignó el monitor al curso); <em>inscrito</em> es <strong>N:M</strong> con atributo <code>fecha_inscripcion</code>; todo curso tiene monitor; SESION es débil de CURSO, numerada dentro de cada curso.</p>
+<p><strong>La traducción, narrada con el algoritmo:</strong></p>
+<ol>
+<li><strong>Entidades fuertes</strong> (4.1): <code>socios</code>, <code>monitores</code>, <code>cursos</code> — cada una a su tabla con sus simples y su primaria.</li>
+<li><strong>Multivalorado</strong> (4.1): <code>telefonos</code> no cabe en una celda (atomicidad) → tabla aparte con FK al socio y el valor; su PK, la pareja (un socio no repite el mismo teléfono).</li>
+<li><strong><em>dirige</em>, etiqueta 1:N</strong> (4.2): la clave del lado uno viaja como FK al lado muchos → <code>cod_monitor</code> entra en <code>cursos</code>, <strong>NOT NULL</strong> (todo curso tiene monitor: la mínima legisla). Su atributo viaja con la FK: <code>fecha_asignacion</code> también a <code>cursos</code>.</li>
+<li><strong><em>inscrito</em>, etiqueta N:M</strong> (4.2): tabla intermedia con las dos FK; su PK, la pareja; el atributo de la relación vive en ella → nace <code>inscripciones</code>.</li>
+<li><strong>SESION, débil</strong> (4.3): PK compuesta = clave del padre (que además es FK) + discriminante → (<code>cod_curso</code>, <code>num_sesion</code>).</li>
+</ol>
+<p><strong>El esquema íntegro, en la notación de entrega</strong> (política de borrado justificada en cada FK):</p>
+<ul>
+<li><code>socios(</code><strong>num_socio</strong><code>, nombre)</code></li>
+<li><code>monitores(</code><strong>cod_monitor</strong><code>, nombre)</code></li>
+<li><code>cursos(</code><strong>cod_curso</strong><code>, nombre, cod_monitor → monitores, fecha_asignacion)</code> — borrado de monitor: <strong>rechazar</strong> (todo curso exige monitor: primero se reasigna, luego se da de baja; la reasignación pendiente, a la lista RS del apartado 5).</li>
+<li><code>telefonos_socio(</code><strong>num_socio</strong> <code>→ socios,</code> <strong>telefono</strong><code>)</code> — borrado de socio: <strong>propagar</strong> (los teléfonos no sobreviven a su dueño; además, minimización de la UD1: datos de contacto sin titular sobran).</li>
+<li><code>inscripciones(</code><strong>num_socio</strong> <code>→ socios,</code> <strong>cod_curso</strong> <code>→ cursos, fecha_inscripcion)</code> — borrado de socio: <strong>propagar</strong> (baja del club arrastra sus inscripciones); borrado de curso: <strong>rechazar</strong> (un curso con inscritos no se elimina sin resolverlos antes).</li>
+<li><code>sesiones(</code><strong>cod_curso</strong> <code>→ cursos,</code> <strong>num_sesion</strong><code>, fecha, aula)</code> — borrado de curso: <strong>propagar</strong> (la dependencia en existencia de la débil, hecha política).</li>
+</ul>
+<p>Este es, exactamente, el artefacto que E10 y la actividad evaluativa te pedirán producir por tu cuenta: mismo formato, mismas justificaciones, mismo nivel de detalle.</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E10.</strong> Traduce completa la <strong>figura 8 de la UD2</strong> (el diagrama Chen de lectura: LECTOR, PRESTAMO, EJEMPLAR débil, LIBRO) a esquema relacional en la notación de la unidad, con políticas de borrado justificadas en cada FK.</li>
+<li><strong>E11.</strong> Traduce la jerarquía de la <strong>figura 5 de la UD2</strong> (USUARIO, parcial y exclusiva) con las estrategias 1 y 2, escribe ambos esquemas, y justifica cuál elegirías para la biblioteca sabiendo que los préstamos se relacionan con USUARIO. Explica por qué la estrategia 3 queda descartada de entrada en este caso.</li>
+<li><strong>E12.</strong> Traduce la agregación de la <strong>figura 6 de la UD2</strong> (biblioteca—organiza—actividad, asignada a monitor) con las fechas de inicio y fin de la asignación (ejercicio E20 de la UD2). Señala qué mínima del diagrama se convierte en qué decisión NULL/NOT NULL.</li>
+<li><strong>E13.</strong> La escuela de música del E21 de la UD2 tenía una matrícula "por curso". Escribe el esquema de esa asociación en las dos lecturas que allí quedaron abiertas (curso como atributo de la clave de la asociación, o no) y demuestra con un ejemplo de filas concretas qué información pierde la lectura sin curso.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-5-restricciones-semanticas-lo-que-las-tablas-no-pueden-vigilar">Apartado 5. Restricciones semánticas: lo que las tablas no pueden vigilar<a class="headerlink" href="#apartado-5-restricciones-semanticas-lo-que-las-tablas-no-pueden-vigilar" title="Permanent link">&para;</a></h2>
+<p>Traducido el diagrama, queda un residuo — y ese residuo es materia evaluable (RA6.h): las <strong>reglas del negocio que el diseño lógico no puede plasmar</strong>. Vienes alimentando esta lista desde el paso 7 del método de la UD2; ahora se convierte en un entregable con forma fija.</p>
+<p>Ejemplos de la biblioteca que ninguna tabla, clave ni FK garantiza por sí sola:
+- "Un ejemplar no puede tener dos préstamos vivos a la vez."
+- "La fecha de devolución, si existe, es posterior a la de préstamo."
+- "Un lector con préstamos vencidos no puede llevarse más libros."
+- "El jefe de una cuadrilla pertenece a la cuadrilla que dirige" (¿te suena? AE5 de la UD2 — te avisamos de que el diagrama no lo garantizaba).
+- Y las <strong>derivadas</strong>: cómo se calcula <code>edad</code>, que decidimos no almacenar.</p>
+<p>Formato de documentación de la unidad (y del examen): cada restricción con <strong>código, enunciado en lenguaje natural, tablas y atributos implicados, y mecanismo previsto</strong> — algunas caerán en restricciones de validación de la UD5, otras en disparadores de la UD7, otras quedarán en la aplicación; anticipar la casilla correcta puntúa, dejarla en "pendiente de decidir" es honesto y acepta.</p>
+<blockquote>
+<p><strong>RS-03</strong> · "Un ejemplar no puede tener dos préstamos vivos a la vez" · <code>prestamos(isbn, num_ejemplar, fecha_dev)</code> · Mecanismo previsto: verificación al insertar (UD7); mientras tanto, procedimiento de mostrador.</p>
+</blockquote>
+<p>La lista de restricciones semánticas <strong>forma parte del esquema entregable</strong> con el mismo rango que las tablas: un diseño sin su lista es un diseño a medio documentar.</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E14.</strong> Clasifica cada regla en su sitio: (a) "la puntuación de una valoración está entre 1 y 5"; (b) "no se presta a quien tiene vencidos"; (c) "todo préstamo pertenece a un lector existente"; (d) "el correo del lector es único". ¿Cuáles son integridad del apartado 3 (y de qué tipo), y cuáles restricciones semánticas del apartado 5?</li>
+<li><strong>E15.</strong> Escribe, en el formato RS de la unidad, las tres restricciones de la lista de la biblioteca que consideres más dañinas si se incumplen, ordenadas por daño y con el mecanismo previsto razonado.</li>
+<li><strong>E16.</strong> Recupera tu lista de "no capturadas" de la entrega de la escuela de música (E19 de la UD2) y formalízala en formato RS. Si alguna resulta ser, bien mirada, integridad declarable del apartado 3, reclasifícala y explica el porqué.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-6-normalizacion-diagnosticar-y-curar-disenos">Apartado 6. Normalización: diagnosticar y curar diseños<a class="headerlink" href="#apartado-6-normalizacion-diagnosticar-y-curar-disenos" title="Permanent link">&para;</a></h2>
+<h3 id="apartado-61-la-enfermedad-redundancia-y-sus-anomalias">Apartado 6.1. La enfermedad: redundancia y sus anomalías<a class="headerlink" href="#apartado-61-la-enfermedad-redundancia-y-sus-anomalias" title="Permanent link">&para;</a></h3>
+<p>Cuando el diseño no ha pasado por un buen E/R — o el E/R estaba mal — aparecen tablas como esta (la reconocerás: es el cuaderno de la biblioteca con columnas):</p>
+<p><code>prestamos_todo(carne, nombre, telefono, isbn, titulo, estante, fecha_prest)</code></p>
+<p>Sus síntomas tienen nombre clínico:
+- <strong>Anomalía de modificación</strong>: cambiar el teléfono de Marta exige tocar todas sus filas — y olvidar una crea la inconsistencia de la UD1.
+- <strong>Anomalía de inserción</strong>: no puedes dar de alta un lector nuevo <strong>sin préstamo</strong> (¿qué pones en isbn?) ni catalogar un libro que nadie ha sacado.
+- <strong>Anomalía de borrado</strong>: si Rosa devuelve su único préstamo y borras la fila, Rosa desaparece de la base de datos.</p>
+<p>La causa común: <strong>hechos distintos conviviendo en la misma tabla</strong> (quién es el lector, qué es el libro, qué préstamo hubo). La normalización es el procedimiento que los separa.</p>
+<h3 id="apartado-62-dependencias-funcionales-el-instrumento-de-diagnostico">Apartado 6.2. Dependencias funcionales: el instrumento de diagnóstico<a class="headerlink" href="#apartado-62-dependencias-funcionales-el-instrumento-de-diagnostico" title="Permanent link">&para;</a></h3>
+<p>Una <strong>dependencia funcional</strong> X → Y se lee "X determina Y": conocido el valor de X, el de Y queda fijado. En <code>prestamos_todo</code>: <code>carne → nombre, telefono</code> · <code>isbn → titulo, estante</code> · y la clave (carne, isbn, fecha_prest) → todo. Las dependencias <strong>no se inventan mirando los datos de hoy: se deducen del negocio</strong> — los datos solo pueden refutarlas, nunca confirmarlas.</p>
+<h3 id="apartado-63-las-formas-normales-como-escalera">Apartado 6.3. Las formas normales, como escalera<a class="headerlink" href="#apartado-63-las-formas-normales-como-escalera" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>1FN</strong>: valores atómicos y sin grupos repetidos — la regla 4 del apartado 1.2. Los multivalorados, a su tabla (apartado 4.1). Toda relación auténtica ya está en 1FN.</li>
+<li><strong>2FN</strong>: en 1FN y, además, <strong>ningún atributo no clave depende de una parte de la clave</strong> (solo importa con claves compuestas). En <code>prestamos_todo</code>, <code>nombre</code> depende solo de <code>carne</code> (parte de la clave): violación. Cura: extraer el hecho a su tabla — nace <code>lectores</code>.</li>
+<li><strong>3FN</strong>: en 2FN y, además, <strong>ningún atributo no clave depende de otro atributo no clave</strong> (dependencias transitivas). El diagnóstico y la cura, trabajados de principio a fin en el apartado 6.4.</li>
+<li><strong>Formas superiores</strong> (mención, bajo una convención que conviene dejar clara): en la práctica profesional, <strong>una base de datos se considera normalizada cuando alcanza la 3FN</strong> — ese es el objetivo operativo del curso y el alcance mínimo declarado del artefacto. Por encima existen, y basta con reconocer sus nombres: la <strong>FNBC</strong>, versión estricta de la 3FN para casos con varias claves candidatas solapadas; la <strong>4FN</strong>, que ataca las dependencias multivaloradas independientes conviviendo en una misma tabla (dos hechos multivalorados sin relación entre sí, multiplicados en filas); y la <strong>5FN</strong>, que trata las dependencias de reunión (tablas solo reconstruibles combinando todas sus piezas a la vez). Ninguna de las tres es exigible en este módulo: se citan para que sus nombres no te asusten en documentación ajena, no para practicarlas.</li>
+</ul>
+<p>El procedimiento práctico, que es lo que se examina: <strong>(1)</strong> lista las dependencias funcionales del enunciado; <strong>(2)</strong> localiza la que viola la forma normal (¿parcial? ¿transitiva?); <strong>(3)</strong> extrae el hecho a una tabla nueva con su determinante como clave, dejando una FK; <strong>(4)</strong> repite hasta 3FN; <strong>(5)</strong> comprueba que no has perdido información (podrías reconstruir la tabla original combinando las piezas).</p>
+<p>Y el cierre del círculo: si haces bien la UD2 y traduces bien el apartado 4, <strong>el esquema sale casi normalizado de serie</strong> — la normalización es tu control de calidad y tu herramienta de rescate de diseños ajenos, no tu método de diseño principal. No te lo creas por fe: el apartado 6.4 lo demuestra.</p>
+<h3 id="apartado-64-ejemplo-resuelto-prestamos_todo-de-la-hoja-enferma-a-la-3fn">Apartado 6.4. Ejemplo resuelto: <code>prestamos_todo</code>, de la hoja enferma a la 3FN<a class="headerlink" href="#apartado-64-ejemplo-resuelto-prestamos_todo-de-la-hoja-enferma-a-la-3fn" title="Permanent link">&para;</a></h3>
+<p>La hoja real del mostrador, con la ubicación detallada de los libros:</p>
+<p><code>prestamos_todo(carne, nombre, telefono, isbn, titulo, cod_estante, planta_estante, fecha_prest)</code></p>
+<p><strong>Paso 1 — dependencias funcionales</strong> (del negocio, no de los datos): <code>carne → nombre, telefono</code> · <code>isbn → titulo, cod_estante</code> · <code>cod_estante → planta_estante</code> · clave de la hoja: (<strong>carne, isbn, fecha_prest</strong>) → todo.</p>
+<p><strong>Paso 2 — localizar violaciones.</strong> Hay de los dos tipos, y conviene verlos juntos: <code>carne → nombre, telefono</code> e <code>isbn → titulo, cod_estante</code> son dependencias de <strong>parte de la clave</strong> (violan 2FN); <code>cod_estante → planta_estante</code> es una dependencia <strong>entre atributos no clave</strong> — la planta no depende del préstamo ni del libro directamente, sino del estante: transitiva (violará 3FN cuando lleguemos).</p>
+<p><strong>Paso 3 — extraer los hechos parciales.</strong> Cada determinante parcial se lleva su hecho a una tabla propia, dejando FK:</p>
+<p><strong>Estado intermedio en 2FN:</strong>
+- <code>lectores(</code><strong>carne</strong><code>, nombre, telefono)</code>
+- <code>libros(</code><strong>isbn</strong><code>, titulo, cod_estante, planta_estante)</code>
+- <code>prestamos(</code><strong>carne</strong> <code>→ lectores,</code> <strong>isbn</strong> <code>→ libros,</code> <strong>fecha_prest</strong><code>)</code></p>
+<p>Ya no hay dependencias parciales — pero <code>libros</code> arrastra la transitiva: si la biblioteca reordena la planta de un estante, hay que tocar todos los libros de ese estante (anomalía de modificación en miniatura), y un estante vacío no existe en ninguna parte (inserción).</p>
+<p><strong>Paso 4 — extraer la transitiva.</strong> <code>cod_estante → planta_estante</code> se va a su tabla:</p>
+<p><strong>Esquema final en 3FN, en la notación de entrega:</strong>
+- <code>lectores(</code><strong>carne</strong><code>, nombre, telefono)</code>
+- <code>estantes(</code><strong>cod_estante</strong><code>, planta_estante)</code>
+- <code>libros(</code><strong>isbn</strong><code>, titulo, cod_estante → estantes)</code>
+- <code>prestamos(</code><strong>carne</strong> <code>→ lectores,</code> <strong>isbn</strong> <code>→ libros,</code> <strong>fecha_prest</strong><code>)</code></p>
+<p><strong>Paso 5 — comprobación de no-pérdida.</strong> Combinando <code>prestamos</code> con <code>lectores</code> (por carne), <code>libros</code> (por isbn) y <code>estantes</code> (por cod_estante) se reconstruye exactamente cada fila original de la hoja: ninguna información se ha perdido — solo ha dejado de repetirse.</p>
+<p><strong>El cierre del círculo, demostrado.</strong> Ahora traduce mentalmente con el apartado 4 el E/R evidente de este dominio — LECTOR y LIBRO fuertes, ESTANTE como entidad (un libro está en un estante: 1:N), <em>realiza/es objeto de</em> alrededor del préstamo: obtienes <strong>este mismo esquema</strong>, tabla por tabla y flecha por flecha, sin haber normalizado nada. Diseñar bien y normalizar convergen en el mismo sitio; la diferencia es que el buen E/R llega a la primera y la normalización llega rescatando. Las dos rutas debes dominarlas — los exámenes y la vida traen de las dos.</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E17.</strong> La clínica veterinaria municipal apunta cada visita en una hoja plana: <code>visitas_todo(cod_mascota, nombre_mascota, especie, nombre_dueno, telefono_dueno, fecha_visita, cod_veterinario, nombre_veterinario, diagnostico)</code>. Escribe sus dependencias funcionales, provoca con filas concretas una anomalía de cada tipo (modificación, inserción, borrado), y normaliza hasta 3FN mostrando el paso 2FN intermedio en la notación de entrega.</li>
+<li><strong>E18.</strong> <code>matriculas(cod_alumno, cod_modulo, nombre_modulo, curso, nota, tutor_grupo)</code> con las dependencias razonables de un instituto: identifica en qué forma normal está, qué dependencia viola la siguiente, y normaliza justificando cada extracción.</li>
+<li><strong>E19.</strong> Diagnóstico inverso: un esquema en 3FN de la biblioteca se "desnormaliza" fusionando <code>libros</code> e <code>ejemplares</code> "para hacer menos consultas". Describe qué anomalías reaparecen exactamente y qué preguntas de negocio se vuelven peligrosas de responder.</li>
+<li><strong>E20.</strong> ¿Verdadero o falso, con contraejemplo o justificación?: (a) "toda tabla con clave simple está en 2FN"; (b) "una tabla con dos columnas siempre está en 3FN"; (c) "si los datos actuales no repiten nada, la tabla está normalizada".</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-7-errores-frecuentes">Apartado 7. Errores frecuentes<a class="headerlink" href="#apartado-7-errores-frecuentes" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Traducir N:M con una FK y rezar.</strong> Meter <code>isbn</code> en <code>lectores</code> (¿cuál de sus libros?) o listas en una celda (viola 1FN). N:M = tabla intermedia, sin excepciones.</li>
+<li><strong>Olvidar el doble papel de la clave del padre en las débiles.</strong> <code>ejemplares</code> sin que <code>isbn</code> sea FK, o con un <code>id_ejemplar</code> inventado que rompe la identificación decidida en el E/R. Si cambias la decisión, cámbiala en el diagrama, no de tapadillo en las tablas.</li>
+<li><strong>FK sin política de borrado.</strong> "Ya lo decidiré" = lo decidirá el gestor por ti con su valor por defecto, y no te va a gustar en producción. Cada flecha de tu esquema lleva su política anotada.</li>
+<li><strong>Elegir PK "bonita" en la intermedia.</strong> Añadir <code>id_valoracion</code> autonumérico y dejar sin proteger la pareja (carne, isbn): permite valorar dos veces el mismo libro. Si añades clave artificial, la pareja queda como alternativa única — o no añadas.</li>
+<li><strong>Normalizar mirando los datos.</strong> "No veo repeticiones" no demuestra nada (apartado 6.2): las dependencias salen del negocio. Y el recíproco: desnormalizar "por rendimiento" en 1.º es optimizar un problema que no tienes — el rendimiento de verdad se estudia en la UD4 con instrumentos, no con corazonadas.</li>
+<li><strong>Lista de restricciones semánticas vacía.</strong> Ningún dominio real tiene cero reglas fuera del esquema. Lista vacía = análisis sin terminar, y así se corrige.</li>
+</ol>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-8-la-ia-en-esta-unidad">Apartado 8. La IA en esta unidad<a class="headerlink" href="#apartado-8-la-ia-en-esta-unidad" title="Permanent link">&para;</a></h2>
+<p>La regla de siempre: el resultado es tuyo y lo defiendes tú.</p>
+<ul>
+<li><strong>Usos razonables aquí</strong>: generar tablas de práctica con anomalías para diagnosticarlas; pedir enunciados extra de traducción E/R→relacional; contrastar tu lista de dependencias funcionales describiéndole el negocio (no los datos).</li>
+<li><strong>Lo que debes verificar siempre</strong>: las traducciones y normalizaciones que un asistente te proponga. Los fallos típicos de los modelos de IA en esta materia son exactamente los del apartado 7 — claves artificiales que desprotegen parejas, políticas de borrado omitidas, "3FN" declaradas sin comprobar la transitiva — y llegan con seguridad absoluta. Audita contra el procedimiento del apartado 6.3, paso a paso.</li>
+<li><strong>Lo que se te pedirá defender</strong>: en la defensa se te pedirá <strong>derivar</strong>, no recitar: "¿por qué esta tabla existe?", "¿qué dependencia rompía la 2FN aquí?", "¿qué pasa si borro este lector?". Un esquema que no sabes derivar desde su diagrama y sus dependencias se considera no propio, con las consecuencias que fija la programación.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-9-actividad-evaluativa-final">Apartado 9. Actividad evaluativa final<a class="headerlink" href="#apartado-9-actividad-evaluativa-final" title="Permanent link">&para;</a></h2>
+<p><strong>Contexto.</strong> La empresa comarcal de <strong>mantenimiento de parques renovables</strong> de la UD2 — 15 parques, 450 activos, 5.000 sensores, 60 técnicos en cuadrillas, órdenes preventivas y correctivas, intervenciones con consumo de repuestos, contratas homologadas por parque con supervisor asignable. <strong>Tu materia prima es el diagrama que ensamblaste en la AE10 de la UD2</strong> (con las correcciones que recibiera): esta actividad lo convierte en esquema relacional completo. Donde tu diagrama tomara una decisión distinta de la canónica (p. ej., SENSOR fuerte en la AE4), traduce <strong>tu</strong> decisión con coherencia — se corrige la traducción, no la decisión ya evaluada.</p>
+<p><strong>Instrucciones.</strong> 10 ejercicios, 1 punto cada uno, etiquetados con el CE oficial del RA6 que evalúan. Esquemas en la notación textual de la unidad (PK en negrita, FK con flecha); el diagrama lógico final (AE10), con herramienta. <strong>Tiempo estimado: 2 horas más el acabado del diagrama.</strong> Entrega: documento + archivo fuente y exportación del diagrama, por la tarea de Classroom. Defensa oral por muestreo.</p>
+<ul>
+<li><strong>AE1</strong> <code>[RA6.b]</code> Identifica y enumera <strong>todas las tablas</strong> que tu diagrama produce al traducirse, indicando para cada una de qué elemento del E/R procede (entidad fuerte, débil, N:M, multivalorado, jerarquía, agregación). Sin escribir aún los campos: el mapa antes que el territorio.</li>
+<li><strong>AE2</strong> <code>[RA6.c]</code> Escribe el esquema completo de <code>parques</code>, <code>activos</code>, <code>tecnicos</code> y <code>cuadrillas</code> en la notación de la unidad, con todos sus campos (los del contexto más los razonables), marcando PK y FK.</li>
+<li><strong>AE3</strong> <code>[RA6.d]</code> Analiza por escrito cómo ha quedado plasmada cada relación de tu diagrama: para cada rombo del E/R, di qué mecanismo la traduce (FK en qué tabla, o tabla intermedia) y por qué su <strong>etiqueta de tipo</strong> obligaba a ese mecanismo.</li>
+<li><strong>AE4</strong> <code>[RA6.e]</code> Justifica las claves de los tres casos delicados: la PK de <code>sensores</code> según tu decisión de AE4 de la UD2 (compuesta si débil, propia si fuerte — y qué queda como alternativa), la PK de la tabla de consumos de repuestos, y la reflexiva o doble relación del jefe de cuadrilla.</li>
+<li><strong>AE5</strong> <code>[RA6.f]</code> Declara la política de borrado y modificación de <strong>cada FK</strong> de tu esquema (tabla de FKs con política y justificación de negocio en una línea). Señala razonadamente el caso más discutible.</li>
+<li><strong>AE6</strong> <code>[RA6.d]</code> Traduce la jerarquía de órdenes de trabajo (preventiva/correctiva, total y exclusiva según la AE6 de la UD2) con <strong>dos</strong> de las tres estrategias del apartado 4.3, y elige una para la empresa justificando con sus consultas previsibles (el jefe de mantenimiento pregunta casi siempre por "órdenes", a secas).</li>
+<li><strong>AE7</strong> <code>[RA6.d]</code> Traduce la agregación de contratas (AE9 de la UD2): esquema de la tabla de homologaciones y de la asignación de supervisor, con la mínima "(0,1) — puede no haber supervisor" convertida en su decisión NULL exacta.</li>
+<li><strong>AE8</strong> <code>[RA6.g]</code> La oficina central usaba esta hoja: <code>partes_todo(cod_intervencion, fecha, cod_orden, tipo_orden, cod_activo, nombre_parque, cod_tecnico, nombre_tecnico, cod_repuesto, descripcion_repuesto, cantidad)</code>. Escribe sus dependencias funcionales, di en qué forma normal está, y normalízala hasta 3FN mostrando el paso intermedio — comprueba que aterriza en (un subconjunto de) tu esquema.</li>
+<li><strong>AE9</strong> <code>[RA6.h]</code> Entrega la <strong>lista consolidada de restricciones semánticas</strong> del sistema en formato RS (mínimo seis, incluidas las heredadas de tus listas de la UD2: jefe-pertenece-a-su-cuadrilla, cantidades positivas, correctiva-exige-avería…), cada una con su mecanismo previsto.</li>
+<li><strong>AE10</strong> <code>[RA6.a]</code> Entrega el <strong>diagrama lógico completo</strong> del esquema final con herramienta (draw.io o MySQL Workbench, pata de gallo): todas las tablas con sus campos, PK marcadas, FKs como líneas con sus cardinalidades, identificativas en trazo continuo. Formato de entrega doble de la guía de draw.io (fuente + exportación). Este diagrama es la evaluación definitiva del criterio de herramienta iniciado en la UD2 — y tu plano de construcción para la UD5.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-10-para-ampliar">Apartado 10. Para ampliar<a class="headerlink" href="#apartado-10-para-ampliar" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://dev.mysql.com/doc/refman/8.4/en/create-table-foreign-keys.html">Manual de referencia de MySQL — uso de claves ajenas</a> — cómo se declararán en la UD5 las políticas que has decidido aquí.</li>
+<li><a href="https://dev.mysql.com/doc/workbench/en/wb-data-modeling.html">Documentación de modelado de MySQL Workbench</a> — la alternativa profesional a draw.io para el diagrama lógico de la AE10.</li>
+<li><a href="../../recursos/guia-drawio/">Guía rápida de draw.io para las entregas de diagramas</a> — convención de nombrado y formato de entrega doble.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

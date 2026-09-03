@@ -1,0 +1,1764 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Apuntes de los módulos del CFGS Desarrollo de Aplicaciones Web">
+      
+      
+        <meta name="author" content="Arba">
+      
+      
+        <link rel="canonical" href="https://codigoronin.github.io/apuntes-daw/big-data-e-inteligencia-artificial/ud0-presentacion/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../ud1-python-datos-ia/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>UD0 · Presentación del módulo - Apuntes DAW</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ud0-presentacion-del-modulo" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Apuntes DAW" class="md-header__button md-logo" aria-label="Apuntes DAW" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Apuntes DAW
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              UD0 · Presentación del módulo
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/codigoronin/apuntes-daw" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Inicio
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../bases-de-datos/" class="md-tabs__link">
+          
+  
+  
+  Bases de Datos (0484)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../desarrollo-web-en-entorno-servidor/" class="md-tabs__link">
+          
+  
+  
+  Desarrollo Web en Entorno Servidor (0613)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Big Data e Inteligencia Artificial (AOP1089)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../recursos/entorno-vscode-php/" class="md-tabs__link">
+          
+  
+  
+  Recursos
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Apuntes DAW" class="md-nav__button md-logo" aria-label="Apuntes DAW" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Apuntes DAW
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/codigoronin/apuntes-daw" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bases de Datos (0484)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bases de Datos (0484)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud1-almacenamiento-sgbd-valor-del-dato/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Almacenamiento, SGBD y el valor del dato
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud2-modelo-entidad-relacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2 · Modelo entidad-relación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud3-modelo-relacional-normalizacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3 · Modelo relacional y normalización
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud4-consultas-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD4 · Consultas de datos con SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desarrollo Web en Entorno Servidor (0613)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Desarrollo Web en Entorno Servidor (0613)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud1-arquitecturas-tecnologias-servidor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Arquitecturas y tecnologías de programación en servidor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud2-codigo-embebido-php/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2 · Código embebido en lenguajes de marcas: sintaxis, estructuras, funciones y formularios
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Big Data e Inteligencia Artificial (AOP1089)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Big Data e Inteligencia Artificial (AOP1089)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-1-que-vas-a-aprender" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1. Qué vas a aprender
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-2-como-trabajaremos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2. Cómo trabajaremos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-3-como-se-calcula-tu-nota" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3. Cómo se calcula tu nota
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 3. Cómo se calcula tu nota">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-31-los-dos-bloques-y-sus-pesos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3.1. Los dos bloques y sus pesos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-32-tabla-de-casos-aprueba-o-no" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3.2. Tabla de casos: ¿aprueba o no?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-33-asistencia-y-evaluacion-continua" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3.3. Asistencia y evaluación continua
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-4-con-que-construiremos-datos-modelos-y-el-proyecto-integrador" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4. Con qué construiremos: datos, modelos y el proyecto integrador
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-5-el-arranque-de-la-primera-semana" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5. El arranque de la primera semana
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-6-tu-kit-de-arranque" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6. Tu kit de arranque
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ud1-python-datos-ia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Python para datos e IA: lenguaje especializado, entorno y librerías
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recursos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Recursos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/entorno-vscode-php/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entorno de trabajo: VS Code para PHP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/guia-drawio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía rápida de draw.io
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/estandar-estilo-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estándar de estilo SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-1-que-vas-a-aprender" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1. Qué vas a aprender
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-2-como-trabajaremos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2. Cómo trabajaremos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-3-como-se-calcula-tu-nota" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3. Cómo se calcula tu nota
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 3. Cómo se calcula tu nota">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-31-los-dos-bloques-y-sus-pesos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3.1. Los dos bloques y sus pesos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-32-tabla-de-casos-aprueba-o-no" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3.2. Tabla de casos: ¿aprueba o no?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-33-asistencia-y-evaluacion-continua" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3.3. Asistencia y evaluación continua
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-4-con-que-construiremos-datos-modelos-y-el-proyecto-integrador" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4. Con qué construiremos: datos, modelos y el proyecto integrador
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-5-el-arranque-de-la-primera-semana" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5. El arranque de la primera semana
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-6-tu-kit-de-arranque" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6. Tu kit de arranque
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="ud0-presentacion-del-modulo">UD0. Presentación del módulo<a class="headerlink" href="#ud0-presentacion-del-modulo" title="Permanent link">&para;</a></h1>
+<p><strong>Módulo optativo AOP1089 — Big Data e Inteligencia Artificial · 2.º DAW · IES Río Arba · Curso 2026-27 · 1 hora</strong></p>
+<div class="admonition info">
+<p class="admonition-title">Qué es esta unidad</p>
+<p>La UD0 no tiene contenidos evaluables: es el arranque del curso. Aquí encontrarás qué vas a aprender — y qué queda fuera, porque este módulo tiene un alcance deliberadamente acotado —, cómo trabajaremos y entregaremos, cómo se califica el módulo y con qué datos, modelos y herramientas construiremos casi todo. Su único "trámite" es el arranque de la primera semana (ver apartado 5), que no tiene nota.</p>
+</div>
+<p><strong>Al terminar esta unidad sabrás:</strong> qué se aprende en Big Data e Inteligencia Artificial y para qué sirve profesionalmente; qué está dentro y qué está fuera del módulo; cómo se trabaja y se entrega (repositorio, registro de decisiones y defensa desde el primer día, igual que en Desarrollo Web en Entorno Servidor); con qué reglas se calcula tu nota — con un reparto distinto al de los demás módulos — y podrás predecir tú mismo si un caso aprueba o no; y en qué consiste el proyecto integrador con el que termina el curso.</p>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-1-que-vas-a-aprender">Apartado 1. Qué vas a aprender<a class="headerlink" href="#apartado-1-que-vas-a-aprender" title="Permanent link">&para;</a></h2>
+<p>En primero aprendiste a guardar datos y a consultarlos; en Desarrollo Web en Entorno Servidor estás aprendiendo a construir las aplicaciones que los sirven. Este módulo añade la capa que hoy más se pide junto a esas dos: <strong>sacar partido de los datos</strong> — prepararlos, visualizarlos, entrenar con ellos modelos sencillos — y <strong>usar modelos de inteligencia artificial ya construidos</strong> (clasificadores de texto, detectores en imágenes, grandes modelos de lenguaje) desde tus propios programas y aplicaciones. Con <strong>100 horas (3 a la semana)</strong>, de las que unas 74 son sesiones en el aula — el resto son las semanas de la formación en empresa, en las que el módulo no tiene clase —, es un módulo pequeño comparado con el de servidor, y por eso no intenta abarcarlo todo: elige lo que un desarrollador web necesita para incorporar datos e inteligencia artificial a una aplicación real.</p>
+<div class="admonition info">
+<p class="admonition-title">Lo que está dentro y lo que queda fuera</p>
+<p><strong>Dentro.</strong> Programar en el lenguaje especializado del oficio de datos, <strong>Python</strong>, con sus librerías. Trabajar con <strong>datasets dados</strong>: los proporciona el docente, vienen de portales de datos abiertos o de la base de datos de referencia del ciclo, y llegan anonimizados y revisados — no diseñarás procesos de captura ni recogerás datos personales. Usar <strong>modelos preentrenados tal cual</strong>, por librería o por API, en las unidades 1, 4, 5 y 6. Y <strong>entrenar tú mismo modelos clásicos</strong> — regresión, árboles de decisión y agrupamiento — sobre esos datasets en la UD3, aprendiendo a medir si son buenos.</p>
+<p><strong>Fuera.</strong> Entrenar redes neuronales o grandes modelos de lenguaje desde cero; montar infraestructuras distribuidas de Big Data (aquí Big Data se trabaja desde el lado del programador: obtener, preparar y explotar datos con librerías); recolectar datos personales; y las matemáticas del aprendizaje automático — usarás las métricas y sabrás interpretarlas, no las demostrarás.</p>
+</div>
+<p>El módulo se organiza en <strong>5 resultados de aprendizaje</strong> (RA): las capacidades que la norma fija y que tendrás que demostrar. En lenguaje llano:</p>
+<table>
+<thead>
+<tr>
+<th>RA</th>
+<th>Qué serás capaz de hacer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RA1</td>
+<td>Programar en el lenguaje especializado del oficio de datos: instalarlo, reconocer lo que lo hace distinto, escribir programas sencillos, obtener datos de distintos orígenes y usar librerías con modelos de inteligencia artificial dentro de tus programas</td>
+</tr>
+<tr>
+<td>RA2</td>
+<td>Preparar datos de verdad: qué exige la ley de protección de datos, qué tipos de datos hay, cómo se limpian y preparan, cómo se visualizan con distintos gráficos, cómo se contrasta la calidad de los resultados y cómo se documenta todo el proceso</td>
+</tr>
+<tr>
+<td>RA3</td>
+<td>Aprendizaje automático: distinguir los enfoques de aprendizaje, generar modelos con librerías especializadas, ajustar sus parámetros, obtener resultados, verificar la calidad del modelo y documentar el entrenamiento</td>
+</tr>
+<tr>
+<td>RA4</td>
+<td>Plataformas de modelos de inteligencia artificial: compararlas en local y en la nube, configurar entornos, gestionar la autenticación y la seguridad, construir las interfaces que integran un modelo en una aplicación, evaluar prestaciones y escalabilidad y documentar el despliegue</td>
+</tr>
+<tr>
+<td>RA5</td>
+<td>Procesamiento de lenguaje natural y visión artificial: conocer sus herramientas, reconocer patrones en texto e imágenes, extraer información de un texto o de una imagen, evaluar los resultados, y crear e integrar aplicaciones que los usen</td>
+</tr>
+</tbody>
+</table>
+<p>El curso recorre esos RA en <strong>6 unidades</strong> repartidas en tres evaluaciones. La secuencia sigue el orden natural del oficio: primero el lenguaje, después los datos, luego los modelos, después las plataformas que los sirven, y por último texto e imagen — para cerrar con un proyecto que lo junta todo.</p>
+<table>
+<thead>
+<tr>
+<th>Evaluación</th>
+<th>Unidades</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.ª</td>
+<td>UD1 Python para datos e IA: lenguaje especializado, entorno y librerías · UD2 Preparación, análisis y visualización de datos; protección de datos · UD3 Aprendizaje automático (primera parte: enfoques y modelos supervisados básicos)</td>
+</tr>
+<tr>
+<td>2.ª</td>
+<td>UD3 (segunda parte: ajuste, validación y documentación) · UD4 Plataformas de modelos de IA: local, cloud, LLMs y APIs; integración en aplicaciones · UD5 Procesamiento de lenguaje natural y visión artificial</td>
+</tr>
+<tr>
+<td>3.ª</td>
+<td>UD6 Proyecto integrador: IA aplicada en una aplicación web</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">La FEOE de marzo a mayo</p>
+<p>Entre marzo y mayo harás el segundo periodo de formación en empresa (<strong>360 horas</strong>). Este módulo <strong>no está dualizado</strong>: a diferencia del de servidor, ningún resultado de aprendizaje se adquiere en la empresa — el módulo simplemente para durante esas semanas. Lo importante es lo que pasa antes: <strong>todo lo instrumental está impartido antes de la FEOE</strong> — saldrás a la empresa habiendo trabajado datos, modelos, plataformas y APIs de inteligencia artificial. A la vuelta queda la <strong>3.ª evaluación, corta (unas 3 semanas)</strong>, concentrada en la UD6, que <strong>no trae contenido nuevo</strong>: consolida lo que ya sabes sobre un proyecto aplicado y lo defiendes.</p>
+</div>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-2-como-trabajaremos">Apartado 2. Cómo trabajaremos<a class="headerlink" href="#apartado-2-como-trabajaremos" title="Permanent link">&para;</a></h2>
+<p>Las sesiones (3 semanales, de 1 hora, en aula de informática con un equipo por persona) alternan tres momentos: <strong>explicación breve</strong>, <strong>práctica guiada</strong> (lo hacemos juntos) y <strong>práctica autónoma</strong> (lo haces tú), sobre <strong>cuadernos y scripts</strong>. Buena parte del trabajo se hace en cuadernos, donde el código, su resultado y tu explicación conviven — el formato habitual del oficio de datos —, y en scripts cuando el programa tiene que ejecutarse solo. La progresión del curso va de la práctica guiada al proyecto integrador: la meta es que en junio incorpores un modelo a una aplicación por tu cuenta.</p>
+<p>Reglas de funcionamiento que te interesan desde el día 1:</p>
+<ol>
+<li><strong>Google Classroom es la plataforma del módulo</strong> (materiales, calendario, avisos y comunicación), pero <strong>el canal oficial de entrega es el repositorio</strong>: en segundo no hay periodo de adaptación — desde la primera entrega evaluable, entregas en tu repositorio Git del aula de código, con un <strong>historial de commits significativos</strong>. Es el mismo flujo que en Desarrollo Web en Entorno Servidor, y lo aprendiste en primero: aquí se da por hecho. El historial es evidencia de tu proceso y de tu autoría: un volcado único de última hora no cuenta la misma historia que un trabajo real.</li>
+<li><strong>Toda entrega viaja con su <code>DECISIONES.md</code></strong>: un registro breve de las decisiones técnicas que has tomado — qué modelo elegiste y por qué, qué descartaste, qué medidas te convencieron — y de las herramientas que has usado (incluida la IA, ver regla 4). Es obligatorio en toda entrega; no puntúa por sí mismo, pero sin él la entrega no está completa.</li>
+<li><strong>Todo se defiende.</strong> Cada entrega evaluable incluye una defensa breve (4–5 minutos, con rúbrica publicada) sobre tus decisiones técnicas. <strong>Una práctica sin defensa puntúa 0</strong>; para ausencias justificadas hay una única convocatoria alternativa de defensa por evaluación. En la 3.ª evaluación, la defensa individual del proyecto integrador es además tu prueba individual (ver apartado 3).</li>
+<li><strong>La IA se usa a cara descubierta — y aquí, además, se estudia.</strong> Los asistentes de IA son herramientas profesionales legítimas y puedes usarlos; lo que no es admisible es no poder explicar, justificar y sostener lo entregado. Pedirle ayuda a un asistente para escribir el código que llama a un modelo es legítimo; entregar un cuaderno cuyo modelo no sabes explicar, no. El uso se declara en <code>DECISIONES.md</code>, y ante indicios de falta de autoría se aplica el procedimiento de verificación publicado en la programación (contraste de evidencias y defensa específica, <strong>adicional a la defensa ordinaria que toda entrega ya incluye</strong>). En este módulo la inteligencia artificial es también objeto de estudio: su marco normativo se trabaja en la UD2 como contexto.</li>
+<li><strong>Trabajarás con alias</strong>, nunca con tu nombre real, en las herramientas externas (GitHub, aula de código), conforme a la política de identidad digital y protección de datos del centro — <strong>y también en la plataforma cloud de modelos</strong>, en la que te das de alta con tu alias y en su <strong>nivel gratuito</strong> durante la acogida de la semana 1 (sin pagar nada ni dar datos de más); la plataforma se usa a partir de la UD4.</li>
+<li><strong>Datos con responsabilidad.</strong> En este módulo la protección de datos no es una nota al pie: es un criterio de evaluación (UD2) y una condición de trabajo — ningún dataset de aula contiene datos personales reales, y los datos y los modelos se revisan buscando <strong>sesgos</strong>. También cuenta el <strong>coste</strong>: entrenar o consultar un modelo consume cómputo y energía, y elegir el modelo más pequeño que resuelva el problema es un criterio de diseño, no tacañería.</li>
+<li><strong>Hay refuerzo y ampliación</strong>: si no has programado en Python, la UD1 lleva andamiaje para que arranques; si vas sobrado, hay retos opcionales de nivel — comparativa sistemática de modelos y ajuste fino de hiperparámetros, modelos adicionales de lenguaje o de visión, o exponer tu modelo tras una API propia, el puente natural con los servicios REST del módulo de servidor — que suben nota de verdad.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">El aula, con cabeza</p>
+<p>Trabajamos con equipos todo el curso, así que tres normas de prevención desde el primer día: nada de manipular conexiones ni regletas — cualquier desperfecto se comunica al docente —; postura, distancia a la pantalla y pausas visuales periódicas; y el puesto ordenado, con los cables canalizados y sin líquidos junto a los equipos. Son las del plan de prevención del centro, y forman parte del uso responsable del aula.</p>
+</div>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-3-como-se-calcula-tu-nota">Apartado 3. Cómo se calcula tu nota<a class="headerlink" href="#apartado-3-como-se-calcula-tu-nota" title="Permanent link">&para;</a></h2>
+<p>Las reglas completas y oficiales están en la programación del módulo (tienes la versión reducida publicada en Classroom). Aquí va lo esencial explicado con números — y fíjate bien, porque el reparto <strong>no es el mismo que en los otros módulos</strong>.</p>
+<h3 id="apartado-31-los-dos-bloques-y-sus-pesos">Apartado 3.1. Los dos bloques y sus pesos<a class="headerlink" href="#apartado-31-los-dos-bloques-y-sus-pesos" title="Permanent link">&para;</a></h3>
+<p>En cada evaluación tu nota sale de dos bloques:</p>
+<table>
+<thead>
+<tr>
+<th>Bloque</th>
+<th>Peso</th>
+<th>Mínimo exigido</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Prueba individual de evaluación (examen en la 1.ª y en la 2.ª; <strong>defensa individual del proyecto integrador</strong> en la 3.ª)</td>
+<td>40%</td>
+<td><strong>5,0</strong></td>
+</tr>
+<tr>
+<td>Prácticas y proyecto (con su defensa)</td>
+<td>60%</td>
+<td><strong>4,0</strong> (media del bloque)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Nota de evaluación = 0,4 × prueba individual + 0,6 × prácticas y proyecto</strong>, siempre que se cumplan los dos mínimos. Si un bloque no llega a su mínimo, la evaluación queda suspensa aunque la media salga aprobada — y en ese caso el acta refleja como máximo un 4, aunque tu media fuera mayor.</p>
+<p>El reparto se inclina hacia las prácticas porque el centro de gravedad de este módulo es el trabajo con datos, modelos y aplicaciones, que se demuestra entregando. Pero el mínimo de 5 en la prueba individual <strong>no se mueve</strong>: el módulo no se supera solo con prácticas — ni solo con examen.</p>
+<p>Además hay dos reglas por resultado de aprendizaje: <strong>ningún RA puede quedar por debajo de 4</strong>, y la <strong>media ponderada de los RA debe ser al menos 5</strong> (cada RA pesa en proporción a las horas que se le dedican; los pesos exactos están publicados en la programación). Puedes compensar un RA flojo (entre 4 y 5) con otros mejores, pero no abandonar ninguno.</p>
+<p>Dos reglas más que conviene grabarse: <strong>una práctica sin defensa puntúa 0</strong> — defender significa explicar en persona qué hiciste y por qué, y poder modificarlo en el momento si se te pide —; y en el boletín la nota se redondea al entero más próximo, pero <strong>el 5 nunca se alcanza por redondeo</strong>: un 4,5 a 4,99 se consigna como 4.</p>
+<h3 id="apartado-32-tabla-de-casos-aprueba-o-no">Apartado 3.2. Tabla de casos: ¿aprueba o no?<a class="headerlink" href="#apartado-32-tabla-de-casos-aprueba-o-no" title="Permanent link">&para;</a></h3>
+<p>Todos los casos suponen, salvo que se diga lo contrario, que el resto de condiciones se cumple. Los casos 1 a 7 son de la 1.ª o la 2.ª evaluación (la prueba individual es un examen); el caso 8 es de la 3.ª.</p>
+<table>
+<thead>
+<tr>
+<th>Caso</th>
+<th>Prueba individual</th>
+<th>Prácticas y proyecto</th>
+<th>Cuenta pendiente</th>
+<th>¿Aprueba?</th>
+<th>Por qué</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>4,5</td>
+<td>9,5</td>
+<td>0,4×4,5 + 0,6×9,5 = <strong>7,5</strong></td>
+<td><strong>No</strong></td>
+<td>El examen no llega al mínimo de 5. Unas prácticas brillantes no compensan un examen suspenso — ni aunque aquí pesen más</td>
+</tr>
+<tr>
+<td>2</td>
+<td>5,0</td>
+<td>3,5</td>
+<td>0,4×5 + 0,6×3,5 = <strong>4,1</strong></td>
+<td><strong>No</strong></td>
+<td>Las prácticas no llegan a su mínimo de 4</td>
+</tr>
+<tr>
+<td>3</td>
+<td>5,0</td>
+<td>4,0</td>
+<td>0,4×5 + 0,6×4 = <strong>4,4</strong></td>
+<td><strong>No</strong></td>
+<td>Cumple los dos mínimos… pero la media no llega a 5. Los mínimos dan derecho a mediar, no aprueban solos</td>
+</tr>
+<tr>
+<td>4</td>
+<td>6,5</td>
+<td>4,0</td>
+<td>0,4×6,5 + 0,6×4 = <strong>5,0</strong></td>
+<td><strong>Sí</strong></td>
+<td>Mínimos cumplidos y media exactamente 5: aprobado por la mínima. Fíjate: con el mismo 4,0 en prácticas, un 6,0 en el examen se queda en 4,8 — aquí las prácticas pesan más y el examen compensa menos</td>
+</tr>
+<tr>
+<td>5</td>
+<td>7,0</td>
+<td>8,0</td>
+<td>0,4×7 + 0,6×8 = <strong>7,6</strong> · pero un RA = 3,5</td>
+<td><strong>No</strong></td>
+<td>Ningún RA puede quedar por debajo de 4. Ese RA habrá que recuperarlo (y mientras tanto el acta marca como máximo 4)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>5,5</td>
+<td>6,0</td>
+<td>0,4×5,5 + 0,6×6 = <strong>5,8</strong></td>
+<td><strong>Sí</strong></td>
+<td>Todo en regla</td>
+</tr>
+<tr>
+<td>7</td>
+<td>7,0</td>
+<td>Tres entregas: 6, 5 y una <strong>sin defender</strong> (cuenta 0) → media (6+5+0)/3 = <strong>3,67</strong></td>
+<td>Bloque prácticas: 3,67 (la media saldría 0,4×7 + 0,6×3,67 = 5,0)</td>
+<td><strong>No</strong></td>
+<td>La entrega sin defensa hunde el bloque por debajo del mínimo de 4. La media daría justo 5 y aun así suspende: los mínimos van antes que la media</td>
+</tr>
+<tr>
+<td>8 (3.ª ev.)</td>
+<td>Defensa individual: 4,0</td>
+<td>Proyecto integrador: 8,0</td>
+<td>0,4×4 + 0,6×8 = <strong>6,4</strong></td>
+<td><strong>No</strong></td>
+<td>En la 3.ª evaluación la defensa individual es la prueba individual, con su mínimo de 5. Un proyecto excelente que no sabes defender no lo has acreditado tú</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Las cuatro formas más tontas de suspender este módulo</p>
+<p>Con lo de arriba delante: descuidar el examen confiando en las prácticas (caso 1), no defender una entrega (caso 7), abandonar un RA "porque ese tema no me gusta" (caso 5) y presentarte a la defensa final sin dominar tu propio proyecto (caso 8). Las cuatro son evitables. Y una regla rápida para este reparto: si vas al mínimo en un bloque, el otro tiene que tirar — con un 5,0 en el examen necesitas al menos un 5,0 en prácticas; con un 4,0 en prácticas necesitas al menos un 6,5 en el examen.</p>
+</div>
+<h3 id="apartado-33-asistencia-y-evaluacion-continua">Apartado 3.3. Asistencia y evaluación continua<a class="headerlink" href="#apartado-33-asistencia-y-evaluacion-continua" title="Permanent link">&para;</a></h3>
+<p>La asistencia es obligatoria y se registra a diario en SIGAD. El derecho a la evaluación continua se pierde al superar cualquiera de estos umbrales: el <strong>15% de las horas impartidas en una evaluación</strong> (o el <strong>10% si las faltas son injustificadas</strong>), o el <strong>15% de las horas totales del módulo</strong> — que en 100 horas equivale a 15 horas: se pierde <strong>a partir de la hora 16</strong> de falta computada. Los valores en horas de los umbrales por evaluación se publicarán con el calendario de cada una. Tres retrasos no justificados cuentan como una falta; durante la FEOE el módulo no computa asistencia. Perder la evaluación continua no te expulsa del módulo: cambia tu forma de ser evaluado — prueba global de todo el módulo más entrega y defensa del repertorio completo de prácticas clave del curso, incluido el proyecto integrador — y eso casi nunca es buena noticia.</p>
+<p>Si suspendes una evaluación, la recuperación se organiza sobre los <strong>RA no superados</strong>: prueba sobre sus criterios más entrega y defensa de las prácticas pendientes o rehechas (para el tramo final del RA5, una nueva defensa del proyecto revisado). Recibirás por escrito qué criterios te faltan y qué actividades de refuerzo te convienen; detalles y fechas, por Classroom.</p>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-4-con-que-construiremos-datos-modelos-y-el-proyecto-integrador">Apartado 4. Con qué construiremos: datos, modelos y el proyecto integrador<a class="headerlink" href="#apartado-4-con-que-construiremos-datos-modelos-y-el-proyecto-integrador" title="Permanent link">&para;</a></h2>
+<p>Este módulo no gira sobre una única aplicación ancla, sino sobre tres materiales que se combinan unidad a unidad: <strong>datos del entorno</strong>, <strong>modelos</strong> (los que usas y los que entrenas) y, al final, <strong>una aplicación real</strong> en la que todo eso se integra.</p>
+<table>
+<thead>
+<tr>
+<th>Tramo</th>
+<th>Qué construyes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UD1</td>
+<td>Arrancar el taller: Python instalado y comprobado, un entorno virtual, un cuaderno de trabajo — y tu primer programa que lee un fichero de datos y le pregunta algo a un modelo preentrenado</td>
+</tr>
+<tr>
+<td>UD2</td>
+<td>El pipeline de datos: un dataset del entorno limpiado, preparado, visualizado y documentado — con la ley de protección de datos delante, no detrás</td>
+</tr>
+<tr>
+<td>UD3</td>
+<td>Tus primeros modelos: regresión, árboles de decisión y agrupamiento entrenados sobre datasets dados; medir si aciertan (coeficiente de determinación, matriz de confusión) y ajustarlos</td>
+</tr>
+<tr>
+<td>UD4</td>
+<td>Modelos como servicio: ejecutar un modelo abierto en local, entrar con tu alias en la plataforma cloud que diste de alta en la semana 1, llamar a un gran modelo de lenguaje desde tu código, construir la interfaz que lo integra en una aplicación, y medir prestaciones y coste</td>
+</tr>
+<tr>
+<td>UD5</td>
+<td>Texto e imagen: extraer información de un texto y de una imagen con herramientas de procesamiento de lenguaje natural y visión artificial, y evaluar si el resultado sirve en tu contexto</td>
+</tr>
+<tr>
+<td>UD6</td>
+<td>El proyecto integrador: la capa de inteligencia artificial de una aplicación web real, en equipo, con documentación y defensa</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Las herramientas.</strong> Todo lo que usarás es de uso libre y se instala en tu propio equipo: <strong>Python</strong> con entornos virtuales y <strong>Jupyter</strong> como entorno de trabajo; <strong>pandas</strong> y <strong>Matplotlib</strong> para preparar, analizar y visualizar datos; <strong>scikit-learn</strong> para el aprendizaje automático; modelos abiertos ejecutados en local y <strong>una plataforma cloud de modelos con nivel gratuito</strong>, que se concretará antes de la UD4; <strong>spaCy</strong> u <strong>OpenCV</strong>, según el caso, para lenguaje natural y visión; y las bases de datos — <strong>MySQL</strong> y <strong>MongoDB</strong> — como orígenes de datos, sin volver a evaluar lo que ya acreditaste allí. Los materiales no fijan números de versión: trabajamos con la versión soportada actual de cada pieza.</p>
+<p><strong>Los datos.</strong> Son siempre <strong>dados</strong>, y vienen de tres sitios: conjuntos de datos de aula, anonimizados y revisados; portales de <strong>datos abiertos</strong> de la administración — en la UD2 trabajaremos con ellos —; y la base de datos de referencia del ciclo. Nunca datos personales reales: la regla no es una precaución de clase, es la ley, y en la UD2 se estudia como criterio de evaluación, reconectando con lo que viste en Bases de Datos en primero.</p>
+<p><strong>El proyecto integrador.</strong> La UD6 se trabaja en <strong>grupos de máximo tres</strong>, y su producto puede ser <strong>el mismo artefacto</strong> que la aplicación web híbrida de la UD8 de Desarrollo Web en Entorno Servidor, y alimentar también la memoria y la defensa del Proyecto Intermodular. Un mismo artefacto, varias miradas: pero <strong>cada módulo lo evalúa por separado, con sus propios instrumentos y su propia nota</strong> — aquí solo cuenta lo que evidencies de la integración de lenguaje natural y visión en la aplicación, y ninguna nota viaja de un módulo a otro. La defensa, como siempre, es individual. Y el alcance no cambia al final: modelos preentrenados y datasets dados, sin entrenar desde cero ni recoger datos personales. Como la UD6 no introduce contenido nuevo, a la vuelta de la empresa no tienes que aprender nada: tienes que aplicarlo y defenderlo.</p>
+<p>A lo largo del curso aparecerán también <strong>otros dominios y otros datasets</strong> en ejercicios de repaso, recuperaciones y exámenes: acostúmbrate a razonar sobre datos que no has visto, porque eso es exactamente lo que te pedirá cualquier empresa.</p>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-5-el-arranque-de-la-primera-semana">Apartado 5. El arranque de la primera semana<a class="headerlink" href="#apartado-5-el-arranque-de-la-primera-semana" title="Permanent link">&para;</a></h2>
+<p>La acogida de segundo es <strong>única</strong>: la actividad de acogida — alta o verificación de tus cuentas con alias, incorporación al aula de código, una primera entrega de prueba con su commit y su <code>DECISIONES.md</code> de juguete, y la lectura guiada del manual — se hace una sola vez con el grupo, coordinada con el módulo de servidor. <strong>Aquí no se repite el trámite.</strong> Lo que sí es propio de este módulo, esa misma semana y sin nota:</p>
+<ol>
+<li><strong>Comprobar que estás en el aula de código de este módulo</strong> — la invitación llega por el Classroom — y que tu repositorio responde.</li>
+<li><strong>Verificar que tu equipo de casa ejecuta Python.</strong> La instalación es, literalmente, el primer contenido de la UD1, así que si algo falla lo resolvemos allí; pero conviene que llegues con ello probado.</li>
+<li>La <strong>prueba inicial de segundo, sin nota</strong> (compartida con el módulo de servidor, con una parte propia de este módulo), y una actividad breve de diagnóstico al empezar la UD1: leer un programa corto que trata datos, predecir qué imprime y razonar una pequeña modificación. Respóndelas con sinceridad: sirven para ajustar el ritmo al punto de partida real del grupo — incluido el andamiaje de Python para quien no lo haya usado nunca.</li>
+</ol>
+<h2 id="apartado-6-tu-kit-de-arranque">Apartado 6. Tu kit de arranque<a class="headerlink" href="#apartado-6-tu-kit-de-arranque" title="Permanent link">&para;</a></h2>
+<p>Todo lo del inicio de curso, en un sitio:</p>
+<table>
+<thead>
+<tr>
+<th>Material</th>
+<th>Para qué</th>
+<th>Dónde</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Manual del alumnado</td>
+<td>Flujo de trabajo con repositorios, convenciones de commits, registro de decisiones y funcionamiento de las defensas</td>
+<td>En el Classroom del módulo desde el primer día</td>
+</tr>
+<tr>
+<td>Programación reducida del módulo</td>
+<td>Las reglas oficiales de evaluación y calificación, en versión publicada</td>
+<td>En el Classroom, tras la aprobación de la programación (septiembre)</td>
+</tr>
+<tr>
+<td>Ficha de la actividad de acogida de segundo</td>
+<td>La lista de pasos de la primera semana (trámite único, coordinado con el módulo de servidor)</td>
+<td>En el Classroom, primera semana</td>
+</tr>
+<tr>
+<td>Aula de código del módulo</td>
+<td>Donde vivirán tus repositorios de este módulo</td>
+<td>Invitación en el Classroom del módulo, primera semana</td>
+</tr>
+<tr>
+<td>Formulario de la prueba inicial de segundo</td>
+<td>La prueba sin nota de la primera semana</td>
+<td>En el Classroom, primera semana</td>
+</tr>
+<tr>
+<td>Rúbricas de defensa y de verificación</td>
+<td>Cómo se puntúa cada defensa — y la defensa específica si hubiera indicios de falta de autoría</td>
+<td>En el Classroom, con el primer enunciado evaluable</td>
+</tr>
+<tr>
+<td>Hoja de pasos del alta en la plataforma cloud de modelos</td>
+<td>El alta con alias en el nivel gratuito</td>
+<td>En el Classroom y en el aula, en la primera sesión del optativo — el alta se hace en la acogida única de la semana 1 (ficha de acogida, paso 7); la plataforma se usa a partir de la UD4</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Un consejo de arranque</p>
+<p>Tres horas a la semana es poco tiempo para un oficio entero, así que este módulo vive de la regularidad: cada unidad se apoya en la anterior y ninguna admite ponerse al día en una tarde. La UD1 empieza en la próxima sesión: si puedes, llega con Python instalado (si no, lo instalamos juntos), y llega con una pregunta — <strong>¿cuántas líneas hacen falta para que un programa lea una tabla de datos y le pregunte a un modelo ya entrenado qué ve en ella?</strong> — porque vamos a contarlas.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,2144 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Apuntes de los módulos del CFGS Desarrollo de Aplicaciones Web">
+      
+      
+        <meta name="author" content="Arba">
+      
+      
+        <link rel="canonical" href="https://codigoronin.github.io/apuntes-daw/bases-de-datos/ud2-modelo-entidad-relacion/">
+      
+      
+        <link rel="prev" href="../ud1-almacenamiento-sgbd-valor-del-dato/">
+      
+      
+        <link rel="next" href="../ud3-modelo-relacional-normalizacion/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>UD2 · Modelo entidad-relación - Apuntes DAW</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ud2-modelo-entidad-relacion-diseno-conceptual" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Apuntes DAW" class="md-header__button md-logo" aria-label="Apuntes DAW" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Apuntes DAW
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              UD2 · Modelo entidad-relación
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/codigoronin/apuntes-daw" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Inicio
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Bases de Datos (0484)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../desarrollo-web-en-entorno-servidor/" class="md-tabs__link">
+          
+  
+  
+  Desarrollo Web en Entorno Servidor (0613)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../big-data-e-inteligencia-artificial/" class="md-tabs__link">
+          
+  
+  
+  Big Data e Inteligencia Artificial (AOP1089)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../recursos/entorno-vscode-php/" class="md-tabs__link">
+          
+  
+  
+  Recursos
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Apuntes DAW" class="md-nav__button md-logo" aria-label="Apuntes DAW" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Apuntes DAW
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/codigoronin/apuntes-daw" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bases de Datos (0484)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bases de Datos (0484)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ud1-almacenamiento-sgbd-valor-del-dato/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Almacenamiento, SGBD y el valor del dato
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2 · Modelo entidad-relación
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2 · Modelo entidad-relación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-1-el-diseno-conceptual-y-sus-herramientas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1. El diseño conceptual y sus herramientas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 1. El diseño conceptual y sus herramientas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-11-por-que-se-disena-antes-de-construir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1.1. Por qué se diseña antes de construir
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-12-notaciones-y-herramientas-graficas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1.2. Notaciones y herramientas gráficas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-13-tabla-de-equivalencias-y-limites-tu-chuleta-para-las-entregas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1.3. Tabla de equivalencias y límites — tu chuleta para las entregas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-2-entidades-y-atributos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2. Entidades y atributos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 2. Entidades y atributos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-21-entidades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2.1. Entidades
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-22-atributos-y-sus-tipos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2.2. Atributos y sus tipos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-23-claves-en-el-nivel-conceptual" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2.3. Claves en el nivel conceptual
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-3-relaciones-y-cardinalidades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3. Relaciones y cardinalidades
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 3. Relaciones y cardinalidades">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-31-relaciones-grado-y-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3.1. Relaciones, grado y roles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-32-cardinalidad-maxima" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3.2. Cardinalidad máxima
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-33-cardinalidad-minima-participacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3.3. Cardinalidad mínima (participación)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-4-entidades-debiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4. Entidades débiles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-5-el-modelo-er-ampliado-i-generalizacion-y-especializacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5. El modelo E/R ampliado I: generalización y especialización
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-6-el-modelo-er-ampliado-ii-agregacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6. El modelo E/R ampliado II: agregación
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-7-del-texto-al-diagrama-metodo-de-trabajo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 7. Del texto al diagrama: método de trabajo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-8-errores-frecuentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 8. Errores frecuentes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-9-la-ia-en-esta-unidad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 9. La IA en esta unidad
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-10-actividad-evaluativa-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 10. Actividad evaluativa final
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-11-para-ampliar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 11. Para ampliar
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ud3-modelo-relacional-normalizacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3 · Modelo relacional y normalización
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ud4-consultas-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD4 · Consultas de datos con SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desarrollo Web en Entorno Servidor (0613)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Desarrollo Web en Entorno Servidor (0613)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud1-arquitecturas-tecnologias-servidor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Arquitecturas y tecnologías de programación en servidor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud2-codigo-embebido-php/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2 · Código embebido en lenguajes de marcas: sintaxis, estructuras, funciones y formularios
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Big Data e Inteligencia Artificial (AOP1089)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Big Data e Inteligencia Artificial (AOP1089)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/ud1-python-datos-ia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Python para datos e IA: lenguaje especializado, entorno y librerías
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recursos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Recursos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/entorno-vscode-php/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entorno de trabajo: VS Code para PHP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/guia-drawio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía rápida de draw.io
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/estandar-estilo-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estándar de estilo SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-1-el-diseno-conceptual-y-sus-herramientas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1. El diseño conceptual y sus herramientas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 1. El diseño conceptual y sus herramientas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-11-por-que-se-disena-antes-de-construir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1.1. Por qué se diseña antes de construir
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-12-notaciones-y-herramientas-graficas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1.2. Notaciones y herramientas gráficas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-13-tabla-de-equivalencias-y-limites-tu-chuleta-para-las-entregas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1.3. Tabla de equivalencias y límites — tu chuleta para las entregas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-2-entidades-y-atributos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2. Entidades y atributos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 2. Entidades y atributos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-21-entidades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2.1. Entidades
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-22-atributos-y-sus-tipos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2.2. Atributos y sus tipos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-23-claves-en-el-nivel-conceptual" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2.3. Claves en el nivel conceptual
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-3-relaciones-y-cardinalidades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3. Relaciones y cardinalidades
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 3. Relaciones y cardinalidades">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-31-relaciones-grado-y-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3.1. Relaciones, grado y roles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-32-cardinalidad-maxima" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3.2. Cardinalidad máxima
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-33-cardinalidad-minima-participacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3.3. Cardinalidad mínima (participación)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-4-entidades-debiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4. Entidades débiles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-5-el-modelo-er-ampliado-i-generalizacion-y-especializacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5. El modelo E/R ampliado I: generalización y especialización
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-6-el-modelo-er-ampliado-ii-agregacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6. El modelo E/R ampliado II: agregación
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-7-del-texto-al-diagrama-metodo-de-trabajo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 7. Del texto al diagrama: método de trabajo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-8-errores-frecuentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 8. Errores frecuentes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-9-la-ia-en-esta-unidad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 9. La IA en esta unidad
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-10-actividad-evaluativa-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 10. Actividad evaluativa final
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-11-para-ampliar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 11. Para ampliar
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="ud2-modelo-entidad-relacion-diseno-conceptual">UD2. Modelo entidad-relación: diseño conceptual<a class="headerlink" href="#ud2-modelo-entidad-relacion-diseno-conceptual" title="Permanent link">&para;</a></h1>
+<p><strong>Módulo 0484 — Bases de Datos · 1.º DAW · IES Río Arba · Curso 2026-27 · 22 horas · 1.ª evaluación</strong></p>
+<p><strong>Vinculación con el resultado de aprendizaje.</strong> Esta unidad trabaja el <strong>RA6</strong>: <em>"Diseña modelos relacionales normalizados interpretando diagramas entidad/relación"</em> (RD 686/2010 en la redacción dada por el RD 405/2023), en su <strong>parte de diseño conceptual (E/R)</strong>. Conforme al desglose del módulo, el reparto entre UD2 y UD3 es el siguiente:</p>
+<table>
+<thead>
+<tr>
+<th>CE</th>
+<th>Qué exige (resumen)</th>
+<th>Situación en esta unidad</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RA6.a</td>
+<td>Utilizar herramientas gráficas para representar el diseño lógico</td>
+<td><strong>Se inicia aquí</strong> (notaciones y herramienta de diagramado); se consolida y <strong>evalúa definitivamente en UD3</strong></td>
+</tr>
+<tr>
+<td>RA6.b-h</td>
+<td>Tablas, campos, relaciones, claves, integridad, normalización y restricciones no plasmables</td>
+<td><strong>Casa evaluable: UD3.</strong> Esta unidad construye el diagrama E/R del que todo eso se deriva</td>
+</tr>
+</tbody>
+</table>
+<p>En consecuencia, la actividad evaluativa de esta unidad <strong>prepara</strong> los CE (así se etiqueta cada ejercicio) y su calificación se integra como evidencia del RA6, cuya evaluación por CE culmina en la UD3. Traducción sin burocracia: lo que diseñes aquí es la materia prima de todo el RA6 — un diagrama mal hecho en UD2 se paga con intereses en UD3.</p>
+<p><strong>Al terminar esta unidad sabrás:</strong> leer un enunciado real y extraer de él entidades, atributos y relaciones sin inventar ni olvidar nada; decidir y anotar cardinalidades máximas y mínimas defendiéndolas con frases del enunciado; reconocer cuándo una entidad es débil y cómo se identifica; aplicar generalización/especialización y agregación cuando el problema lo pide (y solo entonces); y producir diagramas E/R limpios con una herramienta gráfica y una notación consistente.</p>
+<p><strong>Entorno de trabajo de la unidad.</strong> Diagramaremos con <strong>draw.io</strong> (o la herramienta que se indique en Classroom) y, para diagramas dentro de estos apuntes, con notación de texto <strong>Mermaid</strong> — la verás renderizada en el sitio. No se necesita MySQL todavía: en esta unidad se piensa; en la UD5 se construye.</p>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-1-el-diseno-conceptual-y-sus-herramientas">Apartado 1. El diseño conceptual y sus herramientas<a class="headerlink" href="#apartado-1-el-diseno-conceptual-y-sus-herramientas" title="Permanent link">&para;</a></h2>
+<h3 id="apartado-11-por-que-se-disena-antes-de-construir">Apartado 1.1. Por qué se diseña antes de construir<a class="headerlink" href="#apartado-11-por-que-se-disena-antes-de-construir" title="Permanent link">&para;</a></h3>
+<p>En la UD1 viste que los datos de la biblioteca acababan inconsistentes cuando se guardaban "como salía". El antídoto no es teclear tablas más deprisa: es <strong>diseñar</strong>. El diseño de una base de datos recorre tres niveles:</p>
+<ol>
+<li><strong>Diseño conceptual</strong>: representar la realidad del problema — qué cosas existen, qué se sabe de ellas, cómo se relacionan — sin pensar todavía en tablas ni en MySQL. Su lenguaje es el <strong>modelo entidad-relación (E/R)</strong>. Es el nivel de esta unidad.</li>
+<li><strong>Diseño lógico</strong>: traducir el modelo conceptual al modelo del gestor elegido — para nosotros, el <strong>modelo relacional</strong> (tablas, claves). Es la UD3.</li>
+<li><strong>Diseño físico</strong>: decidir cómo se almacena de verdad (tipos concretos, índices). Llega con la UD5 y se afina en la UD4 con la optimización.</li>
+</ol>
+<p>La razón del orden es económica: un error de diseño detectado en el diagrama se corrige moviendo una línea; detectado en producción, se corrige migrando datos con la aplicación parada. El modelo E/R existe, además, como <strong>lenguaje común con el cliente</strong>: la bibliotecaria no leerá SQL jamás, pero puede mirar un diagrama y decir "no: un lector sí puede tener varias reservas a la vez" — y esa frase vale oro.</p>
+<h3 id="apartado-12-notaciones-y-herramientas-graficas">Apartado 1.2. Notaciones y herramientas gráficas<a class="headerlink" href="#apartado-12-notaciones-y-herramientas-graficas" title="Permanent link">&para;</a></h3>
+<p>El modelo E/R tiene varias notaciones, y en este módulo trabajarás <strong>dos, cada una con su papel declarado</strong>:</p>
+<ul>
+<li><strong>Notación clásica (Chen) — la notación de conceptos y de lectura.</strong> Entidades en rectángulos, atributos en elipses, relaciones en rombos, cardinalidades como pares (mín, máx) junto a las líneas. Es la notación en la que razonaremos en clase y, sobre todo, la que <strong>debes saber leer</strong>: el RA6 exige interpretar diagramas E/R, y los enunciados académicos de otros centros y de las pruebas oficiales están escritos casi siempre en Chen. Además, es la única de las dos que <strong>dibuja la taxonomía completa de los atributos</strong> (apartado 2.2): elipses, elipses dobles, elipses punteadas y subrayados.</li>
+<li><strong>Notación pata de gallo (<em>crow's foot</em>) — la notación de herramienta y de entrega.</strong> La habitual en las herramientas profesionales: las cardinalidades se dibujan en los extremos de las líneas (la "pata" es el lado muchos) y los atributos se listan dentro del rectángulo, sin distinción gráfica de su tipo. La usan draw.io, MySQL Workbench y Mermaid; tus entregas de diagramas con herramienta irán en ella.</li>
+</ul>
+<p><strong>Convención de esta unidad — la etiqueta de tipo sobre el rombo.</strong> Además de las parejas (mín, máx) en los extremos, cada relación lleva <strong>sobre su rombo la etiqueta de su tipo</strong>: 1:1, 1:N o N:M. La regla de derivación: <strong>el tipo se forma con el máximo de cada extremo</strong>. Ejemplo con <em>realiza</em>: LECTOR participa con (0,N) y PRESTAMO con (1,1) → máximos N y 1 → tipo <strong>1:N</strong> (las mínimas no intervienen en el tipo: informan de la obligatoriedad, no de la multiplicidad). Guárdate esta etiqueta con cariño: es exactamente <strong>la regla con la que la UD3 decidirá cómo se traduce cada relación a tablas</strong> — 1:N y 1:1 de una manera, N:M de otra.</p>
+<p>Traducción práctica: <strong>lees y razonas en Chen; construyes y entregas en pata de gallo</strong> — y sabes pasar de una a otra, porque son el mismo modelo con dos ortografías. La regla profesional se mantiene: notación consistente <strong>dentro de cada diagrama</strong>; lo prohibido es mezclarlas en uno mismo, no dominar ambas.</p>
+<p>En cuanto a herramientas (aquí arranca RA6.a): esta unidad usa <strong>draw.io</strong> (app.diagrams.net) para tus entregas, con su <strong>biblioteca de formas Entidad-Relación</strong> — si no aparece en el panel lateral, actívala desde "Más formas"; el detalle fino de manejo va en la práctica de la unidad y en la guía enlazada más abajo, no en estos apuntes. En la UD3 consolidarás la herramienta representando diseños lógicos completos, que es donde ese criterio se evalúa definitivamente.</p>
+<div class="admonition info">
+<p class="admonition-title">Cómo están hechos los diagramas de estos apuntes</p>
+<p>Los diagramas en <strong>pata de gallo</strong> están escritos en Mermaid y el sitio los renderiza. Los diagramas en <strong>Chen</strong> son <strong>imágenes SVG</strong> alojadas en el repositorio del sitio (carpeta <code>img/</code>), porque Mermaid no dibuja notación de Chen: cuando veas una figura numerada, es una imagen; cuando veas un bloque de código renderizado, es Mermaid en pata de gallo.</p>
+</div>
+<h3 id="apartado-13-tabla-de-equivalencias-y-limites-tu-chuleta-para-las-entregas">Apartado 1.3. Tabla de equivalencias y límites — tu chuleta para las entregas<a class="headerlink" href="#apartado-13-tabla-de-equivalencias-y-limites-tu-chuleta-para-las-entregas" title="Permanent link">&para;</a></h3>
+<p>Cada concepto de la unidad, en las dos notaciones, y <strong>cómo se resuelve en tu entrega con draw.io cuando la pata de gallo no lo dibuja</strong>. Vuelve a esta tabla en cada práctica:</p>
+<table>
+<thead>
+<tr>
+<th>Concepto</th>
+<th>En Chen</th>
+<th>En pata de gallo</th>
+<th>Cómo se entrega cuando no hay equivalente</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Entidad</td>
+<td>Rectángulo</td>
+<td>Rectángulo con lista de atributos dentro</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Clave primaria</td>
+<td>Nombre subrayado en su elipse</td>
+<td>Marca PK junto al atributo</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Taxonomía de atributos (compuesto, multivalorado, derivado)</td>
+<td>Elipses: con partes colgando, doble, punteada</td>
+<td><strong>No se dibuja</strong> (todos los atributos se listan igual)</td>
+<td>Anotación textual junto al atributo ("multivalorado", "derivado: no almacenar") o en la documentación de la práctica</td>
+</tr>
+<tr>
+<td>Relación y cardinalidades (mín, máx)</td>
+<td>Rombo + parejas en los extremos</td>
+<td>Línea + símbolos de pata en los extremos (solo la información de mín/máx que la pata codifica)</td>
+<td>Si necesitas una mínima que el símbolo no capture, anótala como etiqueta de línea</td>
+</tr>
+<tr>
+<td>Etiqueta de tipo (1:1, 1:N, N:M)</td>
+<td>Sobre el rombo</td>
+<td>Implícita en los símbolos de los extremos</td>
+<td>Puedes añadirla como etiqueta de la línea (recomendado en esta unidad)</td>
+</tr>
+<tr>
+<td>Atributo de relación</td>
+<td>Elipse colgando del rombo</td>
+<td><strong>No existe</strong> (las líneas no llevan atributos)</td>
+<td>Anotación en la línea o, mejor, adelanta la solución de la UD3: entidad asociativa con el atributo dentro</td>
+</tr>
+<tr>
+<td>Reflexiva con roles</td>
+<td>Rombo con la misma entidad en ambos extremos y roles en las líneas</td>
+<td>Línea de la entidad a sí misma</td>
+<td>Los roles, como etiquetas de línea</td>
+</tr>
+<tr>
+<td>Entidad débil e identificativa</td>
+<td>Trazos dobles + discriminante en subrayado discontinuo</td>
+<td>Línea <strong>continua</strong> (identificativa) frente a <strong>discontinua</strong> (no identificativa); el discriminante, como parte de la clave</td>
+<td>Marca el discriminante como "PK parcial" o anótalo textualmente</td>
+</tr>
+<tr>
+<td>Jerarquía (total/parcial, exclusiva/solapada)</td>
+<td>Triángulo con anotación</td>
+<td><strong>No se dibuja</strong> (a lo sumo, relaciones "es-un" aproximadas)</td>
+<td>Triángulo con formas básicas de draw.io + anotación textual de las dos decisiones + constancia en la documentación</td>
+</tr>
+<tr>
+<td>Agregación</td>
+<td>Recuadro englobando la relación</td>
+<td><strong>No existe</strong></td>
+<td>Contenedor de draw.io alrededor del fragmento + nota; y documenta la decisión (en la UD3 verás su traducción natural)</td>
+</tr>
+<tr>
+<td>Ternaria</td>
+<td>Un rombo con tres patas</td>
+<td><strong>No existe</strong> (solo binarias)</td>
+<td>Descomposición en binarias contra una entidad asociativa (ver la nota bajo la figura 7)</td>
+</tr>
+</tbody>
+</table>
+<p>Cómo hacerlo, paso a paso: <a href="../../recursos/guia-drawio/">guía rápida de draw.io para las entregas de diagramas</a>.</p>
+<p>Un primer vistazo del caso hilo, en Mermaid (lo iremos construyendo pieza a pieza):</p>
+<pre class="mermaid"><code>erDiagram
+    LECTOR ||--o{ PRESTAMO : realiza
+    LIBRO ||--o{ PRESTAMO : "es objeto de"</code></pre>
+<p>Se lee: un lector realiza cero o muchos préstamos; cada préstamo lo realiza exactamente un lector; un libro es objeto de cero o muchos préstamos. Al final de la unidad, esa lectura te saldrá sola — y sabrás defender cada símbolo.</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E1.</strong> Ordena y justifica: la biblioteca quiere "un programa de préstamos nuevo". Indica qué producto genera cada nivel de diseño (conceptual, lógico, físico) para ese encargo y qué persona (bibliotecaria, tú como desarrollador, el DBA del proveedor) valida cada uno.</li>
+<li><strong>E2.</strong> Señala dos decisiones que <strong>no</strong> pertenecen al diseño conceptual y di a qué nivel pertenecen: (a) "el título se guardará como VARCHAR(200)"; (b) "un préstamo pertenece a un único lector"; (c) "crearemos un índice por fecha"; (d) "una reserva caduca a los 3 días" .</li>
+<li><strong>E3.</strong> Traduce a una frase en castellano cada extremo del diagrama Mermaid del apartado 1.2 (cuatro frases: lector→préstamo, préstamo→lector, libro→préstamo, préstamo→libro), señalando en cada una si habla de máximos o de mínimos.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-2-entidades-y-atributos">Apartado 2. Entidades y atributos<a class="headerlink" href="#apartado-2-entidades-y-atributos" title="Permanent link">&para;</a></h2>
+<h3 id="apartado-21-entidades">Apartado 2.1. Entidades<a class="headerlink" href="#apartado-21-entidades" title="Permanent link">&para;</a></h3>
+<p>Una <strong>entidad</strong> es un objeto de la realidad, con existencia propia y distinguible de los demás, del que el sistema necesita guardar información: cada lector concreto, cada libro. El <strong>tipo de entidad</strong> (o conjunto de entidades) es la plantilla: LECTOR, LIBRO. En el diagrama se dibujan los tipos; en la base de datos vivirán las <strong>ocurrencias</strong> (Marta, El Quijote).</p>
+<p>La prueba del algodón para decidir si algo es entidad: ¿tiene atributos propios que interesan <strong>y</strong> identidad propia en el problema? "Tauste" puede ser un simple atributo <code>localidad</code> del lector… o una entidad LOCALIDAD si el sistema comarcal guarda datos de cada villa (población, dirección de la biblioteca). <strong>El enunciado manda</strong>: no existe la respuesta universal, existe la respuesta para este problema.</p>
+<h3 id="apartado-22-atributos-y-sus-tipos">Apartado 2.2. Atributos y sus tipos<a class="headerlink" href="#apartado-22-atributos-y-sus-tipos" title="Permanent link">&para;</a></h3>
+<p>Los <strong>atributos</strong> son las propiedades que se guardan de cada entidad, cada uno con su <strong>dominio</strong> (conjunto de valores posibles: las fechas válidas, los textos de hasta 200 caracteres…). Clasificación que debes dominar:</p>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Definición</th>
+<th>Ejemplo en la biblioteca</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Simple</td>
+<td>No se descompone</td>
+<td><code>carne</code>, <code>titulo</code></td>
+</tr>
+<tr>
+<td>Compuesto</td>
+<td>Se descompone en partes con significado propio</td>
+<td><code>direccion</code> (calle, número, localidad, CP)</td>
+</tr>
+<tr>
+<td>Monovalorado</td>
+<td>Un valor por ocurrencia</td>
+<td><code>fecha_nacimiento</code></td>
+</tr>
+<tr>
+<td><strong>Multivalorado</strong></td>
+<td>Varios valores por ocurrencia</td>
+<td><code>telefonos</code> de un lector (fijo, móvil…) — se dibuja con elipse doble</td>
+</tr>
+<tr>
+<td><strong>Derivado</strong></td>
+<td>Se calcula a partir de otros; no se almacena</td>
+<td><code>edad</code> (deriva de <code>fecha_nacimiento</code>) — elipse punteada (discontinua)</td>
+</tr>
+<tr>
+<td><strong>Identificador (clave)</strong></td>
+<td>Identifica cada ocurrencia sin ambigüedad (apartado 2.3)</td>
+<td><code>carne</code> — nombre <strong>subrayado</strong> en su elipse</td>
+</tr>
+</tbody>
+</table>
+<p>La taxonomía completa, dibujada en Chen sobre la entidad del caso hilo:</p>
+<p><img alt="Figura 1. LECTOR en notación de Chen con la taxonomía completa de atributos: clave subrayada, atributo compuesto con sus partes, multivalorado en elipse doble y derivado en elipse punteada conectado a su fuente" src="../img/ud2-fig1-chen-taxonomia-lector.svg" /></p>
+<p><em>Figura 1. La entidad LECTOR con los cinco tipos de atributo en notación de Chen: <code>carne</code> subrayado (identificador), <code>nombre</code> y <code>fecha_nacimiento</code> simples, <code>direccion</code> compuesto (con <code>calle</code>, <code>numero</code> y <code>localidad</code> colgando), <code>telefonos</code> en elipse doble (multivalorado) y <code>edad</code> en elipse punteada (derivado de <code>fecha_nacimiento</code>).</em></p>
+<p>La misma entidad en pata de gallo se escribe como un rectángulo con la lista de atributos dentro — y ahí está el matiz honesto de la doble notación: <strong>la pata de gallo no distingue gráficamente esta taxonomía</strong> (a lo sumo marca la clave), de modo que compuestos, multivalorados y derivados se anotan textualmente o se documentan aparte. Por eso Chen es la notación donde esta taxonomía <strong>se lee y se evalúa</strong>:</p>
+<pre class="mermaid"><code>erDiagram
+    LECTOR {
+        int carne PK
+        string nombre
+        string direccion "compuesto: calle, numero, localidad"
+        string telefonos "multivalorado"
+        date fecha_nacimiento
+        int edad "derivado: no se almacena"
+    }</code></pre>
+<p><strong>Nota de entrega (draw.io):</strong> la taxonomía que la pata de gallo no dibuja se resuelve en tus entregas con <strong>anotación textual junto al atributo</strong> ("multivalorado", "derivado: no se almacena", "compuesto: calle, numero, localidad") o en la documentación de la práctica — fila correspondiente de la tabla del apartado 1.3.</p>
+<p>Los multivalorados y los derivados son señales de alarma bien conocidas: el multivalorado desaparecerá al pasar al modelo relacional (UD3) convertido en otra cosa, y el derivado no debe almacenarse (almacenarlo crea la inconsistencia de la UD1: edad guardada 17, fecha de nacimiento que dice 18).</p>
+<h3 id="apartado-23-claves-en-el-nivel-conceptual">Apartado 2.3. Claves en el nivel conceptual<a class="headerlink" href="#apartado-23-claves-en-el-nivel-conceptual" title="Permanent link">&para;</a></h3>
+<p>Un atributo (o conjunto mínimo de atributos) cuyos valores no se repiten entre ocurrencias es una <strong>clave candidata</strong>: identifica sin ambigüedad. De las candidatas se elige la <strong>clave primaria</strong> (se subraya en el diagrama); las demás quedan como alternativas. LECTOR: candidatas <code>carne</code> y <code>dni</code>; primaria razonable, <code>carne</code> (es del dominio del problema y no arrastra un dato personal fuerte donde no hace falta — la minimización de la UD1 también opina en el diseño).</p>
+<p>Criterios de elección que se defienden en voz alta: valor <strong>siempre conocido</strong>, <strong>estable</strong> en el tiempo, y <strong>mínimo</strong>. "Nombre y apellidos" fracasa en los tres.</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E4.</strong> Del enunciado: "De cada libro se guarda su ISBN, título, autores, año y la edad recomendada calculada a partir de su clasificación". Clasifica cada atributo (simple/compuesto, mono/multivalorado, derivado) y elige clave primaria justificando con los tres criterios.</li>
+<li><strong>E5.</strong> Un gimnasio guarda de cada socio: número de socio, DNI, nombre, teléfonos de contacto, cuota mensual y años de antigüedad. Dibuja la entidad con la notación clásica (elipses, doble elipse, discontinua, subrayado) — entrega foto o diagrama de herramienta.</li>
+<li><strong>E6.</strong> Discute con el enunciado en la mano: en el sistema de la biblioteca municipal (una sola villa), ¿EDITORIAL debe ser entidad o atributo de LIBRO? Da la condición del enunciado que te haría cambiar de respuesta.</li>
+<li><strong>E7.</strong> <em>(Lectura de Chen.)</em> Sobre la figura 1: (a) escribe, para cada atributo, su tipo completo justificado por su representación gráfica (qué te dice cada elipse, doble, punteada o subrayado); (b) explica qué información <strong>pierde</strong> la versión en pata de gallo del mismo diagrama y cómo debería compensarse en una entrega; (c) señala qué atributo no debe almacenarse y qué atributo lo sustituye como fuente.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-3-relaciones-y-cardinalidades">Apartado 3. Relaciones y cardinalidades<a class="headerlink" href="#apartado-3-relaciones-y-cardinalidades" title="Permanent link">&para;</a></h2>
+<h3 id="apartado-31-relaciones-grado-y-roles">Apartado 3.1. Relaciones, grado y roles<a class="headerlink" href="#apartado-31-relaciones-grado-y-roles" title="Permanent link">&para;</a></h3>
+<p>Una <strong>relación</strong> (interrelación) es una asociación entre entidades que el sistema necesita recordar: LECTOR <em>realiza</em> PRESTAMO. El <strong>grado</strong> es el número de entidades que participan: binarias (las habituales), <strong>reflexivas</strong> (una entidad consigo misma: un LECTOR <em>avala</em> a otro LECTOR — cada extremo lleva su <strong>rol</strong>: avalista/avalado) y <strong>ternarias</strong> (tres entidades a la vez; volveremos sobre ellas en el apartado 6).</p>
+<p>Las relaciones pueden tener <strong>atributos propios</strong>: en LECTOR—<em>valora</em>—LIBRO, la <code>puntuacion</code> no es del lector ni del libro: es de la pareja. Es el sitio exacto donde principiantes cuelgan el atributo de la entidad equivocada — vigílalo.</p>
+<h3 id="apartado-32-cardinalidad-maxima">Apartado 3.2. Cardinalidad máxima<a class="headerlink" href="#apartado-32-cardinalidad-maxima" title="Permanent link">&para;</a></h3>
+<p>La <strong>cardinalidad máxima</strong> dice con cuántas ocurrencias de la otra entidad puede asociarse como mucho cada ocurrencia. Combinando ambos sentidos: <strong>1:1</strong>, <strong>1:N</strong>, <strong>N:M</strong>.</p>
+<ul>
+<li>LECTOR—PRESTAMO es <strong>1:N</strong>: un lector realiza muchos préstamos; cada préstamo es de un solo lector.</li>
+<li>LECTOR—LIBRO mediante <em>valora</em> es <strong>N:M</strong>: un lector valora muchos libros; un libro lo valoran muchos lectores.</li>
+<li>BIBLIOTECA—DIRECTOR sería <strong>1:1</strong>: cada biblioteca tiene un director y cada director dirige una biblioteca.</li>
+</ul>
+<p>Los tres tipos, con la convención completa de la unidad (parejas en los extremos y etiqueta de tipo sobre el rombo), más los dos rasgos estructurales del apartado 3.1 — el atributo de relación y la reflexiva con roles — dibujados en Chen:</p>
+<p><img alt="Figura 2. Relaciones en notación de Chen: realiza como 1:N con sus parejas de cardinalidad, valora como N:M con el atributo puntuacion colgando del rombo, y la reflexiva supervisa con los roles supervisor y supervisado" src="../img/ud2-fig2-chen-relaciones.svg" /></p>
+<p><em>Figura 2. Tres relaciones en Chen con la convención de la unidad: la etiqueta de tipo sobre el rombo se deriva de los máximos (0,N)-(1,1) → 1:N; el atributo <code>puntuacion</code> cuelga del rombo de <code>valora</code> (es de la pareja); la reflexiva <code>supervisa</code> lleva sus dos roles anotados en las líneas.</em></p>
+<p>Las mismas tres relaciones en pata de gallo:</p>
+<pre class="mermaid"><code>erDiagram
+    LECTOR ||--o{ PRESTAMO : realiza
+    LECTOR }o--o{ LIBRO : valora
+    TECNICO |o--o{ TECNICO : supervisa</code></pre>
+<p><em>Lectura comparada</em>: lo que en Chen son las parejas (0,N)-(1,1) aquí son los símbolos de los extremos (la "pata" es el lado muchos; el círculo, el cero opcional). <strong>Nota de entrega (draw.io):</strong> los <strong>roles</strong> de la reflexiva y el <strong>atributo de relación</strong> (<code>puntuacion</code>) no tienen dibujo en pata de gallo — los roles van como etiquetas de línea, y el atributo de relación se anota en la línea o, mejor, anticipa la entidad asociativa que la UD3 hará oficial.</p>
+<p>El método fiable para no equivocarse: <strong>fija una ocurrencia y pregunta por la otra entidad, en los dos sentidos, con frases completas</strong>. "Dado UN préstamo, ¿cuántos lectores?" → uno. "Dado UN lector, ¿cuántos préstamos?" → muchos. Anota cada respuesta en el extremo <strong>opuesto</strong> a la entidad fijada (en notación clásica; la pata de gallo lo pone en el extremo propio — otra razón para no mezclar notaciones).</p>
+<h3 id="apartado-33-cardinalidad-minima-participacion">Apartado 3.3. Cardinalidad mínima (participación)<a class="headerlink" href="#apartado-33-cardinalidad-minima-participacion" title="Permanent link">&para;</a></h3>
+<p>La <strong>cardinalidad mínima</strong> (0 o 1) dice si la participación es <strong>opcional u obligatoria</strong>: se anota junto a la máxima como par (mín, máx). En LECTOR (0,N)—<em>realiza</em>—(1,1) PRESTAMO: un lector puede no tener préstamos (0,N — participación opcional); un préstamo exige exactamente un lector (1,1 — obligatoria). Las mínimas salen siempre de frases del enunciado ("todo préstamo pertenece a un lector"; "puede haber lectores sin préstamos") — si el enunciado calla, <strong>se pregunta al cliente</strong>, no se inventa: cada mínima es una regla de negocio que la base de datos hará cumplir.</p>
+<p>En Mermaid, el caso hilo con valoraciones:</p>
+<pre class="mermaid"><code>erDiagram
+    LECTOR ||--o{ PRESTAMO : realiza
+    LIBRO ||--o{ PRESTAMO : "es objeto de"
+    LECTOR }o--o{ LIBRO : valora</code></pre>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E8.</strong> Para un centro de FP: MODULO—PROFESOR (<em>imparte</em>), ALUMNO—MODULO (<em>se matricula</em>), PROFESOR—GRUPO (<em>tutoriza</em>). Decide máximas y mínimas de las tres relaciones con el método de fijar-y-preguntar, escribiendo las frases que usas; señala qué suposición tuviste que hacer por silencio del enunciado.</li>
+<li><strong>E9.</strong> Modela con una relación reflexiva: "cada técnico de una empresa puede supervisar a varios técnicos, y cada técnico tiene como mucho un supervisor; los recién llegados pueden no tener supervisor todavía". Indica roles y cardinalidades (mín, máx) en ambos extremos.</li>
+<li><strong>E10.</strong> En LECTOR—<em>valora</em>—LIBRO, con <code>puntuacion</code> y <code>fecha_valoracion</code> como atributos de la relación: explica qué se rompe si <code>puntuacion</code> se coloca como atributo de LIBRO, y qué pregunta del negocio dejaría de poder responderse.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-4-entidades-debiles">Apartado 4. Entidades débiles<a class="headerlink" href="#apartado-4-entidades-debiles" title="Permanent link">&para;</a></h2>
+<p>Hay entidades que no se sostienen solas. En la biblioteca comarcal, cada LIBRO (la obra: El Quijote) tiene varios <strong>EJEMPLARES</strong> físicos, numerados 1, 2, 3… <strong>dentro de cada libro</strong>. El "ejemplar 2" no identifica nada por sí mismo — ¿el 2 de qué obra? — y si la obra desaparece del catálogo, sus ejemplares dejan de tener sentido.</p>
+<p>Eso es una <strong>entidad débil</strong>: depende de una entidad fuerte a través de una <strong>relación identificativa</strong>. La dependencia tiene dos caras que conviene distinguir:</p>
+<ul>
+<li><strong>En existencia</strong>: la ocurrencia débil no puede existir sin la fuerte (sin obra no hay ejemplar).</li>
+<li><strong>En identificación</strong>: la débil no tiene clave completa propia; se identifica con la clave de la fuerte <strong>más</strong> un <strong>discriminante</strong> propio (el <code>num_ejemplar</code> dentro de la obra). Toda dependencia en identificación implica dependencia en existencia; la inversa no.</li>
+</ul>
+<p>Notación clásica: rectángulo doble para la entidad débil, rombo doble para la relación identificativa, discriminante subrayado con línea discontinua. La participación de la débil en su relación identificativa es siempre <strong>(1,1)</strong>: obligatoria y con una sola fuerte.</p>
+<p>El caso completo, dibujado en Chen con toda la notación de debilidad:</p>
+<p><img alt="Figura 3. Entidad débil por identificación: LIBRO con clave isbn, relación identificativa tiene en rombo doble, EJEMPLAR en rectángulo doble con discriminante num_ejemplar en subrayado discontinuo" src="../img/ud2-fig3-chen-debil-identificacion.svg" /></p>
+<p><em>Figura 3. Debilidad por identificación: los trazos dobles (rectángulo y rombo) y el subrayado discontinuo del discriminante son los tres delatores gráficos. Un ejemplar concreto se identifica como <code>isbn</code> + <code>num_ejemplar</code>.</em></p>
+<p>El mismo caso en pata de gallo:</p>
+<pre class="mermaid"><code>erDiagram
+    LIBRO ||--|{ EJEMPLAR : tiene</code></pre>
+<p><em>Lectura comparada</em>: la pata de gallo sí distingue la relación <strong>identificativa</strong>: se dibuja con línea <strong>continua</strong> (frente a la discontinua de la no identificativa — compárala con el puente de la figura 4). <strong>Nota de entrega (draw.io):</strong> el discriminante no tiene símbolo propio: márcalo como parte de la clave ("PK parcial") o con anotación textual.</p>
+<p>La confusión típica que debes evitar: no toda relación 1:N con participación obligatoria crea una entidad débil. PRESTAMO exige un lector (1,1) y sin embargo puede diseñarse con clave propia (<code>num_prestamo</code>): entonces es entidad <strong>fuerte</strong> con relación normal. La debilidad es una <strong>decisión de identificación</strong>: ¿quiero identificar esto por sí mismo o dentro de su padre? Ambas opciones pueden ser legítimas; lo que se evalúa es que sepas cuál has tomado y por qué. La figura gemela de la anterior muestra el contraste exacto:</p>
+<p><img alt="Figura 4. Dependencia solo en existencia: PRESTAMO exige un lector con participación obligatoria pero tiene clave propia num_prestamo, de modo que la relación es normal y no hay trazos dobles" src="../img/ud2-fig4-chen-existencia-sin-identificacion.svg" /></p>
+<p><em>Figura 4. Dependencia en existencia sin identificación: PRESTAMO no puede existir sin lector — su participación es (1,1) — pero se identifica por su clave propia <code>num_prestamo</code>, así que ni el rectángulo ni el rombo se doblan y no hay discriminante.</em></p>
+<p>El gemelo en pata de gallo:</p>
+<pre class="mermaid"><code>erDiagram
+    LECTOR ||..o{ PRESTAMO : realiza</code></pre>
+<p><em>Lectura comparada</em>: la línea <strong>discontinua</strong> declara la relación <strong>no identificativa</strong> — PRESTAMO tiene clave propia. El par de puentes de las figuras 3 y 4 es la traducción exacta de "trazos dobles frente a trazos simples" de Chen: continua frente a discontinua.</p>
+<p><strong>Cómo se examina esto</strong> (avisado queda): el enunciado típico te da una relación con (1,1) obligatorio y te pregunta si la entidad es débil. La respuesta nunca está en la obligatoriedad — está en la <strong>identificación</strong>: busca si la entidad tiene clave completa propia (figura 4: fuerte) o se identifica con la clave del padre más un discriminante (figura 3: débil). Los delatores gráficos, cuando te dan el diagrama hecho, son los trazos dobles y el subrayado discontinuo; cuando te dan el texto, la pregunta que resuelve es "¿cómo nombro sin ambigüedad una ocurrencia concreta?".</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E11.</strong> Partiendo del diagrama <strong>dado</strong> en la figura 3, amplíalo: añade la relación PRESTAMO—EJEMPLAR (se presta un ejemplar concreto, no la obra) con sus parejas de cardinalidad y su etiqueta de tipo, y justifica el cambio respecto al diagrama del apartado 3 (donde el préstamo era "de un libro"). Indica además, leyendo la figura 3, por qué PRESTAMO <strong>no</strong> debe llevar trazos dobles pese a su (1,1) — apóyate en la figura 4.</li>
+<li><strong>E12.</strong> Decide razonadamente si son entidades débiles (y con qué discriminante) o fuertes: (a) las AULAS de un edificio, numeradas por planta; (b) las FACTURAS de una empresa, con numeración única anual legal; (c) las LÍNEAS de una factura.</li>
+<li><strong>E13.</strong> La figura 4 muestra el patrón con PRESTAMO. Da un ejemplo <strong>de otro dominio distinto de la biblioteca</strong> con la misma estructura (dependencia en existencia sin dependencia en identificación) y explica por qué su diagrama tampoco lleva dobles trazos.</li>
+<li>
+<p><strong>E14.</strong> <em>(Lectura de Chen.)</em> La figura 8 muestra un diagrama en notación de Chen del circuito de préstamos de la biblioteca:</p>
+<p><img alt="Figura 8. Diagrama Chen para interpretar: LECTOR, PRESTAMO, EJEMPLAR como entidad débil y LIBRO, con cardinalidades, etiquetas de tipo y discriminante" src="../img/ud2-fig8-chen-lectura-biblioteca.svg" /></p>
+<p><em>(a)</em> Escribe las <strong>ocho frases de cardinalidad</strong> (mínimo y máximo de cada extremo de las tres relaciones) y comprueba que la etiqueta de tipo de cada rombo se deriva de los máximos que has leído; <em>(b)</em> identifica la entidad débil, su relación identificativa y su discriminante, explicando por qué símbolo lo sabes; <em>(c)</em> di cómo se identifica completamente un ejemplar concreto; <em>(d)</em> señala una regla razonable del negocio que este diagrama <strong>no</strong> captura y que iría a la documentación del paso 7 del apartado 7.</p>
+</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-5-el-modelo-er-ampliado-i-generalizacion-y-especializacion">Apartado 5. El modelo E/R ampliado I: generalización y especialización<a class="headerlink" href="#apartado-5-el-modelo-er-ampliado-i-generalizacion-y-especializacion" title="Permanent link">&para;</a></h2>
+<p>Cuando varios tipos de entidad comparten atributos y relaciones pero cada uno añade lo suyo, el E/R ampliado ofrece la jerarquía <strong>supertipo-subtipos</strong>. En la biblioteca comarcal, los USUARIOS del servicio comparten carné, nombre y contacto; pero los LECTORES INFANTILES añaden tutor legal y los CENTROS EDUCATIVOS (que retiran lotes) añaden CIF y persona de contacto.</p>
+<ul>
+<li><strong>Especialización</strong> (arriba → abajo): partir del supertipo USUARIO y descubrir subtipos con rasgos propios.</li>
+<li><strong>Generalización</strong> (abajo → arriba): tener LECTOR_INFANTIL y CENTRO y abstraer lo común en USUARIO.</li>
+</ul>
+<p>El resultado se dibuja igual (triángulo "es-un" hacia los subtipos); lo que cambia es el camino mental. Los subtipos <strong>heredan</strong> todos los atributos y relaciones del supertipo — la herencia es la mitad del beneficio: el préstamo se relaciona con USUARIO una sola vez, no tres.</p>
+<p>Toda jerarquía se anota con dos decisiones, siempre extraídas del enunciado:</p>
+<table>
+<thead>
+<tr>
+<th>Decisión</th>
+<th>Opciones</th>
+<th>Pregunta que la decide</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Totalidad</strong></td>
+<td>Total (todo supertipo es de algún subtipo) / Parcial (puede haber supertipos "a secas")</td>
+<td>¿Existe algún usuario que no sea ni infantil ni centro?</td>
+</tr>
+<tr>
+<td><strong>Solapamiento</strong></td>
+<td>Disjunta (a lo sumo un subtipo) / Solapada (puede ser varios a la vez)</td>
+<td>¿Puede alguien ser dos cosas a la vez?</td>
+</tr>
+</tbody>
+</table>
+<p>En la biblioteca: parcial (el adulto normal es USUARIO sin subtipo) y disjunta —también llamada <strong>exclusiva</strong>— (nadie es a la vez menor y centro educativo). El caso, dibujado con la convención del triángulo:</p>
+<p><img alt="Figura 5. Jerarquía de generalización: USUARIO con sus atributos comunes arriba, triángulo es-un, y los subtipos LECTOR_INFANTIL con tutor_legal y CENTRO con cif; anotación parcial y exclusiva" src="../img/ud2-fig5-chen-jerarquia-usuario.svg" /></p>
+<p><em>Figura 5. La jerarquía de usuarios en la convención española del triángulo: los atributos comunes (<code>carne</code>, <code>nombre</code>) viven en el supertipo y se heredan; cada subtipo aporta lo suyo; la anotación (parcial, exclusiva) declara las dos decisiones del enunciado.</em></p>
+<p>La aproximación en pata de gallo, con su límite declarado:</p>
+<pre class="mermaid"><code>erDiagram
+    USUARIO ||--o| LECTOR_INFANTIL : es_un
+    USUARIO ||--o| CENTRO : es_un</code></pre>
+<p><em>Lectura comparada</em>: la pata de gallo <strong>no tiene jerarquías</strong> — esto es una aproximación con relaciones "es-un" que pierde precisamente lo importante: la totalidad y la exclusividad no están en ningún símbolo. <strong>Nota de entrega (draw.io):</strong> dibuja el triángulo con formas básicas, anota "(parcial, exclusiva)" como texto junto a él y deja constancia de las dos decisiones en la documentación de la práctica — fila correspondiente de la tabla del apartado 1.3.</p>
+<p>Cuándo <strong>no</strong> especializar: si los subtipos no aportan atributos ni relaciones propias, basta un atributo <code>tipo</code> en la entidad. Especializar "por elegancia" añade complejidad que la UD3 te cobrará al traducir. La jerarquía se gana con diferencias reales, no con taxonomía decorativa.</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E15.</strong> Un polideportivo municipal tiene actividades dirigidas y alquiler de pistas. Sus USUARIOS: abonados (cuota mensual, fecha de alta) y usuarios puntuales (sin datos extra: pagan por uso). Además, algunos abonados son también monitores (titulación, cuenta bancaria). Modela la jerarquía o jerarquías, decidiendo y justificando totalidad y solapamiento en cada una.</li>
+<li><strong>E16.</strong> Critica este diseño: VEHICULO especializado en COCHE_ROJO, COCHE_AZUL y MOTO. Señala qué regla del apartado incumple cada parte y propón el diseño correcto.</li>
+<li><strong>E17.</strong> Sobre la figura 5: indica dos atributos y una relación que se colocan en el supertipo y un atributo que se coloca en cada subtipo, explicando el criterio general de colocación ("cada cosa en el nivel más alto donde es común a todos").</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-6-el-modelo-er-ampliado-ii-agregacion">Apartado 6. El modelo E/R ampliado II: agregación<a class="headerlink" href="#apartado-6-el-modelo-er-ampliado-ii-agregacion" title="Permanent link">&para;</a></h2>
+<p>Hay situaciones donde necesitas relacionar algo <strong>con una relación</strong>, y el E/R básico no lo permite: las relaciones solo unen entidades. La <strong>agregación</strong> resuelve el problema tratando una relación (con sus entidades participantes) como una entidad de orden superior — se dibuja un rectángulo englobando la relación agregada.</p>
+<p>Caso comarcal: la relación BIBLIOTECA—<em>organiza</em>—ACTIVIDAD (cada biblioteca organiza actividades de un catálogo común: club de lectura, cuentacuentos). Ahora el ayuntamiento quiere registrar qué MONITOR conduce <strong>cada actividad en cada biblioteca</strong> — el monitor no se asigna a la actividad "club de lectura" en abstracto, ni a la biblioteca, sino a la <strong>pareja concreta</strong> organiza(biblioteca, actividad). Agregamos la relación <em>organiza</em> y la relacionamos con MONITOR:</p>
+<p><img alt="Figura 6. Agregación en Chen: un recuadro discontinuo engloba BIBLIOTECA, el rombo organiza y ACTIVIDAD; la pareja agregada se relaciona mediante asignada-a con MONITOR" src="../img/ud2-fig6-chen-agregacion.svg" /></p>
+<p><em>Figura 6. La agregación dibujada de verdad — esta es la figura que Mermaid no puede producir, por eso es una imagen: el recuadro engloba la relación <code>organiza</code> con sus dos entidades, y ese conjunto, tratado como entidad de orden superior, se relaciona con MONITOR. La (0,1) del lado agregado dice que la pareja puede existir sin monitor asignado — la clave semántica frente a la ternaria.</em></p>
+<p><strong>Nota de entrega (draw.io):</strong> la agregación <strong>no existe en pata de gallo</strong> y no se fuerza: en tu entrega, usa un contenedor de draw.io alrededor del fragmento agregado con una nota ("relación agregada"), y documenta la decisión en la memoria de la práctica. En la UD3 verás que la traducción a tablas la resuelve con naturalidad.</p>
+<p>La alternativa que siempre debe considerarse es la <strong>relación ternaria</strong> BIBLIOTECA—ACTIVIDAD—MONITOR — su aspecto general, con otro ejemplo que ya conoces del ejercicio E18 en adelante:</p>
+<p><img alt="Figura 7. Relación ternaria en Chen: PROFESOR, MODULO y GRUPO unidos por un único rombo imparte con el atributo horas_semanales de la terna" src="../img/ud2-fig7-chen-ternaria.svg" /></p>
+<p><em>Figura 7. Una ternaria genuina: un único rombo une a los tres participantes a la vez, y el atributo <code>horas_semanales</code> pertenece a la terna completa. Contrasta con la figura 6: aquí no hay pareja previa que exista por sí sola.</em> La diferencia semántica: la ternaria exige que las tres cosas aparezcan <strong>a la vez</strong> (no hay pareja biblioteca-actividad sin monitor); la agregación permite que la pareja exista primero (una biblioteca organiza la actividad, con o sin monitor asignado todavía) y algo se le asocie después. De nuevo: el enunciado decide — "las actividades se programan y el monitor se asigna más tarde" pide agregación.</p>
+<p><strong>Nota de entrega (draw.io):</strong> la ternaria tampoco existe en pata de gallo (solo hay binarias): se entrega <strong>descompuesta</strong> en binarias contra una entidad asociativa que representa la terna —</p>
+<pre class="mermaid"><code>erDiagram
+    PROFESOR ||--o{ IMPARTICION : realiza
+    MODULO ||--o{ IMPARTICION : concreta
+    GRUPO ||--o{ IMPARTICION : recibe</code></pre>
+<p><em>Lectura comparada</em>: IMPARTICION representa cada terna concreta y aloja <code>horas_semanales</code>; las tres patas 1:N sustituyen al rombo triple. No es una traición al modelo: es exactamente lo que la UD3 hará al traducir la ternaria a tablas — aquí lo usas solo como formato de entrega, dejando constancia en la documentación de que el concepto modelado es una ternaria.</p>
+<p>Regla de higiene: la agregación es el recurso <strong>excepcional</strong> del modelo, no un adorno. Si puedes modelar con entidades y relaciones simples sin perder semántica, hazlo: cada nivel de sofisticación del diagrama es complejidad que la UD3 traducirá y la UD5 implementará.</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E18.</strong> "Los profesores imparten módulos en grupos concretos; de cada asignación profesor-módulo-grupo se guarda el número de horas semanales." Modela con relación ternaria y justifica por qué aquí no procede la agregación (pista: ¿puede existir la pareja módulo-grupo sin profesor en este enunciado?).</li>
+<li><strong>E19.</strong> Modifica el enunciado de E18 lo mínimo para que la agregación pase a ser el modelo correcto, y dibuja el resultado.</li>
+<li><strong>E20.</strong> En el caso comarcal del apartado, añade la regla "cada asignación de monitor tiene fecha de inicio y fin". Indica dónde viven esos atributos y por qué no pueden ser de MONITOR ni de ACTIVIDAD.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-7-del-texto-al-diagrama-metodo-de-trabajo">Apartado 7. Del texto al diagrama: método de trabajo<a class="headerlink" href="#apartado-7-del-texto-al-diagrama-metodo-de-trabajo" title="Permanent link">&para;</a></h2>
+<p>El examen y la vida profesional te darán <strong>texto</strong>, no diagramas. El procedimiento sistemático — practícalo hasta que sea reflejo:</p>
+<ol>
+<li><strong>Lectura de sustantivos</strong> → candidatos a entidad o atributo. Filtro: ¿tiene datos propios e identidad? (apartado 2.1).</li>
+<li><strong>Lectura de verbos</strong> → candidatos a relación. Filtro: ¿el sistema necesita <strong>recordar</strong> esa asociación?</li>
+<li><strong>Atributos a su dueño</strong>: cada dato, a su entidad — o a su relación, si es de la pareja (apartado 3.1).</li>
+<li><strong>Cardinalidades con frases</strong>: máximas y mínimas, en ambos sentidos, citando el enunciado; lo que el enunciado calla se apunta como <strong>pregunta al cliente</strong> (lista explícita en la entrega: preguntar es profesional, suponer en silencio no).</li>
+<li><strong>Revisión de patrones</strong>: ¿algún multivalorado que deba repensarse? ¿debilidades reales? ¿jerarquías con diferencias reales? ¿alguna relación sobre relación (agregación)?</li>
+<li><strong>Pasada de calidad</strong>: nombres en singular y consistentes, notación uniforme, ni entidades-isla (sin relaciones) ni atributos duplicados en dos sitios.</li>
+<li><strong>Restricciones que el diagrama no captura</strong>, documentadas aparte en lenguaje natural: "un lector con préstamos vencidos no puede llevarse más libros", "la fecha de devolución es posterior a la de préstamo". El diagrama no sabe decir eso; tu documentación sí debe. En la UD3 esta lista se convertirá en materia evaluable (RA6.h), así que acostúmbrate desde ya a entregarla junto al diagrama.</li>
+</ol>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E21.</strong> Aplica el método completo (los 7 pasos, entregando también la lista de preguntas al cliente y la de restricciones no capturadas) a: "La escuela municipal de música gestiona alumnos que se matriculan cada curso en una o varias asignaturas; cada asignatura la imparte un profesor en un aula con horario semanal; los instrumentos del almacén se prestan a alumnos por trimestres, y de cada préstamo importa el estado del instrumento a la entrega y a la devolución."</li>
+<li><strong>E22.</strong> Intercambia tu diagrama de E21 con un compañero y audita el suyo solo con el paso 6 y el paso 7: entrega la lista de defectos de calidad y de restricciones que su documentación olvidó.</li>
+<li><strong>E23.</strong> El enunciado de E21 calla tres cosas que cambian el diagrama según la respuesta. Identifica al menos dos, formula la pregunta al cliente y dibuja cómo queda cada alternativa (mini-diagramas del fragmento afectado).</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-8-errores-frecuentes">Apartado 8. Errores frecuentes<a class="headerlink" href="#apartado-8-errores-frecuentes" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Atributo donde va una entidad (y viceversa).</strong> "Editorial" como texto repetido en cada libro cuando el sistema guarda datos de editoriales. Síntoma: el mismo literal escrito muchas veces. Filtro del apartado 2.1.</li>
+<li><strong>Atributos multivalorados como "solución" de una relación N:M.</strong> Guardar en LECTOR un atributo <code>libros_valorados</code>. Eso es esconder una relación dentro de una entidad; en UD3 explota. Si la asociación importa, es relación.</li>
+<li><strong>Cardinalidades anotadas al revés.</strong> El clásico absoluto. Antídoto: método de fijar-y-preguntar con frases escritas (apartado 3.2) y no mezclar notaciones — clásica y pata de gallo anotan en extremos opuestos.</li>
+<li><strong>Mínimas inventadas.</strong> Poner (1,1) "porque suena obligatorio" sin frase del enunciado. Cada mínima es una regla de negocio: cítala o pregúntala.</li>
+<li><strong>Atributo de relación colgado de una entidad.</strong> La <code>puntuacion</code> en LIBRO (¿la de quién?), las <code>horas_semanales</code> en PROFESOR (¿de qué grupo?). Pregunta: ¿este dato es de uno o de la pareja/terna?</li>
+<li><strong>Debilidad y jerarquías por decoración.</strong> Dobles trazos en cualquier 1:N obligatoria (apartado 4) y especializaciones sin diferencias reales (apartado 5). La sofisticación se justifica con el enunciado o no se usa.</li>
+</ol>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-9-la-ia-en-esta-unidad">Apartado 9. La IA en esta unidad<a class="headerlink" href="#apartado-9-la-ia-en-esta-unidad" title="Permanent link">&para;</a></h2>
+<p>Puedes apoyarte en un asistente de IA, con la misma regla de siempre: el resultado es tuyo y lo defiendes tú.</p>
+<ul>
+<li><strong>Usos razonables aquí</strong>: pedir enunciados adicionales para practicar el método del apartado 7; contrastar tu decisión de cardinalidades describiéndole el enunciado y comparando su lectura con la tuya; pedir contraejemplos ("¿en qué caso esta relación sería N:M?").</li>
+<li><strong>Lo que debes verificar siempre</strong>: los diagramas que un asistente genere o corrija. Los modelos de IA fallan con frecuencia exactamente donde esta unidad pone la nota — cardinalidades mínimas, dirección de la debilidad, ternaria frente a agregación — y lo hacen con total seguridad aparente. Su respuesta es una opinión a auditar con el enunciado, no una corrección.</li>
+<li><strong>Lo que se te pedirá defender</strong>: en esta unidad, toda defensa consiste en <strong>justificar decisiones con frases del enunciado</strong> ("¿por qué (0,N) aquí?"). Un diagrama entregado que no sabes defender frase a frase se considera no propio, con las consecuencias que fija la programación. El uso de IA no rebaja esa exigencia: la eleva, porque también deberás detectar dónde te la ha colado.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-10-actividad-evaluativa-final">Apartado 10. Actividad evaluativa final<a class="headerlink" href="#apartado-10-actividad-evaluativa-final" title="Permanent link">&para;</a></h2>
+<p><strong>Contexto — la empresa del curso.</strong> La empresa comarcal de <strong>mantenimiento de parques renovables</strong> gestiona 15 parques (eólicos y fotovoltaicos) con unos 450 activos (aerogeneradores, seguidores, inversores); cada activo lleva instalados sensores (unos 5.000 en total) que emiten lecturas periódicas (5 millones acumuladas). Trabajan 60 técnicos organizados en cuadrillas; el mantenimiento se articula en 30.000 órdenes de trabajo — <strong>preventivas</strong> (programadas por calendario) y <strong>correctivas</strong> (responden a una avería registrada) — que se ejecutan mediante partes de <strong>intervención</strong> (80.000) donde los técnicos consumen <strong>repuestos</strong> del almacén (2.500 referencias).</p>
+<p><strong>Instrucciones.</strong> 10 ejercicios, 1 punto cada uno. La actividad construye por piezas <strong>el diagrama E/R completo de la empresa</strong>: los primeros consolidan y los últimos distinguen. Todo diagrama de construcción en notación consistente (Chen o pata de gallo, elige y mantén) hecho con herramienta gráfica; AE3 es de <strong>lectura</strong> sobre un diagrama Chen dado; toda decisión de cardinalidad, con su frase del contexto. Conforme al desglose del módulo, cada ejercicio se etiqueta con el CE del RA6 que <strong>prepara</strong> (evaluación definitiva por CE: UD3). <strong>Tiempo estimado: 2 horas.</strong> Entrega: diagrama(s) exportados + documento de justificaciones en la tarea de Classroom. Defensa oral por muestreo.</p>
+<ul>
+<li><strong>AE1</strong> <code>[prepara RA6.b, c — evaluación definitiva en UD3]</code> Extrae del contexto las entidades con sus atributos razonables (inventa los atributos obvios que el contexto no lista: nombres, fechas, descripciones), aplicando el filtro entidad/atributo. Justifica dos casos dudosos.</li>
+<li><strong>AE2</strong> <code>[prepara RA6.e]</code> Propón clave primaria para PARQUE, ACTIVO, TECNICO y REPUESTO, defendiendo cada una con los tres criterios (conocida, estable, mínima) y descartando explícitamente una candidata en TECNICO.</li>
+<li>
+<p><strong>AE3</strong> <code>[prepara RA6.d — interpretación de Chen]</code> La figura AE (imagen adjunta a la tarea) muestra en <strong>notación de Chen</strong> el fragmento PARQUE—<em>contiene</em>—ACTIVO—<em>instala</em>—SENSOR, con SENSOR como entidad débil numerada dentro de cada activo:</p>
+<p><img alt="Figura AE. Fragmento del dominio del curso en notación de Chen: PARQUE, ACTIVO y SENSOR como entidad débil con su discriminante, con etiquetas de tipo sobre los rombos" src="../img/ud2-figAE-chen-parque-activo-sensor.svg" /></p>
+<p>Interprétalo por escrito: (a) las frases de cardinalidad de los cuatro extremos; (b) qué elementos gráficos declaran la debilidad de SENSOR y cuál es su discriminante; (c) cómo se identifica un sensor concreto según este diagrama; (d) una regla del contexto de la empresa que el diagrama no captura.
+- <strong>AE4</strong> <code>[prepara RA6.d, e]</code> El diagrama de AE3 tomó una decisión: SENSOR débil. Cuestiónala profesionalmente: modela la alternativa (SENSOR <strong>fuerte</strong> con clave propia <code>num_serie</code> del fabricante) en la notación que prefieras, explica qué cambia en la identificación respecto del diagrama dado, y pronúnciate razonadamente por una de las dos opciones para esta empresa.
+- <strong>AE5</strong> <code>[prepara RA6.d]</code> Modela la relación entre TECNICO y CUADRILLA sabiendo que "cada técnico pertenece a una cuadrilla, cada cuadrilla tiene un jefe que es uno de sus técnicos". Resuelve el doble papel del jefe (dos relaciones con roles) y anota todas las cardinalidades.
+- <strong>AE6</strong> <code>[prepara RA6.b, d — jerarquía]</code> Modela ORDEN_DE_TRABAJO con especialización en PREVENTIVA (atributos: periodicidad, fecha programada) y CORRECTIVA (atributo: avería registrada que la origina). Decide y justifica totalidad y solapamiento con el contexto.
+- <strong>AE7</strong> <code>[prepara RA6.d]</code> Incorpora INTERVENCION: cada orden se ejecuta mediante una o varias intervenciones; cada intervención pertenece a una orden, la realizan uno o varios técnicos y tiene fecha y horas empleadas. Modela con cardinalidades completas y justifica dónde vive <code>horas_empleadas</code>.
+- <strong>AE8</strong> <code>[prepara RA6.d, h]</code> El consumo de repuestos: "en cada intervención se consumen repuestos en cierta cantidad". Modela la asociación INTERVENCION—REPUESTO con su atributo <code>cantidad</code>, y documenta en lenguaje natural dos restricciones del contexto que el diagrama no captura (lista de RA6.h en preparación).
+- <strong>AE9</strong> <code>[prepara RA6.d — agregación]</code> Nueva necesidad: "la empresa asigna a cada pareja parque-contrata (las CONTRATAS externas ya homologadas trabajan en parques concretos) un técnico propio como supervisor de la contrata en ese parque; la homologación de la contrata en el parque existe antes y con independencia de que haya supervisor asignado". Modela con agregación, justifica frente a la ternaria con la frase del contexto que decide, y anota cardinalidades.
+- <strong>AE10</strong> <code>[prepara RA6.a-h — síntesis]</code> Ensambla el diagrama completo (AE1-AE9) en una única entrega limpia con herramienta gráfica: notación uniforme, sin entidades-isla, con la lista consolidada de preguntas al cliente y de restricciones no capturadas. Este diagrama será tu punto de partida oficial de la UD3.</p>
+</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-11-para-ampliar">Apartado 11. Para ampliar<a class="headerlink" href="#apartado-11-para-ampliar" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://dev.mysql.com/doc/workbench/en/wb-data-modeling.html">Documentación de MySQL Workbench — modelado de datos</a> — la herramienta profesional de diagramado que usarás más adelante sobre MySQL.</li>
+<li><a href="https://mermaid.js.org/syntax/entityRelationshipDiagram.html">Diagramas entidad-relación en Mermaid</a> — la sintaxis con la que están hechos los diagramas de estos apuntes.</li>
+<li><a href="https://www.drawio.com/doc/">Documentación de draw.io</a> — guía de la herramienta de diagramado de las entregas de esta unidad.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

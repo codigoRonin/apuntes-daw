@@ -1,0 +1,1460 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Apuntes de los módulos del CFGS Desarrollo de Aplicaciones Web">
+      
+      
+        <meta name="author" content="Arba">
+      
+      
+        <link rel="canonical" href="https://codigoronin.github.io/apuntes-daw/recursos/guia-drawio/">
+      
+      
+        <link rel="prev" href="../entorno-vscode-php/">
+      
+      
+        <link rel="next" href="../estandar-estilo-sql/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Guía rápida de draw.io - Apuntes DAW</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#guia-rapida-de-drawio-para-las-entregas-de-diagramas" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Apuntes DAW" class="md-header__button md-logo" aria-label="Apuntes DAW" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Apuntes DAW
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Guía rápida de draw.io
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/codigoronin/apuntes-daw" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Inicio
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../bases-de-datos/" class="md-tabs__link">
+          
+  
+  
+  Bases de Datos (0484)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../desarrollo-web-en-entorno-servidor/" class="md-tabs__link">
+          
+  
+  
+  Desarrollo Web en Entorno Servidor (0613)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../big-data-e-inteligencia-artificial/" class="md-tabs__link">
+          
+  
+  
+  Big Data e Inteligencia Artificial (AOP1089)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../entorno-vscode-php/" class="md-tabs__link">
+          
+  
+  
+  Recursos
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Apuntes DAW" class="md-nav__button md-logo" aria-label="Apuntes DAW" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Apuntes DAW
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/codigoronin/apuntes-daw" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bases de Datos (0484)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bases de Datos (0484)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud1-almacenamiento-sgbd-valor-del-dato/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Almacenamiento, SGBD y el valor del dato
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud2-modelo-entidad-relacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2 · Modelo entidad-relación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud3-modelo-relacional-normalizacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3 · Modelo relacional y normalización
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud4-consultas-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD4 · Consultas de datos con SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desarrollo Web en Entorno Servidor (0613)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Desarrollo Web en Entorno Servidor (0613)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud1-arquitecturas-tecnologias-servidor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Arquitecturas y tecnologías de programación en servidor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud2-codigo-embebido-php/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2 · Código embebido en lenguajes de marcas: sintaxis, estructuras, funciones y formularios
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Big Data e Inteligencia Artificial (AOP1089)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Big Data e Inteligencia Artificial (AOP1089)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/ud1-python-datos-ia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Python para datos e IA: lenguaje especializado, entorno y librerías
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recursos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Recursos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entorno-vscode-php/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entorno de trabajo: VS Code para PHP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía rápida de draw.io
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía rápida de draw.io
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-1-acceso-sin-cuenta-y-guardando-en-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1. Acceso: sin cuenta y guardando en local
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-2-la-biblioteca-de-formas-para-pata-de-gallo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2. La biblioteca de formas para pata de gallo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-3-los-gestos-esenciales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3. Los gestos esenciales
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-4-nombre-del-archivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4. Nombre del archivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-5-formato-de-entrega-siempre-doble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5. Formato de entrega: siempre doble
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-6-lista-de-comprobacion-antes-de-entregar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6. Lista de comprobación antes de entregar
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../estandar-estilo-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estándar de estilo SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-1-acceso-sin-cuenta-y-guardando-en-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1. Acceso: sin cuenta y guardando en local
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-2-la-biblioteca-de-formas-para-pata-de-gallo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2. La biblioteca de formas para pata de gallo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-3-los-gestos-esenciales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3. Los gestos esenciales
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-4-nombre-del-archivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4. Nombre del archivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-5-formato-de-entrega-siempre-doble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5. Formato de entrega: siempre doble
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-6-lista-de-comprobacion-antes-de-entregar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6. Lista de comprobación antes de entregar
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="guia-rapida-de-drawio-para-las-entregas-de-diagramas">Guía rápida de draw.io para las entregas de diagramas<a class="headerlink" href="#guia-rapida-de-drawio-para-las-entregas-de-diagramas" title="Permanent link">&para;</a></h1>
+<p><strong>IES Río Arba · Departamento de Informática · Recursos del ciclo DAW</strong></p>
+<p>Esta guía cubre lo mínimo para entregar diagramas correctos con draw.io. El criterio de qué dibujar en cada notación está en los apuntes de cada unidad (para el modelo E/R, la tabla de equivalencias del apartado 1.3 de la UD2 de Bases de Datos); aquí solo está el <strong>cómo</strong>.</p>
+<h2 id="apartado-1-acceso-sin-cuenta-y-guardando-en-local">Apartado 1. Acceso: sin cuenta y guardando en local<a class="headerlink" href="#apartado-1-acceso-sin-cuenta-y-guardando-en-local" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Abre <a href="https://app.diagrams.net">app.diagrams.net</a> en el navegador. <strong>No necesitas cuenta</strong>.</li>
+<li>En el primer diálogo, elige <strong>"Dispositivo"</strong> (guardar en local) y después <strong>"Crear diagrama nuevo"</strong> con la plantilla en blanco.</li>
+<li>El archivo se guarda como <code>.drawio</code> en tu equipo. Guarda con frecuencia (Ctrl+S): el navegador no guarda por ti.</li>
+</ol>
+<p>[CAPTURA: diálogo inicial de app.diagrams.net con la opción "Dispositivo" señalada]</p>
+<h2 id="apartado-2-la-biblioteca-de-formas-para-pata-de-gallo">Apartado 2. La biblioteca de formas para pata de gallo<a class="headerlink" href="#apartado-2-la-biblioteca-de-formas-para-pata-de-gallo" title="Permanent link">&para;</a></h2>
+<p>En el panel izquierdo de formas, busca la sección <strong>"Entity Relation"</strong> (Entidad-Relación). Si no aparece: botón <strong>"Más formas"</strong> (abajo a la izquierda) → grupo <strong>Software</strong> → marca <strong>Entity Relation</strong> → Aplicar. De esa sección usarás las tablas de entidad con filas de atributos; las cardinalidades de pata de gallo se ponen en los <strong>extremos de las líneas</strong> (apartado 3, gesto 5).</p>
+<p>[CAPTURA: diálogo "Más formas" con la casilla Entity Relation marcada dentro del grupo Software]</p>
+<h2 id="apartado-3-los-gestos-esenciales">Apartado 3. Los gestos esenciales<a class="headerlink" href="#apartado-3-los-gestos-esenciales" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Crear una entidad.</strong> Arrastra al lienzo la forma de tabla de la sección Entity Relation. Haz doble clic sobre su título para renombrarla (mayúsculas y singular: <code>LECTOR</code>).</li>
+<li><strong>Añadir atributos.</strong> Selecciona una fila de la entidad y pulsa <strong>Ctrl+D</strong> (duplicar) para añadir filas; doble clic en cada una para escribir el nombre del atributo. La fila de la clave primaria, marcada con <code>PK</code> (la forma trae esa columna).
+<strong>Resultado esperado de los gestos 1-2</strong> — así debe verse tu entidad:</li>
+</ol>
+<p><img alt="Resultado esperado: entidad con su título, filas de atributos y la clave primaria marcada como PK" src="../img/guia-fig1-entidad-pk.svg" /></p>
+<ol>
+<li><strong>Crear una relación.</strong> Acerca el puntero al borde de una entidad hasta que aparezcan las flechas azules direccionales; arrastra desde el borde hasta la otra entidad. Suelta cuando la entidad destino quede resaltada: la línea queda <strong>anclada</strong> (se mueve con las entidades).</li>
+<li><strong>Etiquetar la relación.</strong> Doble clic sobre la línea y escribe el verbo (<code>realiza</code>). Puedes añadir en la misma etiqueta el tipo (<code>1:N</code>), como recomiendan los apuntes de la UD2.</li>
+<li>
+<p><strong>Poner las cardinalidades de los extremos.</strong> Selecciona la línea y, en el panel derecho, pestaña <strong>Estilo</strong>, despliega las opciones de <strong>inicio y fin de línea</strong>: elige el símbolo de pata de gallo que corresponda en cada extremo (muchos, uno, cero-o-uno…). Comprueba los dos extremos: el error clásico es dejar uno con la flecha por defecto.</p>
+<p>[CAPTURA: panel Estilo con los desplegables de inicio y fin de línea mostrando los terminadores de pata de gallo]</p>
+</li>
+</ol>
+<p><strong>Resultado esperado de los gestos 3-5</strong> — línea anclada, etiqueta con verbo y tipo, terminadores correctos en los dos extremos:</p>
+<p><img alt="Resultado esperado: línea entre dos entidades con doble marca de uno en un extremo, círculo y pata de muchos en el otro, y la etiqueta realiza 1:N" src="../img/guia-fig2-linea-cardinalidades.svg" />
+6. <strong>Línea identificativa o no identificativa.</strong> Con la línea seleccionada, en Estilo cambia entre trazo <strong>continuo</strong> (identificativa) y <strong>discontinuo</strong> (no identificativa), conforme al puente de las figuras 3 y 4 de la UD2.
+<strong>Resultado esperado del gesto 6</strong> — el par continua/discontinua:</p>
+<p><img alt="Resultado esperado: dos líneas comparadas, la identificativa con trazo continuo y la no identificativa con trazo discontinuo" src="../img/guia-fig3-identificativa.svg" /></p>
+<ol>
+<li><strong>Anotación textual para lo que la notación no dibuja.</strong> Doble clic en cualquier zona vacía del lienzo crea un cuadro de texto: úsalo para las anotaciones que manda la tabla de equivalencias ("multivalorado", "(parcial, exclusiva)", "relación agregada", roles de una reflexiva). Colócalo pegado al elemento al que se refiere.
+<strong>Resultado esperado del gesto 7</strong> — la nota pegada a su elemento:</li>
+</ol>
+<p><img alt="Resultado esperado: cuadro de texto discontinuo con la palabra multivalorado, unido por una línea al atributo telefonos de la entidad" src="../img/guia-fig4-anotacion.svg" /></p>
+<ol>
+<li><strong>Agrupar un fragmento (contenedores).</strong> Para el recuadro de una agregación: arrastra la forma <strong>contenedor</strong> (o dibuja un rectángulo, clic derecho → Editar estilo, y úsalo como marco), mete dentro el fragmento y añade su nota. Los elementos dentro del contenedor se mueven con él.</li>
+</ol>
+<p><strong>Resultado esperado del gesto 8</strong> — el fragmento agregado dentro de su contenedor, con su nota:</p>
+<p><img alt="Resultado esperado: contenedor de trazo discontinuo englobando dos entidades y su relación, con una nota lateral que dice relación agregada, ver memoria" src="../img/guia-fig5-contenedor.svg" /></p>
+<h2 id="apartado-4-nombre-del-archivo">Apartado 4. Nombre del archivo<a class="headerlink" href="#apartado-4-nombre-del-archivo" title="Permanent link">&para;</a></h2>
+<p>Convención de nombrado, siempre con tu <strong>alias</strong> (nunca tu nombre real):</p>
+<blockquote>
+<p><code>&lt;unidad&gt;-&lt;actividad&gt;-&lt;alias&gt;.drawio</code> — por ejemplo, <code>ud2-ae10-A07.drawio</code></p>
+</blockquote>
+<p>La exportación lleva el mismo nombre con su extensión: <code>ud2-ae10-A07.pdf</code>.</p>
+<h2 id="apartado-5-formato-de-entrega-siempre-doble">Apartado 5. Formato de entrega: siempre doble<a class="headerlink" href="#apartado-5-formato-de-entrega-siempre-doble" title="Permanent link">&para;</a></h2>
+<p>Cada entrega de diagrama incluye <strong>dos archivos</strong>:</p>
+<ol>
+<li><strong>El archivo fuente <code>.drawio</code></strong> (Archivo → Guardar como). Permite al docente abrir tu diagrama, moverlo y comentarlo sobre el original.</li>
+<li><strong>La exportación en PDF o PNG</strong> (Archivo → Exportar como → PDF o PNG; en PNG, marca un zoom del 150-200 % para que se lea bien). Garantiza la <strong>vista fiel</strong>: lo que tú ves es exactamente lo que se corrige, aunque cambien versiones o fuentes.</li>
+</ol>
+<p>Entregar solo uno de los dos es entrega incompleta: sin el fuente no se puede comentar; sin la exportación no hay vista garantizada.</p>
+<h2 id="apartado-6-lista-de-comprobacion-antes-de-entregar">Apartado 6. Lista de comprobación antes de entregar<a class="headerlink" href="#apartado-6-lista-de-comprobacion-antes-de-entregar" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Comprobación</th>
+<th>Hecho</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Notación consistente en todo el diagrama (sin mezclar)</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Cardinalidades revisadas en los <strong>dos</strong> extremos de cada línea</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Anotaciones textuales de la tabla de equivalencias donde tocan</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Nombre de archivo con la convención y tu alias</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Doble entrega: <code>.drawio</code> + PDF/PNG legible</td>
+<td>☐</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

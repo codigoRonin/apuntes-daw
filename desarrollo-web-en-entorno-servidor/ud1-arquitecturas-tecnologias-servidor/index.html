@@ -1,0 +1,1840 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Apuntes de los módulos del CFGS Desarrollo de Aplicaciones Web">
+      
+      
+        <meta name="author" content="Arba">
+      
+      
+        <link rel="canonical" href="https://codigoronin.github.io/apuntes-daw/desarrollo-web-en-entorno-servidor/ud1-arquitecturas-tecnologias-servidor/">
+      
+      
+        <link rel="prev" href="../ud0-presentacion/">
+      
+      
+        <link rel="next" href="../ud2-codigo-embebido-php/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>UD1 · Arquitecturas y tecnologías de programación en servidor - Apuntes DAW</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ud1-arquitecturas-y-tecnologias-de-programacion-en-servidor" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Apuntes DAW" class="md-header__button md-logo" aria-label="Apuntes DAW" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Apuntes DAW
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              UD1 · Arquitecturas y tecnologías de programación en servidor
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/codigoronin/apuntes-daw" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Inicio
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../bases-de-datos/" class="md-tabs__link">
+          
+  
+  
+  Bases de Datos (0484)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Desarrollo Web en Entorno Servidor (0613)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../big-data-e-inteligencia-artificial/" class="md-tabs__link">
+          
+  
+  
+  Big Data e Inteligencia Artificial (AOP1089)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../recursos/entorno-vscode-php/" class="md-tabs__link">
+          
+  
+  
+  Recursos
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Apuntes DAW" class="md-nav__button md-logo" aria-label="Apuntes DAW" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Apuntes DAW
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/codigoronin/apuntes-daw" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bases de Datos (0484)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bases de Datos (0484)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud1-almacenamiento-sgbd-valor-del-dato/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Almacenamiento, SGBD y el valor del dato
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud2-modelo-entidad-relacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2 · Modelo entidad-relación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud3-modelo-relacional-normalizacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3 · Modelo relacional y normalización
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud4-consultas-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD4 · Consultas de datos con SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desarrollo Web en Entorno Servidor (0613)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Desarrollo Web en Entorno Servidor (0613)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Arquitecturas y tecnologías de programación en servidor
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Arquitecturas y tecnologías de programación en servidor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-1-el-viaje-de-una-peticion-cliente-servidor-y-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1. El viaje de una petición: cliente, servidor y HTTP
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-2-paginas-estaticas-y-generacion-dinamica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2. Páginas estáticas y generación dinámica
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-3-el-reparto-del-trabajo-codigo-en-el-cliente-y-codigo-en-el-servidor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3. El reparto del trabajo: código en el cliente y código en el servidor
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-4-mecanismos-de-ejecucion-en-el-servidor-servidores-web-y-servidores-de-aplicaciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4. Mecanismos de ejecución en el servidor: servidores web y servidores de aplicaciones
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-5-el-panorama-lenguajes-y-tecnologias-de-servidor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5. El panorama: lenguajes y tecnologías de servidor
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-6-la-integracion-con-el-lenguaje-de-marcas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6. La integración con el lenguaje de marcas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-7-herramientas-y-frameworks-reconocer-y-evaluar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 7. Herramientas y frameworks: reconocer y evaluar
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-8-errores-frecuentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 8. Errores frecuentes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-9-la-ia-en-esta-unidad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 9. La IA en esta unidad
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-10-actividad-evaluativa-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 10. Actividad evaluativa final
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-11-para-ampliar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 11. Para ampliar
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ud2-codigo-embebido-php/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2 · Código embebido en lenguajes de marcas: sintaxis, estructuras, funciones y formularios
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Big Data e Inteligencia Artificial (AOP1089)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Big Data e Inteligencia Artificial (AOP1089)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/ud1-python-datos-ia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Python para datos e IA: lenguaje especializado, entorno y librerías
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recursos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Recursos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/entorno-vscode-php/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entorno de trabajo: VS Code para PHP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/guia-drawio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía rápida de draw.io
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/estandar-estilo-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estándar de estilo SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-1-el-viaje-de-una-peticion-cliente-servidor-y-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1. El viaje de una petición: cliente, servidor y HTTP
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-2-paginas-estaticas-y-generacion-dinamica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2. Páginas estáticas y generación dinámica
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-3-el-reparto-del-trabajo-codigo-en-el-cliente-y-codigo-en-el-servidor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3. El reparto del trabajo: código en el cliente y código en el servidor
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-4-mecanismos-de-ejecucion-en-el-servidor-servidores-web-y-servidores-de-aplicaciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4. Mecanismos de ejecución en el servidor: servidores web y servidores de aplicaciones
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-5-el-panorama-lenguajes-y-tecnologias-de-servidor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5. El panorama: lenguajes y tecnologías de servidor
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-6-la-integracion-con-el-lenguaje-de-marcas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6. La integración con el lenguaje de marcas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-7-herramientas-y-frameworks-reconocer-y-evaluar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 7. Herramientas y frameworks: reconocer y evaluar
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-8-errores-frecuentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 8. Errores frecuentes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-9-la-ia-en-esta-unidad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 9. La IA en esta unidad
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-10-actividad-evaluativa-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 10. Actividad evaluativa final
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-11-para-ampliar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 11. Para ampliar
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="ud1-arquitecturas-y-tecnologias-de-programacion-en-servidor">UD1. Arquitecturas y tecnologías de programación en servidor<a class="headerlink" href="#ud1-arquitecturas-y-tecnologias-de-programacion-en-servidor" title="Permanent link">&para;</a></h1>
+<p><strong>Módulo 0613 — Desarrollo Web en Entorno Servidor · 2.º DAW · IES Río Arba · Curso 2026-27 · 14 horas · 1.ª evaluación</strong></p>
+<p><strong>Vinculación con el resultado de aprendizaje.</strong> Esta unidad trabaja completo el <strong>RA1</strong>: <em>"Selecciona las arquitecturas y tecnologías de programación web en entorno servidor, analizando sus capacidades y características propias"</em> (RD 686/2010 en la redacción dada por el RD 405/2023). El criterio g) — herramientas y frameworks — es incorporación de 2023 y <strong>evaluable</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>CE</th>
+<th>Qué exige (resumen)</th>
+<th>Apartado donde se trabaja</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RA1.a</td>
+<td>Caracterizar y diferenciar los modelos de ejecución de código en el servidor y en el cliente web</td>
+<td>Apartados 2 y 3</td>
+</tr>
+<tr>
+<td>RA1.b</td>
+<td>Reconocer las ventajas de la generación dinámica de páginas</td>
+<td>Apartado 2</td>
+</tr>
+<tr>
+<td>RA1.c</td>
+<td>Identificar los mecanismos de ejecución de código en los servidores web</td>
+<td>Apartados 1 y 4</td>
+</tr>
+<tr>
+<td>RA1.d</td>
+<td>Reconocer las funcionalidades de los servidores de aplicaciones y su integración con los servidores web</td>
+<td>Apartado 4</td>
+</tr>
+<tr>
+<td>RA1.e</td>
+<td>Identificar y caracterizar los principales lenguajes y tecnologías de programación web en entorno servidor</td>
+<td>Apartado 5</td>
+</tr>
+<tr>
+<td>RA1.f</td>
+<td>Verificar los mecanismos de integración de los lenguajes de marcas con los lenguajes de programación en entorno servidor</td>
+<td>Apartado 6</td>
+</tr>
+<tr>
+<td>RA1.g</td>
+<td>Reconocer y evaluar las herramientas y frameworks de programación en entorno servidor</td>
+<td>Apartado 7</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Al terminar esta unidad sabrás:</strong> explicar qué pasa exactamente desde que escribes una dirección hasta que la página aparece; distinguir una página estática de una generada y decidir cuál conviene en cada caso; repartir con criterio el trabajo entre el cliente y el servidor; describir cómo ejecuta código un servidor y qué añade un servidor de aplicaciones; situarte en el panorama de lenguajes y tecnologías de servidor sin perderte; verificar con tus propias herramientas que el navegador siempre recibe lenguaje de marcas, lo genere quien lo genere; y evaluar un framework con criterios profesionales en vez de por moda.</p>
+<p><strong>Entorno de trabajo de la unidad.</strong> En esta unidad todavía no programas: <strong>ejecutas y observas</strong>. Necesitas el navegador con las herramientas de desarrollo abiertas (pestaña <strong>Red</strong>) y, para los experimentos del apartado 6, <strong>PHP</strong> instalado — en el aula ya lo está; en casa descárgalo de la web oficial (apartado 11) y comprueba la instalación escribiendo <code>php -v</code> en un terminal: su <strong>servidor embebido de desarrollo</strong> (<code>php -S</code>) es todo lo que estos experimentos necesitan. PHP aparece en esta unidad como <strong>herramienta instrumental</strong> para ejecutar y observar; su evaluación como lenguaje del módulo empieza en la UD2 — lo que aquí se evalúa es el RA1. Node.js, la otra pieza de la pila, se presentará en su unidad (los servicios REST). Los dos experimentos del apartado 6 están completos en estos apuntes y también en el repositorio de la unidad del aula de código. El caso hilo de la teoría es la <strong>web de un club de montaña comarcal</strong>: calendario de salidas, inscripciones y área de socios.</p>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-1-el-viaje-de-una-peticion-cliente-servidor-y-http">Apartado 1. El viaje de una petición: cliente, servidor y HTTP<a class="headerlink" href="#apartado-1-el-viaje-de-una-peticion-cliente-servidor-y-http" title="Permanent link">&para;</a></h2>
+<p>Empecemos por deshacer una ambigüedad que arrastra todo el mundo: <strong>"servidor" nombra dos cosas</strong>. Es la <strong>máquina</strong> que está encendida esperando peticiones, y es el <strong>programa</strong> que corre en esa máquina y las atiende. En este módulo casi siempre hablaremos del programa — y de hecho tú vas a ejecutar servidores en tu propio portátil, que no por eso se convierte en un centro de datos.</p>
+<p>El otro protagonista es el <strong>cliente</strong>: normalmente el navegador, aunque también puede serlo una app móvil o otro programa. Cliente y servidor hablan mediante <strong>HTTP</strong>, un protocolo de pregunta y respuesta tan simple en su esqueleto que cabe en un diagrama:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Navegador (cliente)                                Servidor
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    │
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    │ ── petición: GET /calendario ─────────▶  recibe la petición,
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    │    (método + ruta + cabeceras)           decide qué responder,
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    │                                          prepara la respuesta
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    │ ◀── respuesta: 200 OK + HTML ─────────
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    │    (código + cabeceras + cuerpo)
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    ▼
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  interpreta el HTML y pinta la página
+</code></pre></div>
+<p>De la <strong>petición</strong> te interesan ya tres piezas: el <strong>método</strong> (de momento, <code>GET</code> para pedir y <code>POST</code> para enviar datos; el repertorio completo llegará con los servicios REST en la UD7), la <strong>ruta</strong> (qué recurso se pide: <code>/calendario</code>, <code>/logo.png</code>) y las <strong>cabeceras</strong> (información auxiliar: qué formatos acepta el cliente, qué navegador es…).</p>
+<p>De la <strong>respuesta</strong>, otras tres: el <strong>código de estado</strong>, que es la respuesta en una cifra — léelos como frases: <code>200</code> "aquí tienes", <code>301</code> "esto se mudó, ve a esta otra dirección", <code>403</code> "sé lo que pides pero tú no puedes verlo", <code>404</code> "eso no existe", <code>500</code> "he fallado yo, el servidor" —; las <strong>cabeceras</strong>, donde destaca <code>Content-Type</code>, que declara qué tipo de contenido viaja en el cuerpo (<code>text/html</code>, <code>image/png</code>…); y el <strong>cuerpo</strong>, el contenido en sí.</p>
+<p>Todo esto no hay que creérselo: se mira. Abre las herramientas de desarrollo del navegador (F12), pestaña <strong>Red</strong>, recarga cualquier página y selecciona el primer elemento de la lista (el documento). Verás la petición y la respuesta reales, con su método, su código de estado y sus cabeceras. Esa pestaña va a ser tu mirilla durante todo el curso: cuando algo falle en tu aplicación, la primera pregunta profesional es siempre "¿qué se pidió y qué se respondió de verdad?".</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E1.</strong> Abre el sitio de apuntes del módulo con la pestaña Red activa y recarga. Anota, para el documento principal y para dos recursos más (una imagen o un CSS): método, código de estado y <code>Content-Type</code> de la respuesta. Indica cuál de los tres es el único que el navegador "lee" como página.</li>
+<li><strong>E2.</strong> Empareja cada situación con el código de estado que devolvería el servidor (200, 301, 403, 404, 500) y justifica en una línea: (1) un socio pide <code>/calendario</code> y todo va bien; (2) alguien teclea <code>/calendaroi</code>; (3) un visitante sin sesión pide <code>/socios/listado-telefonos</code>; (4) la web cambió <code>/salidas</code> por <code>/calendario</code> hace un año y alguien usa un marcador antiguo; (5) el programa del servidor lanza una excepción al preparar el calendario.</li>
+<li><strong>E3.</strong> Este es el resumen que muestra la pestaña Red de una petición al sitio del club: <code>Request Method: GET · Status Code: 200 · Content-Type: text/html; charset=utf-8</code>. Responde: ¿qué hizo el cliente, qué contestó el servidor y qué tipo de contenido viajó en el cuerpo? ¿Puede saberse desde aquí si esa página estaba escrita en un fichero o se generó al momento?</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-2-paginas-estaticas-y-generacion-dinamica">Apartado 2. Páginas estáticas y generación dinámica<a class="headerlink" href="#apartado-2-paginas-estaticas-y-generacion-dinamica" title="Permanent link">&para;</a></h2>
+<p>Una <strong>página estática</strong> es un fichero que existe tal cual en el servidor: cuando llega la petición, el servidor lo localiza y lo envía sin tocarlo. El servidor trabaja de repartidor. Es el modelo con el que arrancó la web y sigue siendo imbatible en lo suyo: rapidez, simplicidad, facilidad de cachear y poquísima superficie de error — un fichero no tiene bugs de ejecución.</p>
+<p>El problema aparece cuando el contenido <strong>depende de algo</strong>. El calendario de salidas del club cambia cada semana; el área de socios muestra a cada persona sus propias inscripciones; el formulario de inscripción tiene que comprobarse y guardarse. Con páginas estáticas, la única salida es que alguien edite el HTML a mano cada vez — y en el club, de hecho, lo hacía un voluntario: cada lunes abría el fichero, cambiaba las fechas y rezaba por no romper una etiqueta.</p>
+<p>La <strong>generación dinámica</strong> invierte el modelo: la página <strong>no existe hasta que alguien la pide</strong>. Cuando llega la petición, un programa en el servidor consulta los datos del momento, fabrica el HTML y lo envía. Sus ventajas son exactamente los dolores del voluntario del lunes:</p>
+<ol>
+<li><strong>Una única fuente de datos</strong>: las salidas viven en un solo sitio (un fichero de datos, y pronto una base de datos) y todas las páginas que las muestran se fabrican desde ahí — se acabó el divergir.</li>
+<li><strong>Contenido siempre actual</strong>: la página refleja el estado en el instante de la petición, no en el de la última edición.</li>
+<li><strong>Personalización</strong>: la misma ruta puede responder distinto según quién pregunta — tu área de socio y la mía no son la misma página.</li>
+<li><strong>Procesamiento de entrada</strong>: los formularios dejan de ser decorativos; el servidor recibe, valida y actúa.</li>
+<li><strong>Una plantilla, mil páginas</strong>: la ficha de cada salida no se escribe cien veces; se escribe una plantilla y se rellena cien veces.</li>
+</ol>
+<p>Nada es gratis: la generación dinámica añade piezas (un programa que puede fallar, datos que mantener), algo de latencia por petición y más superficie de ataque. Por eso la decisión profesional no es "todo dinámico", sino quirúrgica: <strong>estático lo que no cambia; dinámico lo que depende de datos o de quién mira</strong>. La página "quiénes somos" del club puede ser un fichero hasta el fin de los tiempos; el calendario, no.</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E4.</strong> Para cada elemento de la web del club, di si apostarías por estático o dinámico y nombra la <strong>pista observable</strong> que lo delata (¿cambia al recargar?, ¿depende de quién eres?, ¿procesa lo que envías?): (1) el logotipo; (2) el calendario de salidas; (3) la página de historia del club; (4) el buscador de rutas por dificultad; (5) tu lista personal de inscripciones; (6) las normas de seguridad en PDF.</li>
+<li><strong>E5.</strong> Describe dos problemas concretos que el voluntario del lunes habrá sufrido seguro editando el calendario a mano, y para cada uno señala cuál de las cinco ventajas de la generación dinámica lo elimina.</li>
+<li><strong>E6.</strong> El club estrena "galería de fotos por salida", donde los socios suben fotos tras cada ruta. Razona si la galería es estática, dinámica o una mezcla, separando qué parte es cada cosa.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-3-el-reparto-del-trabajo-codigo-en-el-cliente-y-codigo-en-el-servidor">Apartado 3. El reparto del trabajo: código en el cliente y código en el servidor<a class="headerlink" href="#apartado-3-el-reparto-del-trabajo-codigo-en-el-cliente-y-codigo-en-el-servidor" title="Permanent link">&para;</a></h2>
+<p>Ya sabes, de primero y de DWEC, que el navegador ejecuta código: JavaScript que reacciona a clics, valida campos, anima interfaces. Ese es el <strong>modelo de ejecución en el cliente</strong>: el código <strong>viaja</strong> con la página y se ejecuta en la máquina del usuario. Consecuencia inmediata, y capital: ese código es <strong>público y manipulable</strong>. Cualquiera puede leerlo, modificarlo o directamente saltárselo. Es perfecto para mejorar la experiencia; es inútil para imponer reglas.</p>
+<p>El <strong>modelo de ejecución en el servidor</strong> es el espejo: el código <strong>nunca viaja</strong> — se ejecuta en el servidor y lo único que llega al cliente es su <strong>resultado</strong>, normalmente HTML. De ahí se derivan sus superpoderes: puede guardar secretos (credenciales de la base de datos, claves de servicios), puede tocar datos que el cliente jamás debe ver enteros, y sus decisiones <strong>tienen autoridad</strong>, porque nadie puede editarlas desde fuera. Por eso "Ver código fuente de la página" nunca te enseñará el programa del servidor: solo verás la respuesta que fabricó.</p>
+<p>El reparto profesional del trabajo queda así:</p>
+<table>
+<thead>
+<tr>
+<th>Tarea</th>
+<th>¿Dónde?</th>
+<th>Por qué</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reaccionar al instante a la interfaz (desplegar un menú, avisar de un campo vacío al teclear)</td>
+<td>Cliente</td>
+<td>Necesita inmediatez y no toca datos de nadie</td>
+</tr>
+<tr>
+<td>Guardar y consultar los datos reales</td>
+<td>Servidor</td>
+<td>Los datos y sus credenciales no pueden viajar</td>
+</tr>
+<tr>
+<td>Decidir si un usuario puede hacer algo</td>
+<td>Servidor</td>
+<td>La decisión debe ser inmanipulable</td>
+</tr>
+<tr>
+<td>Validar un formulario</td>
+<td><strong>Ambos</strong></td>
+<td>En el cliente por cortesía (aviso inmediato); en el servidor por autoridad (la única que cuenta)</td>
+</tr>
+</tbody>
+</table>
+<p>Grábate la fila de la validación: es la <strong>regla de oro</strong> que reaparecerá en la UD2 (formularios) y en la UD3 (autenticación). El ejemplo canónico del club: una salida tiene 20 plazas. Tu pantalla puede decir "quedan 3", pero esa cifra es una foto del pasado — quizá alguien se inscribió hace un segundo. Quien decide si de verdad queda plaza es el servidor, en el momento de procesar tu inscripción, mirando el dato real. El cliente propone; el servidor dispone.</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E7.</strong> Decide dónde debe ejecutarse cada tarea — cliente, servidor o ambos — y justifica las que marques como "ambos": (1) mostrar u ocultar la contraseña al pulsar el ojito; (2) comprobar que el correo de registro no está ya usado; (3) avisar de que la contraseña es demasiado corta mientras se teclea; (4) aplicar el descuento de socio al precio de la salida; (5) ordenar la tabla de rutas al pulsar una columna; (6) registrar la inscripción y descontar la plaza; (7) impedir que un menor se inscriba en una ruta de alta montaña; (8) recordar qué pestaña tenías abierta.</li>
+<li><strong>E8.</strong> Un compañero valida la fecha de nacimiento solo con JavaScript en el navegador y asegura que "así nadie menor se inscribe". Explícale, paso a paso, cómo se lo saltaría alguien con las herramientas de desarrollo, y qué haría falta para que la regla fuera de verdad.</li>
+<li><strong>E9.</strong> Con el ejemplo de las 20 plazas: ¿por qué el número que ves puede estar desactualizado sin que nadie haya programado mal nada? ¿Qué modelo de ejecución produce ese número y qué modelo tiene la última palabra? Redáctalo usando los dos términos del apartado.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-4-mecanismos-de-ejecucion-en-el-servidor-servidores-web-y-servidores-de-aplicaciones">Apartado 4. Mecanismos de ejecución en el servidor: servidores web y servidores de aplicaciones<a class="headerlink" href="#apartado-4-mecanismos-de-ejecucion-en-el-servidor-servidores-web-y-servidores-de-aplicaciones" title="Permanent link">&para;</a></h2>
+<p>¿Y cómo pasa exactamente un servidor de "repartir ficheros" a "ejecutar programas"? La historia de la web es la historia de esa pregunta, y sus respuestas siguen todas en producción hoy:</p>
+<ol>
+<li><strong>CGI, el mecanismo pionero</strong>: el servidor web, al recibir ciertas rutas, lanzaba un <strong>programa externo nuevo por cada petición</strong>, le pasaba los datos y devolvía lo que el programa imprimiera. Funcionaba — y arrancar un proceso entero por visita resultaba carísimo con tráfico real. Entenderlo explica todo lo que vino después.</li>
+<li><strong>Intérprete embebido en el servidor web</strong>: el lenguaje se incrusta como módulo dentro del propio servidor web, que interpreta el código sin arrancar procesos nuevos. Es el patrón clásico con el que PHP conquistó la web sobre Apache.</li>
+<li><strong>Servidor de aplicaciones</strong>: un proceso <strong>persistente y especializado</strong> en ejecutar tu aplicación, separado del servidor web, con el que se entiende. Además de ejecutar código, aporta servicios que ningún programa querría reinventar: gestión de procesos e hilos para atender muchas peticiones a la vez, reserva de conexiones a la base de datos, gestión de sesiones, mecanismos de despliegue y monitorización. Es la pieza natural del mundo Java y de la gran empresa.</li>
+<li><strong>El runtime moderno</strong>: en plataformas como Node.js, <strong>tu programa es el servidor</strong> — con unas líneas creas un proceso que escucha peticiones directamente (lo vas a hacer en el apartado 6). En producción, ese proceso no suele estar solo: delante se coloca un servidor web haciendo de <strong>proxy inverso</strong>, y un gestor de procesos cubre lo que aportaría un servidor de aplicaciones (reinicios, varios procesos, monitorización).</li>
+</ol>
+<p>Lo que no cambia entre mecanismos es la <strong>integración con el servidor web</strong> y el reparto de papeles en un despliegue real:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>              ┌───────────────────── máquina servidora ─────────────────────┐
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a> Navegador ─▶ │  Servidor web (p. ej. Nginx)                                │
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>              │    ├── /logo.png, /estilos.css ──▶ carpeta de estáticos     │
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>              │    └── /calendario, /socios/…  ──▶ proxy ──▶ App (Node)     │
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>              └─────────────────────────────────────────────────────────────┘
+</code></pre></div>
+<p>El servidor web despacha lo estático (lo hace mejor y más barato que nadie) y <strong>delega</strong> en la aplicación lo que hay que fabricar. Cada petición acaba en la pieza especializada en atenderla.</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E10.</strong> Empareja cada mecanismo (CGI · intérprete embebido · servidor de aplicaciones · runtime tipo Node) con su descripción de una línea y añade una <strong>consecuencia práctica</strong> de cada uno (coste, capacidad, complejidad…).</li>
+<li><strong>E11.</strong> Con el despliegue del diagrama, indica qué pieza atiende finalmente cada petición y por qué: <code>GET /logo.png</code> · <code>GET /calendario</code> · <code>GET /socios/perfil</code> · <code>GET /estilos.css</code> · <code>POST /inscripcion</code>.</li>
+<li><strong>E12.</strong> El club decide publicar su aplicación "a pelo": el proceso Node solo, sin servidor web delante ni gestor de procesos. Señala dos servicios de la lista del mecanismo 3 que echarán de menos y describe el problema concreto que sufrirán por cada uno.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-5-el-panorama-lenguajes-y-tecnologias-de-servidor">Apartado 5. El panorama: lenguajes y tecnologías de servidor<a class="headerlink" href="#apartado-5-el-panorama-lenguajes-y-tecnologias-de-servidor" title="Permanent link">&para;</a></h2>
+<p>Al servidor le da igual el lenguaje: cualquier lenguaje capaz de leer una petición y producir texto puede programar el lado servidor. Por eso el panorama es amplio — y por eso hace falta un mapa con <strong>ejes</strong> en vez de una lista de nombres: para cada tecnología pregúntate qué lenguaje usa, sobre qué plataforma corre, qué madurez y comunidad tiene, en qué tipo de proyectos brilla y qué demanda laboral genera.</p>
+<p>Con esos ejes, las fichas esenciales:</p>
+<table>
+<thead>
+<tr>
+<th>Tecnología</th>
+<th>En una frase</th>
+<th>Dónde brilla</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PHP</strong></td>
+<td>El lenguaje que creció con la web; se embebe en HTML con naturalidad y corre en cualquier alojamiento barato</td>
+<td>La web de contenidos: la mayor parte de los gestores de contenidos del mundo, con WordPress a la cabeza</td>
+</tr>
+<tr>
+<td><strong>Java / Jakarta EE</strong></td>
+<td>Plataforma veterana y robusta, tipado fuerte, servidores de aplicaciones maduros</td>
+<td>Gran empresa, banca, sistemas que deben durar décadas</td>
+</tr>
+<tr>
+<td><strong>Python</strong></td>
+<td>Sintaxis clara y ecosistema gigante; en web, con frameworks como Django o Flask</td>
+<td>Proyectos que conviven con datos, ciencia e IA; desarrollo rápido</td>
+</tr>
+<tr>
+<td><strong>C# / ASP.NET Core</strong></td>
+<td>La plataforma de Microsoft, moderna y multiplataforma</td>
+<td>Ecosistemas corporativos Microsoft y videojuegos con servicios</td>
+</tr>
+<tr>
+<td><strong>Ruby (on Rails)</strong></td>
+<td>El framework que enseñó productividad y convenciones a todos los demás</td>
+<td>Producto web ágil; su influencia se nota en todo el panorama</td>
+</tr>
+<tr>
+<td><strong>JavaScript / Node.js</strong></td>
+<td>El lenguaje del navegador, ejecutándose fuera de él: <strong>un solo idioma en toda la pila</strong></td>
+<td>Aplicaciones web y APIs, tiempo real, equipos full-stack</td>
+</tr>
+</tbody>
+</table>
+<p>Dos avisos de lectura. Primero: <strong>no hay tecnología ganadora universal; hay contextos</strong> — la pregunta profesional nunca es "¿cuál es la mejor?" sino "¿cuál encaja con este proyecto, este equipo y este mantenimiento?". Segundo: este panorama <strong>caduca</strong> — las posiciones relativas se mueven cada año, así que las afirmaciones sobre popularidad o versiones se comprueban en fuentes oficiales con fecha, no se recitan de memoria (ni tuya ni de nadie).</p>
+<p>Este curso el lenguaje principal será <strong>PHP</strong> — con <strong>JavaScript</strong> de vuelta, en su papel, cuando lleguen los servicios —, y en el apartado 7 se argumenta la elección con los criterios de un profesional — no con fe.</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E13.</strong> Completa una ficha con las columnas <em>lenguaje · plataforma/entorno · dónde brilla · un ejemplo de proyecto típico</em> para tres tecnologías de la tabla (una de ellas, obligatoriamente, una que no sea PHP), usando solo la información del apartado.</li>
+<li><strong>E14.</strong> Propón tecnología candidata y justifícala con los ejes para tres encargos: (1) la web corporativa con blog de una asesoría, que mantendrá una empresa local de hosting clásico; (2) la API que dará servicio a la app móvil de un gimnasio; (3) un panel interno que cruza datos de ventas con un modelo de IA ya existente en Python.</li>
+<li><strong>E15.</strong> Verdadero o falso, con justificación de una o dos líneas; reescribe las falsas en una versión defendible: (1) "PHP está muerto"; (2) "Node es siempre más rápido que las demás opciones"; (3) "Para cada proyecto existe una tecnología objetivamente mejor"; (4) "Con Node, cliente y servidor pueden compartir lenguaje"; (5) "La popularidad de una tecnología es un dato fijo que basta aprenderse una vez".</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-6-la-integracion-con-el-lenguaje-de-marcas">Apartado 6. La integración con el lenguaje de marcas<a class="headerlink" href="#apartado-6-la-integracion-con-el-lenguaje-de-marcas" title="Permanent link">&para;</a></h2>
+<p>Todo lo anterior converge en un hecho que conviene formular en voz alta: <strong>el navegador solo entiende lenguaje de marcas</strong> (con su CSS y su JavaScript). Haga lo que haga el servidor — consultar datos, aplicar reglas, calcular — su trabajo solo sirve si termina convertido en HTML que viaja en la respuesta. Los <strong>mecanismos de integración</strong> son justamente las formas en que el código de servidor produce ese HTML. Dos familias:</p>
+<p><strong>Mecanismo 1 — el código construye el HTML.</strong> El programa fabrica el texto de la respuesta: concatena, interpola, monta. Es el estilo natural de los servicios y de plataformas como Node, donde <strong>tu programa es además el servidor</strong> — lo verás en acción en la unidad de servicios REST; hoy te basta reconocerlo como la otra familia.</p>
+<p><strong>Mecanismo 2 — el código se embebe en el HTML.</strong> Se invierte el papel: el documento manda, y entre las marcas se insertan bloques de código que el servidor ejecuta al servir la página. Así nacieron JSP, ASP y — sobre todo — <strong>PHP, el lenguaje principal de este curso, que trae este mecanismo de serie</strong>: todo lo que va entre <code>&lt;?php</code> y <code>?&gt;</code> (o su atajo de impresión, <code>&lt;?= … ?&gt;</code>) se ejecuta en el servidor, y el navegador recibe únicamente el HTML resultante. Es el mecanismo de los dos experimentos de abajo — y el que usarás a diario desde la UD2.</p>
+<p>Y ahora, a <strong>verificar</strong> — que es lo que pide el criterio, y lo que distingue saber de creer. Los dos experimentos (están también en el repositorio de la unidad) se sirven con el servidor embebido de PHP: abre un terminal en la carpeta de los archivos, lanza <code>php -S localhost:8000</code> y déjalo escuchando (se para con Ctrl+C); en esa misma terminal verás el registro de cada petición atendida.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="cp">&lt;?php</span> <span class="c1">// experimento-1-fijo.php — la respuesta es siempre la misma</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nv">$titulo</span> <span class="o">=</span> <span class="s1">'Club de montaña'</span><span class="p">;</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nv">$proxima</span> <span class="o">=</span> <span class="s1">'Ibón de Estanés'</span><span class="p">;</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="cp">?&gt;</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="x">&lt;h1&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$titulo</span> <span class="cp">?&gt;</span><span class="x">&lt;/h1&gt;</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="x">&lt;p&gt;Próxima salida: </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$proxima</span> <span class="cp">?&gt;</span><span class="x">.&lt;/p&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="cp">&lt;?php</span> <span class="c1">// experimento-2-generado.php — la respuesta se fabrica en el momento</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nv">$salidas</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Ibón de Estanés'</span><span class="p">,</span> <span class="s1">'Peña Oroel'</span><span class="p">,</span> <span class="s1">'Cañón de Añisclo'</span><span class="p">];</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nv">$ahora</span> <span class="o">=</span> <span class="nb">date</span><span class="p">(</span><span class="s1">'d/m/Y H:i:s'</span><span class="p">);</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="nv">$proxima</span> <span class="o">=</span> <span class="nv">$salidas</span><span class="p">[</span><span class="nb">array_rand</span><span class="p">(</span><span class="nv">$salidas</span><span class="p">)];</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="cp">?&gt;</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="x">&lt;h1&gt;Club de montaña&lt;/h1&gt;</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="x">&lt;p&gt;Página generada el </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$ahora</span> <span class="cp">?&gt;</span><span class="x">.&lt;/p&gt;</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="x">&lt;p&gt;Próxima salida sorteada: </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$proxima</span> <span class="cp">?&gt;</span><span class="x">.&lt;/p&gt;</span>
+</code></pre></div>
+<p>Abre <code>http://localhost:8000/experimento-1-fijo.php</code> con la pestaña Red activa y mira la respuesta: <code>Content-Type: text/html</code>, cuerpo HTML — y en <strong>Ver código fuente</strong>, ni rastro de <code>&lt;?php</code>: las etiquetas y las variables se quedaron en el servidor. Abre después el segundo y recarga varias veces: <strong>cambia el contenido — la hora, la salida sorteada — pero no la naturaleza de lo que viaja</strong>: sigue siendo HTML, indistinguible para el navegador de un fichero escrito a mano. Esa es la verificación que buscábamos: la integración funciona cuando el cliente <strong>no puede saber, ni necesita saber</strong>, si el HTML que recibió fue escrito o fabricado.</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E16.</strong> Ejecuta el experimento 1 y ábrelo desde el navegador. Captura de la pestaña Red el <code>Content-Type</code> y el cuerpo de la respuesta, compara el código fuente recibido con el archivo <code>experimento-1-fijo.php</code>, y explica en dos líneas qué viajó por la red y qué se quedó en el servidor sin viajar jamás.</li>
+<li><strong>E17.</strong> Ejecuta el experimento 2 y recarga tres veces. Anota qué cambia entre recargas y qué permanece, y señala la línea exacta del código responsable de cada uno de los dos cambios.</li>
+<li><strong>E18.</strong> Sobre el papel (sin ejecutar todavía): escribe la modificación del experimento 2 para que muestre las <strong>tres</strong> salidas del array como lista HTML (<code>&lt;ul&gt;</code> con sus <code>&lt;li&gt;</code>, con un bucle embebido entre las marcas), y explica en una frase por qué eso que acabas de escribir es, literalmente, "integración del lenguaje de marcas con el lenguaje de programación".</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-7-herramientas-y-frameworks-reconocer-y-evaluar">Apartado 7. Herramientas y frameworks: reconocer y evaluar<a class="headerlink" href="#apartado-7-herramientas-y-frameworks-reconocer-y-evaluar" title="Permanent link">&para;</a></h2>
+<p>Los experimentos del apartado 6 funcionan, pero imagina escalar ese estilo a una aplicación entera: analizar cada ruta a mano, montar cada respuesta letra a letra, reinventar la gestión de formularios, de sesiones, de errores… Todo eso es idéntico en todas las aplicaciones web del mundo, y el software tiene una respuesta estándar para el trabajo idéntico: empaquetarlo.</p>
+<p>Dos formas de empaquetarlo que no conviene confundir. Una <strong>librería</strong> es una caja de herramientas: tu código manda y la llama cuando quiere. Un <strong>framework</strong> es un chasis: trae la estructura de la aplicación ya decidida y <strong>es él quien llama a tu código</strong> en los puntos previstos — tú rellenas los huecos. Esa inversión de quién llama a quién es la frontera entre ambos.</p>
+<p>Un framework web de servidor te da, de serie: <strong>enrutado</strong> (qué función atiende cada ruta y método), integración con <strong>motores de plantillas</strong>, gestión cómoda de <strong>peticiones y respuestas</strong>, un mecanismo de <strong>middleware</strong> para insertar pasos comunes (registro, autenticación…), protecciones de <strong>seguridad</strong> básicas y — nada menor — una <strong>estructura común</strong> que permite que un equipo entero, o el tú de dentro de seis meses, encuentre las cosas donde espera encontrarlas.</p>
+<p>Cada ecosistema del apartado 5 tiene los suyos: <strong>Express</strong> y NestJS en Node; Laravel y Symfony en PHP; Spring Boot en Java; Django y Flask en Python; ASP.NET Core en C#; Rails en Ruby.</p>
+<p>¿Y cómo se elige, si no es por moda? Con una <strong>rúbrica de evaluación</strong> — la misma que usarás en los ejercicios y en la actividad final:</p>
+<table>
+<thead>
+<tr>
+<th>Criterio</th>
+<th>Qué mirar</th>
+<th>Dónde está la evidencia</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Documentación</td>
+<td>¿Oficial, completa, con guía de inicio que funciona?</td>
+<td>La web oficial del proyecto</td>
+</tr>
+<tr>
+<td>Comunidad y adopción</td>
+<td>¿Se usa de verdad? ¿Hay respuestas cuando algo falla?</td>
+<td>Actividad del repositorio, ecosistema de paquetes</td>
+</tr>
+<tr>
+<td>Mantenimiento vivo</td>
+<td><strong>Fecha de la última versión</strong> y ritmo de publicación</td>
+<td>La sección de versiones de la web o del repositorio oficial</td>
+</tr>
+<tr>
+<td>Licencia</td>
+<td>¿Libre? ¿Permite uso comercial?</td>
+<td>El archivo de licencia del proyecto</td>
+</tr>
+<tr>
+<td>Curva y encaje</td>
+<td>¿Qué cuesta aprenderlo? ¿Encaja con lo que el equipo ya sabe?</td>
+<td>La guía de inicio, probada</td>
+</tr>
+<tr>
+<td>Ecosistema</td>
+<td>¿Existen piezas hechas para lo que necesitaré (sesiones, ORM…)?</td>
+<td>El gestor de paquetes de la plataforma</td>
+</tr>
+</tbody>
+</table>
+<p>Apliquémosla, como ejemplo trabajado, a <strong>Laravel</strong> — el framework del cierre de nuestra pila: documentación oficial extensa, con guía de instalación y tutorial de primera aplicación; adopción dominante en el ecosistema PHP, del que es el framework de referencia; proyecto vivo, con calendario de versiones publicado en su web oficial; licencia MIT, sin restricciones para lo que haremos; curva exigente si se toma entero — por eso en este curso llega <strong>al final y acotado a cuatro piezas</strong> (rutas, plantillas Blade, Eloquent y validación), cuando ya domines a mano los mecanismos que él automatiza — con encaje directo en el PHP que para entonces traerás de serie; y un ecosistema <strong>Composer/Packagist</strong> con piezas para todo lo que una aplicación necesita, de la autenticación al ORM. (Express, el framework de la parte JavaScript de la pila, tendrá su propia argumentación en la unidad de servicios REST.) Fíjate en que dos casillas de la rúbrica (fechas de versiones, estado del repositorio) son <strong>evidencia con caducidad</strong>: no la des por sabida — se consulta en la fuente oficial cada vez, y eso harás en los ejercicios.</p>
+<p>Completan el taller del curso las herramientas alrededor del framework: <strong>Composer</strong> (el gestor de dependencias de PHP, que llega con el tramo Laravel), <strong>npm</strong> (su equivalente en el ecosistema Node, que usarás en la unidad de servicios), las herramientas de <strong>prueba de APIs</strong> (las usarás desde la UD7) y las <strong>DevTools</strong> que ya manejas.</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E19.</strong> Clasifica cada pieza como <em>lenguaje · entorno de ejecución · framework · motor de plantillas · gestor de paquetes · herramienta</em>: PHP · el intérprete de PHP (con su servidor embebido <code>php -S</code>) · Laravel · Blade · Composer · la pestaña Red. Justifica las dos que te resulten más dudosas.</li>
+<li><strong>E20.</strong> Elige un framework de <strong>otra</strong> pila (de la lista del apartado) y evalúalo con los seis criterios de la rúbrica, aportando al menos dos evidencias reales y fechadas tomadas de sus fuentes oficiales (por ejemplo, fecha de la última versión y licencia), citando de dónde las sacaste.</li>
+<li><strong>E21.</strong> "¿Framework sí o no?": el club necesita (a) una página única para anunciar la marcha anual, que no cambiará en meses, y (b) su aplicación de inscripciones con socios, plazas y pagos. Argumenta para cada encargo si compensa usar un framework, nombrando qué aporta y qué cuesta en cada caso.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-8-errores-frecuentes">Apartado 8. Errores frecuentes<a class="headerlink" href="#apartado-8-errores-frecuentes" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>"El servidor" entendido solo como una máquina.</strong> Es también — y sobre todo, en este módulo — un programa. En tu portátil correrán servidores todo el curso, empezando por los experimentos del apartado 6.</li>
+<li><strong>"JavaScript es cosa del navegador."</strong> Lo era. Node.js ejecuta JavaScript fuera del navegador, con capacidades que allí no existen (ficheros, red, procesos). Mismo lenguaje, entorno distinto, poderes distintos.</li>
+<li><strong>"Si la página se mueve, es dinámica."</strong> Una animación o un menú desplegable son JavaScript <strong>en el cliente</strong> sobre una página que puede ser perfectamente estática. El criterio correcto es dónde se <strong>fabrica el HTML</strong>, no cuánto se mueve.</li>
+<li><strong>"Con Ver código fuente veo el programa del servidor."</strong> Nunca: solo ves la respuesta que fabricó. El código de servidor no viaja — exactamente por eso puede custodiar secretos y tomar decisiones con autoridad.</li>
+<li><strong><code>Failed to listen on localhost:8000 (reason: Address already in use)</code></strong> al lanzar <code>php -S</code>: el mensaje real que verás cuando otro proceso — casi siempre tu ejecución anterior, que no cerraste — sigue escuchando en el puerto 8000. Vuelve a esa terminal y páralo con Ctrl+C antes de lanzar de nuevo.</li>
+<li><strong>"Me funciona en <code>http://localhost:8000</code>, así que ya está publicado."</strong> <code>localhost</code> es tu propia máquina: nadie más llega ahí. Publicar de verdad exige un servidor accesible desde fuera — y el despliegue con todas sus piezas lo verás más adelante en el ciclo.</li>
+</ol>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-9-la-ia-en-esta-unidad">Apartado 9. La IA en esta unidad<a class="headerlink" href="#apartado-9-la-ia-en-esta-unidad" title="Permanent link">&para;</a></h2>
+<p>Puedes usar un asistente de IA en esta unidad, con cabeza y con responsabilidad sobre el resultado — la misma regla que te aplicará cualquier empresa, y la que fija este módulo: <strong>el uso se declara en el <code>DECISIONES.md</code> de cada entrega</strong>.</p>
+<ul>
+<li><strong>Usos razonables aquí</strong>: pedir explicaciones alternativas de un concepto que se resista (proxy inverso, inversión de control, la diferencia entre los mecanismos del apartado 4), generar más casos de clasificación estático/dinámico o cliente/servidor para practicar, o pedirle que te haga preguntas de repaso antes de la defensa.</li>
+<li><strong>Lo que debes verificar siempre</strong>: todo lo del panorama que lleve fecha implícita — versiones, popularidad, "cuál es mejor" — porque caduca y porque mezcla opinión con dato; contrástalo con las fuentes oficiales del apartado 11 y con evidencias fechadas, como exige la rúbrica del apartado 7. Y cualquier clasificación que te dé hecha: los matices ("¿esto es dinámico o es JavaScript de cliente?") son exactamente donde más falla.</li>
+<li><strong>Lo que se te pedirá defender</strong>: cada entrega evaluable de este módulo se defiende. En particular, la propuesta de pila de la AE10 la sostendrás con tus palabras y respondiendo a un "¿y si…?" — si la escribió un asistente y no la entiendes, la defensa lo revela en el primer minuto. Si está en tu entrega, es tuyo.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-10-actividad-evaluativa-final">Apartado 10. Actividad evaluativa final<a class="headerlink" href="#apartado-10-actividad-evaluativa-final" title="Permanent link">&para;</a></h2>
+<p><strong>Contexto — la academia de idiomas.</strong> Una academia comarcal con <strong>3 sedes</strong>, unos <strong>400 alumnos</strong> y <strong>25 cursos por trimestre</strong> funciona hoy así: una web estática que hizo hace años un antiguo alumno (HTML editado a mano, y ya nadie se atreve a tocarlo), matrículas por teléfono y una hoja de cálculo por sede. Quieren: un <strong>catálogo de cursos</strong> siempre actualizado desde una única fuente, <strong>matrícula en línea</strong> con plazas limitadas por curso, un <strong>área personal</strong> donde cada alumno vea sus horarios y facturas, y un <strong>boletín mensual</strong>. El presupuesto es ajustado y la persona que mantendrá el sistema conoce PHP.</p>
+<p><strong>Instrucciones.</strong> 10 ejercicios, 1 punto cada uno; se responde <strong>razonando sobre el contexto</strong> (respuestas sin justificar no puntúan completas). <strong>Tiempo estimado: 2 horas</strong>, más la preparación de evidencias. <strong>Entrega</strong>: documento <code>ud1/actividad-evaluativa.md</code> en tu repositorio de la unidad del aula de código, con commits por bloques de ejercicios, las capturas en <code>ud1/evidencias/</code> y el <code>DECISIONES.md</code> actualizado. <strong>Defensa individual de 4–5 minutos</strong> según el calendario publicado.</p>
+<ul>
+<li><strong>AE1</strong> <code>[RA1.a]</code> Clasifica dónde se ejecuta el código responsable de cada comportamiento de la futura web — cliente o servidor — y justifica en una línea: (1) el menú se despliega al pasar el ratón; (2) el catálogo muestra los cursos del trimestre en vigor; (3) al teclear el correo, avisa al momento de que falta la arroba; (4) el área personal muestra tus facturas y no las de otro; (5) el buscador filtra la tabla de cursos ya cargada, sin recargar; (6) al matricularte, se comprueba y descuenta la plaza.</li>
+<li><strong>AE2</strong> <code>[RA1.b]</code> El catálogo se edita hoy a mano en HTML. Identifica <strong>tres</strong> problemas concretos que la academia ya sufre con esa práctica y, para cada uno, la ventaja de la generación dinámica que lo elimina.</li>
+<li><strong>AE3</strong> <code>[RA1.a]</code> La matrícula tiene plazas limitadas. Explica dónde debe ejecutarse la decisión "queda plaza" y qué podría ocurrir si se tomara en el cliente; describe el reparto correcto de la validación entre cliente y servidor usando la regla de oro del apartado 3.</li>
+<li><strong>AE4</strong> <code>[RA1.c]</code> Este es el registro de consola de un servidor de pruebas de la academia (formato: método, ruta, código de estado devuelto). Interpreta cada línea — qué pidió el cliente y cómo respondió el servidor:
+  <code>GET / 200</code> · <code>GET /cursos 200</code> · <code>GET /estilos.css 200</code> · <code>POST /matricula 302</code> · <code>GET /matricula-ok 200</code> · <code>GET /admin 403</code></li>
+<li><strong>AE5</strong> <code>[RA1.c]</code> Describe, paso a paso y con el vocabulario de la unidad, el viaje completo de la petición "una alumna abre su horario en el área personal": desde que teclea la dirección hasta que la página se pinta, nombrando qué ocurre en el cliente, qué en el servidor y qué viaja en cada sentido.</li>
+<li><strong>AE6</strong> <code>[RA1.d]</code> La aplicación se desplegará como aplicación PHP detrás de un servidor web. Dibuja o describe el despliegue, explica el papel de cada pieza (qué atiende el servidor web y qué delega en la aplicación) y nombra <strong>dos</strong> funcionalidades de la capa de servidor de aplicaciones o gestor de procesos que la academia agradecerá, con el problema que evita cada una.</li>
+<li><strong>AE7</strong> <code>[RA1.e]</code> Elabora la ficha comparada de <strong>dos</strong> tecnologías candidatas para este proyecto — PHP y otra a tu elección del apartado 5 — aplicando los ejes del panorama <strong>a este caso concreto</strong> (equipo, presupuesto, tipo de aplicación), y cierra con una recomendación provisional.</li>
+<li><strong>AE8</strong> <code>[RA1.f]</code> La lista de cursos se generará con una plantilla con huecos. Dado el fragmento y los datos siguientes, escribe el <strong>HTML exacto</strong> que recibiría el navegador y señala qué no puede saber el navegador sobre su procedencia (la sintaxis es la del apartado 6; basta con leerla):</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&lt;ul&gt;
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  &lt;?php foreach ($cursos as $curso) { ?&gt;
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    &lt;li&gt;&lt;?= $curso['nombre'] ?&gt; — &lt;?= $curso['plazas'] ?&gt; plazas&lt;/li&gt;
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  &lt;?php } ?&gt;
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>&lt;/ul&gt;
+</code></pre></div>
+<p>con <code>$cursos = [['nombre' =&gt; 'Inglés B1', 'plazas' =&gt; 12], ['nombre' =&gt; 'Francés A2', 'plazas' =&gt; 8]]</code>.
+- <strong>AE9</strong> <code>[RA1.f]</code> Evidencia práctica: ejecuta el experimento 2 del apartado 6, captura de la pestaña Red el <code>Content-Type</code> y el cuerpo recibido tras dos recargas, y redacta en 3–4 líneas la verificación: qué mecanismo de integración queda demostrado y en qué se nota. Adjunta las capturas en <code>ud1/evidencias/</code>.
+- <strong>AE10</strong> <code>[RA1.e, RA1.g]</code> <strong>Informe final para la academia</strong> (300–400 palabras): propuesta razonada de pila — lenguaje, framework y motor de plantillas — evaluando el framework elegido con al menos <strong>cuatro</strong> criterios de la rúbrica del apartado 7 y citando <strong>dos evidencias reales y fechadas</strong> tomadas de sus fuentes oficiales (por ejemplo, la fecha de la última versión y la licencia). Se defiende sin leer.</p>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-11-para-ampliar">Apartado 11. Para ampliar<a class="headerlink" href="#apartado-11-para-ampliar" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://developer.mozilla.org/es/docs/Learn_web_development/Extensions/Server-side/First_steps">Primeros pasos en la programación de lado servidor (MDN, en español)</a> — el módulo introductorio de Mozilla: qué es el lado servidor, la visión cliente-servidor y una panorámica de frameworks; el complemento perfecto de los apartados 1 a 4.</li>
+<li><a href="https://www.php.net/manual/es/">Manual oficial de PHP (en español)</a> — la referencia del lenguaje principal del curso: sintaxis, tipos, estructuras de control, clases y objetos, sesiones… De su web oficial saldrá también tu instalación de casa; será tu documentación de cabecera desde la UD2 (las páginas aún sin traducir se muestran en inglés).</li>
+<li><a href="https://laravel.com/docs">Documentación oficial de Laravel</a> — la referencia del framework del cierre del curso (en inglés): de momento te basta reconocerla y hojear su guía de instalación; será tu guía cuando llegue el tramo Laravel.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

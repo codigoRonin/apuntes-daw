@@ -1,0 +1,2233 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Apuntes de los módulos del CFGS Desarrollo de Aplicaciones Web">
+      
+      
+        <meta name="author" content="Arba">
+      
+      
+        <link rel="canonical" href="https://codigoronin.github.io/apuntes-daw/big-data-e-inteligencia-artificial/ud1-python-datos-ia/">
+      
+      
+        <link rel="prev" href="../ud0-presentacion/">
+      
+      
+        <link rel="next" href="../../recursos/entorno-vscode-php/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>UD1 · Python para datos e IA: lenguaje especializado, entorno y librerías - Apuntes DAW</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ud1-python-para-datos-e-ia-lenguaje-especializado-entorno-y-librerias" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Apuntes DAW" class="md-header__button md-logo" aria-label="Apuntes DAW" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Apuntes DAW
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              UD1 · Python para datos e IA: lenguaje especializado, entorno y librerías
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/codigoronin/apuntes-daw" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Inicio
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../bases-de-datos/" class="md-tabs__link">
+          
+  
+  
+  Bases de Datos (0484)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../desarrollo-web-en-entorno-servidor/" class="md-tabs__link">
+          
+  
+  
+  Desarrollo Web en Entorno Servidor (0613)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Big Data e Inteligencia Artificial (AOP1089)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../recursos/entorno-vscode-php/" class="md-tabs__link">
+          
+  
+  
+  Recursos
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Apuntes DAW" class="md-nav__button md-logo" aria-label="Apuntes DAW" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Apuntes DAW
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/codigoronin/apuntes-daw" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bases de Datos (0484)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bases de Datos (0484)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud1-almacenamiento-sgbd-valor-del-dato/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Almacenamiento, SGBD y el valor del dato
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud2-modelo-entidad-relacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2 · Modelo entidad-relación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud3-modelo-relacional-normalizacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3 · Modelo relacional y normalización
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud4-consultas-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD4 · Consultas de datos con SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desarrollo Web en Entorno Servidor (0613)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Desarrollo Web en Entorno Servidor (0613)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud1-arquitecturas-tecnologias-servidor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Arquitecturas y tecnologías de programación en servidor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud2-codigo-embebido-php/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2 · Código embebido en lenguajes de marcas: sintaxis, estructuras, funciones y formularios
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Big Data e Inteligencia Artificial (AOP1089)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Big Data e Inteligencia Artificial (AOP1089)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Python para datos e IA: lenguaje especializado, entorno y librerías
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Python para datos e IA: lenguaje especializado, entorno y librerías
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-1-instalar-el-lenguaje-especializado-y-montar-el-taller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1. Instalar el lenguaje especializado y montar el taller
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-2-lo-que-hace-distinto-a-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2. Lo que hace distinto a Python
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-3-programas-simples-datos-variables-constantes-y-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3. Programas simples: datos, variables, constantes y control
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-4-funciones-y-estructuras-de-almacenamiento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4. Funciones y estructuras de almacenamiento
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-5-clases-y-objetos-comentarios-y-documentacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5. Clases y objetos, comentarios y documentación
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-6-obtener-datos-desde-distintos-origenes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6. Obtener datos desde distintos orígenes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-7-librerias-especializadas-con-modelos-preentrenados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 7. Librerías especializadas con modelos preentrenados
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-8-programar-aplicaciones-que-integran-datos-y-modelo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 8. Programar aplicaciones que integran datos y modelo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-9-errores-frecuentes-y-depuracion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 9. Errores frecuentes y depuración
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-10-la-ia-en-esta-unidad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 10. La IA en esta unidad
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-11-actividad-evaluativa-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 11. Actividad evaluativa final
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-12-para-ampliar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 12. Para ampliar
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recursos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Recursos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/entorno-vscode-php/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entorno de trabajo: VS Code para PHP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/guia-drawio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía rápida de draw.io
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/estandar-estilo-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estándar de estilo SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-1-instalar-el-lenguaje-especializado-y-montar-el-taller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1. Instalar el lenguaje especializado y montar el taller
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-2-lo-que-hace-distinto-a-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2. Lo que hace distinto a Python
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-3-programas-simples-datos-variables-constantes-y-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3. Programas simples: datos, variables, constantes y control
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-4-funciones-y-estructuras-de-almacenamiento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4. Funciones y estructuras de almacenamiento
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-5-clases-y-objetos-comentarios-y-documentacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5. Clases y objetos, comentarios y documentación
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-6-obtener-datos-desde-distintos-origenes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6. Obtener datos desde distintos orígenes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-7-librerias-especializadas-con-modelos-preentrenados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 7. Librerías especializadas con modelos preentrenados
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-8-programar-aplicaciones-que-integran-datos-y-modelo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 8. Programar aplicaciones que integran datos y modelo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-9-errores-frecuentes-y-depuracion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 9. Errores frecuentes y depuración
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-10-la-ia-en-esta-unidad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 10. La IA en esta unidad
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-11-actividad-evaluativa-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 11. Actividad evaluativa final
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-12-para-ampliar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 12. Para ampliar
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="ud1-python-para-datos-e-ia-lenguaje-especializado-entorno-y-librerias">UD1. Python para datos e IA: lenguaje especializado, entorno y librerías<a class="headerlink" href="#ud1-python-para-datos-e-ia-lenguaje-especializado-entorno-y-librerias" title="Permanent link">&para;</a></h1>
+<p><strong>Módulo optativo AOP1089 — Big Data e Inteligencia Artificial · 2.º DAW · IES Río Arba · Curso 2026-27 · 14 horas · 1.ª evaluación</strong></p>
+<p><strong>Vinculación con el resultado de aprendizaje.</strong> Esta unidad trabaja completo el <strong>RA1</strong>: <em>"Programa aplicaciones informáticas, utilizando lenguajes de programación especializados"</em> (Resolución de 10 de julio de 2025, bloque IFC303). Los criterios d), e) y f) se evalúan aquí <strong>con alcance acotado</strong> (ver más abajo) y se reutilizan en el resto de unidades sin volver a evaluarse.</p>
+<table>
+<thead>
+<tr>
+<th>CE</th>
+<th>Qué exige (resumen)</th>
+<th>Apartado donde se trabaja</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RA1.a</td>
+<td>Instalar el lenguaje de programación especializado atendiendo a sus especificaciones técnicas</td>
+<td>Apartado 1</td>
+</tr>
+<tr>
+<td>RA1.b</td>
+<td>Identificar las características propias del lenguaje especializado</td>
+<td>Apartado 2</td>
+</tr>
+<tr>
+<td>RA1.c</td>
+<td>Escribir programas simples</td>
+<td>Apartados 3, 4 y 5</td>
+</tr>
+<tr>
+<td>RA1.d</td>
+<td>Obtener Big Data desde distintos orígenes de datos</td>
+<td>Apartado 6</td>
+</tr>
+<tr>
+<td>RA1.e</td>
+<td>Utilizar librerías especializadas en Big Data y/o modelos de inteligencia artificial</td>
+<td>Apartado 7</td>
+</tr>
+<tr>
+<td>RA1.f</td>
+<td>Programar aplicaciones en las que se usan Big Data y/o modelos de inteligencia artificial</td>
+<td>Apartado 8</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Alcance acotado de RA1.d, RA1.e y RA1.f en esta unidad</strong> (definición publicada en la programación, aplicable también a la actividad evaluativa): d) obtener datos desde orígenes <strong>provistos por el docente o públicos y documentados</strong> — ficheros CSV/JSON dados, una consulta simple a una API pública o a la base de datos de referencia del ciclo —, sin diseñar procesos de captura propios; e) usar librerías especializadas con <strong>modelos preentrenados aplicados tal cual</strong> a datasets dados, sin entrenamiento ni ajuste; f) programas breves que integren la obtención del dato y la llamada al modelo preentrenado <strong>con salida interpretada</strong>. Entrenar, ajustar y validar modelos propios (RA3), configurar plataformas (RA4) y construir aplicaciones completas (RA5) queda fuera de esta unidad y se evalúa en las suyas.</p>
+<p><strong>Al terminar esta unidad sabrás:</strong> instalar Python y montar un entorno de trabajo aislado con sus librerías; explicar qué hace distinto a Python de Java y por qué es el lenguaje del oficio de datos; escribir programas cortos con variables, decisiones, bucles, funciones, listas, diccionarios y clases, comentados y documentados; obtener los mismos datos desde un fichero CSV, un JSON, una API pública y una base de datos; aplicar un modelo preentrenado a un texto y leer con criterio lo que devuelve — incluidos sus errores —; y unir las dos cosas en un programa que lee datos, pregunta al modelo y explica el resultado.</p>
+<p><strong>Entorno de trabajo de la unidad.</strong> Necesitas <strong>Python</strong> instalado (apartado 1), un terminal y un editor. Trabajarás en dos formatos: <strong>scripts</strong> (<code>.py</code>, que se ejecutan de principio a fin) y <strong>cuadernos</strong> de Jupyter (<code>.ipynb</code>, celdas que se ejecutan una a una) — los dos se entregan en tu repositorio. Las librerías que aparecen son <strong>spaCy</strong>, con su modelo preentrenado en español, y <strong>requests</strong> para hablar con una API; la biblioteca estándar de Python cubre el resto (<code>csv</code>, <code>json</code>, <code>sqlite3</code>). Distinción que conviene tener clara desde la portada: <strong>spaCy aparece aquí como librería instrumental</strong> con un modelo preentrenado que se aplica tal cual; lo que se evalúa en esta unidad es <strong>RA1.e y RA1.f</strong> — usar una librería especializada y programar con ella —, no el procesamiento de lenguaje natural como tal, que tiene su propia unidad y sus propios criterios (RA5, UD5). Tampoco verás todavía pandas: llega con los datos en la UD2. El caso hilo de la teoría es una <strong>red de alojamientos de turismo rural de la comarca</strong> y las reseñas de sus huéspedes — nombres de negocio inventados, lugares reales, datos ficticios de aula.</p>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-1-instalar-el-lenguaje-especializado-y-montar-el-taller">Apartado 1. Instalar el lenguaje especializado y montar el taller<a class="headerlink" href="#apartado-1-instalar-el-lenguaje-especializado-y-montar-el-taller" title="Permanent link">&para;</a></h2>
+<p>¿Por qué Python? Porque es el lenguaje en el que están escritas — o desde el que se manejan — casi todas las librerías con las que trabaja el oficio de datos e inteligencia artificial: preparar tablas, dibujar gráficos, entrenar modelos, llamar a un modelo de lenguaje. Un desarrollador web que sepa Python puede sentarse en la misma mesa que el equipo de datos y, sobre todo, puede incorporar sus resultados a una aplicación. En este módulo Python no es un lenguaje más: es <strong>el lenguaje especializado</strong> que fija el RA1.</p>
+<p><strong>Instalación.</strong> Descarga el instalador de la web oficial (apartado 12) y, en Windows, marca la casilla que añade Python al <code>PATH</code> — sin ella el terminal no lo encontrará. En Linux suele venir instalado y en macOS también, aunque en versión antigua; en los dos casos comprueba qué tienes antes de instalar nada. La comprobación es siempre la misma:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python --version
+</code></pre></div>
+<p>En algunos sistemas el comando se llama <code>python3</code> (y en Windows existe además el lanzador <code>py</code>). Si la respuesta empieza por <code>Python 3.</code>, estás listo; cualquier cosa que empiece por <code>Python 2.</code> no sirve para este módulo. Trabajamos con la <strong>versión soportada actual</strong>: los materiales no fijan números.</p>
+<p><strong>Entornos virtuales.</strong> Cada proyecto de datos arrastra sus propias librerías, y dos proyectos pueden exigir versiones incompatibles de la misma. La solución del ecosistema es el <strong>entorno virtual</strong>: una carpeta con su propia copia de Python y sus propias librerías, aislada del sistema. Se crea una vez por proyecto y se <strong>activa</strong> cada vez que abres un terminal para trabajar:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python -m venv .venv            # crea el entorno en la carpeta .venv
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>source .venv/bin/activate       # activa en Linux y macOS
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>.venv\Scripts\activate          # activa en Windows
+</code></pre></div>
+<p>Sabrás que está activo porque el terminal muestra <code>(.venv)</code> al principio de la línea. A partir de ahí, <code>pip</code> — el instalador de paquetes — instala <strong>dentro</strong> del entorno:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>pip install -U pip
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>pip install jupyterlab requests spacy
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>python -m spacy download es_core_news_sm
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>python -m spacy validate
+</code></pre></div>
+<p>Las tres primeras órdenes traen el entorno de cuadernos, la librería HTTP y la librería de lenguaje natural; la cuarta descarga el <strong>modelo preentrenado en español</strong> que usaremos en los apartados 7 y 8 (pesa unos 13 MB); la última comprueba que modelo y librería son compatibles. La lista de lo instalado se guarda en un fichero para que cualquiera reproduzca tu entorno:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>pip freeze &gt; requirements.txt   # guarda la lista exacta
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>pip install -r requirements.txt # la reinstala en otra máquina
+</code></pre></div>
+<p><strong>El cuaderno.</strong> Un <strong>cuaderno</strong> de Jupyter es un documento formado por <strong>celdas</strong>: unas contienen texto explicativo y otras código que se ejecuta en un proceso de Python que sigue vivo entre celda y celda (el <strong>kernel</strong>). Es el formato natural para explorar datos — escribes, ejecutas, miras, corriges — y por eso lo verás en todas las unidades. Se arranca desde el terminal con el entorno activo:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>jupyter lab
+</code></pre></div>
+<p>Se abre en el navegador. Dos avisos que ahorran horas: <strong>el orden de ejecución importa</strong> — las celdas guardan estado, y ejecutar la celda 5 antes que la 3 produce resultados que no se corresponden con lo que se lee de arriba abajo —, así que antes de entregar, reinicia el kernel y ejecuta todo desde el principio; y el cuaderno elige un kernel: si instalaste spaCy en <code>.venv</code> pero el cuaderno usa el Python del sistema, no lo encontrará.</p>
+<p><strong>Scripts.</strong> Un fichero <code>.py</code> se ejecuta entero, de arriba abajo, con <code>python nombre.py</code>. Es el formato de todo lo que tenga que funcionar sin nadie delante: el programa del apartado 8, o las piezas que más adelante conectarás a una aplicación web. Cuaderno para explorar, script para entregar algo que se ejecuta solo: usarás los dos.</p>
+<p><strong>El repositorio de la unidad.</strong> Tu carpeta <code>ud1/</code> del aula de código lleva los scripts y cuadernos, los datos de la unidad, <code>requirements.txt</code> y un <code>.gitignore</code> que excluye <code>.venv/</code> — el entorno no se sube nunca: se reconstruye desde <code>requirements.txt</code>. Y el <code>DECISIONES.md</code>, desde el primer commit.</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E1.</strong> Instala Python (o comprueba el que tienes), crea el entorno virtual <code>.venv</code> de tu carpeta <code>ud1/</code>, actívalo e instala las librerías de la unidad con el modelo en español. Captura la salida de <code>python --version</code> y de <code>python -m spacy validate</code> y guárdalas en <code>ud1/evidencias/</code>. Explica en dos líneas qué demuestra cada captura.</li>
+<li><strong>E2.</strong> Explica a un compañero que "instala todo con <code>pip</code> fuera del entorno virtual porque así siempre lo tiene" qué problema tendrá cuando en la UD3 y en la UD4 necesite dos versiones distintas de una misma librería, y qué le aporta <code>requirements.txt</code> cuando cambie de ordenador.</li>
+<li><strong>E3.</strong> En un cuaderno crea tres celdas: en la primera <code>x = 10</code>, en la segunda <code>x = x + 5</code>, en la tercera <code>print(x)</code>. Ejecuta la segunda tres veces seguidas y después la tercera. Anota qué imprime y por qué no es 15; describe qué harías antes de entregar el cuaderno para que cualquiera obtenga lo que se lee.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-2-lo-que-hace-distinto-a-python">Apartado 2. Lo que hace distinto a Python<a class="headerlink" href="#apartado-2-lo-que-hace-distinto-a-python" title="Permanent link">&para;</a></h2>
+<p>Vienes de Java. Buena noticia: todo lo que sabes de programar — variables, decisiones, bucles, funciones, objetos — sigue valiendo. Lo que cambia es la forma, y conviene entender por qué cambia, porque de ahí sale el estilo con el que se escribe Python.</p>
+<ol>
+<li><strong>Es interpretado y se escribe y prueba al momento.</strong> No hay compilación previa: el intérprete lee y ejecuta. Puedes abrir un terminal, escribir <code>python</code> y probar una línea; puedes ejecutar una celda de un cuaderno y ver el resultado. Esa inmediatez es la razón de que el oficio de datos viva en cuadernos.</li>
+<li><strong>Tipado dinámico.</strong> Una variable es una <strong>etiqueta</strong> pegada a un valor, no una caja de un tipo fijo: <code>x = 5</code> y después <code>x = "cinco"</code> es legal. Los valores sí tienen tipo (<code>type(x)</code> lo dice) y el tipo importa — <code>"5" + "5"</code> es <code>"55"</code> mientras que <code>5 + 5</code> es <code>10</code> —, pero no lo declaras. Ganas velocidad de escritura; pierdes al compilador que te avisaba: ahora los errores de tipo aparecen al ejecutar.</li>
+<li><strong>La sangría es la sintaxis.</strong> No hay llaves ni punto y coma: un bloque es lo que está sangrado bajo la línea que termina en dos puntos. El código que se lee bien es, obligatoriamente, código correcto, y al revés.</li>
+<li><strong>Todo es un objeto</strong>, y todo tiene métodos: <code>"luna".upper()</code>, <code>[3, 1, 2].sort()</code>, <code>(2.5).is_integer()</code>. No hay tipos primitivos aparte.</li>
+<li><strong>Pilas incluidas.</strong> La <strong>biblioteca estándar</strong> trae de serie ficheros CSV y JSON, fechas, expresiones regulares, una base de datos (<code>sqlite3</code>), red… Y lo que no está, está en <strong>PyPI</strong>, el repositorio de paquetes que <code>pip</code> consulta: ahí viven las librerías del oficio.</li>
+<li><strong>Legibilidad como valor.</strong> Hay un estilo de código oficial (PEP 8) y una filosofía escrita (<code>import this</code> la muestra) que prefiere lo explícito, lo simple y lo legible. Nombres en <code>snake_case</code>, cuatro espacios de sangría, líneas cortas.</li>
+<li><strong>Python es lento; sus librerías, no.</strong> El intérprete es más lento que Java, y no importa: las librerías de datos están escritas en C y hacen el trabajo pesado. El estilo profesional es <em>dejar que la librería haga el bucle</em>: lo verás en la UD2 con pandas.</li>
+</ol>
+<p>Con un fragmento delante se entiende mejor. El mismo comportamiento en los dos lenguajes:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">// Java</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kt">int</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">puntuaciones</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">        </span><span class="n">total</span><span class="o">++</span><span class="p">;</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="p">}</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"Buenas: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">total</span><span class="p">);</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Python</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">puntuaciones</span><span class="p">:</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="k">if</span> <span class="n">p</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>        <span class="n">total</span> <span class="o">+=</span> <span class="mi">1</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Buenas: </span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+<p>Y algunas líneas para probar en el intérprete, con lo que devuelven:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">x</span> <span class="o">=</span> <span class="mi">5</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>                       <span class="c1"># &lt;class 'int'&gt;</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">x</span> <span class="o">=</span> <span class="s2">"cinco"</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>                       <span class="c1"># &lt;class 'str'&gt;</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="nb">print</span><span class="p">(</span><span class="mi">3</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span> <span class="o">%</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">10</span><span class="p">)</span> <span class="c1"># 1.5 3 1 1024  (división real, entera, resto, potencia)</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"5"</span> <span class="o">+</span> <span class="s2">"5"</span><span class="p">,</span> <span class="mi">5</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span>              <span class="c1"># 55 10</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="n">nombre</span> <span class="o">=</span> <span class="s2">"Luna"</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">nombre</span><span class="si">!r}</span><span class="s2"> tiene </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">nombre</span><span class="p">)</span><span class="si">}</span><span class="s2"> letras; en mayúsculas </span><span class="si">{</span><span class="n">nombre</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>                                     <span class="c1"># 'Luna' tiene 4 letras; en mayúsculas LUNA</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="nb">print</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="s2">""</span><span class="p">),</span> <span class="nb">bool</span><span class="p">(</span><span class="s2">"hola"</span><span class="p">),</span> <span class="nb">bool</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="nb">bool</span><span class="p">([]),</span> <span class="nb">bool</span><span class="p">([</span><span class="mi">0</span><span class="p">]))</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>                                     <span class="c1"># False True False False True</span>
+</code></pre></div>
+<p>La última línea enseña algo que usarás sin parar: en una condición, lo <strong>vacío</strong> (cadena vacía, cero, lista vacía, <code>None</code>) cuenta como falso y lo demás como verdadero. <code>if lista:</code> significa "si la lista tiene algo".</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E4.</strong> Toma el fragmento Java de arriba y señala, línea a línea, qué desaparece en la versión Python y qué lo sustituye (tipos, llaves, punto y coma, <code>++</code>, la impresión). Añade una diferencia que <strong>no</strong> se vea en el fragmento.</li>
+<li><strong>E5.</strong> Predice, sin ejecutar, qué imprime cada línea y después compruébalo: <code>print(10 / 5)</code> · <code>print("3" * 3)</code> · <code>print(len("Sádaba"))</code> · <code>print(bool("False"))</code> · <code>print(7 // 2 * 2 + 7 % 2)</code>. Explica la sorpresa de la cuarta.</li>
+<li><strong>E6.</strong> Un compañero afirma: "Como Python no declara tipos, no tiene tipos". Escribe tres líneas de código que demuestren que la afirmación es falsa y una que muestre el error real que aparece cuando se mezclan mal.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-3-programas-simples-datos-variables-constantes-y-control">Apartado 3. Programas simples: datos, variables, constantes y control<a class="headerlink" href="#apartado-3-programas-simples-datos-variables-constantes-y-control" title="Permanent link">&para;</a></h2>
+<p>Un programa Python es una secuencia de sentencias que se ejecutan de arriba abajo. Los tipos básicos son <code>int</code>, <code>float</code>, <code>str</code>, <code>bool</code> y el valor especial <code>None</code> ("no hay valor"). Las cadenas van entre comillas simples o dobles, indistintamente; las <strong>f-strings</strong> (<code>f"..."</code>) insertan expresiones entre llaves y son la forma habitual de formatear: <code>{valor:.2f}</code> con dos decimales, <code>{nombre:28}</code> en un campo de 28 caracteres. Las <strong>constantes</strong> no existen como tales: por convención, un nombre en <code>MAYÚSCULAS</code> significa "no lo cambies", y todo el mundo lo respeta.</p>
+<p>Las <strong>estructuras de control</strong> son las que conoces: <code>if</code> / <code>elif</code> / <code>else</code>, <code>while</code> y <code>for</code>. El <code>for</code> de Python recorre <strong>directamente los elementos</strong> de cualquier colección — no necesita índice — y <code>range(n)</code> genera los enteros de <code>0</code> a <code>n-1</code> cuando lo que hace falta es contar. <code>break</code> sale del bucle, <code>continue</code> salta a la siguiente vuelta. Todo ello, en un primer programa completo sobre el caso hilo:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># resumen_resena.py — primer programa: una reseña y una decisión</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">NOTA_MINIMA_RECOMENDABLE</span> <span class="o">=</span> <span class="mi">4</span>          <span class="c1"># constante: por convención, en mayúsculas</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">resena</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="s2">"alojamiento"</span><span class="p">:</span> <span class="s2">"Hostal Sierra de Luna"</span><span class="p">,</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    <span class="s2">"puntuacion"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>    <span class="s2">"texto"</span><span class="p">:</span> <span class="s2">"Trato familiar y desayuno casero. Desde Luna se llega rápido a Zaragoza y a Huesca."</span><span class="p">,</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="p">}</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="n">palabras</span> <span class="o">=</span> <span class="n">resena</span><span class="p">[</span><span class="s2">"texto"</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>     <span class="c1"># una lista de palabras</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="n">longitud</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">palabras</span><span class="p">)</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="k">if</span> <span class="n">resena</span><span class="p">[</span><span class="s2">"puntuacion"</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">NOTA_MINIMA_RECOMENDABLE</span><span class="p">:</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>    <span class="n">veredicto</span> <span class="o">=</span> <span class="s2">"recomendable"</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="k">elif</span> <span class="n">resena</span><span class="p">[</span><span class="s2">"puntuacion"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>    <span class="n">veredicto</span> <span class="o">=</span> <span class="s2">"neutra"</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>    <span class="n">veredicto</span> <span class="o">=</span> <span class="s2">"negativa"</span>
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">resena</span><span class="p">[</span><span class="s1">'alojamiento'</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">resena</span><span class="p">[</span><span class="s1">'puntuacion'</span><span class="p">]</span><span class="si">}</span><span class="s2">/5 → reseña </span><span class="si">{</span><span class="n">veredicto</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"El texto tiene </span><span class="si">{</span><span class="n">longitud</span><span class="si">}</span><span class="s2"> palabras."</span><span class="p">)</span>
+<a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>
+<a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a><span class="c1"># un bucle for recorre directamente los elementos, sin índices</span>
+<a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a><span class="n">mayusculas</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a><span class="k">for</span> <span class="n">palabra</span> <span class="ow">in</span> <span class="n">palabras</span><span class="p">:</span>
+<a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a>    <span class="k">if</span> <span class="n">palabra</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isupper</span><span class="p">():</span>
+<a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a>        <span class="n">mayusculas</span> <span class="o">+=</span> <span class="mi">1</span>
+<a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Palabras que empiezan por mayúscula: </span><span class="si">{</span><span class="n">mayusculas</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a>
+<a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a><span class="c1"># while: se repite mientras la condición sea cierta</span>
+<a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a><span class="n">puntuaciones</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<a id="__codelineno-8-32" name="__codelineno-8-32" href="#__codelineno-8-32"></a><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="__codelineno-8-33" name="__codelineno-8-33" href="#__codelineno-8-33"></a><span class="n">suma</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="__codelineno-8-34" name="__codelineno-8-34" href="#__codelineno-8-34"></a><span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">puntuaciones</span><span class="p">):</span>
+<a id="__codelineno-8-35" name="__codelineno-8-35" href="#__codelineno-8-35"></a>    <span class="n">suma</span> <span class="o">+=</span> <span class="n">puntuaciones</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<a id="__codelineno-8-36" name="__codelineno-8-36" href="#__codelineno-8-36"></a>    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+<a id="__codelineno-8-37" name="__codelineno-8-37" href="#__codelineno-8-37"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Media de </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">puntuaciones</span><span class="p">)</span><span class="si">}</span><span class="s2"> puntuaciones: </span><span class="si">{</span><span class="n">suma</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">puntuaciones</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+<p>Salida:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Hostal Sierra de Luna: 5/5 → reseña recomendable
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>El texto tiene 15 palabras.
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>Palabras que empiezan por mayúscula: 5
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>Media de 8 puntuaciones: 3.62
+</code></pre></div>
+<p>Tres cosas que mirar en el código. La reseña es un <strong>diccionario</strong> (<code>{clave: valor}</code>), la estructura con la que llegarán los datos de cualquier origen en el apartado 6; se accede con <code>resena["texto"]</code>. <code>split()</code> convierte una cadena en lista de palabras: el primer paso de cualquier tratamiento de texto. Y el bucle <code>while</code> de la media está escrito así <strong>para que veas el índice</strong>, pero en Python nadie lo escribiría: <code>sum(puntuaciones) / len(puntuaciones)</code> es la forma natural, y en el apartado 4 hay más atajos de ese estilo.</p>
+<p>La <strong>entrada</strong> por teclado es <code>input("mensaje")</code>, que siempre devuelve una cadena: <code>int(input("Puntuación: "))</code> la convierte. Las conversiones explícitas — <code>int()</code>, <code>float()</code>, <code>str()</code> — te acompañarán en el apartado 6, porque de un fichero CSV todo llega como texto.</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E7.</strong> Reescribe el cálculo de la media con <code>for</code> (sin índice) y después en una sola línea con <code>sum</code> y <code>len</code>. Añade un <code>if</code> que imprima "Sin datos" si la lista está vacía, en vez de dividir por cero.</li>
+<li><strong>E8.</strong> Escribe un programa que recorra la lista <code>puntuaciones</code> del ejemplo e imprima, para cada valor, <code>positiva</code>, <code>neutra</code> o <code>negativa</code> (4-5, 3, 1-2), y al final cuántas hay de cada clase. Hazlo primero con tres contadores y después con un diccionario de contadores.</li>
+<li><strong>E9.</strong> Escribe un programa que pida puntuaciones por teclado hasta que el usuario escriba <code>fin</code>, ignore las que no estén entre 1 y 5 (avisando), y al terminar muestre cuántas válidas ha recibido y su media con dos decimales.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-4-funciones-y-estructuras-de-almacenamiento">Apartado 4. Funciones y estructuras de almacenamiento<a class="headerlink" href="#apartado-4-funciones-y-estructuras-de-almacenamiento" title="Permanent link">&para;</a></h2>
+<p>Las <strong>funciones</strong> se definen con <code>def</code>, devuelven con <code>return</code> (si no hay <code>return</code>, devuelven <code>None</code>), admiten <strong>parámetros con valor por defecto</strong> y llamadas <strong>con nombre</strong> (<code>mejores(resenas, minimo=5)</code>). La cadena que abre el cuerpo de una función es su <strong>docstring</strong>: la documentación oficial de la función, que <code>help()</code> y el editor muestran (apartado 5).</p>
+<p>Las <strong>estructuras de almacenamiento</strong> de la biblioteca estándar son cuatro, y elegir bien entre ellas es media programación:</p>
+<table>
+<thead>
+<tr>
+<th>Estructura</th>
+<th>Sintaxis</th>
+<th>Cuándo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lista <code>list</code></td>
+<td><code>[5, 4, 2]</code></td>
+<td>Secuencia ordenada y modificable; es la estructura por defecto</td>
+</tr>
+<tr>
+<td>Tupla <code>tuple</code></td>
+<td><code>(42.09, -1.06)</code></td>
+<td>Secuencia que no debe cambiar: coordenadas, una fila de resultado</td>
+</tr>
+<tr>
+<td>Diccionario <code>dict</code></td>
+<td><code>{"nombre": "Luna", "plazas": 12}</code></td>
+<td>Asociar claves a valores; <strong>la forma natural de un registro de datos</strong></td>
+</tr>
+<tr>
+<td>Conjunto <code>set</code></td>
+<td><code>{"Luna", "Sádaba"}</code></td>
+<td>Elementos sin repetir; comprobar pertenencia; sin orden garantizado</td>
+</tr>
+</tbody>
+</table>
+<p>Las <strong>comprensiones</strong> (<code>[r["puntuacion"] for r in resenas]</code>, <code>{... for ...}</code>) construyen una lista, un conjunto o un diccionario en una línea a partir de otra colección; son el equivalente compacto de un bucle que acumula. El <strong>troceado</strong> (<code>lista[:2]</code>, <code>lista[-1]</code>, <code>lista[::-1]</code>) recorta secuencias. <code>sorted(..., key=...)</code> ordena por el criterio que le des; <code>enumerate</code> y <code>zip</code> acompañan a los bucles cuando hace falta la posición o recorrer dos colecciones a la vez. Todo ello sobre las reseñas:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># estadisticas.py — funciones y estructuras de almacenamiento</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">resenas</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="p">{</span><span class="s2">"alojamiento"</span><span class="p">:</span> <span class="s2">"Casa Rural El Cierzo"</span><span class="p">,</span> <span class="s2">"puntuacion"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">"localidad"</span><span class="p">:</span> <span class="s2">"Uncastillo"</span><span class="p">},</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    <span class="p">{</span><span class="s2">"alojamiento"</span><span class="p">:</span> <span class="s2">"Casa Rural El Cierzo"</span><span class="p">,</span> <span class="s2">"puntuacion"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"localidad"</span><span class="p">:</span> <span class="s2">"Uncastillo"</span><span class="p">},</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="p">{</span><span class="s2">"alojamiento"</span><span class="p">:</span> <span class="s2">"Apartamentos Las Bardenas"</span><span class="p">,</span> <span class="s2">"puntuacion"</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">"localidad"</span><span class="p">:</span> <span class="s2">"Sádaba"</span><span class="p">},</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    <span class="p">{</span><span class="s2">"alojamiento"</span><span class="p">:</span> <span class="s2">"Hostal Sierra de Luna"</span><span class="p">,</span> <span class="s2">"puntuacion"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">"localidad"</span><span class="p">:</span> <span class="s2">"Luna"</span><span class="p">},</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>    <span class="p">{</span><span class="s2">"alojamiento"</span><span class="p">:</span> <span class="s2">"Hostal Sierra de Luna"</span><span class="p">,</span> <span class="s2">"puntuacion"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"localidad"</span><span class="p">:</span> <span class="s2">"Luna"</span><span class="p">},</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>    <span class="p">{</span><span class="s2">"alojamiento"</span><span class="p">:</span> <span class="s2">"Apartamentos Las Bardenas"</span><span class="p">,</span> <span class="s2">"puntuacion"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"localidad"</span><span class="p">:</span> <span class="s2">"Sádaba"</span><span class="p">},</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="p">]</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="k">def</span><span class="w"> </span><span class="nf">media</span><span class="p">(</span><span class="n">valores</span><span class="p">):</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">    </span><span class="sd">"""Devuelve la media de una lista de números, o None si está vacía."""</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">valores</span><span class="p">:</span>            <span class="c1"># lista vacía → False</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>        <span class="k">return</span> <span class="kc">None</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">valores</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">valores</span><span class="p">)</span>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="k">def</span><span class="w"> </span><span class="nf">media_por_alojamiento</span><span class="p">(</span><span class="n">resenas</span><span class="p">):</span>
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="w">    </span><span class="sd">"""Agrupa las puntuaciones por alojamiento y devuelve {alojamiento: media}."""</span>
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>    <span class="n">puntuaciones</span> <span class="o">=</span> <span class="p">{}</span>                              <span class="c1"># diccionario: clave → lista</span>
+<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">resenas</span><span class="p">:</span>
+<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>        <span class="n">puntuaciones</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">"alojamiento"</span><span class="p">],</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">"puntuacion"</span><span class="p">])</span>
+<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a>    <span class="k">return</span> <span class="p">{</span><span class="n">nombre</span><span class="p">:</span> <span class="n">media</span><span class="p">(</span><span class="n">lista</span><span class="p">)</span> <span class="k">for</span> <span class="n">nombre</span><span class="p">,</span> <span class="n">lista</span> <span class="ow">in</span> <span class="n">puntuaciones</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+<a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a>
+<a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a><span class="k">def</span><span class="w"> </span><span class="nf">mejores</span><span class="p">(</span><span class="n">resenas</span><span class="p">,</span> <span class="n">minimo</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+<a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a><span class="w">    </span><span class="sd">"""Nombres (sin repetir) de los alojamientos con alguna reseña &gt;= minimo."""</span>
+<a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a>    <span class="k">return</span> <span class="p">{</span><span class="n">r</span><span class="p">[</span><span class="s2">"alojamiento"</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">resenas</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s2">"puntuacion"</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">minimo</span><span class="p">}</span>   <span class="c1"># un conjunto</span>
+<a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a>
+<a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a><span class="n">medias</span> <span class="o">=</span> <span class="n">media_por_alojamiento</span><span class="p">(</span><span class="n">resenas</span><span class="p">)</span>
+<a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a><span class="k">for</span> <span class="n">nombre</span><span class="p">,</span> <span class="n">valor</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">medias</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">par</span><span class="p">:</span> <span class="n">par</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<a id="__codelineno-10-30" name="__codelineno-10-30" href="#__codelineno-10-30"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">nombre</span><span class="si">:</span><span class="s2">28</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">valor</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<a id="__codelineno-10-31" name="__codelineno-10-31" href="#__codelineno-10-31"></a>
+<a id="__codelineno-10-32" name="__codelineno-10-32" href="#__codelineno-10-32"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"Localidades:"</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">({</span><span class="n">r</span><span class="p">[</span><span class="s2">"localidad"</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">resenas</span><span class="p">}))</span>
+<a id="__codelineno-10-33" name="__codelineno-10-33" href="#__codelineno-10-33"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"Con alguna reseña de 4 o más:"</span><span class="p">,</span> <span class="n">mejores</span><span class="p">(</span><span class="n">resenas</span><span class="p">))</span>
+<a id="__codelineno-10-34" name="__codelineno-10-34" href="#__codelineno-10-34"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"Con alguna reseña de 5:"</span><span class="p">,</span> <span class="n">mejores</span><span class="p">(</span><span class="n">resenas</span><span class="p">,</span> <span class="n">minimo</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>
+<a id="__codelineno-10-35" name="__codelineno-10-35" href="#__codelineno-10-35"></a>
+<a id="__codelineno-10-36" name="__codelineno-10-36" href="#__codelineno-10-36"></a><span class="n">top</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s2">"puntuacion"</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">resenas</span><span class="p">]</span>        <span class="c1"># comprensión de lista</span>
+<a id="__codelineno-10-37" name="__codelineno-10-37" href="#__codelineno-10-37"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"Puntuaciones:"</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="s2">"| máximo:"</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">top</span><span class="p">),</span> <span class="s2">"| ordenadas:"</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">top</span><span class="p">))</span>
+<a id="__codelineno-10-38" name="__codelineno-10-38" href="#__codelineno-10-38"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"Las dos primeras:"</span><span class="p">,</span> <span class="n">top</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="s2">"| la última:"</span><span class="p">,</span> <span class="n">top</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s2">"| del revés:"</span><span class="p">,</span> <span class="n">top</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<a id="__codelineno-10-39" name="__codelineno-10-39" href="#__codelineno-10-39"></a>
+<a id="__codelineno-10-40" name="__codelineno-10-40" href="#__codelineno-10-40"></a><span class="n">coordenadas</span> <span class="o">=</span> <span class="p">(</span><span class="mf">42.09</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.06</span><span class="p">)</span>                    <span class="c1"># tupla: no se modifica</span>
+<a id="__codelineno-10-41" name="__codelineno-10-41" href="#__codelineno-10-41"></a><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span> <span class="o">=</span> <span class="n">coordenadas</span>                          <span class="c1"># desempaquetado</span>
+<a id="__codelineno-10-42" name="__codelineno-10-42" href="#__codelineno-10-42"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Latitud </span><span class="si">{</span><span class="n">lat</span><span class="si">}</span><span class="s2">, longitud </span><span class="si">{</span><span class="n">lon</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<a id="__codelineno-10-43" name="__codelineno-10-43" href="#__codelineno-10-43"></a>
+<a id="__codelineno-10-44" name="__codelineno-10-44" href="#__codelineno-10-44"></a><span class="k">for</span> <span class="n">posicion</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">resenas</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<a id="__codelineno-10-45" name="__codelineno-10-45" href="#__codelineno-10-45"></a>    <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s2">"puntuacion"</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+<a id="__codelineno-10-46" name="__codelineno-10-46" href="#__codelineno-10-46"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Reseña </span><span class="si">{</span><span class="n">posicion</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">'alojamiento'</span><span class="p">]</span><span class="si">}</span><span class="s2"> — revisar"</span><span class="p">)</span>
+</code></pre></div>
+<p>Salida:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Casa Rural El Cierzo         3.50
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>Apartamentos Las Bardenas    3.50
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>Hostal Sierra de Luna        3.00
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>Localidades: ['Luna', 'Sádaba', 'Uncastillo']
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>Con alguna reseña de 4 o más: {'Apartamentos Las Bardenas', 'Casa Rural El Cierzo', 'Hostal Sierra de Luna'}
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>Con alguna reseña de 5: {'Casa Rural El Cierzo', 'Hostal Sierra de Luna'}
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>Puntuaciones: [5, 2, 4, 5, 1, 3] | máximo: 5 | ordenadas: [1, 2, 3, 4, 5, 5]
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>Las dos primeras: [5, 2] | la última: 3 | del revés: [3, 1, 5, 4, 2, 5]
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>Latitud 42.09, longitud -1.06
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>Reseña 2: Casa Rural El Cierzo — revisar
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>Reseña 5: Hostal Sierra de Luna — revisar
+</code></pre></div>
+<p>Fíjate en <code>setdefault</code>: "dame la lista de este alojamiento y, si no existe todavía, créala vacía" — el patrón de <strong>agrupar</strong> registros por una clave, que repetirás mil veces. Y en que el orden con el que se imprime un conjunto <strong>puede variar</strong> entre ejecuciones: si necesitas orden, ordena.</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E10.</strong> Escribe <code>contar_por_localidad(resenas)</code> que devuelva un diccionario <code>{localidad: número de reseñas}</code>, primero con un bucle y <code>setdefault</code> o <code>get</code>, y después comprueba que <code>collections.Counter</code> hace lo mismo en una línea. ¿Qué devuelve <code>Counter(...).most_common(1)</code>?</li>
+<li><strong>E11.</strong> Escribe <code>negativas(resenas, umbral=2)</code> que devuelva la lista de textos de alojamiento de las reseñas con puntuación ≤ umbral, ordenada alfabéticamente y sin repetidos. Explica por qué has usado cada estructura (lista, conjunto) en cada paso.</li>
+<li><strong>E12.</strong> Dada <code>puntuaciones = [5, 4, 2, 5, 3, 4, 5, 1]</code>, obtén con troceado y funciones de la biblioteca estándar: las tres más altas, cuántas son 5, la mediana (ordena y toma el centro) y la lista sin la primera ni la última. Una línea por resultado.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-5-clases-y-objetos-comentarios-y-documentacion">Apartado 5. Clases y objetos, comentarios y documentación<a class="headerlink" href="#apartado-5-clases-y-objetos-comentarios-y-documentacion" title="Permanent link">&para;</a></h2>
+<p>La orientación a objetos de Python es la que conoces de Java con menos ceremonia. <code>class</code> define la clase; <code>__init__</code> es el constructor; <code>self</code> es la referencia al propio objeto y se escribe <strong>explícitamente</strong> como primer parámetro de todos los métodos; no hay <code>public</code>/<code>private</code> (una convención: un nombre que empieza por <code>_</code> es "de uso interno"). Los atributos se crean al asignarlos en <code>__init__</code>. <code>__str__</code> define lo que muestra <code>print(objeto)</code>. Y para clases que son básicamente <strong>un registro de datos</strong> — la mayoría en este módulo — existe <code>@dataclass</code>, que genera el constructor y la representación solos.</p>
+<p><strong>Comentarios y documentación</strong> son dos cosas distintas. Un comentario (<code># ...</code>) explica al lector del código <strong>por qué</strong> se hace algo; no explica <em>qué</em> hace una línea evidente. Una <strong>docstring</strong> — la cadena entre triples comillas al inicio de un módulo, clase o función — documenta <strong>qué</strong> hace y cómo se usa, y forma parte del programa: <code>help(objeto)</code> la muestra, los editores la enseñan al escribir, y las herramientas de documentación la recogen. Las <strong>anotaciones de tipo</strong> (<code>nombre: str</code>, <code>plazas: int = 4</code>) no cambian la ejecución, pero documentan la intención y permiten al editor avisarte.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># modelos.py — clases, objetos y documentación</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="k">class</span><span class="w"> </span><span class="nc">Resena</span><span class="p">:</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">    </span><span class="sd">"""Una reseña de un huésped sobre un alojamiento.</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="sd">    Atributos:</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="sd">        alojamiento: nombre del alojamiento reseñado.</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="sd">        puntuacion: entero de 1 a 5.</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="sd">        texto: opinión escrita por el huésped.</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="sd">        fecha: fecha de publicación.</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="sd">    """</span>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>    <span class="n">NOTA_MAXIMA</span> <span class="o">=</span> <span class="mi">5</span>                                     <span class="c1"># atributo de clase: compartido</span>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alojamiento</span><span class="p">,</span> <span class="n">puntuacion</span><span class="p">,</span> <span class="n">texto</span><span class="p">,</span> <span class="n">fecha</span><span class="p">):</span>
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">puntuacion</span> <span class="o">&lt;=</span> <span class="n">Resena</span><span class="o">.</span><span class="n">NOTA_MAXIMA</span><span class="p">:</span>
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"puntuación fuera de rango: </span><span class="si">{</span><span class="n">puntuacion</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">alojamiento</span> <span class="o">=</span> <span class="n">alojamiento</span>                  <span class="c1"># atributos de instancia</span>
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">puntuacion</span> <span class="o">=</span> <span class="n">puntuacion</span>
+<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">texto</span> <span class="o">=</span> <span class="n">texto</span>
+<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">fecha</span> <span class="o">=</span> <span class="n">fecha</span>
+<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a>
+<a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">es_negativa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a><span class="w">        </span><span class="sd">"""True si la puntuación es 1 o 2."""</span>
+<a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">puntuacion</span> <span class="o">&lt;=</span> <span class="mi">2</span>
+<a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a>
+<a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">resumen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">palabras</span><span class="o">=</span><span class="mi">6</span><span class="p">):</span>
+<a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a><span class="w">        </span><span class="sd">"""Primeras `palabras` palabras del texto, con puntos suspensivos."""</span>
+<a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a>        <span class="k">return</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">texto</span><span class="o">.</span><span class="n">split</span><span class="p">()[:</span><span class="n">palabras</span><span class="p">])</span> <span class="o">+</span> <span class="s2">"…"</span>
+<a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a>
+<a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>                                  <span class="c1"># lo que muestra print()</span>
+<a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a>        <span class="k">return</span> <span class="sa">f</span><span class="s2">"[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">puntuacion</span><span class="si">}</span><span class="s2">/5] </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">alojamiento</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fecha</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">resumen</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span>
+<a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a>
+<a id="__codelineno-12-37" name="__codelineno-12-37" href="#__codelineno-12-37"></a>
+<a id="__codelineno-12-38" name="__codelineno-12-38" href="#__codelineno-12-38"></a><span class="nd">@dataclass</span>
+<a id="__codelineno-12-39" name="__codelineno-12-39" href="#__codelineno-12-39"></a><span class="k">class</span><span class="w"> </span><span class="nc">Alojamiento</span><span class="p">:</span>
+<a id="__codelineno-12-40" name="__codelineno-12-40" href="#__codelineno-12-40"></a><span class="w">    </span><span class="sd">"""Ficha mínima de un alojamiento: la dataclass genera __init__ y __repr__ sola."""</span>
+<a id="__codelineno-12-41" name="__codelineno-12-41" href="#__codelineno-12-41"></a>    <span class="n">nombre</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-12-42" name="__codelineno-12-42" href="#__codelineno-12-42"></a>    <span class="n">localidad</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-12-43" name="__codelineno-12-43" href="#__codelineno-12-43"></a>    <span class="n">plazas</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span>
+<a id="__codelineno-12-44" name="__codelineno-12-44" href="#__codelineno-12-44"></a>
+<a id="__codelineno-12-45" name="__codelineno-12-45" href="#__codelineno-12-45"></a>
+<a id="__codelineno-12-46" name="__codelineno-12-46" href="#__codelineno-12-46"></a><span class="n">r</span> <span class="o">=</span> <span class="n">Resena</span><span class="p">(</span><span class="s2">"Hostal Sierra de Luna"</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span>
+<a id="__codelineno-12-47" name="__codelineno-12-47" href="#__codelineno-12-47"></a>           <span class="s2">"Trato familiar y desayuno casero. Desde Luna se llega rápido a Zaragoza."</span><span class="p">,</span>
+<a id="__codelineno-12-48" name="__codelineno-12-48" href="#__codelineno-12-48"></a>           <span class="n">date</span><span class="p">(</span><span class="mi">2026</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<a id="__codelineno-12-49" name="__codelineno-12-49" href="#__codelineno-12-49"></a><span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<a id="__codelineno-12-50" name="__codelineno-12-50" href="#__codelineno-12-50"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"¿Negativa?"</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">es_negativa</span><span class="p">())</span>
+<a id="__codelineno-12-51" name="__codelineno-12-51" href="#__codelineno-12-51"></a><span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">resumen</span><span class="p">(</span><span class="n">palabras</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
+<a id="__codelineno-12-52" name="__codelineno-12-52" href="#__codelineno-12-52"></a>
+<a id="__codelineno-12-53" name="__codelineno-12-53" href="#__codelineno-12-53"></a><span class="n">hostal</span> <span class="o">=</span> <span class="n">Alojamiento</span><span class="p">(</span><span class="s2">"Hostal Sierra de Luna"</span><span class="p">,</span> <span class="s2">"Luna"</span><span class="p">,</span> <span class="n">plazas</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<a id="__codelineno-12-54" name="__codelineno-12-54" href="#__codelineno-12-54"></a><span class="nb">print</span><span class="p">(</span><span class="n">hostal</span><span class="p">)</span>
+<a id="__codelineno-12-55" name="__codelineno-12-55" href="#__codelineno-12-55"></a><span class="nb">print</span><span class="p">(</span><span class="n">hostal</span><span class="o">.</span><span class="n">nombre</span><span class="p">,</span> <span class="s2">"tiene"</span><span class="p">,</span> <span class="n">hostal</span><span class="o">.</span><span class="n">plazas</span><span class="p">,</span> <span class="s2">"plazas"</span><span class="p">)</span>
+<a id="__codelineno-12-56" name="__codelineno-12-56" href="#__codelineno-12-56"></a>
+<a id="__codelineno-12-57" name="__codelineno-12-57" href="#__codelineno-12-57"></a><span class="n">help</span><span class="p">(</span><span class="n">Resena</span><span class="o">.</span><span class="n">resumen</span><span class="p">)</span>                                    <span class="c1"># la documentación se consulta desde el propio código</span>
+<a id="__codelineno-12-58" name="__codelineno-12-58" href="#__codelineno-12-58"></a>
+<a id="__codelineno-12-59" name="__codelineno-12-59" href="#__codelineno-12-59"></a><span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-12-60" name="__codelineno-12-60" href="#__codelineno-12-60"></a>    <span class="n">Resena</span><span class="p">(</span><span class="s2">"Casa Rural El Cierzo"</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">"Genial"</span><span class="p">,</span> <span class="n">date</span><span class="p">(</span><span class="mi">2026</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<a id="__codelineno-12-61" name="__codelineno-12-61" href="#__codelineno-12-61"></a><span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+<a id="__codelineno-12-62" name="__codelineno-12-62" href="#__codelineno-12-62"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">"Error controlado:"</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+</code></pre></div>
+<p>Salida:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>[5/5] Hostal Sierra de Luna (2026-05-09): Trato familiar y desayuno casero. Desde…
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>¿Negativa? False
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>Trato familiar y…
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>Alojamiento(nombre='Hostal Sierra de Luna', localidad='Luna', plazas=12)
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>Hostal Sierra de Luna tiene 12 plazas
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>Help on function resumen in module __main__:
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>resumen(self, palabras=6)
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>    Primeras `palabras` palabras del texto, con puntos suspensivos.
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>Error controlado: puntuación fuera de rango: 7
+</code></pre></div>
+<p>Las dos últimas líneas presentan el manejo de <strong>excepciones</strong>: <code>raise</code> lanza un error con un mensaje; <code>try</code> / <code>except</code> lo captura donde se sabe qué hacer con él. Lo usarás en el apartado 6 para sobrevivir a un fichero que no existe o a una API que no responde. Un <strong>módulo</strong> es simplemente un fichero <code>.py</code>: si guardas las clases en <code>modelos.py</code>, otro script puede escribir <code>from modelos import Resena</code> — así se reparte un programa en piezas.</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E13.</strong> Añade a <code>Resena</code> un método <code>contiene(palabra)</code> que devuelva <code>True</code> si la palabra aparece en el texto sin distinguir mayúsculas, con su docstring, y un método de clase o función <code>desde_dict(fila)</code> que construya una <code>Resena</code> a partir de un diccionario como los del apartado 4 (la fecha llega como cadena <code>"2026-05-09"</code>: consulta <code>date.fromisoformat</code>).</li>
+<li><strong>E14.</strong> Convierte <code>Alojamiento</code> en una clase con un método <code>ocupacion(personas)</code> que devuelva el porcentaje de plazas ocupadas, lance <code>ValueError</code> si <code>personas</code> supera las plazas, y esté documentado. Escribe el <code>try</code> / <code>except</code> que lo prueba con un valor válido y otro inválido.</li>
+<li><strong>E15.</strong> Revisa este comentario y esta docstring y reescríbelos como corresponde: <code>total = total + 1  # suma uno a total</code> y <code>def media(v): """función media"""</code>. Explica en una línea la diferencia de papel entre comentario y docstring.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-6-obtener-datos-desde-distintos-origenes">Apartado 6. Obtener datos desde distintos orígenes<a class="headerlink" href="#apartado-6-obtener-datos-desde-distintos-origenes" title="Permanent link">&para;</a></h2>
+<p>Un programa de datos empieza siempre igual: <strong>traer</strong> el dato desde donde vive y <strong>estructurarlo</strong> en memoria. En esta unidad los orígenes son los cuatro que fija el alcance publicado — un fichero CSV, un fichero JSON, una API pública y una base de datos —, todos ellos <strong>dados</strong>: no diseñas capturas ni recoges nada. Y la meta del apartado es una sola idea: <strong>venga de donde venga, el dato acaba siendo una lista de diccionarios</strong> (o una lista de tuplas), y a partir de ahí todo lo que sabes de los apartados 3 a 5 se aplica igual.</p>
+<p>El dataset de la unidad es <code>resenas.csv</code>, 24 reseñas ficticias de tres alojamientos. Su cabecera y sus cinco primeras filas <em>(fichero íntegro en el repositorio de la unidad)</em>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>id,alojamiento,localidad,fecha,puntuacion,texto
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>1,Casa Rural El Cierzo,Uncastillo,2026-03-14,5,"Casa preciosa en pleno casco histórico de Uncastillo. Subimos al Moncayo un día y otro visitamos Sos del Rey Católico. Repetiremos."
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>2,Casa Rural El Cierzo,Uncastillo,2026-03-21,4,"Muy bien situada, aunque la calefacción tardó en arrancar. Cenamos en un bar de la plaza y el sábado fuimos al mercadillo de Ejea de los Caballeros."
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>3,Casa Rural El Cierzo,Uncastillo,2026-04-05,2,"La casa estaba fría y sucia al llegar. El pueblo es bonito, pero no volveremos. La oficina de turismo nos atendió muy bien."
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>4,Apartamentos Las Bardenas,Sádaba,2026-04-11,5,"Ideal para conocer las Bardenas Reales. Paisaje impresionante, y a media hora de Tudela y de Tauste."
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>5,Apartamentos Las Bardenas,Sádaba,2026-04-18,3,"Apartamento correcto sin más. El wifi iba lento y la ducha goteaba. Lo mejor: la excursión a Tarazona."
+</code></pre></div>
+<p>Le acompañan <code>alojamientos.json</code> — la ficha de los tres alojamientos: nombre, localidad, plazas y coordenadas — y <code>tiempo_ejemplo.json</code> — una respuesta guardada de la API del tiempo, para trabajar sin red. Sus cinco primeras líneas <em>(fichero íntegro en el repositorio de la unidad)</em>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="p">{</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="nt">"red"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Alojamientos rurales de las Cinco Villas (datos ficticios de aula)"</span><span class="p">,</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span><span class="nt">"alojamientos"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">    </span><span class="p">{</span><span class="nt">"nombre"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Casa Rural El Cierzo"</span><span class="p">,</span><span class="w"> </span><span class="nt">"localidad"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Uncastillo"</span><span class="p">,</span><span class="w"> </span><span class="nt">"plazas"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="nt">"latitud"</span><span class="p">:</span><span class="w"> </span><span class="mf">42.36</span><span class="p">,</span><span class="w"> </span><span class="nt">"longitud"</span><span class="p">:</span><span class="w"> </span><span class="mf">-1.13</span><span class="p">},</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">    </span><span class="p">{</span><span class="nt">"nombre"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Apartamentos Las Bardenas"</span><span class="p">,</span><span class="w"> </span><span class="nt">"localidad"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sádaba"</span><span class="p">,</span><span class="w"> </span><span class="nt">"plazas"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="nt">"latitud"</span><span class="p">:</span><span class="w"> </span><span class="mf">42.28</span><span class="p">,</span><span class="w"> </span><span class="nt">"longitud"</span><span class="p">:</span><span class="w"> </span><span class="mf">-1.27</span><span class="p">},</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="p">{</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span><span class="nt">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="mf">42.375</span><span class="p">,</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">  </span><span class="nt">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="mf">-1.125</span><span class="p">,</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">  </span><span class="nt">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Europe/Madrid"</span><span class="p">,</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">  </span><span class="nt">"current"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</code></pre></div>
+<p>El programa siguiente obtiene datos de los cuatro orígenes:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># origenes.py — el mismo dato desde cuatro orígenes distintos</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="c1"># ── 1. Un fichero CSV ──────────────────────────────────────────────────────────</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"resenas.csv"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span> <span class="k">as</span> <span class="n">fichero</span><span class="p">:</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>    <span class="n">resenas</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">fichero</span><span class="p">))</span>            <span class="c1"># cada fila → un diccionario</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">resenas</span><span class="p">)</span><span class="si">}</span><span class="s2"> reseñas leídas; la primera es de </span><span class="si">{</span><span class="n">resenas</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'alojamiento'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"Columnas:"</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">resenas</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"Tipo de la puntuación tal como llega:"</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">resenas</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"puntuacion"</span><span class="p">]))</span>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">resenas</span><span class="p">:</span>
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>    <span class="n">r</span><span class="p">[</span><span class="s2">"puntuacion"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">"puntuacion"</span><span class="p">])</span>            <span class="c1"># del CSV todo llega como texto</span>
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a><span class="n">por_alojamiento</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">"alojamiento"</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">resenas</span><span class="p">)</span>
+<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"Reseñas por alojamiento:"</span><span class="p">,</span> <span class="n">por_alojamiento</span><span class="o">.</span><span class="n">most_common</span><span class="p">())</span>
+<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>
+<a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a><span class="c1"># ── 2. Un fichero JSON ─────────────────────────────────────────────────────────</span>
+<a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"alojamientos.json"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fichero</span><span class="p">:</span>
+<a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a>    <span class="n">red</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fichero</span><span class="p">)</span>                           <span class="c1"># JSON → diccionarios y listas de Python</span>
+<a id="__codelineno-17-24" name="__codelineno-17-24" href="#__codelineno-17-24"></a>
+<a id="__codelineno-17-25" name="__codelineno-17-25" href="#__codelineno-17-25"></a><span class="n">plazas</span> <span class="o">=</span> <span class="p">{</span><span class="n">a</span><span class="p">[</span><span class="s2">"nombre"</span><span class="p">]:</span> <span class="n">a</span><span class="p">[</span><span class="s2">"plazas"</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">red</span><span class="p">[</span><span class="s2">"alojamientos"</span><span class="p">]}</span>
+<a id="__codelineno-17-26" name="__codelineno-17-26" href="#__codelineno-17-26"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"Plazas por alojamiento:"</span><span class="p">,</span> <span class="n">plazas</span><span class="p">)</span>
+<a id="__codelineno-17-27" name="__codelineno-17-27" href="#__codelineno-17-27"></a>
+<a id="__codelineno-17-28" name="__codelineno-17-28" href="#__codelineno-17-28"></a><span class="c1"># ── 3. Una API pública (JSON por HTTP) ─────────────────────────────────────────</span>
+<a id="__codelineno-17-29" name="__codelineno-17-29" href="#__codelineno-17-29"></a><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<a id="__codelineno-17-30" name="__codelineno-17-30" href="#__codelineno-17-30"></a>
+<a id="__codelineno-17-31" name="__codelineno-17-31" href="#__codelineno-17-31"></a><span class="k">def</span><span class="w"> </span><span class="nf">tiempo_actual</span><span class="p">(</span><span class="n">latitud</span><span class="p">,</span> <span class="n">longitud</span><span class="p">):</span>
+<a id="__codelineno-17-32" name="__codelineno-17-32" href="#__codelineno-17-32"></a><span class="w">    </span><span class="sd">"""Temperatura y precipitación actuales en unas coordenadas (API de Open-Meteo)."""</span>
+<a id="__codelineno-17-33" name="__codelineno-17-33" href="#__codelineno-17-33"></a>    <span class="n">url</span> <span class="o">=</span> <span class="s2">"https://api.open-meteo.com/v1/forecast"</span>
+<a id="__codelineno-17-34" name="__codelineno-17-34" href="#__codelineno-17-34"></a>    <span class="n">parametros</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-17-35" name="__codelineno-17-35" href="#__codelineno-17-35"></a>        <span class="s2">"latitude"</span><span class="p">:</span> <span class="n">latitud</span><span class="p">,</span>
+<a id="__codelineno-17-36" name="__codelineno-17-36" href="#__codelineno-17-36"></a>        <span class="s2">"longitude"</span><span class="p">:</span> <span class="n">longitud</span><span class="p">,</span>
+<a id="__codelineno-17-37" name="__codelineno-17-37" href="#__codelineno-17-37"></a>        <span class="s2">"current"</span><span class="p">:</span> <span class="s2">"temperature_2m,precipitation"</span><span class="p">,</span>
+<a id="__codelineno-17-38" name="__codelineno-17-38" href="#__codelineno-17-38"></a>        <span class="s2">"timezone"</span><span class="p">:</span> <span class="s2">"Europe/Madrid"</span><span class="p">,</span>
+<a id="__codelineno-17-39" name="__codelineno-17-39" href="#__codelineno-17-39"></a>    <span class="p">}</span>
+<a id="__codelineno-17-40" name="__codelineno-17-40" href="#__codelineno-17-40"></a>    <span class="n">respuesta</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">parametros</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<a id="__codelineno-17-41" name="__codelineno-17-41" href="#__codelineno-17-41"></a>    <span class="n">respuesta</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>                       <span class="c1"># lanza un error si no es 2xx</span>
+<a id="__codelineno-17-42" name="__codelineno-17-42" href="#__codelineno-17-42"></a>    <span class="k">return</span> <span class="n">respuesta</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">"current"</span><span class="p">]</span>                 <span class="c1"># el cuerpo JSON ya convertido</span>
+<a id="__codelineno-17-43" name="__codelineno-17-43" href="#__codelineno-17-43"></a>
+<a id="__codelineno-17-44" name="__codelineno-17-44" href="#__codelineno-17-44"></a><span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-17-45" name="__codelineno-17-45" href="#__codelineno-17-45"></a>    <span class="n">actual</span> <span class="o">=</span> <span class="n">tiempo_actual</span><span class="p">(</span><span class="mf">42.36</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.13</span><span class="p">)</span>               <span class="c1"># Uncastillo, aproximadamente</span>
+<a id="__codelineno-17-46" name="__codelineno-17-46" href="#__codelineno-17-46"></a><span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+<a id="__codelineno-17-47" name="__codelineno-17-47" href="#__codelineno-17-47"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">"Sin conexión con la API:"</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+<a id="__codelineno-17-48" name="__codelineno-17-48" href="#__codelineno-17-48"></a>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"tiempo_ejemplo.json"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fichero</span><span class="p">:</span>
+<a id="__codelineno-17-49" name="__codelineno-17-49" href="#__codelineno-17-49"></a>        <span class="n">actual</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fichero</span><span class="p">)[</span><span class="s2">"current"</span><span class="p">]</span>         <span class="c1"># respuesta guardada, para trabajar sin red</span>
+<a id="__codelineno-17-50" name="__codelineno-17-50" href="#__codelineno-17-50"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"En Uncastillo, a las </span><span class="si">{</span><span class="n">actual</span><span class="p">[</span><span class="s1">'time'</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">actual</span><span class="p">[</span><span class="s1">'temperature_2m'</span><span class="p">]</span><span class="si">}</span><span class="s2"> °C, "</span>
+<a id="__codelineno-17-51" name="__codelineno-17-51" href="#__codelineno-17-51"></a>      <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">actual</span><span class="p">[</span><span class="s1">'precipitation'</span><span class="p">]</span><span class="si">}</span><span class="s2"> mm de precipitación"</span><span class="p">)</span>
+<a id="__codelineno-17-52" name="__codelineno-17-52" href="#__codelineno-17-52"></a>
+<a id="__codelineno-17-53" name="__codelineno-17-53" href="#__codelineno-17-53"></a><span class="c1"># ── 4. Una base de datos (SQL) ─────────────────────────────────────────────────</span>
+<a id="__codelineno-17-54" name="__codelineno-17-54" href="#__codelineno-17-54"></a><span class="n">conexion</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"resenas.db"</span><span class="p">)</span>               <span class="c1"># fichero local; si no existe, se crea</span>
+<a id="__codelineno-17-55" name="__codelineno-17-55" href="#__codelineno-17-55"></a><span class="n">cursor</span> <span class="o">=</span> <span class="n">conexion</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+<a id="__codelineno-17-56" name="__codelineno-17-56" href="#__codelineno-17-56"></a><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"DROP TABLE IF EXISTS resena"</span><span class="p">)</span>
+<a id="__codelineno-17-57" name="__codelineno-17-57" href="#__codelineno-17-57"></a><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"""</span>
+<a id="__codelineno-17-58" name="__codelineno-17-58" href="#__codelineno-17-58"></a><span class="s2">    CREATE TABLE resena (</span>
+<a id="__codelineno-17-59" name="__codelineno-17-59" href="#__codelineno-17-59"></a><span class="s2">        id INTEGER PRIMARY KEY,</span>
+<a id="__codelineno-17-60" name="__codelineno-17-60" href="#__codelineno-17-60"></a><span class="s2">        alojamiento TEXT NOT NULL,</span>
+<a id="__codelineno-17-61" name="__codelineno-17-61" href="#__codelineno-17-61"></a><span class="s2">        localidad TEXT NOT NULL,</span>
+<a id="__codelineno-17-62" name="__codelineno-17-62" href="#__codelineno-17-62"></a><span class="s2">        fecha TEXT NOT NULL,</span>
+<a id="__codelineno-17-63" name="__codelineno-17-63" href="#__codelineno-17-63"></a><span class="s2">        puntuacion INTEGER NOT NULL,</span>
+<a id="__codelineno-17-64" name="__codelineno-17-64" href="#__codelineno-17-64"></a><span class="s2">        texto TEXT NOT NULL</span>
+<a id="__codelineno-17-65" name="__codelineno-17-65" href="#__codelineno-17-65"></a><span class="s2">    )</span>
+<a id="__codelineno-17-66" name="__codelineno-17-66" href="#__codelineno-17-66"></a><span class="s2">"""</span><span class="p">)</span>
+<a id="__codelineno-17-67" name="__codelineno-17-67" href="#__codelineno-17-67"></a><span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span>
+<a id="__codelineno-17-68" name="__codelineno-17-68" href="#__codelineno-17-68"></a>    <span class="s2">"INSERT INTO resena VALUES (:id, :alojamiento, :localidad, :fecha, :puntuacion, :texto)"</span><span class="p">,</span>
+<a id="__codelineno-17-69" name="__codelineno-17-69" href="#__codelineno-17-69"></a>    <span class="n">resenas</span><span class="p">,</span>                                           <span class="c1"># los diccionarios del CSV, tal cual</span>
+<a id="__codelineno-17-70" name="__codelineno-17-70" href="#__codelineno-17-70"></a><span class="p">)</span>
+<a id="__codelineno-17-71" name="__codelineno-17-71" href="#__codelineno-17-71"></a><span class="n">conexion</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<a id="__codelineno-17-72" name="__codelineno-17-72" href="#__codelineno-17-72"></a>
+<a id="__codelineno-17-73" name="__codelineno-17-73" href="#__codelineno-17-73"></a><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"""</span>
+<a id="__codelineno-17-74" name="__codelineno-17-74" href="#__codelineno-17-74"></a><span class="s2">    SELECT alojamiento, ROUND(AVG(puntuacion), 2) AS media, COUNT(*) AS n</span>
+<a id="__codelineno-17-75" name="__codelineno-17-75" href="#__codelineno-17-75"></a><span class="s2">    FROM resena</span>
+<a id="__codelineno-17-76" name="__codelineno-17-76" href="#__codelineno-17-76"></a><span class="s2">    GROUP BY alojamiento</span>
+<a id="__codelineno-17-77" name="__codelineno-17-77" href="#__codelineno-17-77"></a><span class="s2">    ORDER BY media DESC</span>
+<a id="__codelineno-17-78" name="__codelineno-17-78" href="#__codelineno-17-78"></a><span class="s2">"""</span><span class="p">)</span>
+<a id="__codelineno-17-79" name="__codelineno-17-79" href="#__codelineno-17-79"></a><span class="k">for</span> <span class="n">alojamiento</span><span class="p">,</span> <span class="n">media</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">():</span>        <span class="c1"># cada fila llega como tupla</span>
+<a id="__codelineno-17-80" name="__codelineno-17-80" href="#__codelineno-17-80"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">alojamiento</span><span class="si">:</span><span class="s2">28</span><span class="si">}</span><span class="s2"> media </span><span class="si">{</span><span class="n">media</span><span class="si">}</span><span class="s2"> en </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> reseñas"</span><span class="p">)</span>
+<a id="__codelineno-17-81" name="__codelineno-17-81" href="#__codelineno-17-81"></a><span class="n">conexion</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+<p>Salida (con red; sin ella, la parte de la API imprime el aviso y usa la respuesta guardada):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>24 reseñas leídas; la primera es de Casa Rural El Cierzo
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>Columnas: ['id', 'alojamiento', 'localidad', 'fecha', 'puntuacion', 'texto']
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>Tipo de la puntuación tal como llega: &lt;class 'str'&gt;
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>Reseñas por alojamiento: [('Casa Rural El Cierzo', 8), ('Apartamentos Las Bardenas', 8), ('Hostal Sierra de Luna', 8)]
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>Plazas por alojamiento: {'Casa Rural El Cierzo': 8, 'Apartamentos Las Bardenas': 4, 'Hostal Sierra de Luna': 12}
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>En Uncastillo, a las 2026-08-27T11:15: 27.4 °C, 0.0 mm de precipitación
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>Apartamentos Las Bardenas    media 3.75 en 8 reseñas
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>Hostal Sierra de Luna        media 3.63 en 8 reseñas
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>Casa Rural El Cierzo         media 3.5 en 8 reseñas
+</code></pre></div>
+<p>Lo que enseña cada origen:</p>
+<ul>
+<li><strong>CSV.</strong> <code>with open(...)</code> abre el fichero y lo cierra solo al salir del bloque, pase lo que pase; <code>encoding="utf-8"</code> evita que las tildes se conviertan en un error (apartado 9); <code>csv.DictReader</code> usa la primera línea como nombres de columna. Y la lección con mayúsculas: <strong>del CSV todo llega como cadena</strong> — <code>"5"</code>, no <code>5</code> — y conviertes tú lo que necesitas como número o fecha.</li>
+<li><strong>JSON.</strong> <code>json.load</code> traduce directamente objetos a diccionarios, listas a listas, números a números: es el formato con el que hablan las APIs y en el que guardarás resultados (apartado 8, <code>json.dump</code>).</li>
+<li><strong>API.</strong> <code>requests.get</code> hace la petición HTTP que ya conoces de servidor; <code>params</code> construye la cadena de consulta; <code>raise_for_status()</code> convierte un 4xx o 5xx en excepción; <code>.json()</code> devuelve el cuerpo ya convertido. Una API es un origen que <strong>puede fallar</strong> — sin red, con el servicio caído, con un parámetro mal escrito —, por eso la llamada va dentro de un <code>try</code>, con una respuesta guardada como respaldo. Es el patrón profesional: nunca depender de que la red esté ahí.</li>
+<li><strong>Base de datos.</strong> El patrón es siempre el mismo — conectar, cursor, ejecutar, recoger, cerrar — y es el de la <strong>DB-API</strong> de Python, común a todos los gestores. Aquí usamos <code>sqlite3</code> porque viene de serie y crea la base de datos en un fichero: cada uno tiene la suya, sin servidor. Contra la base de datos de referencia del ciclo cambia solo el conector:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># consulta_mysql.py — el mismo patrón contra la base de datos de referencia del ciclo</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">mysql.connector</span>                                 <span class="c1"># pip install mysql-connector-python</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="n">conexion</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>    <span class="n">host</span><span class="o">=</span><span class="s2">"localhost"</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s2">"alumno"</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">"********"</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s2">"referencia"</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="p">)</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="n">cursor</span> <span class="o">=</span> <span class="n">conexion</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT alojamiento, AVG(puntuacion) FROM resena GROUP BY alojamiento"</span><span class="p">)</span>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="k">for</span> <span class="n">alojamiento</span><span class="p">,</span> <span class="n">media</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">():</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">alojamiento</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">media</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="n">conexion</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+<p><strong>Y el "Big" de Big Data?</strong> Los ficheros de este módulo caben en memoria; los de una empresa, a veces no. Python está preparado: un fichero abierto se puede recorrer <strong>línea a línea sin cargarlo entero</strong> — <code>for linea in fichero:</code> — y <code>csv.DictReader</code> funciona igual sobre él; contar, filtrar o sumar sobre millones de filas no exige guardarlas todas. El código del apartado 8 lo tiene en cuenta.</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E16.</strong> Sobre <code>resenas.csv</code>: calcula con Python la media de puntuación por <strong>localidad</strong> y el número de reseñas con puntuación 1 o 2 por alojamiento. Después obtén los mismos dos resultados con dos consultas SQL sobre <code>resenas.db</code> y comprueba que coinciden. ¿Cuál de los dos caminos te ha resultado más natural y por qué?</li>
+<li><strong>E17.</strong> Extiende la función <code>tiempo_actual</code> para que reciba también el nombre del lugar y devuelva una frase interpretada ("En Luna hace 27,4 °C y no llueve"), y llámala con las coordenadas de los tres alojamientos leídas de <code>alojamientos.json</code>. Cambia deliberadamente el nombre de un parámetro de la URL, ejecuta y explica qué error aparece y quién lo produjo (tu código, la librería o la API).</li>
+<li><strong>E18.</strong> Escribe una función <code>contar_negativas(ruta)</code> que recorra un CSV <strong>sin cargarlo entero</strong> en memoria y devuelva cuántas filas tienen puntuación ≤ 2. Razona por qué la versión con <code>list(csv.DictReader(...))</code> dejaría de funcionar con un fichero de varios gigabytes y la tuya no.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-7-librerias-especializadas-con-modelos-preentrenados">Apartado 7. Librerías especializadas con modelos preentrenados<a class="headerlink" href="#apartado-7-librerias-especializadas-con-modelos-preentrenados" title="Permanent link">&para;</a></h2>
+<p>Hasta aquí todo lo que hacen tus programas está <strong>programado</strong>: cada regla la escribiste tú. Un <strong>modelo</strong> de inteligencia artificial es un programa cuyo comportamiento no se escribió, sino que se <strong>aprendió</strong> de ejemplos: alguien lo entrenó con millones de textos o imágenes, y lo que se distribuye es el resultado — un fichero con los parámetros aprendidos — junto con la librería que sabe aplicarlo. Un modelo <strong>preentrenado</strong> es exactamente eso: un modelo que otros entrenaron y que tú usas tal cual, igual que usas una función de una librería… con una diferencia capital: <strong>una función te devuelve lo correcto; un modelo te devuelve lo probable</strong>, y puede equivocarse.</p>
+<p>La librería de esta unidad es <strong>spaCy</strong>, especializada en procesamiento de lenguaje natural, con su modelo preentrenado en español <code>es_core_news_sm</code> (el que instalaste en el apartado 1). Cargarlo y aplicarlo son dos líneas; lo que devuelve es un objeto <code>Doc</code> con el texto ya analizado: frases, tokens con su categoría gramatical y su lema, y <strong>entidades</strong> — nombres propios clasificados como lugar (<code>LOC</code>), persona (<code>PER</code>), organización (<code>ORG</code>) u otros (<code>MISC</code>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># entidades.py — un modelo preentrenado aplicado tal cual</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"es_core_news_sm"</span><span class="p">)</span>                     <span class="c1"># carga el modelo: pesa unos 13 MB</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="n">texto</span> <span class="o">=</span> <span class="s2">"Trato familiar y desayuno casero. Desde Luna se llega rápido a Zaragoza y a Huesca."</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">texto</span><span class="p">)</span>                                        <span class="c1"># el modelo analiza el texto entero</span>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"Frases:"</span><span class="p">,</span> <span class="p">[</span><span class="n">frase</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">frase</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">sents</span><span class="p">])</span>
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"Primeros tokens:"</span><span class="p">,</span> <span class="p">[(</span><span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">pos_</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">][:</span><span class="mi">6</span><span class="p">])</span>
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"Entidades:"</span><span class="p">,</span> <span class="p">[(</span><span class="n">ent</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">ent</span><span class="o">.</span><span class="n">label_</span><span class="p">)</span> <span class="k">for</span> <span class="n">ent</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">ents</span><span class="p">])</span>
+<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"Qué significa LOC:"</span><span class="p">,</span> <span class="n">spacy</span><span class="o">.</span><span class="n">explain</span><span class="p">(</span><span class="s2">"LOC"</span><span class="p">))</span>
+<a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a>
+<a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="c1"># el mismo modelo sobre una reseña informal: fíjate en lo que falla</span>
+<a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a><span class="n">doc2</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="s2">"Casa preciosa en pleno casco histórico de Uncastillo. Subimos al Moncayo un día. Repetiremos."</span><span class="p">)</span>
+<a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"Entidades:"</span><span class="p">,</span> <span class="p">[(</span><span class="n">ent</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">ent</span><span class="o">.</span><span class="n">label_</span><span class="p">)</span> <span class="k">for</span> <span class="n">ent</span> <span class="ow">in</span> <span class="n">doc2</span><span class="o">.</span><span class="n">ents</span><span class="p">])</span>
+</code></pre></div>
+<p>Salida:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>Frases: ['Trato familiar y desayuno casero.', 'Desde Luna se llega rápido a Zaragoza y a Huesca.']
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>Primeros tokens: [('Trato', 'VERB', 'tratar'), ('familiar', 'ADJ', 'familiar'), ('y', 'CCONJ', 'y'), ('desayuno', 'NOUN', 'desayuno'), ('casero', 'ADJ', 'casero'), ('.', 'PUNCT', '.')]
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>Entidades: [('Luna', 'LOC'), ('Zaragoza', 'LOC'), ('Huesca', 'LOC')]
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>Qué significa LOC: Non-GPE locations, mountain ranges, bodies of water
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>Entidades: [('Uncastillo', 'PER'), ('Subimos', 'LOC'), ('Moncayo', 'LOC'), ('Repetiremos', 'LOC')]
+</code></pre></div>
+<p>Mira las dos salidas de entidades con calma, porque ahí está la lección del apartado. En la primera frase el modelo acierta los tres lugares. En la segunda etiqueta "Uncastillo" como <strong>persona</strong> y toma "Subimos" y "Repetiremos" — dos verbos con mayúscula por abrir frase — como <strong>lugares</strong>. No está roto: fue entrenado sobre <strong>texto periodístico</strong> (el <code>news</code> del nombre), donde una palabra con mayúscula a mitad de frase casi siempre es un nombre propio, y nuestras reseñas son texto informal con frases cortas. <strong>Un modelo rinde en el dominio en que fue entrenado y se degrada fuera de él.</strong> De ahí tres hábitos que este módulo te va a exigir siempre: mirar la salida con ojos críticos antes de sumarla, <strong>filtrar</strong> con reglas sencillas lo que sabes que es un error típico (lo harás en el apartado 8), y elegir el modelo por su rendimiento <strong>en tu problema</strong>, no por su nombre. Sobre esto último: spaCy ofrece para el español un modelo pequeño, uno mediano y uno grande; el pequeño resuelve lo que esta unidad necesita, arranca en un segundo y pesa 13 MB — <strong>el modelo más pequeño que resuelva el problema</strong> es un criterio de diseño, también por el coste de cómputo.</p>
+<p>En el resto del curso aparecerán más librerías especializadas — cada una con su papel: <strong>scikit-learn</strong> para entrenar modelos clásicos (UD3), las librerías y APIs de <strong>modelos de lenguaje</strong> (UD4), <strong>OpenCV</strong> para imagen (UD5) — y todas se usan con el mismo gesto que acabas de aprender: cargar, aplicar, leer con criterio.</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E19.</strong> Aplica el modelo a estas tres reseñas y anota, para cada entidad devuelta, si es correcta, si está mal etiquetada o si no es una entidad: "Ideal para conocer las Bardenas Reales. Paisaje impresionante, y a media hora de Tudela y de Tauste." · "Nos cancelaron la reserva sin avisar y tuvimos que dormir en Ejea de los Caballeros. Pésima gestión." · "Muy tranquilo. Ideal para trabajar unos días en remoto: el wifi funcionó bien todo el tiempo." Formula en una frase el patrón de error que se repite.</li>
+<li><strong>E20.</strong> Escribe una función <code>lugares(texto, nlp)</code> que devuelva solo las entidades <code>LOC</code> que <strong>no</strong> sean una única palabra al inicio de una frase (pista: <code>ent.start</code>, <code>ent.sent.start</code>, <code>len(ent)</code>). Compara su resultado con <code>doc.ents</code> sobre las reseñas del E19 y di cuántos falsos positivos elimina y si elimina algún acierto.</li>
+<li><strong>E21.</strong> (Ampliación) Instala el modelo mediano <code>es_core_news_md</code> y compara los dos modelos sobre las 24 reseñas: cuántas entidades <code>LOC</code> correctas encuentra cada uno, cuántos errores comete, cuánto pesa y cuánto tarda en cargar (<code>time.perf_counter()</code>). Redacta en cinco líneas cuál elegirías para este problema y por qué, con los números delante.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-8-programar-aplicaciones-que-integran-datos-y-modelo">Apartado 8. Programar aplicaciones que integran datos y modelo<a class="headerlink" href="#apartado-8-programar-aplicaciones-que-integran-datos-y-modelo" title="Permanent link">&para;</a></h2>
+<p>Ya tienes las dos mitades: obtener datos (apartado 6) y aplicar un modelo (apartado 7). Una <strong>aplicación</strong> del alcance de esta unidad las junta y añade lo que convierte un experimento en algo útil: estructura en funciones, entrada por argumentos, salida guardada en un formato reutilizable y — la parte que distingue al profesional — una <strong>salida interpretada</strong>: no una lista de números, sino la respuesta a la pregunta que alguien hizo. La pregunta de la red de alojamientos: <em>¿de qué lugares hablan nuestros huéspedes, y cuáles aparecen cuando la reseña es negativa?</em></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># informe_lugares.py — datos + modelo preentrenado + salida interpretada</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="sd">"""Cuenta qué lugares mencionan las reseñas de la red de alojamientos.</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="sd">Uso: python informe_lugares.py resenas.csv</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="sd">"""</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a>
+<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a>
+<a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a>
+<a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a><span class="k">def</span><span class="w"> </span><span class="nf">cargar_resenas</span><span class="p">(</span><span class="n">ruta</span><span class="p">):</span>
+<a id="__codelineno-22-15" name="__codelineno-22-15" href="#__codelineno-22-15"></a><span class="w">    </span><span class="sd">"""Lee el CSV y devuelve una lista de diccionarios con la puntuación como entero."""</span>
+<a id="__codelineno-22-16" name="__codelineno-22-16" href="#__codelineno-22-16"></a>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ruta</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span> <span class="k">as</span> <span class="n">fichero</span><span class="p">:</span>
+<a id="__codelineno-22-17" name="__codelineno-22-17" href="#__codelineno-22-17"></a>        <span class="n">resenas</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">fichero</span><span class="p">))</span>
+<a id="__codelineno-22-18" name="__codelineno-22-18" href="#__codelineno-22-18"></a>    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">resenas</span><span class="p">:</span>
+<a id="__codelineno-22-19" name="__codelineno-22-19" href="#__codelineno-22-19"></a>        <span class="n">r</span><span class="p">[</span><span class="s2">"puntuacion"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">"puntuacion"</span><span class="p">])</span>
+<a id="__codelineno-22-20" name="__codelineno-22-20" href="#__codelineno-22-20"></a>    <span class="k">return</span> <span class="n">resenas</span>
+<a id="__codelineno-22-21" name="__codelineno-22-21" href="#__codelineno-22-21"></a>
+<a id="__codelineno-22-22" name="__codelineno-22-22" href="#__codelineno-22-22"></a>
+<a id="__codelineno-22-23" name="__codelineno-22-23" href="#__codelineno-22-23"></a><span class="k">def</span><span class="w"> </span><span class="nf">lugares_mencionados</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+<a id="__codelineno-22-24" name="__codelineno-22-24" href="#__codelineno-22-24"></a><span class="w">    </span><span class="sd">"""Entidades de tipo LOC, descartando la palabra suelta que abre una frase (error típico del modelo)."""</span>
+<a id="__codelineno-22-25" name="__codelineno-22-25" href="#__codelineno-22-25"></a>    <span class="n">lugares</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-22-26" name="__codelineno-22-26" href="#__codelineno-22-26"></a>    <span class="k">for</span> <span class="n">ent</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">ents</span><span class="p">:</span>
+<a id="__codelineno-22-27" name="__codelineno-22-27" href="#__codelineno-22-27"></a>        <span class="k">if</span> <span class="n">ent</span><span class="o">.</span><span class="n">label_</span> <span class="o">!=</span> <span class="s2">"LOC"</span><span class="p">:</span>
+<a id="__codelineno-22-28" name="__codelineno-22-28" href="#__codelineno-22-28"></a>            <span class="k">continue</span>
+<a id="__codelineno-22-29" name="__codelineno-22-29" href="#__codelineno-22-29"></a>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ent</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">ent</span><span class="o">.</span><span class="n">start</span> <span class="o">==</span> <span class="n">ent</span><span class="o">.</span><span class="n">sent</span><span class="o">.</span><span class="n">start</span><span class="p">:</span>
+<a id="__codelineno-22-30" name="__codelineno-22-30" href="#__codelineno-22-30"></a>            <span class="k">continue</span>
+<a id="__codelineno-22-31" name="__codelineno-22-31" href="#__codelineno-22-31"></a>        <span class="n">lugares</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ent</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<a id="__codelineno-22-32" name="__codelineno-22-32" href="#__codelineno-22-32"></a>    <span class="k">return</span> <span class="n">lugares</span>
+<a id="__codelineno-22-33" name="__codelineno-22-33" href="#__codelineno-22-33"></a>
+<a id="__codelineno-22-34" name="__codelineno-22-34" href="#__codelineno-22-34"></a>
+<a id="__codelineno-22-35" name="__codelineno-22-35" href="#__codelineno-22-35"></a><span class="k">def</span><span class="w"> </span><span class="nf">resumir</span><span class="p">(</span><span class="n">resenas</span><span class="p">,</span> <span class="n">nlp</span><span class="p">):</span>
+<a id="__codelineno-22-36" name="__codelineno-22-36" href="#__codelineno-22-36"></a><span class="w">    </span><span class="sd">"""Devuelve un diccionario con los recuentos que forman el informe."""</span>
+<a id="__codelineno-22-37" name="__codelineno-22-37" href="#__codelineno-22-37"></a>    <span class="n">lugares</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+<a id="__codelineno-22-38" name="__codelineno-22-38" href="#__codelineno-22-38"></a>    <span class="n">lugares_en_negativas</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+<a id="__codelineno-22-39" name="__codelineno-22-39" href="#__codelineno-22-39"></a>    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">resenas</span><span class="p">:</span>
+<a id="__codelineno-22-40" name="__codelineno-22-40" href="#__codelineno-22-40"></a>        <span class="n">encontrados</span> <span class="o">=</span> <span class="n">lugares_mencionados</span><span class="p">(</span><span class="n">nlp</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">"texto"</span><span class="p">]))</span>
+<a id="__codelineno-22-41" name="__codelineno-22-41" href="#__codelineno-22-41"></a>        <span class="n">lugares</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">encontrados</span><span class="p">)</span>
+<a id="__codelineno-22-42" name="__codelineno-22-42" href="#__codelineno-22-42"></a>        <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s2">"puntuacion"</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+<a id="__codelineno-22-43" name="__codelineno-22-43" href="#__codelineno-22-43"></a>            <span class="n">lugares_en_negativas</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">encontrados</span><span class="p">)</span>
+<a id="__codelineno-22-44" name="__codelineno-22-44" href="#__codelineno-22-44"></a>    <span class="k">return</span> <span class="p">{</span>
+<a id="__codelineno-22-45" name="__codelineno-22-45" href="#__codelineno-22-45"></a>        <span class="s2">"resenas"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">resenas</span><span class="p">),</span>
+<a id="__codelineno-22-46" name="__codelineno-22-46" href="#__codelineno-22-46"></a>        <span class="s2">"menciones_de_lugar"</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">lugares</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+<a id="__codelineno-22-47" name="__codelineno-22-47" href="#__codelineno-22-47"></a>        <span class="s2">"lugares_mas_citados"</span><span class="p">:</span> <span class="n">lugares</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span>
+<a id="__codelineno-22-48" name="__codelineno-22-48" href="#__codelineno-22-48"></a>        <span class="s2">"lugares_en_resenas_negativas"</span><span class="p">:</span> <span class="n">lugares_en_negativas</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+<a id="__codelineno-22-49" name="__codelineno-22-49" href="#__codelineno-22-49"></a>    <span class="p">}</span>
+<a id="__codelineno-22-50" name="__codelineno-22-50" href="#__codelineno-22-50"></a>
+<a id="__codelineno-22-51" name="__codelineno-22-51" href="#__codelineno-22-51"></a>
+<a id="__codelineno-22-52" name="__codelineno-22-52" href="#__codelineno-22-52"></a><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">ruta</span><span class="p">):</span>
+<a id="__codelineno-22-53" name="__codelineno-22-53" href="#__codelineno-22-53"></a>    <span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"es_core_news_sm"</span><span class="p">)</span>
+<a id="__codelineno-22-54" name="__codelineno-22-54" href="#__codelineno-22-54"></a>    <span class="n">resenas</span> <span class="o">=</span> <span class="n">cargar_resenas</span><span class="p">(</span><span class="n">ruta</span><span class="p">)</span>
+<a id="__codelineno-22-55" name="__codelineno-22-55" href="#__codelineno-22-55"></a>    <span class="n">informe</span> <span class="o">=</span> <span class="n">resumir</span><span class="p">(</span><span class="n">resenas</span><span class="p">,</span> <span class="n">nlp</span><span class="p">)</span>
+<a id="__codelineno-22-56" name="__codelineno-22-56" href="#__codelineno-22-56"></a>
+<a id="__codelineno-22-57" name="__codelineno-22-57" href="#__codelineno-22-57"></a>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"informe_lugares.json"</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fichero</span><span class="p">:</span>
+<a id="__codelineno-22-58" name="__codelineno-22-58" href="#__codelineno-22-58"></a>        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">informe</span><span class="p">,</span> <span class="n">fichero</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-22-59" name="__codelineno-22-59" href="#__codelineno-22-59"></a>
+<a id="__codelineno-22-60" name="__codelineno-22-60" href="#__codelineno-22-60"></a>    <span class="c1"># salida interpretada: números convertidos en una frase que alguien pueda usar</span>
+<a id="__codelineno-22-61" name="__codelineno-22-61" href="#__codelineno-22-61"></a>    <span class="n">top</span> <span class="o">=</span> <span class="n">informe</span><span class="p">[</span><span class="s2">"lugares_mas_citados"</span><span class="p">]</span>
+<a id="__codelineno-22-62" name="__codelineno-22-62" href="#__codelineno-22-62"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Analizadas </span><span class="si">{</span><span class="n">informe</span><span class="p">[</span><span class="s1">'resenas'</span><span class="p">]</span><span class="si">}</span><span class="s2"> reseñas con </span><span class="si">{</span><span class="n">informe</span><span class="p">[</span><span class="s1">'menciones_de_lugar'</span><span class="p">]</span><span class="si">}</span><span class="s2"> menciones de lugar."</span><span class="p">)</span>
+<a id="__codelineno-22-63" name="__codelineno-22-63" href="#__codelineno-22-63"></a>    <span class="k">if</span> <span class="n">top</span><span class="p">:</span>
+<a id="__codelineno-22-64" name="__codelineno-22-64" href="#__codelineno-22-64"></a>        <span class="n">lugar</span><span class="p">,</span> <span class="n">veces</span> <span class="o">=</span> <span class="n">top</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<a id="__codelineno-22-65" name="__codelineno-22-65" href="#__codelineno-22-65"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"El lugar más citado es </span><span class="si">{</span><span class="n">lugar</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">veces</span><span class="si">}</span><span class="s2"> menciones); "</span>
+<a id="__codelineno-22-66" name="__codelineno-22-66" href="#__codelineno-22-66"></a>              <span class="sa">f</span><span class="s2">"le siguen </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">l</span><span class="p">,</span><span class="w"> </span><span class="n">_</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">top</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+<a id="__codelineno-22-67" name="__codelineno-22-67" href="#__codelineno-22-67"></a>    <span class="k">if</span> <span class="n">informe</span><span class="p">[</span><span class="s2">"lugares_en_resenas_negativas"</span><span class="p">]:</span>
+<a id="__codelineno-22-68" name="__codelineno-22-68" href="#__codelineno-22-68"></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">"Lugares que aparecen en reseñas negativas:"</span><span class="p">,</span>
+<a id="__codelineno-22-69" name="__codelineno-22-69" href="#__codelineno-22-69"></a>              <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">l</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">)"</span> <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">informe</span><span class="p">[</span><span class="s2">"lugares_en_resenas_negativas"</span><span class="p">]))</span>
+<a id="__codelineno-22-70" name="__codelineno-22-70" href="#__codelineno-22-70"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">"Informe completo guardado en informe_lugares.json"</span><span class="p">)</span>
+<a id="__codelineno-22-71" name="__codelineno-22-71" href="#__codelineno-22-71"></a>
+<a id="__codelineno-22-72" name="__codelineno-22-72" href="#__codelineno-22-72"></a>
+<a id="__codelineno-22-73" name="__codelineno-22-73" href="#__codelineno-22-73"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+<a id="__codelineno-22-74" name="__codelineno-22-74" href="#__codelineno-22-74"></a>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+<a id="__codelineno-22-75" name="__codelineno-22-75" href="#__codelineno-22-75"></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">"Uso: python informe_lugares.py &lt;fichero.csv&gt;"</span><span class="p">)</span>
+<a id="__codelineno-22-76" name="__codelineno-22-76" href="#__codelineno-22-76"></a>        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-22-77" name="__codelineno-22-77" href="#__codelineno-22-77"></a>    <span class="n">main</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</code></pre></div>
+<p>Ejecución:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>$ python informe_lugares.py resenas.csv
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>Analizadas 24 reseñas con 18 menciones de lugar.
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>El lugar más citado es Luna (2 menciones); le siguen Zaragoza, Cinco Villas, Moncayo.
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>Lugares que aparecen en reseñas negativas: Zaragoza (1)
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>Informe completo guardado en informe_lugares.json
+</code></pre></div>
+<p>La anatomía del programa es la que repetirás en todas las entregas del módulo:</p>
+<ol>
+<li><strong>Docstring de módulo</strong> al principio: qué hace y cómo se usa. Es lo primero que lee quien lo abre — y quien lo defiende.</li>
+<li><strong>Una función por responsabilidad</strong>: cargar, filtrar, resumir, presentar. Cada una se puede probar sola en un cuaderno, y <code>resumir</code> no sabe de ficheros ni <code>cargar_resenas</code> de modelos.</li>
+<li><strong>El modelo se carga una vez</strong> (<code>spacy.load</code> es lo lento) y se aplica muchas.</li>
+<li><strong>La regla que corrige al modelo</strong> vive en su propia función, documentada como lo que es: un remedio a un error conocido, que se podrá quitar el día que el modelo mejore.</li>
+<li><strong>Resultados en JSON</strong> para que otro programa — una aplicación web, en la UD6 — los consuma, y una <strong>frase para humanos</strong> en pantalla.</li>
+<li><strong>El bloque <code>if __name__ == "__main__":</code></strong> — el programa se ejecuta como script, pero sus funciones se pueden importar desde otro fichero sin que se dispare nada.</li>
+</ol>
+<p>Y una lectura crítica del resultado, que es parte del trabajo: "Luna" cuenta como lugar más citado con dos menciones, pero uno de los tres alojamientos está en Luna, así que las reseñas lo nombran por proximidad, no por excursión; "Zaragoza" aparece en una reseña negativa porque los huéspedes <strong>se fueron</strong> allí a dormir tras una gotera. Los números del modelo no se entregan: se <strong>interpretan</strong> — y eso se defiende.</p>
+<p><strong>Ejercicios del apartado.</strong></p>
+<ul>
+<li><strong>E22.</strong> Añade al informe el recuento de lugares <strong>por alojamiento</strong> (<code>{alojamiento: [(lugar, veces), ...]}</code>), de modo que la red sepa qué excursiones se asocian a cada casa, y una línea interpretada más en la salida. Mantén la estructura de funciones.</li>
+<li><strong>E23.</strong> Haz que el programa acepte un segundo argumento opcional con la puntuación máxima que se considera "negativa" (por defecto 2) y que rechace con un mensaje claro los valores fuera de 1-5. Prueba con <code>python informe_lugares.py resenas.csv 3</code> y explica qué cambia en el informe.</li>
+<li><strong>E24.</strong> Cambia el origen de datos: el programa debe poder leer las reseñas desde <code>resenas.db</code> (la base de datos del apartado 6) cuando el argumento termine en <code>.db</code>, sin tocar <code>resumir</code> ni <code>lugares_mencionados</code>. Explica en tres líneas por qué esa separación en funciones ha hecho posible el cambio.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-9-errores-frecuentes-y-depuracion">Apartado 9. Errores frecuentes y depuración<a class="headerlink" href="#apartado-9-errores-frecuentes-y-depuracion" title="Permanent link">&para;</a></h2>
+<p>Los mensajes de error de Python son buenos: dicen el tipo de error, la línea y, casi siempre, la causa. Léelos <strong>de abajo arriba</strong> — la última línea es el diagnóstico — y aprende a reconocer estos seis, que verás sin falta:</p>
+<ol>
+<li><strong><code>IndentationError: expected an indented block after 'if' statement on line 1</code></strong> — la línea anterior termina en dos puntos y la siguiente no está sangrada. Variante frecuente: mezclar tabuladores y espacios; configura el editor para cuatro espacios y no vuelve a pasar.</li>
+<li><strong><code>NameError: name 'resenas' is not defined</code></strong> — usas un nombre antes de crearlo. En un script suele ser una errata; en un cuaderno, casi siempre es <strong>orden de ejecución</strong>: la celda que crea <code>resenas</code> no se ha ejecutado en esta sesión. Reinicia el kernel y ejecuta desde arriba.</li>
+<li><strong><code>ModuleNotFoundError: No module named 'spacy'</code></strong> — la librería no está instalada <strong>en el Python que está ejecutando</strong>. Tres causas por orden de frecuencia: el entorno virtual no está activado, el cuaderno usa otro kernel, o instalaste con un <code>pip</code> distinto. <code>python -m pip install spacy</code> instala en el mismo Python que ejecuta.</li>
+<li><strong><code>OSError: [E050] Can't find model 'es_core_news_lg'. It doesn't seem to be a Python package or a valid path to a data directory.</code></strong> — spaCy está, el modelo no: falta <code>python -m spacy download &lt;modelo&gt;</code> en este entorno, o el nombre está mal escrito. <code>python -m spacy validate</code> lista los que tienes.</li>
+<li><strong><code>UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe1 in position 12: invalid continuation byte</code></strong> — el fichero no está en UTF-8 (normalmente lo guardó una hoja de cálculo en la codificación del sistema). Ábrelo con <code>encoding="latin-1"</code> o, mejor, vuelve a exportarlo en UTF-8. El error contrario — tildes convertidas en símbolos raros sin error — es el mismo problema sin avisar.</li>
+<li><strong><code>TypeError: can only concatenate str (not "float") to str</code></strong> — sumar una cadena y un número (<code>"Media: " + 3.62</code>). Usa una f-string o <code>str()</code>. Su primo del apartado 6: <strong><code>KeyError: 'b'</code></strong> al pedir una clave que el diccionario no tiene (revisa los nombres de columna con <code>list(fila.keys())</code>) y <strong><code>FileNotFoundError: [Errno 2] No such file or directory: 'no_existe.csv'</code></strong> — la ruta se resuelve desde la carpeta en la que lanzaste <code>python</code>, no desde donde está el script.</li>
+</ol>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-10-la-ia-en-esta-unidad">Apartado 10. La IA en esta unidad<a class="headerlink" href="#apartado-10-la-ia-en-esta-unidad" title="Permanent link">&para;</a></h2>
+<p>Puedes usar un asistente de IA en esta unidad, con cabeza y con responsabilidad sobre el resultado — la misma regla que te aplicará cualquier empresa, y la que fija este módulo: <strong>el uso se declara en el <code>DECISIONES.md</code> de cada entrega</strong>. En un módulo <em>de</em> inteligencia artificial, además, conviene que uses la IA sabiendo lo que es: exactamente el tipo de modelo preentrenado que estás aprendiendo a aplicar, con los mismos límites.</p>
+<ul>
+<li><strong>Usos razonables aquí</strong>: pedir la traducción a Python de una construcción que sabes escribir en Java y no te sale; explicaciones alternativas de una idea que se resista (<code>self</code>, las comprensiones, <code>setdefault</code>, el bloque <code>__main__</code>); que te genere más reseñas ficticias para probar el filtro del apartado 8; o que te proponga preguntas de repaso antes de la defensa.</li>
+<li><strong>Lo que debes verificar siempre</strong>: todo lo que lleve nombre de librería, comando de instalación o versión — el asistente mezcla versiones y a veces inventa parámetros que no existen; contrástalo ejecutando y con la documentación oficial del apartado 12. Y cualquier código que te dé hecho sobre el modelo: si no sabes explicar por qué filtra lo que filtra, no lo entregues. La propia lección del apartado 7 se aplica al asistente: <strong>devuelve lo probable, no lo correcto</strong>.</li>
+<li><strong>Lo que se te pedirá defender</strong>: cada entrega evaluable de este módulo se defiende. En particular, el programa de la AE9 lo explicarás función a función y responderás a un "¿y si el modelo se equivoca aquí?" — si lo escribió un asistente y no lo entiendes, la defensa lo revela en el primer minuto. Si está en tu entrega, es tuyo.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-11-actividad-evaluativa-final">Apartado 11. Actividad evaluativa final<a class="headerlink" href="#apartado-11-actividad-evaluativa-final" title="Permanent link">&para;</a></h2>
+<p><strong>Contexto — el servicio comarcal de deportes.</strong> Un servicio comarcal gestiona <strong>seis instalaciones</strong> (dos piscinas, dos pabellones y dos campos de fútbol) repartidas en cinco localidades, y recibe <strong>avisos de incidencias</strong> — fontanería, electricidad, limpieza, césped, seguridad y atención al usuario — que hoy se anotan en una hoja de cálculo. Quieren un programa que lea los avisos, cruce cada uno con su instalación, calcule los indicadores básicos y, con un modelo de lenguaje, averigüe <strong>qué organizaciones y lugares se citan</strong> en las descripciones. Trabajas con dos ficheros <strong>dados</strong>, en el repositorio de la unidad: <code>avisos.csv</code> (20 avisos; los abiertos tienen <code>fecha_cierre</code> vacía) e <code>instalaciones.json</code> (seis instalaciones). Aquí, la cabecera y las cinco primeras filas del primero y las cinco primeras líneas del segundo <em>(fichero íntegro en el repositorio de la unidad)</em>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>id,instalacion_id,fecha_aviso,fecha_cierre,categoria,prioridad,descripcion
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>1,PIS-01,2026-06-02,2026-06-03,fontaneria,alta,"La depuradora de la piscina de Ejea de los Caballeros no arranca. Avisado el técnico de mantenimiento."
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>2,PAB-02,2026-06-02,2026-06-09,electricidad,media,"Fallan tres focos de la pista central del pabellón de Tauste. El club de baloncesto de Tauste pide arreglo antes del torneo."
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>3,PIS-01,2026-06-04,2026-06-04,limpieza,baja,"Vestuarios sucios tras el cursillo de natación de la mañana."
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>4,CAM-03,2026-06-05,,cesped,media,"Riego automático del campo de Sádaba encendido a las 12 del mediodía con gente entrenando."
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>5,PAB-02,2026-06-08,2026-06-08,seguridad,alta,"Puerta de emergencia del pabellón de Tauste bloqueada con material de la escuela de gimnasia."
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="p">{</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">  </span><span class="nt">"servicio"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Servicio comarcal de deportes (datos ficticios de aula)"</span><span class="p">,</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">  </span><span class="nt">"instalaciones"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="w">    </span><span class="p">{</span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PIS-01"</span><span class="p">,</span><span class="w"> </span><span class="nt">"nombre"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Piscina municipal"</span><span class="p">,</span><span class="w"> </span><span class="nt">"localidad"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ejea de los Caballeros"</span><span class="p">,</span><span class="w"> </span><span class="nt">"tipo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"piscina"</span><span class="p">,</span><span class="w"> </span><span class="nt">"aforo"</span><span class="p">:</span><span class="w"> </span><span class="mi">600</span><span class="p">},</span>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="w">    </span><span class="p">{</span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PAB-02"</span><span class="p">,</span><span class="w"> </span><span class="nt">"nombre"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Pabellón polideportivo"</span><span class="p">,</span><span class="w"> </span><span class="nt">"localidad"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Tauste"</span><span class="p">,</span><span class="w"> </span><span class="nt">"tipo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pabellon"</span><span class="p">,</span><span class="w"> </span><span class="nt">"aforo"</span><span class="p">:</span><span class="w"> </span><span class="mi">500</span><span class="p">},</span>
+</code></pre></div>
+<p><strong>Instrucciones.</strong> 10 ejercicios, 1 punto cada uno; el código se entrega <strong>ejecutable</strong> y las respuestas razonadas, sobre el contexto (código que no se ejecuta o respuestas sin justificar no puntúan completas). Alcance: el publicado en la portada — datos dados, modelo preentrenado tal cual, sin entrenar nada. <strong>Tiempo estimado: 3 horas</strong>, más la preparación de evidencias. <strong>Entrega</strong>: carpeta <code>ud1/ae/</code> en tu repositorio de la unidad del aula de código, con un script o cuaderno por bloque de ejercicios, las capturas en <code>ud1/evidencias/</code>, <code>requirements.txt</code> y el <code>DECISIONES.md</code> actualizado; commits por bloques de ejercicios. <strong>Defensa individual de 4–5 minutos</strong> según el calendario publicado. La fecha de referencia para "hoy" en los cálculos es el <strong>6 de julio de 2026</strong>.</p>
+<ul>
+<li><strong>AE1</strong> <code>[RA1.a]</code> Evidencia de entorno: captura de <code>python --version</code> y de <code>python -m spacy validate</code> ejecutados <strong>con el entorno virtual activo</strong> (se debe ver el prefijo del entorno), el <code>requirements.txt</code> generado y el <code>.gitignore</code> que excluye el entorno. Explica en tres líneas por qué el entorno no se sube al repositorio y cómo lo reconstruiría un compañero.</li>
+<li><strong>AE2</strong> <code>[RA1.b]</code> Este fragmento está escrito por alguien que piensa en Java: <code>total = 0; for (i = 0; i &lt; len(avisos); i++) { if (avisos[i]["prioridad"] == "alta") { total = total + 1; } }</code>. Reescríbelo en Python correcto y explica <strong>cuatro</strong> características del lenguaje que lo hacen distinto (al menos una sobre el tipado, una sobre la sintaxis de bloques y una sobre cómo se recorre una colección).</li>
+<li><strong>AE3</strong> <code>[RA1.c]</code> Lee <code>avisos.csv</code> y, solo con estructuras de control y diccionarios (sin <code>Counter</code>), calcula: el número de avisos por categoría; cuántos siguen abiertos; la media de días de resolución de los cerrados (usa <code>date.fromisoformat</code>); y la lista de identificadores de avisos de prioridad alta sin cerrar. Imprime cada resultado con una f-string.</li>
+<li><strong>AE4</strong> <code>[RA1.c]</code> Escribe <code>avisos_por_instalacion(avisos)</code> que devuelva <code>{instalacion_id: [avisos]}</code> y <code>top_instalaciones(avisos, n=3)</code> que devuelva las <code>n</code> instalaciones con más avisos como lista de tuplas <code>(id, número)</code>, ordenada de más a menos y, a igualdad, por identificador. Obtén además el conjunto ordenado de categorías distintas con una comprensión.</li>
+<li><strong>AE5</strong> <code>[RA1.c]</code> Define la clase <code>Aviso</code> con constructor documentado, <code>desde_dict(fila)</code> que la construya desde una fila del CSV (fechas convertidas; <code>fecha_cierre</code> vacía → <code>None</code>), <code>esta_abierto()</code>, <code>dias_abierto(hoy)</code> (días hasta el cierre o hasta <code>hoy</code> si sigue abierto) y <code>__str__</code>. Construye los 20 objetos y muestra los <strong>dos avisos abiertos más antiguos</strong>.</li>
+<li><strong>AE6</strong> <code>[RA1.d]</code> Cruza <code>avisos.csv</code> con <code>instalaciones.json</code>: añade a cada aviso la localidad y el tipo de su instalación, y calcula el número de avisos por localidad y por tipo de instalación. Indica qué instalaciones no tienen ningún aviso (aunque la respuesta sea "ninguna", el código debe calcularlo).</li>
+<li><strong>AE7</strong> <code>[RA1.d]</code> Carga los avisos en una tabla <code>aviso</code> de una base de datos SQLite (o en la base de datos de referencia del ciclo, si el docente lo indica) y obtén con <strong>dos consultas SQL</strong>: los avisos abiertos por categoría, y los avisos de prioridad alta por instalación. Compara el resultado de la primera con el de AE3 y explica en dos líneas por qué coinciden.</li>
+<li><strong>AE8</strong> <code>[RA1.e]</code> Aplica el modelo <code>es_core_news_sm</code> a las 20 descripciones y obtén, con <code>Counter</code>, las entidades <code>ORG</code> y <code>LOC</code> más frecuentes. Después revisa los resultados <strong>a mano</strong> y documenta al menos <strong>dos aciertos y dos errores del modelo</strong> (etiqueta equivocada, entidad partida o inventada), explicando en cada error por qué es esperable con un modelo entrenado sobre texto periodístico.</li>
+<li><strong>AE9</strong> <code>[RA1.f]</code> Escribe <code>informe_avisos.py</code>, un script con docstring de módulo, funciones separadas (cargar, cruzar, analizar con el modelo, resumir, presentar) y bloque <code>__main__</code>, que reciba la ruta del CSV por argumento, aplique una regla de filtrado a las entidades justificada en un comentario, guarde <code>informe_avisos.json</code> con los recuentos (por categoría, por localidad, entidades <code>LOC</code> y <code>ORG</code> frecuentes, avisos de alta prioridad abiertos) e imprima <strong>tres frases interpretadas</strong> que el responsable del servicio pueda leer sin saber programar. Se defiende función a función.</li>
+<li><strong>AE10</strong> <code>[RA1.b, RA1.f]</code> <strong>Informe técnico para el servicio</strong> (250–350 palabras, en <code>ud1/ae/INFORME.md</code>): qué hace el programa y qué no; por qué Python y sus librerías son una elección adecuada para esta tarea (cita al menos tres características del lenguaje vistas en la unidad); qué límites tiene el modelo preentrenado y qué harías con ellos antes de tomar decisiones sobre sus cifras; y qué dato personal <strong>no</strong> debería viajar en las descripciones de los avisos y por qué. Se defiende sin leer.</li>
+</ul>
+<div style="page-break-before: always;"></div>
+
+<h2 id="apartado-12-para-ampliar">Apartado 12. Para ampliar<a class="headerlink" href="#apartado-12-para-ampliar" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://docs.python.org/es/3/tutorial/">El tutorial oficial de Python (en español)</a> — la referencia con la que aprender el lenguaje de verdad: los capítulos 3 a 9 cubren exactamente los apartados 2 a 5 de esta unidad, y el capítulo sobre entornos virtuales y paquetes, el apartado 1. Ve a él cada vez que una construcción no te quede clara.</li>
+<li><a href="https://jupyter.org/">Proyecto Jupyter</a> — la web oficial de la herramienta de cuadernos; documentación general también en español en <a href="https://docs.jupyter.org/es/latest/">docs.jupyter.org/es</a>.</li>
+<li><a href="https://spacy.io/usage">Instalación de spaCy</a> y <a href="https://spacy.io/models/es">modelos de spaCy para el español</a> — la documentación oficial de la librería del apartado 7 (en inglés): los comandos de instalación y descarga de modelos, la guía de resolución de problemas (con los errores del apartado 9), y la ficha de cada modelo en español con su tamaño y lo que sabe hacer.</li>
+<li><a href="https://open-meteo.com/en/docs">Documentación de la API de previsión de Open-Meteo</a> — el servicio público (en inglés, sin clave para uso no comercial) con el que hicimos la consulta del apartado 6: parámetros de la petición y estructura del JSON de respuesta. Úsala para el E17 y para entender qué devuelve exactamente <code>current</code>.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

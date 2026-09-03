@@ -1,0 +1,1491 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Apuntes de los módulos del CFGS Desarrollo de Aplicaciones Web">
+      
+      
+        <meta name="author" content="Arba">
+      
+      
+        <link rel="canonical" href="https://codigoronin.github.io/apuntes-daw/proyecto-intermodular/presentacion/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Presentación del módulo — Proyecto Intermodular (0616) - Apuntes DAW</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#presentacion-del-modulo-proyecto-intermodular-0616" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Apuntes DAW" class="md-header__button md-logo" aria-label="Apuntes DAW" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Apuntes DAW
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Presentación del módulo — Proyecto Intermodular (0616)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/codigoronin/apuntes-daw" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Inicio
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../bases-de-datos/" class="md-tabs__link">
+          
+  
+  
+  Bases de Datos (0484)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../desarrollo-web-en-entorno-servidor/" class="md-tabs__link">
+          
+  
+  
+  Desarrollo Web en Entorno Servidor (0613)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../big-data-e-inteligencia-artificial/" class="md-tabs__link">
+          
+  
+  
+  Big Data e Inteligencia Artificial (AOP1089)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../recursos/entorno-vscode-php/" class="md-tabs__link">
+          
+  
+  
+  Recursos
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Apuntes DAW" class="md-nav__button md-logo" aria-label="Apuntes DAW" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Apuntes DAW
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/codigoronin/apuntes-daw" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bases de Datos (0484)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bases de Datos (0484)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud1-almacenamiento-sgbd-valor-del-dato/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Almacenamiento, SGBD y el valor del dato
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud2-modelo-entidad-relacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2 · Modelo entidad-relación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud3-modelo-relacional-normalizacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3 · Modelo relacional y normalización
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud4-consultas-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD4 · Consultas de datos con SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desarrollo Web en Entorno Servidor (0613)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Desarrollo Web en Entorno Servidor (0613)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud1-arquitecturas-tecnologias-servidor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Arquitecturas y tecnologías de programación en servidor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud2-codigo-embebido-php/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2 · Código embebido en lenguajes de marcas: sintaxis, estructuras, funciones y formularios
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Big Data e Inteligencia Artificial (AOP1089)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Big Data e Inteligencia Artificial (AOP1089)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/ud1-python-datos-ia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Python para datos e IA: lenguaje especializado, entorno y librerías
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recursos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Recursos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/entorno-vscode-php/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entorno de trabajo: VS Code para PHP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/guia-drawio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía rápida de draw.io
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/estandar-estilo-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estándar de estilo SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-1-que-es-el-proyecto-intermodular" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1. Qué es el Proyecto Intermodular
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-2-el-proyecto-y-los-equipos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2. El proyecto y los equipos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-3-el-calendario-hitos-h0-a-h6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3. El calendario: hitos H0 a H6
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-4-como-se-trabaja" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4. Cómo se trabaja
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-5-como-se-evalua" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5. Cómo se evalúa
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 5. Cómo se evalúa">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-51-el-bloque-del-profesor-60" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5.1. El bloque del profesor (60%)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-52-el-bloque-del-tribunal-40" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5.2. El bloque del tribunal (40%)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-53-nota-final-y-minimos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5.3. Nota final y mínimos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-54-asistencia-y-recuperacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5.4. Asistencia y recuperación
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-6-por-donde-empezar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6. Por dónde empezar
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="presentacion-del-modulo-proyecto-intermodular-0616">Presentación del módulo — Proyecto Intermodular (0616)<a class="headerlink" href="#presentacion-del-modulo-proyecto-intermodular-0616" title="Permanent link">&para;</a></h1>
+<h2 id="apartado-1-que-es-el-proyecto-intermodular">Apartado 1. Qué es el Proyecto Intermodular<a class="headerlink" href="#apartado-1-que-es-el-proyecto-intermodular" title="Permanent link">&para;</a></h2>
+<p>El Proyecto Intermodular es el módulo que <strong>culmina el ciclo</strong>. En él tu equipo desarrolla una <strong>aplicación web completa</strong> —cliente y servidor, con persistencia de datos y despliegue documentado— que responde a una necesidad real de un sector productivo, y tú demuestras individualmente, con una memoria y una <strong>defensa pública ante tribunal</strong>, que has adquirido las competencias del título.</p>
+<p>Es un módulo distinto a todos los demás:</p>
+<ul>
+<li><strong>No tiene unidades didácticas.</strong> Se organiza por <strong>hitos</strong> (H0 a H6): documentos, seguimientos y entregas que marcan el avance del proyecto durante todo el curso, a razón de 2 horas semanales (67 horas en total).</li>
+<li><strong>No evalúa tu código.</strong> Programar la aplicación es cosa de los módulos técnicos del ciclo, cada uno con sus propios instrumentos y su propia nota. Lo que este módulo evalúa son sus cuatro resultados de aprendizaje propios: <strong>analizar</strong> las necesidades de un sector, <strong>diseñar</strong> el proyecto que las resuelve, <strong>planificar</strong> su ejecución y <strong>definir su seguimiento y control</strong>. El desarrollo técnico es el vehículo; lo que aquí se califica es tu trabajo como profesional que lleva un proyecto, no como programador que escribe una función.</li>
+<li><strong>La defensa no es opcional.</strong> Presentar y defender el proyecto en público es un requisito del módulo, no una actividad más: sin defensa no hay evaluación posible.</li>
+</ul>
+<h2 id="apartado-2-el-proyecto-y-los-equipos">Apartado 2. El proyecto y los equipos<a class="headerlink" href="#apartado-2-el-proyecto-y-los-equipos" title="Permanent link">&para;</a></h2>
+<p>Trabajarás en un <strong>equipo de máximo tres personas</strong>, con <strong>evaluación individual en todo caso</strong>: dos miembros del mismo equipo pueden legítimamente obtener notas distintas, porque lo que se califica es la contribución y la comprensión de cada cual, no el producto a secas.</p>
+<p>El proyecto de tu equipo saldrá del <strong>catálogo de cinco propuestas</strong> que se presenta en la primera sesión del módulo y cuyo material queda en el Classroom del 0616. Las cinco comparten estructura y se diferencian en el dominio; todas se plantean como encargos profesionales y todas <strong>parten de una base de datos heredada</strong> que provee el docente (esquema y datos de partida), como ocurre en la vida real cuando llegas a un sistema que ya existe. Ese sistema heredado se documenta en el anteproyecto. También es posible que el equipo proponga un proyecto propio, que deberá aprobar el profesor del módulo antes de arrancar.</p>
+<p>Además, la misma aplicación se trabaja al final del curso en las unidades de cierre de otros módulos de 2.º —Desarrollo Web en Entorno Servidor y, para quien lo curse, el optativo de Big Data e Inteligencia Artificial—, <strong>con instrumentos y notas estrictamente separados por módulo</strong>: un solo producto, varias evaluaciones independientes. Nada de lo que hagas en un módulo "cuenta" automáticamente en otro.</p>
+<h2 id="apartado-3-el-calendario-hitos-h0-a-h6">Apartado 3. El calendario: hitos H0 a H6<a class="headerlink" href="#apartado-3-el-calendario-hitos-h0-a-h6" title="Permanent link">&para;</a></h2>
+<p>El curso del proyecto está condicionado por la <strong>formación en empresa (FEOE)</strong>, que ocupa el tramo de marzo a mayo: durante esas semanas no hay sesiones del módulo. Por eso el calendario carga el peso del proyecto <strong>antes</strong> de la FEOE y reserva para la vuelta solo el cierre. Las fechas concretas de cada hito se publicarán en el Classroom del 0616 en cuanto el centro cierre su calendario; la estructura es esta y no cambia:</p>
+<table>
+<thead>
+<tr>
+<th>Hito</th>
+<th>Evaluación</th>
+<th>Qué se hace y qué se entrega</th>
+<th>RA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>H0 · Arranque</strong></td>
+<td>1.ª</td>
+<td>Presentación del módulo y de las propuestas; formación de equipos; alta del repositorio del equipo con alias y <code>DECISIONES.md</code> (trámite sin calificación)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>H1 · Anteproyecto</strong></td>
+<td>1.ª</td>
+<td>Análisis del sector y de sus necesidades, oportunidad, obligaciones fiscales, laborales y de prevención de riesgos, ayudas y guion de trabajo → <strong>documento de anteproyecto aprobado</strong></td>
+<td>RA1</td>
+</tr>
+<tr>
+<td><strong>H2 · Diseño y viabilidad</strong></td>
+<td>1.ª</td>
+<td>Viabilidad técnica, fases, objetivos y alcance, recursos, presupuesto, financiación y documentación de diseño → <strong>dossier de diseño</strong> (seguimiento 1)</td>
+<td>RA2</td>
+</tr>
+<tr>
+<td><strong>H3 · Planificación</strong></td>
+<td>2.ª</td>
+<td>Secuenciación de actividades, recursos y logística, permisos, plan de prevención de riesgos, tiempos y valoración económica → <strong>plan de ejecución</strong> (seguimiento 2)</td>
+<td>RA3</td>
+</tr>
+<tr>
+<td><strong>H4 · Desarrollo con seguimiento y control</strong></td>
+<td>2.ª</td>
+<td>Procedimientos de evaluación e indicadores de calidad, gestión de incidencias y cambios con registro, participación de usuarios → <strong>núcleo del artefacto + borrador de memoria y demo</strong> (seguimiento 3)</td>
+<td>RA4</td>
+</tr>
+<tr>
+<td><em>(FEOE)</em></td>
+<td>—</td>
+<td>Sin sesiones del módulo; tutoría asíncrona voluntaria</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>H5 · Memoria final</strong></td>
+<td>3.ª</td>
+<td>Integración de la versión final de la aplicación y <strong>entrega de la memoria</strong></td>
+<td>Integrador</td>
+</tr>
+<tr>
+<td><strong>H6 · Defensa ante tribunal</strong></td>
+<td>3.ª</td>
+<td><strong>Defensa pública</strong> del proyecto</td>
+<td>Integrador</td>
+</tr>
+</tbody>
+</table>
+<p><strong>La regla de oro del calendario:</strong> antes de irte a la empresa tienen que estar hechos el <strong>núcleo de la aplicación</strong>, el <strong>borrador de la memoria</strong> y una <strong>demo que funcione</strong> — es decir, los hitos H1 a H4 completos. A la vuelta solo quedan la integración final, la memoria y la defensa, en unas pocas semanas de tercera evaluación: quien llegue a marzo sin núcleo, sin borrador y sin demo no tiene margen para recuperarlo después. El seguimiento 3 verifica expresamente esta regla.</p>
+<p>Tres notas más sobre el calendario:</p>
+<ul>
+<li>En las primeras sesiones del curso se realiza además la <strong>evaluación inicial</strong> coordinada con los otros módulos de 2.º; sirve para orientar equipos y proyectos y <strong>no comporta calificación</strong>.</li>
+<li>La FEOE <strong>no sustituye nada de este módulo</strong>: sus resultados de aprendizaje no pueden realizarse en la empresa. Lo que sí puede hacer tu estancia es alimentar el análisis de necesidades y la validación con usuarios del proyecto.</li>
+<li>El Proyecto Intermodular <strong>no es convalidable</strong>: se cursa siempre.</li>
+</ul>
+<h2 id="apartado-4-como-se-trabaja">Apartado 4. Cómo se trabaja<a class="headerlink" href="#apartado-4-como-se-trabaja" title="Permanent link">&para;</a></h2>
+<p><strong>Un repositorio por equipo, desde el día uno.</strong> En la sesión de arranque (H0) cada equipo da de alta su repositorio de proyecto con los alias de sus miembros y un archivo <code>DECISIONES.md</code> inicial. Todo lo que el proyecto produce —anteproyecto, dossier, plan, código, memoria— vive y se entrega en ese repositorio.</p>
+<p><strong>Alias siempre.</strong> Conforme a la política de identidad digital y protección de datos del centro, en el repositorio y en todos los materiales del proyecto trabajas con tu alias: ningún nombre real, ningún dato personal.</p>
+<p><strong><code>DECISIONES.md</code> es el diario técnico del proyecto.</strong> Cada decisión relevante (una tecnología, un cambio de alcance, un descarte) se registra con su <strong>autoría</strong> —quién la tomó y por qué— y con la <strong>declaración del uso de herramientas de inteligencia artificial</strong> cuando lo haya habido. Los roles dentro del equipo rotan y esa rotación también queda documentada ahí.</p>
+<p><strong>Commits que cuentan la historia.</strong> El historial del repositorio, con commits significativos por alias individual, es la evidencia principal de tu contribución. Una memoria que narra un proceso que el historial no sostiene es, por sí misma, un indicio en tu contra.</p>
+<p><strong>La autoría se demuestra, no se presume.</strong> Cada entrega de hito lleva una <strong>defensa breve individual</strong>: explicas lo tuyo, en persona, en cada tramo del curso. El uso <strong>declarado</strong> de herramientas de IA está admitido; lo que no es admisible es no poder explicar, justificar y sostener lo entregado. La regla es simple: <strong>sin defensa sostenible, la entrega no puntúa</strong>.</p>
+<p><strong>Canal oficial.</strong> Las comunicaciones, las fechas y el material de las propuestas van por el <strong>Classroom del 0616</strong>. Las dudas de trabajo, en las sesiones semanales y en los seguimientos.</p>
+<h2 id="apartado-5-como-se-evalua">Apartado 5. Cómo se evalúa<a class="headerlink" href="#apartado-5-como-se-evalua" title="Permanent link">&para;</a></h2>
+<p>La evaluación es <strong>individual</strong> y se divide en <strong>dos bloques cuyos pesos fija la norma</strong> (artículo 30.4 del Decreto 91/2024), no el centro ni el docente:</p>
+<table>
+<thead>
+<tr>
+<th>Bloque</th>
+<th>Quién lo otorga</th>
+<th>Peso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Valoración del profesor</td>
+<td>El profesor del módulo, a la vista del proceso de elaboración <strong>y</strong> de la presentación y defensa</td>
+<td><strong>60%</strong></td>
+</tr>
+<tr>
+<td>Valoración del tribunal</td>
+<td>El tribunal, tras leer la memoria y presenciar la defensa pública</td>
+<td><strong>40%</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="apartado-51-el-bloque-del-profesor-60">Apartado 5.1. El bloque del profesor (60%)<a class="headerlink" href="#apartado-51-el-bloque-del-profesor-60" title="Permanent link">&para;</a></h3>
+<p>Dentro del 60%, cada hito pesa en proporción a los criterios de evaluación que evidencia, y se reserva una parte para la memoria final y para la valoración docente de la defensa:</p>
+<table>
+<thead>
+<tr>
+<th>Instrumento</th>
+<th>Peso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>H1 · Anteproyecto (documento + defensa breve)</td>
+<td>11%</td>
+</tr>
+<tr>
+<td>H2 · Dossier de diseño y viabilidad (+ seguimiento 1)</td>
+<td>11%</td>
+</tr>
+<tr>
+<td>H3 · Plan de ejecución (+ seguimiento 2)</td>
+<td>10%</td>
+</tr>
+<tr>
+<td>H4 · Procedimientos de control + borrador de memoria y demo (+ seguimiento 3)</td>
+<td>8%</td>
+</tr>
+<tr>
+<td>H5 · Memoria final</td>
+<td>10%</td>
+</tr>
+<tr>
+<td>Valoración docente de la presentación y defensa</td>
+<td>10%</td>
+</tr>
+<tr>
+<td><strong>Total del bloque</strong></td>
+<td><strong>60%</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Cada hito se califica con una <strong>rúbrica publicada por adelantado</strong> — en el Classroom del módulo, junto al enunciado del hito — cuyos indicadores son, literalmente, los criterios de evaluación oficiales del resultado de aprendizaje correspondiente: sabrás desde el principio exactamente qué se mide.</p>
+<h3 id="apartado-52-el-bloque-del-tribunal-40">Apartado 5.2. El bloque del tribunal (40%)<a class="headerlink" href="#apartado-52-el-bloque-del-tribunal-40" title="Permanent link">&para;</a></h3>
+<p>El tribunal lo forman <strong>al menos tres docentes del ciclo</strong>; el profesor del módulo <strong>no</strong> forma parte de él. Recibe tu memoria y acceso de lectura a tu repositorio y a <code>DECISIONES.md</code>, y valora con rúbrica publicada por el mismo canal: la calidad y claridad de la memoria, la exposición y demostración de la aplicación, la justificación de las decisiones adoptadas y tus respuestas a sus preguntas.</p>
+<p><strong>El acto de defensa</strong> es individual: <strong>15 minutos</strong> de exposición y demostración más <strong>10 minutos</strong> de preguntas. Las preguntas pueden dirigirse a decisiones concretas registradas en <code>DECISIONES.md</code> y a tu historial de commits, así que la mejor preparación posible es haber hecho —y entendido— tu parte durante todo el curso.</p>
+<h3 id="apartado-53-nota-final-y-minimos">Apartado 5.3. Nota final y mínimos<a class="headerlink" href="#apartado-53-nota-final-y-minimos" title="Permanent link">&para;</a></h3>
+<p><strong>Nota final = valoración del profesor × 0,60 + valoración del tribunal × 0,40</strong>, expresada de 1 a 10 sin decimales. El módulo se supera con 5 o más, con estos mínimos:</p>
+<table>
+<thead>
+<tr>
+<th>Mínimo</th>
+<th>Por qué</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Realizar la presentación y defensa pública</td>
+<td>Sin defensa, la evaluación no puede llevarse a cabo; no presentarse a la defensa en convocatoria supone figurar como <strong>No Evaluado</strong></td>
+</tr>
+<tr>
+<td>Al menos <strong>4 en cada resultado de aprendizaje</strong> (sobre sus evidencias: hito + dimensión de la memoria) y <strong>media final de 5 o más</strong></td>
+<td>Regla del centro, idéntica a la del resto de módulos del ciclo</td>
+</tr>
+<tr>
+<td>Toda entrega de hito lleva su <strong>defensa breve individual</strong>; sin ella, la entrega <strong>no puntúa</strong></td>
+<td>En un módulo que es 100% proyecto, la defensa de cada tramo es la garantía de autoría y de evaluación individual</td>
+</tr>
+<tr>
+<td>Calificación final igual o superior a 5</td>
+<td>Norma general de superación</td>
+</tr>
+</tbody>
+</table>
+<h3 id="apartado-54-asistencia-y-recuperacion">Apartado 5.4. Asistencia y recuperación<a class="headerlink" href="#apartado-54-asistencia-y-recuperacion" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Asistencia.</strong> La evaluación continua se pierde al superar el 15% de las horas del módulo: <strong>a partir de la hora 11 de falta computada</strong>. Quedan excluidas del cómputo, previa acreditación y decisión del equipo docente, las situaciones de conciliación con la actividad laboral y las de deportistas de alto nivel o alto rendimiento. Perder la continua <strong>no exime de nada</strong>: hay que presentar igualmente todos los entregables de H1 a H5, superar una defensa individual ante el profesor previa a la pública, y la defensa ante tribunal (el 40%) se mantiene intacta.</li>
+<li><strong>Recuperación.</strong> En junio hay dos convocatorias de evaluación final. Si no superas el módulo en la primera, un plan de recuperación individual identifica qué resultados de aprendizaje debes mejorar y qué entregables rehacer, y concluye con <strong>nueva defensa pública ante tribunal</strong>: el bloque del 40% rige en todas las convocatorias.</li>
+</ul>
+<h2 id="apartado-6-por-donde-empezar">Apartado 6. Por dónde empezar<a class="headerlink" href="#apartado-6-por-donde-empezar" title="Permanent link">&para;</a></h2>
+<p>En la primera sesión (H0) se presentan las propuestas, se forman los equipos y cada equipo crea su repositorio con <code>DECISIONES.md</code>. El primer trabajo real del proyecto es el <strong>anteproyecto</strong> del hito H1: el documento donde tu equipo analiza el sector, detecta la necesidad, valora la oportunidad y define qué va a construir y cómo.</p>
+<p>Para elaborarlo tienes la <a href="../plantilla-anteproyecto/">plantilla de anteproyecto</a>: cópiala al repositorio del equipo y trabajad sobre ella desde el primer día.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
