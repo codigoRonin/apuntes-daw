@@ -56,6 +56,7 @@ nav:
       - "Portada del módulo": desarrollo-web-en-entorno-servidor/index.md
       - "UD0 · Presentación del módulo": desarrollo-web-en-entorno-servidor/ud0-presentacion.md
       - "UD1 · Arquitecturas y tecnologías de programación en servidor": desarrollo-web-en-entorno-servidor/ud1-arquitecturas-tecnologias-servidor.md
+      - "UD2 · Código embebido en lenguajes de marcas: sintaxis, estructuras, funciones y formularios": desarrollo-web-en-entorno-servidor/ud2-codigo-embebido-php.md
   - Big Data e Inteligencia Artificial (AOP1089):
       - "Portada del módulo": big-data-e-inteligencia-artificial/index.md
       - "UD0 · Presentación del módulo": big-data-e-inteligencia-artificial/ud0-presentacion.md

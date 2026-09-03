@@ -10,8 +10,9 @@ Este módulo te enseña a construir **el lado servidor** de una aplicación web:
 |---|---|
 | [UD0. Presentación del módulo](ud0-presentacion.md) | Qué se aprende, cómo se trabaja y se entrega (repositorio, registro de decisiones y defensa), cómo se califica (con la tabla de casos "¿aprueba o no?") y la aplicación ancla del curso |
 | [UD1. Arquitecturas y tecnologías de programación en servidor](ud1-arquitecturas-tecnologias-servidor.md) | El viaje de una petición y HTTP, páginas estáticas frente a generación dinámica, el reparto del trabajo entre cliente y servidor, mecanismos de ejecución y servidores de aplicaciones, el panorama de lenguajes y tecnologías, la integración con el lenguaje de marcas y la evaluación de herramientas y frameworks |
+| [UD2. Código embebido en lenguajes de marcas: sintaxis, estructuras, funciones y formularios](ud2-codigo-embebido-php.md) | El arranque del lenguaje del curso: el entorno con el intérprete y su servidor embebido, etiquetas de inclusión y comentarios, variables, tipos y operadores con transferencia desde la POO de primero, la directiva de tipos estrictos, decisiones con match, bucles y arrays sobre el calendario del club, funciones y ámbitos, tus primeras clases como tipos compuestos, plantillas embebidas con sintaxis alternativa y escape, y formularios GET y POST con validación en el servidor por autoridad |
 
-Las unidades restantes (de la UD2 a la UD8) **se publicarán progresivamente** a lo largo del curso, siempre antes de comenzar a impartirlas. Si una unidad no aparece aquí, aún no está publicada — no la busques en otros canales.
+Las unidades restantes (de la UD3 a la UD8) **se publicarán progresivamente** a lo largo del curso, siempre antes de comenzar a impartirlas. Si una unidad no aparece aquí, aún no está publicada — no la busques en otros canales.
 
 ## Apartado 2. Cómo trabajar con estos apuntes
 

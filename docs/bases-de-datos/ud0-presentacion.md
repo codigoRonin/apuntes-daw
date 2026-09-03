@@ -128,11 +128,11 @@ Todo lo del inicio de curso, en un sitio:
 
 | Material | Para qué | Dónde |
 |---|---|---|
-| Manual del alumnado | Normas de funcionamiento, canales y herramientas del módulo | [ENLACE: se completará al publicar en septiembre] |
-| Programación reducida del módulo | Las reglas oficiales de evaluación y calificación, en versión publicada | [ENLACE: se completará al publicar en septiembre] |
-| Ficha de la actividad de acogida | La lista de pasos de la primera semana | [ENLACE: se completará al publicar en septiembre] |
-| Tarea de acogida del aula de código | Donde harás tu primer commit | [ENLACE: se completará al publicar en septiembre] |
-| Formulario de la prueba inicial | La prueba sin nota de la primera semana | [ENLACE: se completará al publicar en septiembre] |
+| Manual del alumnado | Normas de funcionamiento, canales y herramientas del módulo | En el Classroom del módulo desde el primer día |
+| Programación reducida del módulo | Las reglas oficiales de evaluación y calificación, en versión publicada | En el Classroom, tras la aprobación de la programación (septiembre) |
+| Ficha de la actividad de acogida | La lista de pasos de la primera semana | En el Classroom del módulo, primera semana |
+| Tarea de acogida del aula de código | Donde harás tu primer commit | En el aula de código, primera semana |
+| Formulario de la prueba inicial | La prueba sin nota de la primera semana | En el Classroom del módulo, primera semana |
 
 !!! tip "Un consejo de arranque"
     Este módulo premia la regularidad: 6 horas semanales durante un curso construyen un oficio, pero solo si no dejas que las unidades se acumulen. La UD1 empieza en la próxima sesión — trae las preguntas de negocio de tu equipo.
