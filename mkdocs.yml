@@ -61,10 +61,11 @@ nav:
       - "Portada del módulo": big-data-e-inteligencia-artificial/index.md
       - "UD0 · Presentación del módulo": big-data-e-inteligencia-artificial/ud0-presentacion.md
       - "UD1 · Python para datos e IA: lenguaje especializado, entorno y librerías": big-data-e-inteligencia-artificial/ud1-python-datos-ia.md
-  - Proyecto Intermodular (0616):
-      - "Portada del módulo": proyecto-intermodular/index.md
-      - "Presentación del módulo": proyecto-intermodular/presentacion.md
-      - "Plantilla de anteproyecto (H1)": proyecto-intermodular/plantilla-anteproyecto.md
+ # - Proyecto Intermodular (0616):
+ #     - "Portada del módulo": proyecto-intermodular/index.md
+ #     - "Presentación del módulo": proyecto-intermodular/presentacion.md
+ #     - "Plantilla de anteproyecto (H1)": proyecto-intermodular/plantilla-anteproyecto.md
   - Recursos:
+      - "Entorno de trabajo: VS Code para PHP": recursos/entorno-vscode-php.md
       - "Guía rápida de draw.io": recursos/guia-drawio.md
       - "Estándar de estilo SQL": recursos/estandar-estilo-sql.md

@@ -15,6 +15,7 @@ Este sitio reúne los apuntes y recursos de los módulos del ciclo impartidos po
 
 ## Apartado 2. Recursos transversales
 
+- [Entorno de trabajo: VS Code para PHP](recursos/entorno-vscode-php.md) — cómo montar el editor y sus extensiones para trabajar en el módulo; se configura una sola vez.
 - [Guía rápida de draw.io para las entregas de diagramas](recursos/guia-drawio.md)
 - [Estándar de estilo SQL del módulo](recursos/estandar-estilo-sql.md) — cómo se escribe y se corrige el SQL de todas las entregas.
 

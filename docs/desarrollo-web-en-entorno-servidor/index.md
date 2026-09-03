@@ -21,3 +21,7 @@ Las unidades restantes (de la UD3 a la UD8) **se publicarán progresivamente** a
 3. **La actividad evaluativa final de cada unidad se entrega por el canal oficial del módulo: tu repositorio del aula de código**, con historial de commits significativos, su `DECISIONES.md` y la defensa correspondiente — en segundo no hay periodo de adaptación. Las condiciones completas están en el [kit de arranque de la UD0](ud0-presentacion.md) y en el manual del alumnado publicado en Classroom — aquí no se duplican para que nunca haya dos versiones en conflicto. En caso de duda, el canal oficial es el que anuncia el docente en el Classroom del módulo.
 4. **Trabaja siempre con tu alias** en las herramientas externas, como fija la política de protección de datos del centro.
 5. **Las soluciones no están publicadas.** Se trabajan y corrigen en aula; pedirlas por adelantado es pedir que el módulo sirva de menos.
+
+## Apartado 3. Recursos transversales
+
+- [Entorno de trabajo: VS Code para PHP](../recursos/entorno-vscode-php.md) — cómo montar el editor y sus extensiones para trabajar en el módulo; se configura una sola vez.
