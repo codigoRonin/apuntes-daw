@@ -1,39 +1,35 @@
-# Apuntes DAW — sitio web (MkDocs Material + GitHub Pages)
+# Apuntes DAW · IES Río Arba
 
-Sitio de apuntes generado con MkDocs Material. Publicación automática en GitHub Pages con cada push.
+Material de referencia de los módulos del **Ciclo Formativo de Grado Superior en Desarrollo de Aplicaciones Web (DAW)** del IES Río Arba (Tauste, Zaragoza), curso 2026-27.
 
-## Publicar por primera vez (10 minutos)
+## 📖 Lee los apuntes aquí
 
-1. Crea un repositorio **público** en tu cuenta personal de GitHub llamado `apuntes-daw` (sin README inicial).
-2. En esta carpeta:
-   ```bash
-   git init
-   git add .
-   git commit -m "Sitio de apuntes inicial"
-   git branch -M main
-   git remote add origin https://github.com/TU-USUARIO/apuntes-daw.git
-   git push -u origin main
-   ```
-3. El workflow de Actions se ejecutará solo (pestaña **Actions** del repo) y creará la rama `gh-pages`.
-4. En el repo: **Settings → Pages → Source: Deploy from a branch → Branch: `gh-pages` / (root) → Save**.
-5. En 1-2 minutos el sitio estará en `https://TU-USUARIO.github.io/apuntes-daw/`.
-6. Descomenta y ajusta `site_url` y `repo_url` en `mkdocs.yml`, haz commit y push.
+Los apuntes se leen mucho mejor en el sitio web, con su navegación, buscador y formato:
 
-## Añadir una unidad nueva
+### 👉 https://codigoRonin.github.io/apuntes-daw/
 
-1. Genera la unidad con la skill `generador-apuntes` en modo "sitio web (MkDocs)".
-2. Copia el archivo a `docs/<modulo>/udN-<tema>.md`.
-3. Añádela al `nav` de `mkdocs.yml` y al índice del módulo.
-4. Commit + push → se publica sola.
+Este repositorio contiene el código fuente del sitio (Markdown + MkDocs). Si eres alumno/a, no necesitas nada de aquí: entra directamente por el enlace de arriba.
 
-## Ver el sitio en local (opcional)
+## Qué encontrarás
 
-```bash
-pip install -r requirements.txt
-mkdocs serve   # → http://127.0.0.1:8000
-```
+Apuntes teóricos, ejemplos y actividades de los módulos, organizados por unidades:
 
-## Reglas
+- **Bases de Datos** — diseño, SQL y explotación de bases de datos relacionales.
+- **Desarrollo Web en Entorno Servidor** — programación del lado del servidor con PHP.
+- **Big Data e Inteligencia Artificial** (optativo) — preparación y análisis de datos con Python.
 
-- **NUNCA** subir a este repositorio los documentos de SOLUCIONES del docente ni nada con datos de alumnado.
-- El repositorio es tuyo (cuenta personal): el material viaja contigo entre centros.
+Cada módulo tiene su índice con las unidades disponibles. El material se irá ampliando a lo largo del curso.
+
+## Cómo se trabaja en estos módulos
+
+- **Alias, no nombres.** En las plataformas externas (repositorios, herramientas de datos) trabajamos con un alias, no con nombres reales, por protección de datos.
+- **Datos de aula ficticios.** Los conjuntos de datos que aparecen en los ejemplos y las prácticas son inventados: los lugares pueden ser reales, pero las personas, empresas e instituciones no corresponden a nadie real.
+- **Canales oficiales.** Los materiales evaluables, entregas y avisos de cada módulo van por su Google Classroom, no por este sitio.
+
+## Qué NO está en este repositorio
+
+Por transparencia: este repositorio es **público** y contiene **solo material de alumnado**. Aquí no hay —ni habrá— soluciones del profesorado, exámenes, datos personales de nadie ni información de evaluación. Ese material se gestiona por canales privados del centro.
+
+## Aviso
+
+Material docente en elaboración y revisión continua. Puede contener erratas; se corrige sobre la marcha. Si detectas algún error, puedes comentárselo al profesor.
