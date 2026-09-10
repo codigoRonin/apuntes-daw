@@ -61,6 +61,7 @@ nav:
       - "Portada del módulo": big-data-e-inteligencia-artificial/index.md
       - "UD0 · Presentación del módulo": big-data-e-inteligencia-artificial/ud0-presentacion.md
       - "UD1 · Python para datos e IA: lenguaje especializado, entorno y librerías": big-data-e-inteligencia-artificial/ud1-python-datos-ia.md
+      - "UD2. Preparación, análisis y visualización de datos; protección de datos": big-data-inteligencia-artificial/ud2-preparacion-visualizacion-datos.md
  # - Proyecto Intermodular (0616):
  #     - "Portada del módulo": proyecto-intermodular/index.md
  #     - "Presentación del módulo": proyecto-intermodular/presentacion.md

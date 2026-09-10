@@ -10,8 +10,9 @@ Este módulo te enseña a **sacar partido de los datos e incorporar inteligencia
 |---|---|
 | [UD0. Presentación del módulo](ud0-presentacion.md) | Qué se aprende y qué queda fuera, cómo se trabaja y se entrega (repositorio, registro de decisiones y defensa), cómo se califica (modelo 40/60, con la tabla de casos "¿aprueba o no?") y con qué datos, modelos y herramientas se construye el curso |
 | [UD1. Python para datos e IA: lenguaje especializado, entorno y librerías](ud1-python-datos-ia.md) | Instalar Python y montar el taller (entorno virtual, cuadernos, scripts), lo que hace distinto al lenguaje, programas simples con funciones, estructuras de almacenamiento y clases documentadas, obtener datos desde ficheros, una API y una base de datos, aplicar un modelo preentrenado y leer con criterio lo que devuelve, y programar una aplicación que integra datos y modelo |
+| [UD2. Preparación, análisis y visualización de datos; protección de datos](ud2-preparacion-visualizacion-datos.md) | Qué exige la ley de protección de datos antes de abrir un dataset (y el Reglamento de IA como contexto), tipos de datos, herramientas y pipeline del análisis, limpieza y preprocesamiento con pandas, visualización con distintos gráficos en Matplotlib, cómo contrastar la calidad de lo obtenido y cómo documentar el proceso — sobre datos ficticios de una red comarcal de calidad del aire |
 
-Las unidades restantes (de la UD2 a la UD6) **se publicarán progresivamente** a lo largo del curso, siempre antes de comenzar a impartirlas. Si una unidad no aparece aquí, aún no está publicada — no la busques en otros canales.
+Las unidades restantes (de la UD3 a la UD6) **se publicarán progresivamente** a lo largo del curso, siempre antes de comenzar a impartirlas. Si una unidad no aparece aquí, aún no está publicada — no la busques en otros canales.
 
 ## Apartado 2. Cómo trabajar con estos apuntes
 
