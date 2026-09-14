@@ -90,7 +90,7 @@ Todos los casos suponen, salvo que se diga lo contrario, que el resto de condici
 
 ### Apartado 3.3. Asistencia y evaluación continua
 
-La asistencia es obligatoria y se registra a diario en SIGAD. Se pierde el derecho a la evaluación continua al superar los umbrales de faltas que fija el centro; sobre el total del módulo, el umbral del 15 % equivale en este módulo (200 horas) a **30 horas**. Los umbrales por evaluación se publicarán con el calendario de cada una. Tres retrasos no justificados cuentan como una falta. Perder la evaluación continua no te expulsa del módulo: cambia tu forma de ser evaluado (prueba final sobre todos los contenidos), y eso casi nunca es buena noticia.
+La asistencia es obligatoria y se registra a diario en SIGAD. Se pierde el derecho a la evaluación continua al superar el 15% de faltas de asistencia sobre las horas totales del módulo, el umbral del 15 % equivale en este módulo (200 horas) a **30 horas**. Un retraso de más de 10 minutos supone perder el derecho de asistencia a esa hora, y se registra como falta. Perder la evaluación continua no te expulsa del módulo: cambia tu forma de ser evaluado (prueba final sobre todos los contenidos), y eso casi nunca es buena noticia.
 
 Si suspendes una evaluación habrá recuperación según lo publicado en la programación; los detalles y fechas se anunciarán por Classroom.
 
