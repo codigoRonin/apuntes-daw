@@ -70,5 +70,6 @@ nav:
  #     - "Plantilla de anteproyecto (H1)": proyecto-intermodular/plantilla-anteproyecto.md
   - Recursos:
       - "Entorno de trabajo: VS Code para PHP": recursos/entorno-vscode-php.md
+      - "Entorno de trabajo: VS Code para Python": recursos/entorno-vscode-python.md
       - "Guía rápida de draw.io": recursos/guia-drawio.md
       - "Estándar de estilo SQL": recursos/estandar-estilo-sql.md
