@@ -39,6 +39,8 @@ return [
 ];
 ```
 
+La muestra solo trae socios: para los ejercicios de roles de los apartados 7 y 8 necesitas el **fichero íntegro** del repositorio de la unidad, que incluye a los dos monitores y a la administración. No lo copies de aquí: descárgalo. Las contraseñas de aula de los ocho usuarios están en el `README.md` de esa misma carpeta.
+
 <div style="page-break-before: always;"></div>
 
 ## Apartado 1. HTTP no tiene memoria: el problema del estado
@@ -955,7 +957,36 @@ $_SESSION['ultima_actividad'] = $ahora;
 
 El cambio en el resto de ficheros es de una línea: en `auth.php`, `login.php`, `logout.php` y `registro.php`, donde ponía `session_start();` ahora pone `require __DIR__ . '/sesion.php';`. Un solo sitio decide cómo arranca la sesión; nadie puede olvidarse de un atributo en una página concreta. El atributo `secure` se activa **solo si la petición llegó por HTTPS**: escrito a `true` sin condición, el navegador se negaría a enviar la cookie por el HTTP del aula y la sesión «no funcionaría» sin ningún mensaje de error.
 
-**La tercera puerta: la sesión que nadie cierra.** Un socio entra en un ordenador de la biblioteca, se va sin cerrar sesión, y la llave sigue viva. La **caducidad por inactividad** del fichero anterior lo resuelve con la técnica más simple posible: guardar en la sesión la marca de tiempo de la última petición y, si la siguiente llega demasiado tarde, destruir y empezar de cero con un aviso. La prueba: tras iniciar sesión, forzamos en el servidor una última actividad muy antigua y pedimos la ficha:
+Como `auth.php` es el fichero que incluye toda página privada, ese cambio de una línea basta para que la zona privada entera arranque endurecida. Así queda, y así es como debe estar en tu repositorio a partir de aquí (la versión del apartado 7 queda superada):
+
+```php
+<?php
+declare(strict_types=1);
+// auth.php — las dos puertas de la zona privada: ¿quién eres? y ¿qué puedes hacer?
+require __DIR__ . '/sesion.php';   // antes: session_start();
+
+/** Autenticación: si no hay usuario en sesión, al login. */
+function requiere_login(): array {
+    if (!isset($_SESSION['usuario'])) {
+        header('Location: login.php');
+        exit;
+    }
+    return $_SESSION['usuario'];
+}
+
+/** Autorización: el usuario existe, pero ¿tiene uno de los roles permitidos? */
+function requiere_rol(string ...$roles): array {
+    $usuario = requiere_login();
+    if (!in_array($usuario['rol'], $roles, true)) {
+        http_response_code(403);
+        echo "403 — No tienes permiso para ver esta página.\n";
+        exit;
+    }
+    return $usuario;
+}
+```
+
+**La tercera puerta: la sesión que nadie cierra.** Un socio entra en un ordenador de la biblioteca, se va sin cerrar sesión, y la llave sigue viva. La **caducidad por inactividad** del fichero anterior lo resuelve con la técnica más simple posible: guardar en la sesión la marca de tiempo de la última petición y, si la siguiente llega demasiado tarde, destruir y empezar de cero con un aviso. La prueba, con el `auth.php` de arriba ya en su sitio y sin esperar quince minutos: inicia sesión, abre en `session.save_path` el fichero `sess_…` de tu sesión y resta una hora al valor de `ultima_actividad` (o baja `INACTIVIDAD_MAX` a unos segundos y espera); después pide la ficha:
 
 ```
 $ curl -i -c tarro.txt -b tarro.txt http://localhost:8000/mi-ficha.php | grep -E "HTTP|Location"
