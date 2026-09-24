@@ -276,6 +276,7 @@ Puedes usar un asistente de IA en esta unidad, con cabeza y con responsabilidad 
   ```
 
   con `$cursos = [['nombre' => 'Inglés B1', 'plazas' => 12], ['nombre' => 'Francés A2', 'plazas' => 8]]`.
+
 - **AE9** `[RA1.f]` Evidencia práctica: ejecuta el experimento 2 del apartado 6, captura de la pestaña Red el `Content-Type` y el cuerpo recibido tras dos recargas, y redacta en 3–4 líneas la verificación: qué mecanismo de integración queda demostrado y en qué se nota. Adjunta las capturas en `ud1/evidencias/`.
 - **AE10** `[RA1.e, RA1.g]` **Informe final para la academia** (300–400 palabras): propuesta razonada de pila — lenguaje, framework y motor de plantillas — evaluando el framework elegido con al menos **cuatro** criterios de la rúbrica del apartado 7 y citando **dos evidencias reales y fechadas** tomadas de sus fuentes oficiales (por ejemplo, la fecha de la última versión y la licencia). Se defiende sin leer.
 
