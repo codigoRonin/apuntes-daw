@@ -47,7 +47,7 @@ Reglas de funcionamiento que te interesan desde el día 1:
 1. **Google Classroom es el canal oficial**: materiales, entregas, fechas y avisos. Lo que no está entregado en Classroom (o en el canal que se anuncie formalmente en su momento) no está entregado.
 2. **Trabajarás con alias**, nunca con tu nombre real, en las herramientas externas (GitHub, aula de código): es la política de protección de datos del centro y, de paso, tu primera lección práctica del RA1 sobre datos personales.
 3. **El trabajo se construye sobre casos realistas**, principalmente el dominio del curso (apartado 4). El trabajo individual es la base en primero, con actividades en grupo puntuales en las unidades de diseño y en el reto final.
-4. **Las prácticas se defienden.** Entregar no basta: hay que saber explicar lo entregado. Una práctica que no se defiende cuando se pide no puntúa (ver apartado 3).
+4. **Las prácticas se defienden.** Entregar no basta: hay que saber explicar lo entregado. Una práctica que no se defiende no puntúa (ver apartado 3).
 5. **Hay refuerzo y ampliación**: si una unidad se te atraganta habrá actividades para consolidar la base; si vas sobrado, habrá retos de nivel para subir nota de verdad.
 
 <div style="page-break-before: always;"></div>

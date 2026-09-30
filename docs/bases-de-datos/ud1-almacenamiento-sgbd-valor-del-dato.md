@@ -324,7 +324,7 @@ Puedes usar un asistente de IA en esta unidad, con cabeza y responsabilidad sobr
 
 **Contexto — la empresa del curso.** La empresa comarcal de **mantenimiento de parques renovables** gestiona 15 parques (eólicos y fotovoltaicos), unos 450 activos (aerogeneradores, inversores), 5.000 sensores que envían lecturas periódicas (5 millones acumuladas), 60 técnicos en cuadrillas, 30.000 órdenes de trabajo preventivas y correctivas con sus partes de intervención, y un almacén de repuestos. Hoy todo se gestiona con hojas de cálculo por parque y un fichero CSV mensual que la oficina central consolida a mano.
 
-**Instrucciones.** 10 ejercicios, 1 punto cada uno; se responde razonando sobre el contexto anterior (respuestas sin justificar no puntúan completas). **Tiempo estimado: 2 horas.** Entrega: documento en la tarea de Classroom de la unidad. La actividad se defiende oralmente por muestreo.
+**Instrucciones.** 10 ejercicios, 1 punto cada uno; se responde razonando sobre el contexto anterior (respuestas sin justificar no puntúan completas). **Tiempo estimado: 2 horas.** Entrega: documento en la tarea de Classroom de la unidad. La actividad se defiende oralmente, 4-5 minutos por persona; sin defensa no puntúa.
 
 - **AE1** `[RA1.a]` La oficina central consolida a mano un CSV mensual por parque. Identifica **tres** de los síntomas del almacenamiento por ficheros presentes en esa práctica, citando para cada uno el detalle del contexto que lo evidencia.
 - **AE2** `[RA1.b]` La empresa se plantea el modelo de datos para dos conjuntos distintos: (1) técnicos, órdenes y repuestos; (2) el flujo masivo de lecturas de sensores. Propón modelo para cada uno y justifica por qué no tiene por qué ser el mismo.
