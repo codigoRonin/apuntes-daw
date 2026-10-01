@@ -6,6 +6,7 @@ site_url: https://codigoronin.github.io/apuntes-daw/
 exclude_docs: |
   proyecto-intermodular/
 repo_url: https://github.com/codigoronin/apuntes-daw
+copyright: Apuntes DAW · <a href="https://github.com/codigoRonin">Código Ronin</a> · IES Río Arba
 
 theme:
   name: material
@@ -71,8 +72,16 @@ nav:
  #     - "Presentación del módulo": proyecto-intermodular/presentacion.md
  #     - "Plantilla de anteproyecto (H1)": proyecto-intermodular/plantilla-anteproyecto.md
   - Recursos:
+      - "Portada de recursos": recursos/index.md
       - "Entorno de trabajo: VS Code para PHP": recursos/entorno-vscode-php.md
       - "Entorno de trabajo: VS Code para Python": recursos/entorno-vscode-python.md
       - "Guía rápida de draw.io": recursos/guia-drawio.md
       - "Estándar de estilo SQL": recursos/estandar-estilo-sql.md
       - "Rúbrica de defensa y de verificación de autoría": recursos/rubrica-defensa.md
+
+extra:
+  generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/codigoRonin
+      name: Código Ronin en GitHub
