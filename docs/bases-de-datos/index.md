@@ -28,3 +28,4 @@ Las unidades restantes (de la UD5 a la UD8) **se publicarán progresivamente** a
 
 - [Guía rápida de draw.io para las entregas de diagramas](../recursos/guia-drawio.md) — herramienta, convención de nombrado y formato de entrega doble.
 - [Estándar de estilo SQL del módulo](../recursos/estandar-estilo-sql.md) — cómo se escribe y se corrige el SQL de todas las entregas.
+- [Rúbrica de defensa y de verificación de autoría](../recursos/rubrica-defensa.md) — cómo se valora la defensa de cada entrega evaluable, qué pasa si no se hace o no se supera y cómo funciona la verificación de autoría; común a los tres módulos.

@@ -26,3 +26,4 @@ Las unidades restantes (de la UD4 a la UD6) **se publicarán progresivamente** a
 ## Apartado 3. Recursos transversales
 
 - [Entorno de trabajo: VS Code para Python](../recursos/entorno-vscode-python.md) — cómo hacer que el editor, el terminal y los cuadernos usen el Python de cada unidad; se configura una vez por unidad.
+- [Rúbrica de defensa y de verificación de autoría](../recursos/rubrica-defensa.md) — cómo se valora la defensa de cada entrega evaluable, qué pasa si no se hace o no se supera y cómo funciona la verificación de autoría; común a los tres módulos.

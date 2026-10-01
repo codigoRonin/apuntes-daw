@@ -26,3 +26,4 @@ Las unidades restantes (de la UD4 a la UD8) **se publicarán progresivamente** a
 ## Apartado 3. Recursos transversales
 
 - [Entorno de trabajo: VS Code para PHP](../recursos/entorno-vscode-php.md) — cómo montar el editor y sus extensiones para trabajar en el módulo; se configura una sola vez.
+- [Rúbrica de defensa y de verificación de autoría](../recursos/rubrica-defensa.md) — cómo se valora la defensa de cada entrega evaluable, qué pasa si no se hace o no se supera y cómo funciona la verificación de autoría; común a los tres módulos.
