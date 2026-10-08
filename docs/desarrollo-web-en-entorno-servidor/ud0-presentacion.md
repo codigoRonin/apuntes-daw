@@ -101,7 +101,7 @@ Si suspendes una evaluación, la recuperación se organiza sobre los **RA no sup
 
 ## Apartado 4. La aplicación ancla del curso
 
-En la 1.ª evaluación cada unidad trabaja sobre su propio caso: una academia, un club de montaña, una protectora de animales, una escuela de música. No es casualidad: razonar sobre un dominio que no conocías es exactamente lo que te pedirá cualquier empresa. A partir de la **UD6**, ya en la 2.ª evaluación, lo que construyas girará sobre una misma **aplicación web ancla**: un dominio realista de nuestro entorno productivo, con una **base de datos de partida** — un sistema heredado que recibirás al arrancar, esquema y datos incluidos, como cuando llegas a una empresa y el sistema ya existe antes que tú. El dominio concreto se presenta y se decide en el aula antes de esa unidad; desde ahí, la aplicación crece unidad a unidad.
+Hasta la UD5 no hay una aplicación común: la teoría de la UD1 a la UD3 sigue un caso hilo, el Club de Montaña Os Ibones, y cada actividad evaluativa se hace sobre un caso distinto: una academia de idiomas, una protectora de animales, una escuela de música. No es casualidad: razonar sobre un dominio que no conocías es exactamente lo que te pedirá cualquier empresa. A partir de la **UD6**, ya en la 2.ª evaluación, lo que construyas girará sobre una misma **aplicación web ancla**: un dominio realista de nuestro entorno productivo, con una **base de datos de partida** — un sistema heredado que recibirás al arrancar, esquema y datos incluidos, como cuando llegas a una empresa y el sistema ya existe antes que tú. El dominio concreto se presenta y se decide en el aula antes de esa unidad; desde ahí, la aplicación crece unidad a unidad.
 
 | Tramo | Qué construyes |
 |---|---|
