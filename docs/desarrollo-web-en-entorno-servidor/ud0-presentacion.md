@@ -3,9 +3,9 @@
 **Módulo 0613 — Desarrollo Web en Entorno Servidor · 2.º DAW · IES Río Arba · Curso 2026-27 · 2 horas**
 
 !!! info "Qué es esta unidad"
-    La UD0 no tiene contenidos evaluables: es el arranque del curso. Aquí encontrarás qué vas a aprender, cómo trabajaremos y entregaremos, cómo se califica el módulo y sobre qué aplicación construiremos casi todo. Su única "actividad" es la **actividad de acogida** (ver apartado 5), que no tiene nota.
+    La UD0 no tiene contenidos evaluables: es el arranque del curso. Aquí encontrarás qué vas a aprender, cómo trabajaremos y entregaremos, cómo se califica el módulo y qué aplicación construiremos en la segunda parte del curso. Su única "actividad" es la **actividad de acogida** (ver apartado 5), que no tiene nota.
 
-**Al terminar esta unidad sabrás:** qué se aprende en Desarrollo Web en Entorno Servidor y para qué sirve profesionalmente; cómo se trabaja y se entrega en este módulo (repositorio, registro de decisiones y defensa desde el primer día); con qué reglas se calcula tu nota (y podrás predecir tú mismo si un caso aprueba o no); y en qué consiste la aplicación ancla que haremos crecer durante todo el curso.
+**Al terminar esta unidad sabrás:** qué se aprende en Desarrollo Web en Entorno Servidor y para qué sirve profesionalmente; cómo se trabaja y se entrega en este módulo (repositorio, registro de decisiones y defensa desde el primer día); con qué reglas se calcula tu nota (y podrás predecir tú mismo si un caso aprueba o no); y en qué consiste la aplicación ancla que haremos crecer desde la 2.ª evaluación.
 
 <div style="page-break-before: always;"></div>
 
@@ -101,16 +101,12 @@ Si suspendes una evaluación, la recuperación se organiza sobre los **RA no sup
 
 ## Apartado 4. La aplicación ancla del curso
 
-Casi todo lo que construyas este año girará sobre una misma **aplicación web ancla**: un dominio realista de nuestro entorno productivo, con una **base de datos de partida** — un sistema heredado que recibirás al arrancar el proyecto, esquema y datos incluidos, como cuando llegas a una empresa y el sistema ya existe antes que tú. El dominio concreto se presenta y se decide en el aula en las primeras semanas; lo que no cambia es el recorrido: la aplicación crece unidad a unidad hasta convertirse en un producto completo.
+En la 1.ª evaluación cada unidad trabaja sobre su propio caso: una academia, un club de montaña, una protectora de animales, una escuela de música. No es casualidad: razonar sobre un dominio que no conocías es exactamente lo que te pedirá cualquier empresa. A partir de la **UD6**, ya en la 2.ª evaluación, lo que construyas girará sobre una misma **aplicación web ancla**: un dominio realista de nuestro entorno productivo, con una **base de datos de partida** — un sistema heredado que recibirás al arrancar, esquema y datos incluidos, como cuando llegas a una empresa y el sistema ya existe antes que tú. El dominio concreto se presenta y se decide en el aula antes de esa unidad; desde ahí, la aplicación crece unidad a unidad.
 
-| Tramo | Qué le pasa a la aplicación |
+| Tramo | Qué construyes |
 |---|---|
-| UD1 | Antes de escribir una línea: entender el mapa — qué se ejecuta en el servidor y qué en el cliente, qué tecnologías existen y con qué criterio se elige la pila de un proyecto |
-| UD2 | Las primeras páginas dinámicas del dominio: código embebido y formularios que se procesan en el servidor |
-| UD3 | Registro, inicio de sesión y control de acceso por perfiles y roles: la aplicación empieza a tener usuarios |
-| UD4 | La capa de presentación con motor de plantillas: vistas limpias y parciales reutilizables |
-| UD5 | Refactorización a arquitectura MVC con orientación a objetos y patrones: el mismo producto, organizado como en un equipo profesional |
-| UD6 | Persistencia real: la aplicación se conecta a la base de datos de referencia y opera sobre ella |
+| UD1 a UD5 | Los mecanismos, cada unidad sobre su propio caso: el mapa de la programación en servidor, el código embebido y los formularios, el estado y la autenticación, las plantillas y la arquitectura MVC |
+| UD6 | Arranca la aplicación ancla: recibes la base de datos de partida, y la aplicación se conecta a ella y opera sobre ella |
 | UD7 | El dominio expuesto como API REST documentada: tu aplicación, consumible por otras |
 | UD8 | Hibridación: APIs y repositorios externos, y análisis de datos con librerías de Big Data e inteligencia de negocios |
 
