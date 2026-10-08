@@ -710,7 +710,7 @@ foreach ($salidas as $s) {
 echo "</ul>\n";
 ```
 
-Produce el HTML correcto, sí — pero el HTML está **preso dentro de cadenas PHP**: no lo ve tu editor como HTML, no te avisa de una etiqueta mal cerrada, y en cuanto la página crece se vuelve ilegible. La forma profesional invierte la relación: **el HTML manda y el PHP se asoma solo para los huecos**. Y para eso PHP ofrece la **sintaxis alternativa** de las estructuras de control, pensada exactamente para plantillas: `foreach (…):` … `endforeach;`, `if (…):` … `endif;`. Con ella, y con la etiqueta de impresión `<?= ?>`, la misma página se lee como HTML de principio a fin:
+Produce el HTML correcto, sí — pero el HTML está **preso dentro de cadenas PHP**: no lo ve tu editor como HTML, no te avisa de una etiqueta mal cerrada, y en cuanto la página crece se vuelve ilegible. La forma profesional invierte la relación: **el HTML manda y el PHP se asoma solo para los huecos**. Y para eso PHP ofrece la **sintaxis alternativa** de las estructuras de control, pensada exactamente para plantillas: `foreach (…):` … `endforeach;`, `if (…):` … `endif;`. Es exactamente la misma estructura que ya conoces con llaves: la `{` se convierte en `:` y la `}` en `endforeach;` (o `endif;`); cambia la forma, no lo que hace. Con ella, y con la etiqueta de impresión `<?= ?>`, la misma página se lee como HTML de principio a fin:
 
 ```php
 <?php declare(strict_types=1); ?>
