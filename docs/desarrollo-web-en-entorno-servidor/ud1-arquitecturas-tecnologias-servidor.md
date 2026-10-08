@@ -265,17 +265,17 @@ Puedes usar un asistente de IA en esta unidad, con cabeza y con responsabilidad 
 - **AE5** `[RA1.c]` Describe, paso a paso y con el vocabulario de la unidad, el viaje completo de la petición "una alumna abre su horario en el área personal": desde que teclea la dirección hasta que la página se pinta, nombrando qué ocurre en el cliente, qué en el servidor y qué viaja en cada sentido.
 - **AE6** `[RA1.d]` La aplicación se desplegará como aplicación PHP detrás de un servidor web. Dibuja o describe el despliegue, explica el papel de cada pieza (qué atiende el servidor web y qué delega en la aplicación) y nombra **dos** funcionalidades de la capa de servidor de aplicaciones o gestor de procesos que la academia agradecerá, con el problema que evita cada una.
 - **AE7** `[RA1.e]` Elabora la ficha comparada de **dos** tecnologías candidatas para este proyecto — PHP y otra a tu elección del apartado 5 — aplicando los ejes del panorama **a este caso concreto** (equipo, presupuesto, tipo de aplicación), y cierra con una recomendación provisional.
-- **AE8** `[RA1.f]` La lista de cursos se generará con una plantilla con huecos. Dado el fragmento y los datos siguientes, escribe el **HTML exacto** que recibiría el navegador y señala qué no puede saber el navegador sobre su procedencia (la sintaxis es la del apartado 6; basta con leerla):
+- **AE8** `[RA1.f]` La lista de cursos se generará con una plantilla con huecos. Dado el fragmento y los datos siguientes, escribe el HTML que recibiría el navegador (sin atender a espacios en blanco) y señala qué no puede saber el navegador sobre su procedencia (el bucle se abre con `{ ?>` y se cierra con `<?php } ?>`; lo que queda entre medias se repite en cada vuelta):
 
-  ```
-  <ul>
-    <?php foreach ($cursos as $curso) { ?>
-      <li><?= $curso['nombre'] ?> — <?= $curso['plazas'] ?> plazas</li>
-    <?php } ?>
-  </ul>
-  ```
+    ```
+    <ul>
+      <?php foreach ($cursos as $curso) { ?>
+        <li><?= $curso['nombre'] ?> — <?= $curso['plazas'] ?> plazas</li>
+      <?php } ?>
+    </ul>
+    ```
 
-  con `$cursos = [['nombre' => 'Inglés B1', 'plazas' => 12], ['nombre' => 'Francés A2', 'plazas' => 8]]`.
+    con `$cursos = [['nombre' => 'Inglés B1', 'plazas' => 12], ['nombre' => 'Francés A2', 'plazas' => 8]]`.
 
 - **AE9** `[RA1.f]` Evidencia práctica: ejecuta el experimento 2 del apartado 6, captura de la pestaña Red el `Content-Type` y el cuerpo recibido tras dos recargas, y redacta en 3–4 líneas la verificación: qué mecanismo de integración queda demostrado y en qué se nota. Adjunta las capturas en `ud1/evidencias/`.
 - **AE10** `[RA1.e, RA1.g]` **Informe final para la academia** (300–400 palabras): propuesta razonada de pila — lenguaje, framework y motor de plantillas — evaluando el framework elegido con al menos **cuatro** criterios de la rúbrica del apartado 7 y citando **dos evidencias reales y fechadas** tomadas de sus fuentes oficiales (por ejemplo, la fecha de la última versión y la licencia). Se defiende sin leer.

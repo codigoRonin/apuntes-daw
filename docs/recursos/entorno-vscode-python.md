@@ -67,9 +67,9 @@ Lo lanzamos desde el terminal a propósito, igual que `php -S` en el otro módul
 
 - *Síntoma:* la instalaste con `pip` y, aun así, aparece:
 
-  ```
-  ModuleNotFoundError: No module named 'pandas'
-  ```
+    ```
+    ModuleNotFoundError: No module named 'pandas'
+    ```
 
 - *Causa:* el terminal o el kernel ejecutan **otro Python** distinto de aquel en el que la instalaste.
 - *Comprobación:* en el terminal, `python -c "import sys; print(sys.executable)"`; en un cuaderno, `import sys; print(sys.executable)` en una celda. Si la ruta no contiene `.venv`, cambia el kernel con **Seleccionar kernel** o abre un terminal nuevo. Si la ruta es correcta, la instalaste en el otro Python: repite la instalación con `(.venv)` en la línea.
@@ -78,11 +78,12 @@ Lo lanzamos desde el terminal a propósito, igual que `php -S` en el otro módul
 
 - *Síntoma:* una celda muestra un resultado que no cuadra con el código que tiene encima, o falla con algo como:
 
-  ```
-  NameError: name 'total' is not defined
-  ```
+    ```
+    NameError: name 'total' is not defined
+    ```
 
-  cuando `total` está definido "más arriba".
+    cuando `total` está definido "más arriba".
+
 - *Causa:* **orden de ejecución.** El kernel solo conoce lo que se ha ejecutado en esta sesión, en el orden en que se ejecutó: la celda que crea `total` no se ha ejecutado, o se ejecutó antes de que la cambiaras. Los números entre corchetes a la izquierda de cada celda son el orden real: si no van de arriba abajo, el cuaderno no cuenta la historia que se lee.
 - *Comprobación:* **Reiniciar** y **Ejecutar todo**. Si el error desaparece, era el orden; si persiste, es un error del código, y ahora lo verás en la celda que lo provoca.
 
