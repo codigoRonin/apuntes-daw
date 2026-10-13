@@ -117,7 +117,7 @@ La elección **nunca es técnica: es de negocio** — "¿debe poder borrarse?" y
 
 ## Apartado 4. Del diagrama E/R al esquema relacional
 
-Aquí se cosecha la UD2. La traducción es un **algoritmo**, y su variable de control es la **etiqueta de tipo** que pusiste sobre cada rombo (apartado 1.2 de la UD2: el tipo se forma con los máximos — te avisamos de que esta regla decidiría la traducción; es ahora).
+Aquí se cosecha la UD2. La traducción es un **algoritmo**, y su variable de control es la **etiqueta de tipo** que pusiste sobre cada rombo (apartado 3.4 de la UD2: el tipo se forma con los máximos — te avisamos de que esta regla decidiría la traducción; es ahora).
 
 ### Apartado 4.1. Entidades y atributos
 

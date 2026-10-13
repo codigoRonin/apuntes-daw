@@ -2,7 +2,7 @@
 
 **IES Río Arba · Departamento de Informática · Recursos del ciclo DAW**
 
-Esta guía cubre lo mínimo para entregar diagramas correctos con draw.io. El criterio de qué dibujar en cada notación está en los apuntes de cada unidad (para el modelo E/R, la tabla de equivalencias del apartado 1.3 de la UD2 de Bases de Datos); aquí solo está el **cómo**.
+Esta guía cubre lo mínimo para entregar diagramas correctos con draw.io. El criterio de qué dibujar en cada notación está en los apuntes de cada unidad (para el modelo E/R, la tabla de equivalencias del apartado 7.2 de la UD2 de Bases de Datos); aquí solo está el **cómo**.
 
 ## Apartado 1. Acceso: sin cuenta y guardando en local
 
