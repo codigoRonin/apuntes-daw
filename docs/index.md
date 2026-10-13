@@ -13,6 +13,8 @@ Este sitio reúne los apuntes y recursos de los módulos del ciclo impartidos po
 | [Big Data e Inteligencia Artificial (AOP1089, optativo)](big-data-e-inteligencia-artificial/index.md) | 2.º DAW | Publicándose por unidades |
 <!-- | [Proyecto Intermodular (0616)](proyecto-intermodular/index.md) | 2.º DAW | Publicándose por hitos | -->
 
+Cada módulo tiene, además, un cuaderno de prácticas: ejercicios extra de clase, no evaluables, cuyas soluciones se publican en Classroom después de corregirlos en clase.
+
 ## Apartado 2. Recursos transversales
 
 - [Entorno de trabajo: VS Code para PHP](recursos/entorno-vscode-php.md) — cómo montar el editor y sus extensiones para trabajar en el módulo; se configura una sola vez.
