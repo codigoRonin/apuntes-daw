@@ -55,6 +55,7 @@ nav:
       - "UD2 · Modelo entidad-relación": bases-de-datos/ud2-modelo-entidad-relacion.md
       - "UD3 · Modelo relacional y normalización": bases-de-datos/ud3-modelo-relacional-normalizacion.md
       - "UD4 · Consultas de datos con SQL": bases-de-datos/ud4-consultas-sql.md
+      - "Cuaderno de prácticas": bases-de-datos/practicas-clase.md
   - Desarrollo Web en Entorno Servidor (0613):
       - "Portada del módulo": desarrollo-web-en-entorno-servidor/index.md
       - "UD0 · Presentación del módulo": desarrollo-web-en-entorno-servidor/ud0-presentacion.md

@@ -16,6 +16,8 @@ Este módulo te enseña a **diseñar, construir, consultar y proteger** bases de
 
 Las unidades restantes (de la UD5 a la UD8) **se publicarán progresivamente** a lo largo del curso, siempre antes de comenzar a impartirlas. Si una unidad no aparece aquí, aún no está publicada — no la busques en otros canales.
 
+**Cuaderno de prácticas.** Además de las unidades, el módulo tiene un [cuaderno de prácticas](practicas-clase.md): ejercicios extra de clase, no evaluables, ordenados por unidad. Crece durante el curso; las soluciones se publican en Classroom después de corregirlas en clase.
+
 ## Apartado 2. Cómo trabajar con estos apuntes
 
 1. **Ejecuta todo.** Estos apuntes no son para leer en el sofá: cada consulta hay que **ejecutarla, romperla y arreglarla**. Si un ejemplo te funciona a la primera, cambia algo hasta que falle y averigua por qué — ahí está el aprendizaje.
