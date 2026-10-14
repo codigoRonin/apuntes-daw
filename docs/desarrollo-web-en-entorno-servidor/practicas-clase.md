@@ -129,7 +129,7 @@ return [
 **Cómo trabajar.** El fichero de datos se carga con `require` y devuelve el array: no lo copies dentro de tu programa. Cuando una suma te dé cero o un aviso hable de una clave, comprueba la ortografía de la clave contra el fichero de datos antes de tocar la lógica: la causa casi siempre está ahí.
 ### CP2.6 · Las utilidades de la asociación
 
-**Nivel** intermedio · **Tiempo orientativo** 20 min.
+**Nivel** intermedio · **Tiempo orientativo** 35 min (20 + 15 de la tarea desde cero).
 
 **Qué refuerza.** El apartado 6 de la [UD2](ud2-codigo-embebido-php.md): funciones con tipos declarados, valores por defecto, el tipo que admite `null`, argumentos con nombre, variables locales `static` y, sobre todo, el ámbito: lo que una función necesita se le pasa.
 
@@ -144,11 +144,23 @@ return [
 - **(c) El siguiente código.** Escribe `siguiente_codigo(string $prefijo = 'H'): string` con una variable local `static` que empiece en 8 (las parcelas que hay hoy) y devuelva `H09`, `H10`… con el cero de relleno mientras el número tenga una cifra. Llámala cuatro veces seguidas, la tercera con el prefijo `'T'`, e imprime los cuatro resultados en una línea. Explica qué hace `static` que una variable local normal no hace, y por qué el prefijo no reinicia la cuenta.
 - **(d) El recibo.** Escribe `recibo(array $parcela): string`, que reciba una fila del fichero de datos y devuelva la descripción seguida de ` — cuota anual 51,30 €` (con `number_format`), usando `descripcion()` y `cuota_anual()` por dentro. Carga el fichero de datos con `require` e imprime el recibo de cada parcela **adjudicada**.
 
+- **(e) Desde cero.** Fichero vacío. Escribe un programa que, para estas lecturas de agua de cuatro parcelas —H01 1200 litros, H03 2600, H04 800 y H06 3100—, calcule el importe de cada una (0,45 € por cada 100 litros; a partir de 2000 litros, el exceso se cobra a 0,60 € por cada 100) y muestre una línea por parcela, el total, el total con el recargo por retraso (el 5 % si no se indica otro) y el total con un recargo del 10 %. Decide tú las funciones, sus nombres y sus firmas: tiene que haber al menos dos, tipadas, una con un valor por defecto, y una que use a otra. Salida esperada, letra a letra:
+
+```
+H01: 1200 l → 5,40 €
+H03: 2600 l → 12,60 €
+H04: 800 l → 3,60 €
+H06: 3100 l → 15,60 €
+Total: 37,20 €
+Total con recargo por retraso: 39,06 €
+Total con recargo del 10 %: 40,92 €
+```
+
 **Cómo trabajar.** Una función que lee una variable de fuera «funciona» en tu prueba y falla en silencio en producción: por eso la regla de la casa es parámetros, siempre. Cuando declares tipos, pásale `php -l` y ejecuta con la directiva de tipos estrictos activa: una función que devuelve `float` y recibe un `int` por el camino te lo dirá.
 
 ### CP2.7 · La parcela como tipo compuesto
 
-**Nivel** intermedio · **Tiempo orientativo** 20 min.
+**Nivel** intermedio · **Tiempo orientativo** 35 min (20 + 15 de la tarea desde cero).
 
 **Qué refuerza.** El apartado 7 de la [UD2](ud2-codigo-embebido-php.md): la clase como tipo que te fabricas, la promoción de propiedades en el constructor, los métodos que usan otros métodos a través de `$this`, y el array de objetos recorrido con `foreach`.
 
@@ -163,11 +175,22 @@ return [
 - **(c) El recorrido acumula.** En ese mismo `foreach`, acumula la cuota de todas las parcelas y, al salir del bucle, imprime la suma con `number_format` y cuántas parcelas son (`count`). Comprueba la suma a mano con las ocho líneas.
 - **(d) Lo que te da el objeto.** Compara en dos líneas este fichero con el CP2.6: allí `recibo()` era una función suelta que recibía un array; aquí es un método que viaja con el dato. ¿Qué te garantiza el objeto sobre los campos y sus tipos que el array asociativo no?
 
+- **(e) Desde cero.** Fichero vacío. Diseña una clase para **la cosecha de una parcela** (parcela, producto, kilos y precio por kilo en el mercadillo de la asociación), con las propiedades y los métodos que te parezcan. Tiene que poder decir la temporada del producto (tomate, pimiento y calabacín son «de verano»; acelga y borraja, «de invierno»; el resto, «de temporada sin catalogar»), calcular el importe (kilos por precio), aplicar una merma (un porcentaje de kilos que se desecha: el objeto cambia) y dar una línea de resumen que use a los otros métodos. Las cuatro cosechas: H01, 12,5 kg de tomate a 2,00 €/kg; H03, 4,0 kg de acelga a 1,50 €/kg; H06, 20,0 kg de pimiento a 2,50 €/kg; H08, 5,0 kg de borraja a 1,80 €/kg. Créalas en un array de objetos, imprime el resumen de cada una y los totales de kilos y de euros, aplica una merma del 20 % a la primera y vuelve a imprimir su resumen. Nombres de clase, propiedades y métodos, a tu elección. Salida esperada, letra a letra:
+
+```
+H01 · tomate (de verano): 12,5 kg → 25,00 €
+H03 · acelga (de invierno): 4,0 kg → 6,00 €
+H06 · pimiento (de verano): 20,0 kg → 50,00 €
+H08 · borraja (de invierno): 5,0 kg → 9,00 €
+Total: 41,5 kg · 90,00 €
+Tras la merma: H01 · tomate (de verano): 10,0 kg → 20,00 €
+```
+
 **Cómo trabajar.** Cuando un error habla de «constante indefinida» y tú no has escrito ninguna constante, busca un punto donde debería haber una flecha. Y recuerda que `cuota()` ya aplica la bonificación: no la vuelvas a aplicar en `recibo()`.
 
 ### CP2.8 · El tablón como plantilla
 
-**Nivel** avanzado · **Tiempo orientativo** 25 min.
+**Nivel** avanzado · **Tiempo orientativo** 45 min (25 + 20 de la tarea desde cero).
 
 **Qué refuerza.** El apartado 8 de la [UD2](ud2-codigo-embebido-php.md): la sintaxis alternativa de las estructuras de control en plantillas (`foreach:` … `endforeach;`, `if:` … `else:` … `endif;`), la etiqueta `<?= ?>`, el escape de salida con `htmlspecialchars` y los parciales con `include` y `__DIR__`.
 
@@ -182,11 +205,27 @@ return [
 - **(c) La fila de total.** Añade dentro del `foreach:` una línea PHP que acumule los metros cuadrados en una variable creada arriba, en la zona de lógica, y una fila final `Total` con esa suma después del bucle. Comprueba la cifra contra el fichero de datos.
 - **(d) El pie, con dato.** Incluye `parciales/pie-huertos.php` al final de la página y haz que el pie muestre cuántas parcelas hay: define la variable en la plantilla principal **antes** del `include` y úsala dentro del parcial. Explica en una línea por qué el parcial la ve (qué hace `include` con el fichero y en qué ámbito se ejecuta).
 
+- **(e) Desde cero.** Sin ficheros de partida. Haz una página con el **orden del día de la asamblea**: una cabecera en un parcial incluido con `include`, el título, una lista ordenada con los cuatro puntos —que viven en un array en la zona de lógica de la plantilla— con «(se vota)» en los que se votan, y un párrafo con cuántos puntos hay y cuántos se votan (contados en la propia plantilla). Dos títulos traen `&` y `<` `>`, y tienen que llegar como texto. Sintaxis alternativa y escape; decide tú los nombres de los ficheros y la forma de los datos. HTML esperado al servirla (las sangrías pueden diferir de las tuyas):
+
+```html
+<header>
+    <strong>Asociación de Huertos del Soto</strong> · Asamblea de otoño
+</header>
+<h1>Orden del día</h1>
+<ol>
+        <li>Lectura &amp; aprobación de las cuentas (se vota)</li>
+        <li>Cuotas 2027: propuesta &lt;provisional&gt; (se vota)</li>
+    <li>Turnos de limpieza de la acequia</li>
+    <li>Ruegos y preguntas</li>
+</ol>
+<p>4 puntos, 2 con votación.</p>
+```
+
 **Cómo trabajar.** En una plantilla, cada `foreach:` y cada `if:` tiene su cierre con nombre; cuando `php -l` hable de «fin de fichero inesperado», cuenta aperturas y cierres. Para ver la página como la recibe el cliente usa «Ver código fuente», no el inspector.
 
 ### CP2.9 · La calculadora de alta
 
-**Nivel** avanzado · **Tiempo orientativo** 25 min.
+**Nivel** avanzado · **Tiempo orientativo** 45 min (25 + 20 de la tarea desde cero).
 
 **Qué refuerza.** El apartado 9 de la [UD2](ud2-codigo-embebido-php.md): datos que llegan por GET en la URL y por POST en el cuerpo, `$_GET` y `$_POST` con `??` e `isset`, el formulario que se envía a sí mismo distinguido con `$_SERVER['REQUEST_METHOD']`, y el escape de todo lo que viene de fuera. Adelanta `filter_var` con `FILTER_VALIDATE_INT` (apartado 10) para comprobar un número que llega como texto.
 
@@ -201,11 +240,62 @@ return [
 - **(c) El formulario calcula.** Completa la rama POST: recoge `superficie` y `mes` de `$_POST` con `??`, comprueba que la superficie es un entero entre 20 y 120 y el mes un entero entre 1 y 12 (reutiliza la comprobación de la parte GET en una función), y responde con el importe: `Con 75 m² y alta en el mes 10 pagas este año 11,25 € (cuota orientativa de 45 €).` Si algo no vale, responde con el aviso correspondiente. Todo lo que imprimas pasa por `htmlspecialchars`.
 - **(d) Pruébalo sin navegador.** Con `curl -X POST -d 'superficie=75&mes=10' …` comprueba el caso válido; después `superficie=75.5`, `mes=0` y un POST sin datos. Pega las cuatro respuestas y explica por qué el POST vacío no provoca ningún aviso de clave indefinida.
 
+- **(e) Desde cero.** Fichero vacío. Haz la página «Riego a manta»: la acequia da 20 litros por minuto y el agua cuesta 0,45 € por cada 100 litros. Por **GET**, `?minutos=` responde cuántos litros son esos minutos (un entero del 1 al 240; si no vale, un aviso que repite el valor recibido, escapado); por **POST**, un formulario con `parcela` y `minutos` que se envía a sí mismo y responde con los litros y los euros, o con un aviso si falta la parcela o los minutos no valen. Decide tú las funciones y la estructura; el HTML es el de las salidas. Pruébala con estas siete peticiones y compara letra a letra:
+
+`curl -s 'http://localhost:8000/riego.php'`
+
+```html
+<h1>Riego a manta</h1>
+    <form action="" method="post">
+        <label>Parcela: <input type="text" name="parcela"></label>
+        <label>Minutos: <input type="text" name="minutos"></label>
+        <button type="submit">Calcular</button>
+    </form>
+```
+
+`curl -s 'http://localhost:8000/riego.php?minutos=30'`
+
+```html
+<h1>Riego a manta</h1>
+    <p>30 minutos de acequia son 600 litros.</p>
+    <form action="" method="post">
+        <label>Parcela: <input type="text" name="parcela"></label>
+        <label>Minutos: <input type="text" name="minutos"></label>
+        <button type="submit">Calcular</button>
+    </form>
+```
+
+`curl -s 'http://localhost:8000/riego.php?minutos=abc'` (y lo mismo con `?minutos=300`, que responde con `recibido: 300`)
+
+```html
+<h1>Riego a manta</h1>
+    <p>Los minutos tienen que ser un número entero del 1 al 240 (recibido: abc).</p>
+    <form action="" method="post">
+        <label>Parcela: <input type="text" name="parcela"></label>
+        <label>Minutos: <input type="text" name="minutos"></label>
+        <button type="submit">Calcular</button>
+    </form>
+```
+
+`curl -s -X POST -d 'parcela=H05&minutos=45' http://localhost:8000/riego.php`
+
+```html
+<h1>Riego a manta</h1>
+    <p>La parcela H05 ha regado 45 minutos: 900 litros, 4,05 €.</p>
+```
+
+`curl -s -X POST -d 'parcela=&minutos=45' http://localhost:8000/riego.php` (y lo mismo con un POST sin datos)
+
+```html
+<h1>Riego a manta</h1>
+    <p>Hace falta el código de la parcela y un número de minutos del 1 al 240.</p>
+```
+
 **Cómo trabajar.** `isset($_GET['mes'])` te dice si el parámetro vino; `filter_var` te dice si lo que vino sirve. Son dos preguntas distintas y las dos hacen falta. Y la regla del apartado 8 no distingue entre «parece inofensivo» y «es peligroso»: todo lo que viene de fuera se escapa al imprimirlo.
 
 ### CP2.10 · El alta de socio, por autoridad
 
-**Nivel** avanzado · **Tiempo orientativo** 25 min.
+**Nivel** avanzado · **Tiempo orientativo** 45 min (25 + 20 de la tarea desde cero).
 
 **Qué refuerza.** El apartado 10 de la [UD2](ud2-codigo-embebido-php.md): la validación en el servidor como única que cuenta, `filter_var` con `FILTER_VALIDATE_INT` y `FILTER_VALIDATE_EMAIL` comprobados con `=== false`, la lista de errores acumulada y devuelta junta, y la opción de una lista cerrada comprobada con `in_array` estricto.
 
@@ -219,6 +309,86 @@ return [
 - **(b) Las cuatro reglas, una a una.** Envía un POST que viole las cinco comprobaciones a la vez (`socio=&correo=a17-example.org&superficie=150&antiguedad=-3&riego=aspersion`) y pega la lista de errores. Señala cuál de las reglas es de tipo, cuál de rango y cuál de lista cerrada, y por qué la superficie 150 recibe un mensaje y no dos.
 - **(c) Autoridad.** El campo de riego solo admite `goteo` o `manta`. Envía un alta correcta en todo salvo en `riego=aspersion`, saltándote cualquier control que pudiera tener el navegador. Pega el rechazo y explica por qué esa decisión no puede vivir en el cliente, aunque el formulario tuviera un desplegable con solo dos opciones.
 - **(d) Vacío y con marcas.** Envía un POST sin ningún dato y uno con `socio=<b>A17</b>` (codificado en la URL como `%3Cb%3EA17%3C/b%3E`). Explica por qué el primero no provoca avisos de clave indefinida (qué hace el `??` en cada regla) y qué ha pasado con las marcas del segundo en el acuse.
+
+- **(e) Desde cero.** Fichero vacío. Haz el **parte de siembra**: un formulario con `parcela`, `cultivo`, `riego` y `superficie` que se envía a sí mismo y se revisa en el servidor con estas reglas, en este orden: la parcela es una de H01 a H08; el cultivo es tomate, pimiento, acelga o borraja; el riego es goteo o manta; la superficie sembrada es un entero entre 10 y 120 m²; y **una regla que depende de dos campos**: con riego por goteo, la superficie tiene que ser de al menos 40 m². Esa regla solo se aplica cuando el riego y la superficie valen cada uno por separado (cada error se paga una vez: goteo con 5 m² recibe solo el mensaje del rango). Si todo vale, el acuse calcula las plantas estimadas (tomate, 3 por m²; pimiento, 4; acelga, 8; borraja, 6); si no, la lista de errores y el formulario. Decide tú la estructura y las funciones. **Prueba de autoridad con `curl`:** envía goteo con 30 m² —los dos campos valen por separado— y comprueba que el servidor lo rechaza por la regla cruzada; la misma superficie a manta tiene que valer. Salidas esperadas:
+
+`curl -s http://localhost:8000/siembra.php`
+
+```html
+<h1>Parte de siembra</h1>
+    <form action="" method="post">
+        <label>Parcela: <input type="text" name="parcela"></label>
+        <label>Cultivo: <input type="text" name="cultivo"></label>
+        <label>Riego: <input type="text" name="riego"></label>
+        <label>Superficie sembrada (m²): <input type="text" name="superficie"></label>
+        <button type="submit">Enviar parte</button>
+    </form>
+```
+
+`curl -s -X POST -d 'parcela=H03&cultivo=tomate&riego=goteo&superficie=60' http://localhost:8000/siembra.php`
+
+```html
+<h1>Parte de siembra</h1>
+    <p>Siembra registrada: H03, tomate, 60 m² con riego por goteo. Plantas estimadas: 180.</p>
+```
+
+`curl -s -X POST -d 'parcela=H03&cultivo=tomate&riego=goteo&superficie=30' http://localhost:8000/siembra.php`
+
+```html
+<h1>Parte de siembra</h1>
+    <ul class="errores">
+        <li>Con riego por goteo la superficie sembrada tiene que ser de al menos 40 m².</li>
+    </ul>
+    <form action="" method="post">
+        <label>Parcela: <input type="text" name="parcela"></label>
+        <label>Cultivo: <input type="text" name="cultivo"></label>
+        <label>Riego: <input type="text" name="riego"></label>
+        <label>Superficie sembrada (m²): <input type="text" name="superficie"></label>
+        <button type="submit">Enviar parte</button>
+    </form>
+```
+
+`curl -s -X POST -d 'parcela=H03&cultivo=tomate&riego=manta&superficie=30' http://localhost:8000/siembra.php`
+
+```html
+<h1>Parte de siembra</h1>
+    <p>Siembra registrada: H03, tomate, 30 m² con riego a manta. Plantas estimadas: 90.</p>
+```
+
+`curl -s -X POST -d 'parcela=H03&cultivo=tomate&riego=goteo&superficie=5' http://localhost:8000/siembra.php`
+
+```html
+<h1>Parte de siembra</h1>
+    <ul class="errores">
+        <li>La superficie sembrada tiene que ser un entero entre 10 y 120 m².</li>
+    </ul>
+    <form action="" method="post">
+        <label>Parcela: <input type="text" name="parcela"></label>
+        <label>Cultivo: <input type="text" name="cultivo"></label>
+        <label>Riego: <input type="text" name="riego"></label>
+        <label>Superficie sembrada (m²): <input type="text" name="superficie"></label>
+        <button type="submit">Enviar parte</button>
+    </form>
+```
+
+`curl -s -X POST -d 'parcela=H09&cultivo=lechuga&riego=aspersion&superficie=5' http://localhost:8000/siembra.php` (y lo mismo con un POST sin datos)
+
+```html
+<h1>Parte de siembra</h1>
+    <ul class="errores">
+        <li>La parcela tiene que ser una de H01 a H08.</li>
+        <li>El cultivo tiene que ser tomate, pimiento, acelga o borraja.</li>
+        <li>El riego tiene que ser goteo o manta.</li>
+        <li>La superficie sembrada tiene que ser un entero entre 10 y 120 m².</li>
+    </ul>
+    <form action="" method="post">
+        <label>Parcela: <input type="text" name="parcela"></label>
+        <label>Cultivo: <input type="text" name="cultivo"></label>
+        <label>Riego: <input type="text" name="riego"></label>
+        <label>Superficie sembrada (m²): <input type="text" name="superficie"></label>
+        <button type="submit">Enviar parte</button>
+    </form>
+```
 
 **Cómo trabajar.** El patrón es siempre el mismo: recoger con `??`, convertir y validar con `filter_var` comprobando `=== false`, acumular los errores y decidir al final. Prueba cada regla con un valor que la cumpla y otro que no; y prueba siempre el `0`, el vacío y el valor que no está en la lista: son los tres que rompen las validaciones escritas con prisa.
 ### CP2.11 · Simulacro de la unidad: la asociación, de punta a punta
