@@ -15,6 +15,8 @@ Este módulo te enseña a **sacar partido de los datos e incorporar inteligencia
 
 Las unidades restantes (de la UD4 a la UD6) **se publicarán progresivamente** a lo largo del curso, siempre antes de comenzar a impartirlas. Si una unidad no aparece aquí, aún no está publicada — no la busques en otros canales.
 
+**Cuaderno de prácticas.** Además de las unidades, el módulo tiene un [cuaderno de prácticas](practicas-clase.md): ejercicios extra de clase, no evaluables, ordenados por unidad. Crece durante el curso; las soluciones se publican en Classroom después de corregirlas en clase.
+
 ## Apartado 2. Cómo trabajar con estos apuntes
 
 1. **Ejecuta todo.** Estos apuntes no son para leer en el sofá: cada programa y cada celda hay que **ejecutarlos, romperlos y arreglarlos** — y cada salida de un modelo hay que **mirarla con ojos críticos** antes de creerla. Si algo te funciona a la primera, cambia algo hasta que falle y averigua por qué — ahí está el aprendizaje.
