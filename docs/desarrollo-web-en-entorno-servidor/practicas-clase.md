@@ -1144,3 +1144,178 @@ Y la primera línea de la excepción de la tarea (d), con una contraseña incorr
 ```
 PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1045] Access denied for user 'huerto'@'localhost' (using password: YES) in /ruta/conexion.php:7
 ```
+
+### CP3.11 · Simulacro de la unidad: la zona privada de la asociación, de punta a punta
+
+**Nivel** tipo examen · **Tiempo orientativo** 70 min (10 + 25 + 23 + 12). **Para hacer cuando hayas entregado la actividad de la unidad.**
+
+**Qué refuerza.** Toda la UD3, en la forma en que la encontrarás en la prueba escrita: fragmentos que se arreglan cambiando una línea, un fichero de funciones con firmas dadas sobre un fichero de cuentas, una zona privada con entrada, perfiles y cierre probada con `curl`, y un formulario POST protegido que redirige. Se hace **sin apuntes, sin red y sin material**: solo el editor con su ayuda de funciones, el intérprete, `curl` y el navegador.
+
+**Plantilla de partida.** La carpeta `cp3-11/` del repositorio de recursos (enlace en Classroom), copiada entera a tu carpeta de trabajo. Trae `comprobar-sintaxis.php` en la raíz, la carpeta `simulacro/` con los ficheros de las cuatro partes, `simulacro/datos/cuentas.json` (las ocho cuentas de la asociación, con las contraseñas de aula en `simulacro/datos/README.md`) y `simulacro/datos/parcelas.php`. Las partes 1, 3 y 4 se sirven desde `simulacro/` con `php -d session.save_path=sesiones -S localhost:8000` (crea antes la carpeta `sesiones/` dentro de `simulacro/`). No hay corrector: cada parte trae su **salida esperada**, y te compruebas tú. Los identificadores de sesión y el sello serán otros en tu equipo; lo que importa es el contenido de cada línea.
+
+**Reloj.** Apunta la hora al empezar. A los 70 minutos, para y mira qué te ha faltado: eso es lo que hay que repasar antes del examen.
+
+#### Parte 1 · Cambio mínimo (10 min)
+
+En `simulacro/arreglos/` hay cuatro fragmentos, `r1.php` a `r4.php`, y cada uno trae en su cola la salida que **debería** dar y la orden con la que se comprueba. Ninguno la da. En cada uno hay **un fallo que se arregla cambiando o añadiendo una sola línea**, de los tipos del apartado 11 de la unidad: uno lee una decisión de donde no debe, uno redirige y sigue, uno compara lo que no se compara y uno lee lo que todavía no ha llegado. Comprueba cada uno como dice su cola (los tres servidos se piden desde `simulacro/`, en `arreglos/rN.php`), arregla la línea y vuelve a comprobar. Salidas esperadas, letra a letra (el identificador de sesión será otro):
+
+```
+$ curl -b "perfil=presidencia" http://localhost:8000/arreglos/r1.php
+Zona de hortelanos
+$ curl -i http://localhost:8000/arreglos/r2.php | grep -v -E "^(Host|Date|Connection|Expires|Cache-Control|Pragma|Content-type)"
+HTTP/1.1 302 Found
+Set-Cookie: PHPSESSID=5knrdvmbf9coc5mqkbafhagdic; path=/
+Location: entrar.php
+
+$ php r3.php
+Acceso correcto
+$ curl http://localhost:8000/arreglos/r4.php
+Tema guardado: oscuro
+```
+
+#### Parte 2 · Fichero de funciones (25 min)
+
+Escribe el cuerpo de las cinco funciones de `simulacro/auxiliares.php` sin cambiar sus firmas (todas con la directiva de tipos estrictos; las firmas y lo que hace cada una están comentados en el propio fichero): `localizar(array $cuentas, string $cuenta): ?array` devuelve la cuenta o `null`; `acceso_valido(array $cuentas, string $cuenta, string $contrasena): bool` verifica contra el hash; `cuentas_por_perfil(array $cuentas): array` cuenta por perfil en orden de aparición; `puede(string $perfil, string $pagina): bool` lee la matriz del fichero y **deniega lo que no está anotado**; `respuesta(?string $perfil, string $pagina): int` devuelve 302, 403 o 200. El fichero `simulacro/comprueba.php` las llama a todas sobre `datos/cuentas.json` y **no se modifica**. Salida esperada de `php comprueba.php`, letra a letra:
+
+```
+1. Teresa Ansó hortelano H03
+NULL
+2. bool(true)
+bool(false)
+bool(false)
+3. hortelano=5 vocal=2 presidencia=1
+4. bool(true)
+bool(false)
+bool(false)
+5. 302 200 403 200 403
+```
+
+#### Parte 3 · Zona privada (23 min)
+
+En `simulacro/huerto-privado/` está la zona privada a medias. Vienen hechos `arranque.php` (el arranque de sesión endurecido: en toda la zona privada se incluye en lugar de `session_start()`), `deposito.php` (`leer_cuentas()` y `localizar_cuenta()`), y las tres páginas con su puerta ya llamada: `mi-parcela.php` (cualquiera que haya entrado), `riegos.php` (vocales y presidencia) y `cuentas.php` (solo presidencia). Te toca: el cuerpo de las dos funciones de `puertas.php` —`exige_entrada()`, que manda a `entrar.php` con 302 a quien no ha entrado, y `exige_perfil(string ...$perfiles)`, que responde 403 con la línea «403 — No tienes permiso para ver esta página.» a quien ha entrado y no puede—; el bloque del POST de `entrar.php` (verificar contra el depósito, llave nueva al autenticar, lo mínimo en sesión en `$_SESSION['cuenta']`, mensaje genérico); y `cerrar.php` entero. Recordatorios: la segunda puerta empieza por la primera; después de cada `header('Location: …')`, `exit`; en la sesión no va ni la contraseña ni el hash. Salidas esperadas con `curl` y un tarro, letra a letra (solo las líneas que importan; el identificador será otro):
+
+Sin llave:
+
+```
+HTTP/1.1 302 Found
+Location: entrar.php
+```
+
+Credenciales incorrectas (`cuenta=teresa.anso&contrasena=mal`) y cuenta inexistente (`cuenta=nadie&contrasena=huerto2026`), filtrando con `grep fallo`:
+
+```
+<p class="fallo">Credenciales no válidas.</p><form action="" method="post">
+<p class="fallo">Credenciales no válidas.</p><form action="" method="post">
+```
+
+Credenciales correctas (`cuenta=teresa.anso&contrasena=huerto2026`, con `curl -i -c tarro.txt -b tarro.txt`, filtrando `HTTP|Set-Cookie|Location`), y después `mi-parcela.php` y `riegos.php` con ese tarro:
+
+```
+HTTP/1.1 302 Found
+Set-Cookie: PHPSESSID=gjle64f26vdcml7bg88dqi4m3o; path=/; HttpOnly; SameSite=Lax
+Location: mi-parcela.php
+```
+
+```
+Parcela de Teresa Ansó: H03 (Eras, 80 m², riego por goteo)
+```
+
+```
+HTTP/1.1 403 Forbidden
+403 — No tienes permiso para ver esta página.
+```
+
+Una vocal (`ibai.sanjuan` / `vocal2026`, otro tarro): `mi-parcela.php`, `riegos.php` y `cuentas.php`:
+
+```
+Ibai Sanjuán (vocal): sin parcela adjudicada
+Riegos a la vista de Ibai Sanjuán:
+- H01 · Ribera · goteo
+- H03 · Eras · goteo
+- H04 · Eras · manta
+- H06 · Soto · goteo
+- H08 · Ribera · goteo
+HTTP/1.1 403 Forbidden
+403 — No tienes permiso para ver esta página.
+```
+
+La presidencia (`olga.pardo` / `presi2026`, otro tarro): `cuentas.php`:
+
+```
+teresa.anso    hortelano    H03
+mateo.larraz   hortelano    H01
+julia.berges   hortelano    H04
+ruben.asin     hortelano    H06
+noa.lecina     hortelano    H08
+ibai.sanjuan   vocal        —
+aitor.lambea   vocal        —
+olga.pardo     presidencia  —
+```
+
+Cierre con el tarro de Teresa (`cerrar.php` con `curl -i`, filtrando `HTTP|Set-Cookie|Location`) y la parcela otra vez con ese tarro; y, por último, una llave inventada (`-b "PHPSESSID=abcdefghijklmnopqrstuvwxyz"`):
+
+```
+HTTP/1.1 302 Found
+Set-Cookie: PHPSESSID=deleted; expires=Thu, 01 Jan 1970 00:00:01 GMT; Max-Age=0; path=/
+Location: entrar.php
+HTTP/1.1 302 Found
+Location: entrar.php
+```
+
+```
+HTTP/1.1 302 Found
+Location: entrar.php
+```
+
+#### Parte 4 · Formulario POST con sello (12 min)
+
+`simulacro/huerto-privado/pedir-riego.php` trae hecho el formulario para pedir un riego extra (campos `parcela` y `franja`, con el campo oculto del sello) y `sello.php` trae las tres funciones del sello (`sello_actual`, `sello_campo`, `sello_comprobar`). `mis-riegos.php` muestra el aviso de un solo uso y los riegos pedidos en la sesión, y no se modifica. Completa el bloque del POST de `pedir-riego.php`: comprobar el sello **antes de nada**; la parcela tiene que ser una de las ocho y la franja `manana` o `tarde` (si no, el aviso «Parcela o franja no válidas.»); si vale, se añade a `$_SESSION['riegos']` y el aviso es «Riego pedido: H03, tarde.»; en los dos casos, aviso en la sesión y redirección a `mis-riegos.php`. Salidas esperadas con el tarro de la vocal, letra a letra:
+
+POST sin sello (`-d 'parcela=H03&franja=tarde'`, filtrando `HTTP|403`):
+
+```
+HTTP/1.1 403 Forbidden
+403 — Petición rechazada: sello no válido.
+```
+
+El sello se copia del formulario (`curl -b tarro.txt …/pedir-riego.php`, buscando el campo oculto; el tuyo será otro):
+
+```
+name="sello" value="0fd10d585141e03a5967cfdbb75ea0704731300c32489db0de13daae98476e17"
+```
+
+POST con el sello (`-d 'parcela=H03&franja=tarde&sello=…'`, con `curl -i`, filtrando `HTTP|Location`), y dos GET seguidos a `mis-riegos.php`:
+
+```
+HTTP/1.1 302 Found
+Location: mis-riegos.php
+===
+<p class="aviso">Riego pedido: H03, tarde.</p><p>Riegos pedidos por Ibai Sanjuán: 1</p>
+<ul>
+    <li>H03 · tarde</li>
+</ul>
+===
+<p>Riegos pedidos por Ibai Sanjuán: 1</p>
+<ul>
+    <li>H03 · tarde</li>
+</ul>
+```
+
+POST con parcela y franja inválidas y el sello bueno (con `curl -L`, primera línea), y POST con un sello inventado:
+
+```
+<p class="aviso">Parcela o franja no válidas.</p><p>Riegos pedidos por Ibai Sanjuán: 1</p>
+HTTP/1.1 403 Forbidden
+403 — Petición rechazada: sello no válido.
+```
+
+Y un POST sin llave de sesión, con datos pero sin tarro:
+
+```
+HTTP/1.1 302 Found
+Location: entrar.php
+```
+
+#### Al terminar
+
+Desde la raíz de la plantilla (donde está `comprobar-sintaxis.php`), ejecuta **`php comprobar-sintaxis.php simulacro`**: tiene que decir `18 ficheros comprobados, 0 con errores de sintaxis.` Si marca algún `FALLA`, arréglalo antes de dar el simulacro por terminado. Después, compara tus salidas con las esperadas parte a parte y anota qué te ha faltado y por qué. Y borra la carpeta `sesiones/` y los tarros: no son parte de nada.
