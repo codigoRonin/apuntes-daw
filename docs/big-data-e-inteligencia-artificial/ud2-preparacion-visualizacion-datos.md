@@ -205,7 +205,7 @@ min      1.000000  -999.000000  -12.000000
 max     35.500000  1250.000000  142.300000
 ```
 
-Cuánto cuenta esa tabla: `no2` tiene 356 valores de 370 (faltan 14) y `pm10` 360 (faltan 10); `pm10` tiene un mínimo de **−999** — un centinela de "sin dato" codificado como número — y un máximo de **1250**, imposible; `o3` un mínimo negativo; y la desviación típica de `pm10` (114) frente a su mediana (25) delata que un solo valor la dispara. Son **errores de los datos** que el tipo numérico permite ver. `temperatura` no aparece porque es texto: su 99 °C sigue escondido.
+Cuánto cuenta esa tabla: `no2` tiene 356 valores de 370 (faltan 14) y `pm10` 360 (faltan 10); `pm10` tiene un mínimo de **−999** — un centinela de "sin dato" codificado como número — y un máximo de **1250**, imposible; `o3` un mínimo negativo; y la desviación típica de `pm10` (114) frente a su mediana (25) delata que unos pocos valores imposibles — los −999 y el 1250 — la disparan: sin ellos baja a 11. Son **errores de los datos** que el tipo numérico permite ver. `temperatura` no aparece porque es texto: su 99 °C sigue escondido.
 
 **Poner el tipo correcto.** La conversión de tipos es el primer paso del preprocesamiento, y hay que hacerla con cuidado. Con la fecha basta pedirla al cargar; con la temperatura la tentación es `decimal=","`, y es una **trampa**:
 
