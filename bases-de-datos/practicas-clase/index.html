@@ -1,0 +1,2301 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Apuntes de los módulos del CFGS Desarrollo de Aplicaciones Web">
+      
+      
+        <meta name="author" content="Arba">
+      
+      
+        <link rel="canonical" href="https://codigoronin.github.io/apuntes-daw/bases-de-datos/practicas-clase/">
+      
+      
+        <link rel="prev" href="../ud4-consultas-sql/">
+      
+      
+        <link rel="next" href="../../desarrollo-web-en-entorno-servidor/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>Cuaderno de prácticas - Apuntes DAW</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cuaderno-de-practicas-bases-de-datos" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Apuntes DAW" class="md-header__button md-logo" aria-label="Apuntes DAW" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Apuntes DAW
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Cuaderno de prácticas
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/codigoronin/apuntes-daw" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Inicio
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Bases de Datos (0484)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../desarrollo-web-en-entorno-servidor/" class="md-tabs__link">
+          
+  
+  
+  Desarrollo Web en Entorno Servidor (0613)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../big-data-e-inteligencia-artificial/" class="md-tabs__link">
+          
+  
+  
+  Big Data e Inteligencia Artificial (AOP1089)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../recursos/" class="md-tabs__link">
+          
+  
+  
+  Recursos
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Apuntes DAW" class="md-nav__button md-logo" aria-label="Apuntes DAW" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Apuntes DAW
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/codigoronin/apuntes-daw" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bases de Datos (0484)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bases de Datos (0484)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ud1-almacenamiento-sgbd-valor-del-dato/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Almacenamiento, SGBD y el valor del dato
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ud2-modelo-entidad-relacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2 · Modelo entidad-relación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ud3-modelo-relacional-normalizacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3 · Modelo relacional y normalización
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ud4-consultas-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD4 · Consultas de datos con SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cuaderno de prácticas
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cuaderno de prácticas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ud2-modelo-entidad-relacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UD2 · Modelo entidad-relación
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UD2 · Modelo entidad-relación">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cp21-del-enunciado-al-diagrama-la-autoescuela-comarcal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CP2.1 · Del enunciado al diagrama: la autoescuela comarcal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cp22-del-enunciado-al-diagrama-la-emisora-comarcal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CP2.2 · Del enunciado al diagrama: la emisora comarcal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cp23-del-enunciado-al-diagrama-la-muestra-de-teatro-aficionado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CP2.3 · Del enunciado al diagrama: la muestra de teatro aficionado
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cp24-del-enunciado-al-diagrama-el-coto-micologico-comarcal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CP2.4 · Del enunciado al diagrama: el coto micológico comarcal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ud3-modelo-relacional-y-normalizacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UD3 · Modelo relacional y normalización
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UD3 · Modelo relacional y normalización">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cp31-del-diagrama-al-esquema-la-feria-de-muestras-comarcal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CP3.1 · Del diagrama al esquema: la feria de muestras comarcal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cp32-del-diagrama-al-esquema-el-museo-etnografico-comarcal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CP3.2 · Del diagrama al esquema: el museo etnográfico comarcal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cp33-del-diagrama-al-esquema-el-vivero-comarcal-de-empresas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CP3.3 · Del diagrama al esquema: el vivero comarcal de empresas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cp34-de-la-hoja-enferma-al-esquema-y-vuelta-la-imprenta-comarcal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CP3.4 · De la hoja enferma al esquema, y vuelta: la imprenta comarcal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cp35-el-simulacro-del-examen-la-administradora-de-fincas-comarcal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CP3.5 · El simulacro del examen: la administradora de fincas comarcal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desarrollo Web en Entorno Servidor (0613)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Desarrollo Web en Entorno Servidor (0613)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud1-arquitecturas-tecnologias-servidor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Arquitecturas y tecnologías de programación en servidor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud2-codigo-embebido-php/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2 · Código embebido en lenguajes de marcas: sintaxis, estructuras, funciones y formularios
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud3-estado-sesiones-autenticacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3 · Estado, cookies, sesiones y autenticación; seguridad (usuarios, perfiles, roles)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/practicas-clase/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cuaderno de prácticas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Big Data e Inteligencia Artificial (AOP1089)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Big Data e Inteligencia Artificial (AOP1089)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/ud1-python-datos-ia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Python para datos e IA: lenguaje especializado, entorno y librerías
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/ud2-preparacion-visualizacion-datos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2. Preparación, análisis y visualización de datos; protección de datos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/ud3-aprendizaje-automatico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3 · Aprendizaje automático
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/practicas-clase/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cuaderno de prácticas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recursos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Recursos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada de recursos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/entorno-vscode-php/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entorno de trabajo: VS Code para PHP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/entorno-vscode-python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entorno de trabajo: VS Code para Python
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/guia-drawio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía rápida de draw.io
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/estandar-estilo-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estándar de estilo SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recursos/rubrica-defensa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rúbrica de defensa y de verificación de autoría
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ud2-modelo-entidad-relacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UD2 · Modelo entidad-relación
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UD2 · Modelo entidad-relación">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cp21-del-enunciado-al-diagrama-la-autoescuela-comarcal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CP2.1 · Del enunciado al diagrama: la autoescuela comarcal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cp22-del-enunciado-al-diagrama-la-emisora-comarcal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CP2.2 · Del enunciado al diagrama: la emisora comarcal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cp23-del-enunciado-al-diagrama-la-muestra-de-teatro-aficionado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CP2.3 · Del enunciado al diagrama: la muestra de teatro aficionado
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cp24-del-enunciado-al-diagrama-el-coto-micologico-comarcal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CP2.4 · Del enunciado al diagrama: el coto micológico comarcal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ud3-modelo-relacional-y-normalizacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UD3 · Modelo relacional y normalización
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UD3 · Modelo relacional y normalización">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cp31-del-diagrama-al-esquema-la-feria-de-muestras-comarcal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CP3.1 · Del diagrama al esquema: la feria de muestras comarcal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cp32-del-diagrama-al-esquema-el-museo-etnografico-comarcal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CP3.2 · Del diagrama al esquema: el museo etnográfico comarcal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cp33-del-diagrama-al-esquema-el-vivero-comarcal-de-empresas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CP3.3 · Del diagrama al esquema: el vivero comarcal de empresas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cp34-de-la-hoja-enferma-al-esquema-y-vuelta-la-imprenta-comarcal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CP3.4 · De la hoja enferma al esquema, y vuelta: la imprenta comarcal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cp35-el-simulacro-del-examen-la-administradora-de-fincas-comarcal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CP3.5 · El simulacro del examen: la administradora de fincas comarcal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="cuaderno-de-practicas-bases-de-datos">Cuaderno de prácticas · Bases de Datos<a class="headerlink" href="#cuaderno-de-practicas-bases-de-datos" title="Permanent link">&para;</a></h1>
+<p><strong>Módulo 0484 — Bases de Datos · 1.º DAW · IES Río Arba · Curso 2026-27</strong></p>
+<p>Este cuaderno reúne <strong>ejercicios extra de clase</strong>: prácticas más largas que los ejercicios de cada apartado de los apuntes, pensadas para trabajarlas en el aula con el enunciado delante y la herramienta abierta. <strong>No son evaluables</strong>: no se entregan por ningún canal ni cuentan para la nota. Sirven para lo que sirven los apuntes cuando dicen «ejecuta, rompe y arregla»: para que el método te salga solo cuando llegue la actividad evaluativa y el examen.</p>
+<p>Cómo funciona:</p>
+<ul>
+<li>Cada práctica lleva el código <strong>CPu.n</strong>: cuaderno de prácticas, unidad <em>u</em>, número <em>n</em>. CP2.1 es la primera práctica de la UD2.</li>
+<li>Se trabaja <strong>en clase</strong>, de forma individual o en pareja, según se indique ese día. Lo que no te dé tiempo a terminar en el aula lo acabas en casa y lo traes a la sesión de corrección.</li>
+<li><strong>La solución no está aquí.</strong> Se corrige en clase y, después de corregirla, el docente la publica en el Classroom del módulo, con los ficheros de la herramienta para que los abras y los compares con los tuyos.</li>
+<li>Las prácticas de diagramas se hacen con <strong>draw.io</strong>, como las entregas de la unidad: la <a href="../../recursos/guia-drawio/">guía rápida de draw.io</a> explica los gestos, la biblioteca de formas y el nombrado de los ficheros. Los diagramas en Chen siguen la convención completa de la UD2 (ver apartado 3.4 de la <a href="../ud2-modelo-entidad-relacion/">UD2</a>): la pareja (mín, máx) escrita junto a una entidad dice cuántas ocurrencias de esa entidad se asocian con cada ocurrencia de la otra, y sobre cada rombo va la etiqueta de su tipo (1:1, 1:N o N:M).</li>
+</ul>
+<p>El cuaderno crece durante el curso: solo aparecen las unidades que tienen prácticas extra, y cada unidad va ganando prácticas a medida que se trabajan en clase.</p>
+<h2 id="ud2-modelo-entidad-relacion">UD2 · Modelo entidad-relación<a class="headerlink" href="#ud2-modelo-entidad-relacion" title="Permanent link">&para;</a></h2>
+<h3 id="cp21-del-enunciado-al-diagrama-la-autoescuela-comarcal">CP2.1 · Del enunciado al diagrama: la autoescuela comarcal<a class="headerlink" href="#cp21-del-enunciado-al-diagrama-la-autoescuela-comarcal" title="Permanent link">&para;</a></h3>
+<p><strong>Qué refuerza.</strong> Los apartados 1 a 3 de la UD2: entidades y tipos de atributo (apartado 2.2), claves candidata y primaria con sus tres criterios (apartado 2.3), relaciones binarias y reflexivas con roles, atributos de relación (apartado 3.1), cardinalidades máxima y mínima con el método de fijar y preguntar (apartados 3.2 y 3.3) y la convención de parejas y etiqueta de tipo (apartado 3.4). No hace falta nada del apartado 4 en adelante: en este enunciado <strong>no hay entidades débiles, ni jerarquías, ni agregaciones, ni relaciones ternarias</strong>. Si en algún punto te parece que necesitas una, vuelve a leer la frase: tiene solución con lo visto hasta el apartado 3.</p>
+<p><strong>Enunciado.</strong></p>
+<ol>
+<li>Una autoescuela de la comarca, con sedes en Tauste y Ejea de los Caballeros, quiere una base de datos para gestionar su actividad.</li>
+<li>De cada sede se guardan su código, la localidad y un teléfono.</li>
+<li>De cada alumno se guardan su número de expediente, su DNI, su nombre, su dirección (calle, número, localidad y código postal), uno o varios teléfonos de contacto, su fecha de nacimiento y su edad, que se calcula a partir de ella; cada alumno se matricula en una sola sede, y una sede recién abierta puede no tener todavía alumnos.</li>
+<li>Cada sede cuenta con su plantilla de profesores —todo profesor está en plantilla—, de los que se guardan su número de empleado, su nombre y su fecha de alta.</li>
+<li>Cada profesor tiene asignado un vehículo fijo, del que se guardan la matrícula, la marca, el modelo y la fecha de la última ITV; ningún vehículo está asignado a más de un profesor, y la autoescuela mantiene vehículos de reserva sin profesor asignado.</li>
+<li>Cada profesor tiene designado como mucho un sustituto para sus ausencias, que es otro profesor de la autoescuela; un mismo profesor puede ser el sustituto de varios compañeros o de ninguno, y los recién contratados aún no tienen sustituto.</li>
+<li>Las clases prácticas se registran con un código, la fecha, la hora de inicio y la duración; cada clase la recibe un único alumno y la imparte un único profesor, y un alumno recién matriculado, o un profesor recién contratado, todavía no tiene clases.</li>
+<li>Normalmente cada clase se da con el vehículo fijo del profesor, pero si ese vehículo está en el taller se usa uno de reserva, así que de cada clase hay que saber con qué vehículo se dio; un vehículo de reserva puede pasar meses sin usarse en ninguna clase.</li>
+<li>Los exámenes los convoca la administración de tráfico: de cada convocatoria la autoescuela guarda un código, la fecha, el tipo (teórico o práctico) y el lugar, y solo registra una convocatoria cuando inscribe en ella al menos a un alumno.</li>
+<li>Un alumno puede presentarse a varias convocatorias, a cada convocatoria se presentan varios alumnos, y hay alumnos que aún no se han presentado a ninguna; de cada presentación se guarda el resultado (apto o no apto).</li>
+</ol>
+<p><strong>Tareas.</strong></p>
+<ul>
+<li><strong>(a) Entidades y atributos.</strong> Lista las entidades del enunciado y, para cada una, sus atributos con su tipo (simple o compuesto; monovalorado o multivalorado; derivado o no). Elige la clave primaria de cada entidad. En la entidad que tiene <strong>dos claves candidatas</strong>, justifica la elección con los tres criterios del apartado 2.3 (siempre conocido, estable, mínimo) y di por qué descartas la otra.</li>
+<li><strong>(b) Relaciones y cardinalidades.</strong> Para cada relación, escribe las dos frases de fijar y preguntar («dado UN …, ¿cuántos …?»), la pareja (mín, máx) que va junto a cada entidad y la etiqueta de tipo (1:1, 1:N o N:M). Junto a cada pareja, cita el número de la frase del enunciado que la justifica («frase 5») y cópiala. Si una relación es reflexiva, escribe sus dos roles; si tiene atributos propios, dilos y explica por qué no son de ninguna de las dos entidades.</li>
+<li><strong>(c) Diagrama en Chen.</strong> Dibuja el modelo completo en notación de Chen con draw.io, con las formas de la biblioteca Entity Relation: rectángulo para la entidad, elipse para el atributo (doble para el multivalorado, discontinua para el derivado, con las partes colgando para el compuesto, nombre subrayado para la clave primaria) y rombo para la relación. Las parejas (mín, máx) van como etiquetas de las líneas, junto a su entidad; la etiqueta de tipo, sobre el rombo; los roles de la reflexiva, en sus líneas; el atributo de relación, colgando del rombo.</li>
+<li><strong>(d) El mismo modelo en pata de gallo.</strong> Dibújalo también en pata de gallo con draw.io: una tabla por entidad con sus atributos y la clave primaria marcada como PK, líneas con los terminadores de pata de gallo en los <strong>dos</strong> extremos, y las <strong>anotaciones textuales</strong> de todo lo que la pata de gallo no dibuja, como mandan las notas de entrega de los apartados 2.2 y 3.4 de la UD2: «compuesto: …», «multivalorado», «derivado: no se almacena», los roles de la reflexiva como etiquetas de línea y el atributo de relación anotado en su línea.</li>
+<li><strong>(e) La pregunta al cliente.</strong> Hay <strong>una cardinalidad que el enunciado no fija</strong>. Localízala, escribe la pregunta exacta que le harías a la autoescuela para resolverla y explica cómo cambia el diagrama según cuál sea la respuesta (qué pareja cambia y qué etiqueta de tipo cambia con ella). Mientras no tengas respuesta, dibuja la opción más sencilla y déjala señalada con una anotación.</li>
+</ul>
+<p><strong>Cómo trabajar.</strong> Lee el enunciado dos veces antes de dibujar: la primera para subrayar los sustantivos (candidatos a entidad o a atributo) y la segunda para subrayar los verbos (candidatos a relación) y las frases que hablan de cantidades («un único», «varios», «como mucho», «puede no tener», «al menos»). Cada pareja (mín, máx) que escribas tiene que apoyarse en una frase del enunciado; si no la encuentras, o la frase no existe —y entonces es la de la tarea (e)— o te la estás inventando. Nombra los ficheros como dice la guía de draw.io, con tu alias: <code>ud2-cp2-1-chen-&lt;alias&gt;.drawio</code> y <code>ud2-cp2-1-pata-de-gallo-&lt;alias&gt;.drawio</code>. Aunque las prácticas no se entregan, nómbralas así: es el mismo formato de las entregas evaluables y conviene tenerlo automatizado.</p>
+<h3 id="cp22-del-enunciado-al-diagrama-la-emisora-comarcal">CP2.2 · Del enunciado al diagrama: la emisora comarcal<a class="headerlink" href="#cp22-del-enunciado-al-diagrama-la-emisora-comarcal" title="Permanent link">&para;</a></h3>
+<p><strong>Qué refuerza.</strong> Todo lo que ya trabajó el CP2.1 —entidades y tipos de atributo (apartado 2.2), claves candidata y primaria con sus tres criterios (apartado 2.3), relaciones binarias y reflexivas con roles, atributos de relación (apartado 3.1), cardinalidades máxima y mínima con el método de fijar y preguntar (apartados 3.2 y 3.3) y la convención de parejas y etiqueta de tipo (apartado 3.4)— y, además, el <strong>apartado 4</strong>: entidades débiles, la relación identificativa, el discriminante y la diferencia entre depender de otra entidad en existencia y depender también en identificación. En este enunciado hay <strong>una entidad débil</strong> y no hay jerarquías, agregaciones ni relaciones ternarias: nada del apartado 5 en adelante.</p>
+<p><strong>Enunciado.</strong></p>
+<ol>
+<li>Una emisora de radio comarcal con sede en Ejea de los Caballeros quiere una base de datos para gestionar su programación, su publicidad y sus concursos.</li>
+<li>De cada locutor se guardan su número de empleado, su DNI, su nombre, uno o varios teléfonos de contacto, su fecha de alta y su antigüedad en la emisora, que se calcula a partir de la fecha de alta.</li>
+<li>De cada programa se guardan un código, su nombre, el día de la semana y la hora de inicio en que se emite y su duración prevista; cada programa tiene un único locutor titular, y los locutores en prácticas aún no presentan ninguno.</li>
+<li>Algunos programas derivan de otro programa de la emisora (un especial de verano que sale de un magacín, una sección que se independiza): cada programa deriva como mucho de otro, los programas originales no derivan de ninguno, y un programa puede dar lugar a varios programas derivados o a ninguno.</li>
+<li>Cada vez que un programa sale al aire se registra una emisión, con su duración real y la cifra estimada de oyentes; cada emisión es de un único programa y un programa no se emite dos veces el mismo día, así que dentro de cada programa una emisión se identifica por su fecha; un programa recién estrenado aún no tiene ninguna emisión.</li>
+<li>La emisora tiene varios estudios, de los que se guardan un código, un nombre y el aforo; cada emisión sale de un único estudio, y el estudio pequeño se reserva para grabar publicidad y puede no tener emisiones.</li>
+<li>Cada programa tiene como mucho un perfil en redes sociales, del que se guardan un código, la plataforma, el nombre de usuario y el número de seguidores; cada perfil es de un único programa.</li>
+<li>De cada patrocinador se guardan un código, su nombre comercial, su dirección (calle, número, localidad y código postal) y un teléfono.</li>
+<li>Un patrocinador puede patrocinar varios programas y un programa puede tener varios patrocinadores, pero solo se da de alta a un patrocinador cuando patrocina al menos un programa, y hay programas sin patrocinio; de cada patrocinio se guarda el importe de la temporada.</li>
+<li>Algunos programas organizan concursos para la audiencia: de cada concurso se guardan un código, su nombre, la fecha del sorteo y una descripción del premio; cada concurso lo organiza un único programa, y la mayoría de los programas no organiza ninguno.</li>
+<li>El premio de cada concurso lo aporta siempre algún patrocinador; un mismo patrocinador puede aportar el premio de varios concursos o no haber aportado nunca ninguno.</li>
+</ol>
+<p><strong>Tareas.</strong></p>
+<ul>
+<li><strong>(a) Entidades y atributos.</strong> Lista las entidades del enunciado y, para cada una, sus atributos con su tipo (simple o compuesto; monovalorado o multivalorado; derivado o no). Elige la clave primaria de cada entidad. En la entidad que tiene <strong>dos claves candidatas</strong>, justifica la elección con los tres criterios del apartado 2.3 (siempre conocido, estable, mínimo) y di por qué descartas la otra.</li>
+<li><strong>(b) Relaciones y cardinalidades.</strong> Para cada relación, escribe las dos frases de fijar y preguntar («dado UN …, ¿cuántos …?»), la pareja (mín, máx) que va junto a cada entidad y la etiqueta de tipo (1:1, 1:N o N:M). Junto a cada pareja, cita el número de la frase del enunciado que la justifica («frase 5») y cópiala. Si una relación es reflexiva, escribe sus dos roles; si tiene atributos propios, dilos y explica por qué no son de ninguna de las dos entidades.</li>
+<li><strong>(c) Diagrama en Chen.</strong> Dibuja el modelo completo en notación de Chen con draw.io, con las formas de la biblioteca Entity Relation: rectángulo para la entidad, elipse para el atributo (doble para el multivalorado, discontinua para el derivado, con las partes colgando para el compuesto, nombre subrayado para la clave primaria) y rombo para la relación. Las parejas (mín, máx) van como etiquetas de las líneas, junto a su entidad; la etiqueta de tipo, sobre el rombo; los roles de la reflexiva, en sus líneas; el atributo de relación, colgando del rombo. <strong>Lo nuevo del apartado 4:</strong> la entidad débil va en rectángulo doble, su relación identificativa en rombo doble y su discriminante con el subrayado discontinuo (figura 3 de la UD2).</li>
+<li><strong>(d) El mismo modelo en pata de gallo.</strong> Dibújalo también en pata de gallo con draw.io: una tabla por entidad con sus atributos y la clave primaria marcada como PK, líneas con los terminadores de pata de gallo en los <strong>dos</strong> extremos, y las <strong>anotaciones textuales</strong> de todo lo que la pata de gallo no dibuja, como mandan las notas de entrega de los apartados 2.2, 3.4 y 4 de la UD2: «compuesto: …», «multivalorado», «derivado de …: no se almacena», los roles de la reflexiva como etiquetas de línea y el atributo de relación anotado en su línea. <strong>Lo nuevo del apartado 4:</strong> la relación identificativa va con línea <strong>continua</strong> y todas las demás con línea <strong>discontinua</strong> (figuras 3 y 4 de la UD2, gesto 6 de la guía de draw.io), y el discriminante se marca como PK parcial o con una anotación que diga cuál es la clave completa de la entidad débil.</li>
+<li><strong>(e) La pregunta al cliente.</strong> Hay <strong>una cardinalidad que el enunciado no fija</strong>. Localízala, escribe la pregunta exacta que le harías a la emisora para resolverla y explica cómo cambia el diagrama según cuál sea la respuesta (qué pareja cambia y qué etiqueta de tipo cambia con ella). Mientras no tengas respuesta, dibuja la opción más sencilla y déjala señalada con una anotación.</li>
+<li><strong>(f) La entidad débil.</strong> Di qué entidad del enunciado es débil, cuál es su entidad fuerte, cuál es su relación identificativa y cuál su discriminante, y escribe cómo se nombra sin ambigüedad una ocurrencia concreta (su clave completa). Explica con sus frases del enunciado por qué depende de la fuerte en existencia <strong>y</strong> en identificación. Después busca en el mismo enunciado una entidad que también exige a otra con (1,1) y que sin embargo <strong>no</strong> es débil, y explica por qué no lleva trazos dobles aunque no pueda existir sin la otra (figura 4 de la UD2).</li>
+</ul>
+<p><strong>Cómo trabajar.</strong> Lee el enunciado dos veces antes de dibujar: la primera para subrayar los sustantivos (candidatos a entidad o a atributo) y la segunda para subrayar los verbos (candidatos a relación) y las frases que hablan de cantidades («un único», «varios», «como mucho», «puede no tener», «al menos»). Cada pareja (mín, máx) que escribas tiene que apoyarse en una frase del enunciado; si no la encuentras, o la frase no existe —y entonces es la de la tarea (e)— o te la estás inventando. Para la tarea (f), la pregunta que decide no es «¿puede existir sin la otra?» sino «¿cómo la nombro sin ambigüedad?» (apartado 4, «Cómo se examina esto»). Nombra los ficheros como dice la guía de draw.io, con tu alias: <code>ud2-cp2-2-chen-&lt;alias&gt;.drawio</code> y <code>ud2-cp2-2-pata-de-gallo-&lt;alias&gt;.drawio</code>.</p>
+<h3 id="cp23-del-enunciado-al-diagrama-la-muestra-de-teatro-aficionado">CP2.3 · Del enunciado al diagrama: la muestra de teatro aficionado<a class="headerlink" href="#cp23-del-enunciado-al-diagrama-la-muestra-de-teatro-aficionado" title="Permanent link">&para;</a></h3>
+<p><strong>Qué refuerza.</strong> Todo lo del CP2.1 y el CP2.2 —entidades y tipos de atributo (apartado 2.2), claves con sus tres criterios (apartado 2.3), relaciones binarias y reflexivas con roles, atributos de relación (apartado 3.1), cardinalidades con el método de fijar y preguntar (apartados 3.2 y 3.3), la convención de parejas y etiqueta de tipo (apartado 3.4) y la entidad débil con su discriminante (apartado 4)— y, además, el <strong>apartado 5</strong>: la jerarquía supertipo-subtipos, qué atributos y relaciones van en el supertipo y cuáles en cada subtipo, y las dos decisiones que toda jerarquía lleva anotadas, totalidad y solapamiento, cada una con la frase del enunciado que la decide. En este enunciado hay <strong>una entidad débil y una jerarquía</strong>; no hay agregaciones ni relaciones ternarias: nada del apartado 6 en adelante.</p>
+<p><strong>Enunciado.</strong></p>
+<ol>
+<li>La muestra de teatro aficionado de las Cinco Villas, itinerante por las salas de la comarca, quiere una base de datos para gestionar las compañías, las obras y las funciones de cada edición.</li>
+<li>De cada compañía se guardan su código de inscripción, su CIF, su nombre, su dirección (calle, número, localidad y código postal), uno o varios teléfonos de contacto, su fecha de fundación y su antigüedad, que se calcula a partir de la fecha de fundación.</li>
+<li>De cada obra se guardan un código, su título, su autor, su género y su duración; cada obra la presenta una sola compañía, y toda compañía inscrita presenta al menos una obra.</li>
+<li>Algunas obras son versión de otra obra presentada en ediciones anteriores de la muestra (una adaptación, un montaje nuevo del mismo texto): cada obra es versión de como mucho una obra anterior, las obras originales no son versión de ninguna, y una obra puede tener varias versiones posteriores o ninguna.</li>
+<li>De cada personaje de una obra se guardan su nombre y una breve descripción; cada personaje pertenece a una obra, toda obra tiene al menos un personaje, y dentro de una obra no hay dos personajes con el mismo nombre, aunque dos obras distintas pueden tener un personaje llamado igual.</li>
+<li>De cada miembro de una compañía se guardan su número de ficha, su nombre y un teléfono; cada miembro pertenece a una sola compañía, y una compañía se inscribe con al menos un miembro.</li>
+<li>Todo miembro inscrito actúa, dirige o las dos cosas, y es habitual que quien dirige también actúe; de los actores se guarda además la fecha de su debut, y de los directores, su formación.</li>
+<li>Cada personaje lo encarna siempre algún actor de la compañía; un actor puede encarnar varios personajes, y los actores de reserva no encarnan ninguno.</li>
+<li>Cada obra tiene un único director, y quien figura como director dirige al menos una obra de su compañía.</li>
+<li>Las funciones se registran con un código, la fecha, la hora y el número de entradas vendidas; cada función es de una obra, y hay obras inscritas sin función programada todavía.</li>
+<li>De cada sala se guardan un código, su nombre, su localidad y su aforo; cada función se celebra en una sala, y alguna sala no acoge funciones esta edición.</li>
+<li>De cada miembro del jurado se guardan un código, su nombre y su procedencia; toda obra recibe la puntuación de al menos un miembro del jurado y normalmente de varios, un miembro del jurado puntúa varias obras y puede no haber puntuado aún ninguna, y de cada puntuación se guarda la nota dada.</li>
+</ol>
+<p><strong>Tareas.</strong></p>
+<ul>
+<li><strong>(a) Entidades y atributos.</strong> Lista las entidades del enunciado y, para cada una, sus atributos con su tipo (simple o compuesto; monovalorado o multivalorado; derivado o no). Elige la clave primaria de cada entidad. En la entidad que tiene <strong>dos claves candidatas</strong>, justifica la elección con los tres criterios del apartado 2.3 (siempre conocido, estable, mínimo) y di por qué descartas la otra.</li>
+<li><strong>(b) Relaciones y cardinalidades.</strong> Para cada relación, escribe las dos frases de fijar y preguntar («dado UN …, ¿cuántos …?»), la pareja (mín, máx) que va junto a cada entidad y la etiqueta de tipo (1:1, 1:N o N:M). Junto a cada pareja, cita el número de la frase del enunciado que la justifica («frase 5») y cópiala. Si una relación es reflexiva, escribe sus dos roles; si tiene atributos propios, dilos y explica por qué no son de ninguna de las dos entidades.</li>
+<li><strong>(c) Diagrama en Chen.</strong> Dibuja el modelo completo en notación de Chen con draw.io, con las formas de la biblioteca Entity Relation: rectángulo para la entidad, elipse para el atributo (doble para el multivalorado, discontinua para el derivado, con las partes colgando para el compuesto, nombre subrayado para la clave primaria) y rombo para la relación; las parejas (mín, máx) como etiquetas de las líneas, junto a su entidad; la etiqueta de tipo sobre el rombo; los roles de la reflexiva en sus líneas; el atributo de relación colgando del rombo; la entidad débil en rectángulo doble, su relación identificativa en rombo doble y su discriminante con el subrayado discontinuo. <strong>Lo nuevo del apartado 5:</strong> la jerarquía con el triángulo «es un» del supertipo hacia los subtipos y, junto al triángulo, la anotación de sus dos decisiones, «(total o parcial, exclusiva o solapada)», como en la figura 5 de la UD2.</li>
+<li><strong>(d) El mismo modelo en pata de gallo.</strong> Dibújalo también en pata de gallo con draw.io: una tabla por entidad con sus atributos y la clave primaria marcada como PK, líneas con los terminadores de pata de gallo en los <strong>dos</strong> extremos, la relación identificativa con línea continua y las demás con línea discontinua, y las <strong>anotaciones textuales</strong> de todo lo que la pata de gallo no dibuja, como mandan las notas de entrega de los apartados 2.2, 3.4, 4 y 5 de la UD2: «compuesto: …», «multivalorado», «derivado de …: no se almacena», los roles de la reflexiva como etiquetas de línea, el atributo de relación anotado en su línea y el discriminante marcado como PK parcial o con la clave completa anotada. <strong>Lo nuevo del apartado 5:</strong> la pata de gallo no tiene jerarquías; dibuja el triángulo con formas básicas de draw.io, una tabla por subtipo con solo sus atributos propios, y anota junto al triángulo las dos decisiones.</li>
+<li><strong>(e) La pregunta al cliente.</strong> Hay <strong>una cardinalidad que el enunciado no fija</strong>. Localízala, escribe la pregunta exacta que le harías a la organización de la muestra para resolverla y explica cómo cambia el diagrama según cuál sea la respuesta (qué pareja cambia y qué etiqueta de tipo cambia con ella). Mientras no tengas respuesta, dibuja la opción más sencilla y déjala señalada con una anotación.</li>
+<li><strong>(f) La entidad débil.</strong> Di qué entidad del enunciado es débil, cuál es su entidad fuerte, cuál es su relación identificativa y cuál su discriminante, y escribe cómo se nombra sin ambigüedad una ocurrencia concreta (su clave completa). Explica con sus frases del enunciado por qué depende de la fuerte en existencia <strong>y</strong> en identificación. Después busca en el mismo enunciado una entidad que también exige a otra con (1,1) y que sin embargo <strong>no</strong> es débil, y explica por qué no lleva trazos dobles aunque no pueda existir sin la otra (figura 4 de la UD2).</li>
+<li><strong>(g) La jerarquía.</strong> Di cuál es el supertipo y cuáles los subtipos, y qué frase del enunciado justifica que haya jerarquía y no un simple atributo «tipo» (apartado 5, «cuándo no especializar»). Decide <strong>totalidad</strong> y <strong>solapamiento</strong> copiando la frase del enunciado que decide cada una. Después reparte: qué atributos y qué relaciones van en el supertipo y cuáles en cada subtipo, aplicando el criterio del E17 («cada cosa en el nivel más alto donde es común a todos»).</li>
+</ul>
+<p><strong>Cómo trabajar.</strong> Lee el enunciado dos veces antes de dibujar: la primera para subrayar los sustantivos (candidatos a entidad o a atributo) y la segunda para subrayar los verbos (candidatos a relación) y las frases que hablan de cantidades («un único», «varios», «como mucho», «puede no tener», «al menos»). Cada pareja (mín, máx) que escribas tiene que apoyarse en una frase del enunciado; si no la encuentras, o la frase no existe —y entonces es la de la tarea (e)— o te la estás inventando. Para la tarea (g), las dos preguntas de la tabla del apartado 5 son las que decides: «¿existe alguien del supertipo que no sea de ningún subtipo?» y «¿puede alguien ser de dos subtipos a la vez?»; las respuestas están en el enunciado, no en lo que te parezca razonable. Nombra los ficheros como dice la guía de draw.io, con tu alias: <code>ud2-cp2-3-chen-&lt;alias&gt;.drawio</code> y <code>ud2-cp2-3-pata-de-gallo-&lt;alias&gt;.drawio</code>.</p>
+<h3 id="cp24-del-enunciado-al-diagrama-el-coto-micologico-comarcal">CP2.4 · Del enunciado al diagrama: el coto micológico comarcal<a class="headerlink" href="#cp24-del-enunciado-al-diagrama-el-coto-micologico-comarcal" title="Permanent link">&para;</a></h3>
+<p><strong>Qué refuerza.</strong> Todo lo del CP2.1, el CP2.2 y el CP2.3 —entidades y tipos de atributo (apartado 2.2), claves con sus tres criterios (apartado 2.3), relaciones binarias y reflexivas con roles, atributos de relación (apartado 3.1), cardinalidades con el método de fijar y preguntar (apartados 3.2 y 3.3), la convención de parejas y etiqueta de tipo (apartado 3.4), la entidad débil con su discriminante (apartado 4) y la jerarquía con sus dos decisiones (apartado 5)— y, además, el <strong>apartado 6</strong>: la agregación, cuándo una relación se trata como entidad de orden superior para relacionarla con otra entidad, y por qué en ese caso no sirve una relación ternaria. En este enunciado hay <strong>una entidad débil, una jerarquía y una agregación</strong>.</p>
+<p><strong>Enunciado.</strong></p>
+<ol>
+<li>El coto micológico comarcal, que agrupa montes de varios municipios de las Cinco Villas y las Bardenas, quiere una base de datos para gestionar sus recolectores, sus permisos, sus zonas y sus especies.</li>
+<li>De cada recolector se guardan su número de recolector, su DNI, su nombre, su dirección (calle, número, localidad y código postal), uno o varios teléfonos de contacto, su fecha de nacimiento y su edad, que se calcula a partir de ella.</li>
+<li>Algunos recolectores son locales, empadronados en un municipio del coto, y de ellos se guarda además el municipio de empadronamiento; otros son vinculados, con segunda residencia en la comarca, y de ellos se guarda además la localidad de vinculación; los demás son foráneos y no se guarda nada más de ellos. Quien está empadronado en el coto cuenta como local aunque tenga además segunda residencia: nadie es local y vinculado a la vez.</li>
+<li>De cada permiso se guardan su número, único en todo el coto, la temporada, la modalidad y el importe; cada permiso es de un recolector, y un recolector se registra al sacar su primer permiso y saca uno nuevo cada temporada.</li>
+<li>De cada zona del coto se guardan un código, su nombre, su municipio y su superficie.</li>
+<li>Cada permiso habilita siempre para recolectar en alguna zona del coto; una zona recién abierta puede no tener permisos expedidos todavía.</li>
+<li>Cada recolector declara sus salidas al monte: de cada salida se guardan la fecha, la hora de entrada y la hora de salida; cada salida es de un recolector, un recolector declara como mucho una salida por día, aunque distintos recolectores salen el mismo día, y un recolector con permiso puede no haber salido aún.</li>
+<li>Cada salida se declara para una única zona, y una zona cerrada por regeneración no tiene salidas.</li>
+<li>De cada especie catalogada se guardan un código, su nombre común, su familia y si es comestible; toda especie catalogada se da en al menos una zona, y normalmente en varias; una zona recién incorporada puede no tener aún especies catalogadas, y de cada especie en cada zona se guarda su mes de mayor abundancia.</li>
+<li>De cada guarda se guardan su número, su nombre y un teléfono; cada zona tiene un guarda titular, un guarda es titular de como mucho una zona, y los guardas de refuerzo no son titulares de ninguna.</li>
+<li>Se registra qué guardas relevan a los que dejan el coto: cada guarda ha relevado como mucho a un guarda anterior, los primeros guardas del coto no relevaron a nadie, y un guarda que se marcha puede haber sido relevado por varios guardas, si su zona se repartió, o por ninguno.</li>
+<li>Las especies se muestrean zona por zona: de cada muestreo se guardan un código, la fecha y la densidad observada; cada muestreo es de una especie en una zona de las que tiene catalogadas, y una misma pareja especie-zona puede tener varios muestreos a lo largo de la temporada o ninguno.</li>
+</ol>
+<p><strong>Tareas.</strong></p>
+<ul>
+<li><strong>(a) Entidades y atributos.</strong> Lista las entidades del enunciado y, para cada una, sus atributos con su tipo (simple o compuesto; monovalorado o multivalorado; derivado o no). Elige la clave primaria de cada entidad. En la entidad que tiene <strong>dos claves candidatas</strong>, justifica la elección con los tres criterios del apartado 2.3 (siempre conocido, estable, mínimo) y di por qué descartas la otra.</li>
+<li><strong>(b) Relaciones y cardinalidades.</strong> Para cada relación, escribe las dos frases de fijar y preguntar («dado UN …, ¿cuántos …?»), la pareja (mín, máx) que va junto a cada entidad y la etiqueta de tipo (1:1, 1:N o N:M). Junto a cada pareja, cita el número de la frase del enunciado que la justifica («frase 5») y cópiala. Si una relación es reflexiva, escribe sus dos roles; si tiene atributos propios, dilos y explica por qué no son de ninguna de las dos entidades.</li>
+<li><strong>(c) Diagrama en Chen.</strong> Dibuja el modelo completo en notación de Chen con draw.io, con las formas de la biblioteca Entity Relation: rectángulo para la entidad, elipse para el atributo (doble para el multivalorado, discontinua para el derivado, con las partes colgando para el compuesto, nombre subrayado para la clave primaria) y rombo para la relación; las parejas (mín, máx) como etiquetas de las líneas, junto a su entidad; la etiqueta de tipo sobre el rombo; los roles de la reflexiva en sus líneas; el atributo de relación colgando del rombo; la entidad débil en rectángulo doble, su relación identificativa en rombo doble y su discriminante con el subrayado discontinuo; la jerarquía con el triángulo «es un» y la anotación de sus dos decisiones. <strong>Lo nuevo del apartado 6:</strong> la agregación como un recuadro que engloba la relación agregada con sus dos entidades, y desde ese recuadro la línea hacia la entidad que se relaciona con la pareja, con su pareja (mín, máx) en cada extremo y su etiqueta de tipo, como en la figura 6 de la UD2.</li>
+<li><strong>(d) El mismo modelo en pata de gallo.</strong> Dibújalo también en pata de gallo con draw.io: una tabla por entidad con sus atributos y la clave primaria marcada como PK, líneas con los terminadores de pata de gallo en los <strong>dos</strong> extremos, la relación identificativa con línea continua y las demás con línea discontinua, el triángulo de la jerarquía con formas básicas y su anotación, y las <strong>anotaciones textuales</strong> de todo lo que la pata de gallo no dibuja, como mandan las notas de entrega de los apartados 2.2, 3.4, 4, 5 y 6 de la UD2. <strong>Lo nuevo del apartado 6:</strong> la agregación no existe en pata de gallo y no se fuerza; usa un contenedor de draw.io alrededor del fragmento agregado con la nota «relación agregada» (guía de draw.io, gesto 8) y saca de él la línea hacia la otra entidad.</li>
+<li><strong>(e) La pregunta al cliente.</strong> Hay <strong>una cardinalidad que el enunciado no fija</strong>. Localízala, escribe la pregunta exacta que le harías al coto para resolverla y explica cómo cambia el diagrama según cuál sea la respuesta (qué pareja cambia y qué etiqueta de tipo cambia con ella). Mientras no tengas respuesta, dibuja la opción más sencilla y déjala señalada con una anotación.</li>
+<li><strong>(f) La entidad débil.</strong> Di qué entidad del enunciado es débil, cuál es su entidad fuerte, cuál es su relación identificativa y cuál su discriminante, y escribe cómo se nombra sin ambigüedad una ocurrencia concreta (su clave completa). Explica con sus frases del enunciado por qué depende de la fuerte en existencia <strong>y</strong> en identificación. Después busca en el mismo enunciado una entidad que también exige a otra con (1,1) y que sin embargo <strong>no</strong> es débil, y explica por qué no lleva trazos dobles aunque no pueda existir sin la otra (figura 4 de la UD2).</li>
+<li><strong>(g) La jerarquía.</strong> Di cuál es el supertipo y cuáles los subtipos, y qué frase del enunciado justifica que haya jerarquía y no un simple atributo «tipo». Decide <strong>totalidad</strong> y <strong>solapamiento</strong> copiando la frase del enunciado que decide cada una. Después reparte: qué atributos y qué relaciones van en el supertipo y cuáles en cada subtipo.</li>
+<li><strong>(h) La agregación.</strong> Di qué relación se agrega y qué entidad se relaciona con la pareja agregada, con la pareja (mín, máx) en cada extremo y la etiqueta de tipo. Explica, con la frase del enunciado que lo decide, por qué el modelo correcto es la agregación y no una relación ternaria entre las tres entidades (apartado 6: ¿pueden existir las dos primeras asociadas sin la tercera?). Di también dónde vive cada atributo: el de la pareja agregada y los de la entidad que cuelga de ella.</li>
+</ul>
+<p><strong>Cómo trabajar.</strong> Lee el enunciado dos veces antes de dibujar: la primera para subrayar los sustantivos (candidatos a entidad o a atributo) y la segunda para subrayar los verbos (candidatos a relación) y las frases que hablan de cantidades («un único», «varios», «como mucho», «puede no tener», «al menos»). Cada pareja (mín, máx) que escribas tiene que apoyarse en una frase del enunciado; si no la encuentras, o la frase no existe —y entonces es la de la tarea (e)— o te la estás inventando. Para la tarea (f), el discriminante no viene nombrado: el enunciado da los datos y la conclusión la sacas tú. Para la tarea (h), aplica el paso 5 del método del apartado 7.1 («¿alguna relación sobre relación?») y la regla de higiene del apartado 6: la agregación se gana con una frase del enunciado, no se pone por elegancia. Nombra los ficheros como dice la guía de draw.io, con tu alias: <code>ud2-cp2-4-chen-&lt;alias&gt;.drawio</code> y <code>ud2-cp2-4-pata-de-gallo-&lt;alias&gt;.drawio</code>.</p>
+<h2 id="ud3-modelo-relacional-y-normalizacion">UD3 · Modelo relacional y normalización<a class="headerlink" href="#ud3-modelo-relacional-y-normalizacion" title="Permanent link">&para;</a></h2>
+<p>Las prácticas de esta unidad cambian de materia prima: en la UD2 partías del enunciado y llegabas al diagrama; aquí partes del <strong>diagrama ya hecho</strong> y del enunciado, y llegas al <strong>esquema relacional</strong>: las tablas, sus campos, sus claves, las políticas de cada clave ajena y la lista de lo que las tablas no pueden vigilar. Los diagramas se dan en notación de Chen con la convención de la UD2 (apartado 3.4): la pareja (mín, máx) junto a una entidad dice cuántas ocurrencias de esa entidad se asocian con cada ocurrencia de la otra, y la etiqueta sobre el rombo es el tipo de la relación, que es lo que decide la traducción (apartado 4.2 de la UD3). El enunciado sigue numerado por frases porque las decisiones que la UD3 te pide —qué clave ajena admite NULL, qué pasa al borrar, qué regla no cabe en ninguna tabla— salen de frases, igual que salían las cardinalidades. Los esquemas se escriben en la notación de entrega de la UD3: clave primaria en negrita, cada clave ajena con su flecha a la tabla destino y, junto a cada flecha, la política de borrado. Las tablas que solo guardan una parte de otra fila —los valores de un multivalorado, la fila de un subtipo— se borran con su dueño, como en el ejemplo del apartado 4.4: esa política no necesita frase. El diagrama lógico se entrega en pata de gallo con draw.io, que es donde se evalúa definitivamente el criterio de herramienta (RA6.a).</p>
+<h3 id="cp31-del-diagrama-al-esquema-la-feria-de-muestras-comarcal">CP3.1 · Del diagrama al esquema: la feria de muestras comarcal<a class="headerlink" href="#cp31-del-diagrama-al-esquema-la-feria-de-muestras-comarcal" title="Permanent link">&para;</a></h3>
+<p><strong>Qué refuerza.</strong> Los apartados 1, 2, 4.1 y 4.2 de la UD3: la terminología del modelo relacional y las propiedades que separan una relación de una hoja de cálculo (apartado 1), la escalera de claves y la clave ajena con su decisión NULL/NOT NULL (apartado 2), y la traducción de entidades y atributos (apartado 4.1) y de relaciones por su etiqueta de tipo (apartado 4.2): 1:N, N:M con atributo, 1:1 y reflexiva. En este diagrama <strong>todas las entidades son fuertes</strong>: no hay débiles, ni jerarquías, ni agregaciones; nada del apartado 4.3 en adelante.</p>
+<p><strong>Enunciado.</strong></p>
+<ol>
+<li>La feria de muestras comarcal de las Cinco Villas, que se celebra cada otoño en un recinto de Ejea de los Caballeros, quiere una base de datos para gestionar la edición de este año: sus expositores, los pabellones y los stands, las demostraciones y los visitantes profesionales.</li>
+<li>De cada expositor se guardan su código de inscripción, su CIF, su nombre comercial, su sector, su dirección (calle, número, población y código postal) y uno o varios teléfonos de contacto.</li>
+<li>De cada pabellón se guardan su código, su denominación y su superficie; de cada stand, su código, único en todo el recinto, sus metros cuadrados y si tiene toma de agua.</li>
+<li>Cada stand está en un único pabellón, y todo pabellón tiene al menos un stand.</li>
+<li>Cada expositor inscrito ocupa exactamente un stand; cada stand lo ocupa como mucho un expositor, y los stands que quedan sin adjudicar se reservan para la organización.</li>
+<li>Los expositores programan demostraciones de producto: de cada demostración se guardan su código, su título, su fecha, su hora de inicio, su duración en minutos y su hora de fin, que se calcula a partir de la hora de inicio y la duración; cada demostración la organiza un único expositor, y hay expositores que no programan ninguna.</li>
+<li>Algunas demostraciones se parten en dos sesiones: una demostración continúa como mucho a otra, y a una demostración la continúa como mucho otra; la mayoría no tiene continuación.</li>
+<li>De cada visitante profesional se guardan su número de acreditación, su nombre completo, la empresa a la que representa y su localidad.</li>
+<li>Los visitantes se inscriben en las demostraciones que les interesan: un visitante puede inscribirse en varias demostraciones o en ninguna, y en cada demostración se inscriben varios visitantes, aunque las recién programadas aún no tienen inscritos; de cada inscripción se guarda la fecha en que se hizo.</li>
+<li>Un pabellón solo se retira del plano del recinto cuando ya no le queda ningún stand, y un stand no se elimina mientras tenga un expositor adjudicado.</li>
+<li>Si una demostración se cancela, las inscripciones que tenía se anulan con ella, y la sesión que la continuaba, si la había, pasa a ser una demostración independiente.</li>
+<li>Un visitante que anula su acreditación pierde todas sus inscripciones.</li>
+<li>Cuando un expositor renuncia antes de la feria, la organización lo da de baja.</li>
+</ol>
+<p><strong>El diagrama.</strong> Es el resultado de aplicar el método de la UD2 al enunciado anterior; dalo por bueno y tradúcelo. Fíjate en que cada pareja se lee junto a la entidad en la que está escrita.</p>
+<p><img alt="Figura CP3.1. Diagrama en notación de Chen de la feria de muestras: PABELLON, STAND, EXPOSITOR, DEMOSTRACION y VISITANTE con las relaciones está en, ocupa, organiza, se inscribe en y la reflexiva continúa a, sus parejas de cardinalidad y su etiqueta de tipo" src="../img/cp3-1-chen.svg" /></p>
+<p><strong>Tareas.</strong></p>
+<ul>
+<li><strong>(a) Terminología y propiedades.</strong> La organización ya tiene esta instancia de <code>stands</code>, con cinco filas: <code>(S-01, 24, sí, P-1)</code>, <code>(S-02, 24, no, P-1)</code>, <code>(S-03, 36, sí, P-1)</code>, <code>(S-10, 48, no, P-2)</code>, <code>(S-11, 48, sí, P-2)</code>. Escribe su esquema en la notación de la unidad, indica su grado y su cardinalidad, y di qué parte de lo anterior es esquema y qué parte es instancia. Después mira la hoja de cálculo con la que trabaja hoy la organización: una pestaña <code>expositores</code> con la columna <code>telefonos_contacto</code> rellena como «976 66 11 22 / 600 11 22 33», una fila repetida porque el expositor se inscribió dos veces, y las filas ordenadas «por importancia del expositor». Di qué propiedad del apartado 1.2 viola cada una de las tres cosas y qué hace con cada una el esquema relacional que vas a construir.</li>
+<li><strong>(b) Claves.</strong> EXPOSITOR tiene dos claves candidatas. Escribe para esa entidad dos superclaves que no sean candidatas, sus dos candidatas, elige la primaria aplicando los <strong>cuatro</strong> criterios del apartado 2.1 (conocida, estable, mínima, sin NULL) y di qué se hace con la candidata descartada. Después recorre las cinco relaciones y, para cada clave ajena que vaya a existir, decide si admite NULL o no citando la frase y la pareja (mín, máx) del diagrama que lo decide.</li>
+<li><strong>(c) Traducción regla a regla.</strong> Aplica el algoritmo del apartado 4 escribiendo, para cada elemento, qué regla usas y por qué: las cinco entidades (4.1); el atributo compuesto, el multivalorado y el derivado (4.1); y las cinco relaciones por su etiqueta de tipo (4.2): en las 1:N, qué clave viaja y a qué tabla; en la N:M, qué tabla nace y qué clave primaria tiene; en la 1:1, en qué lado va la clave ajena y por qué (el criterio del apartado 4.2 es la participación más obligatoria); en la reflexiva, qué nombre de rol lleva la clave ajena y qué la hace única.</li>
+<li><strong>(d) El esquema íntegro.</strong> Escríbelo completo en la notación de entrega de la UD3: clave primaria en negrita, cada clave ajena con su flecha, y junto a cada flecha la <strong>política de borrado</strong> (rechazar, propagar o poner a NULL) con la frase del enunciado que la decide.</li>
+<li><strong>(e) La pregunta al cliente.</strong> Hay <strong>una política de borrado que el enunciado no fija</strong>. Localízala, escribe la pregunta exacta que le harías a la organización de la feria y explica qué cambia en el esquema según cuál sea la respuesta. Mientras no tengas respuesta, anota en el esquema la opción que menos información destruye y déjala señalada.</li>
+<li><strong>(f) Diagrama lógico en pata de gallo.</strong> Dibuja el esquema de la tarea (d) con draw.io: una tabla por cada tabla del esquema (también las que nacen de la N:M y del multivalorado), con sus campos, la clave primaria marcada como PK, y cada clave ajena como una línea desde la tabla que la contiene hasta la tabla a la que apunta, con los terminadores de pata de gallo en los <strong>dos</strong> extremos; todas las líneas discontinuas (no hay relación identificativa), las notas que manda la tabla 7.2 de la UD2 para lo que la pata de gallo no dibuja (los roles de la reflexiva, el derivado que no se almacena) y, junto a cada línea, su política de borrado como etiqueta.</li>
+</ul>
+<p><strong>Cómo trabajar.</strong> Antes de escribir ninguna tabla, lee cada rombo con su etiqueta de tipo y di en voz alta la regla del apartado 4.2 que le toca; la etiqueta decide el mecanismo y las parejas deciden los NULL. Cada política de borrado tiene que apoyarse en una frase del enunciado; si no la encuentras, o la frase no existe —y entonces es la de la tarea (e)— o te la estás inventando. Para la tarea (a), el apartado 1.2 enumera cinco propiedades: cada cosa de la hoja viola una distinta. Nombra el fichero como dice la guía de draw.io, con tu alias: <code>ud3-cp3-1-logico-&lt;alias&gt;.drawio</code>, y guárdalo con su exportación para la sesión de corrección.</p>
+<h3 id="cp32-del-diagrama-al-esquema-el-museo-etnografico-comarcal">CP3.2 · Del diagrama al esquema: el museo etnográfico comarcal<a class="headerlink" href="#cp32-del-diagrama-al-esquema-el-museo-etnografico-comarcal" title="Permanent link">&para;</a></h3>
+<p><strong>Qué refuerza.</strong> Todo lo que ya trabajó el CP3.1 —terminología (apartado 1), claves y clave ajena con su decisión NULL/NOT NULL (apartado 2), traducción de entidades, compuestos, multivalorados y derivados (apartado 4.1) y de relaciones por su etiqueta de tipo (apartado 4.2)— y, además, el <strong>apartado 3</strong>: las tres reglas de integridad y las políticas de borrado y modificación de cada clave ajena, y la primera pieza del <strong>apartado 4.3</strong>: la <strong>entidad débil</strong>, con su clave primaria compuesta y el doble papel de la clave del padre. En este diagrama hay <strong>una entidad débil</strong> y no hay jerarquías ni agregaciones.</p>
+<p><strong>Enunciado.</strong></p>
+<ol>
+<li>El museo etnográfico comarcal, con sede en Sádaba, quiere una base de datos para gestionar sus colecciones, sus piezas, sus salas, las restauraciones y las cesiones de piezas a exposiciones de otros centros.</li>
+<li>De cada colección se guardan su código, su denominación y su temática; de cada sala, su código, su denominación y la planta en la que está.</li>
+<li>De cada pieza se guardan su número de inventario, su denominación, el material, el año aproximado de fabricación y su estado de conservación; cada pieza pertenece a una única colección, y toda colección tiene al menos una pieza.</li>
+<li>Una pieza está expuesta como mucho en una sala, y muchas están en el almacén, sin sala; en una sala puede haber varias piezas o ninguna, cuando está cerrada por obras.</li>
+<li>De cada donante se guardan su número de donante, su nombre completo, su población y un teléfono de contacto; una pieza procede como mucho de un donante, y las compradas no proceden de ninguno; todo donante registrado ha entregado al menos una pieza.</li>
+<li>Las piezas se restauran: de cada restauración se guardan la fecha de inicio, la fecha de fin, si ya ha terminado, y una descripción del trabajo; cada restauración es de una única pieza, y las restauraciones de una misma pieza se numeran por orden desde la primera, de modo que dentro de una pieza no hay dos con el mismo número, aunque dos piezas distintas tienen cada una su restauración número 1; la mayoría de las piezas no se ha restaurado nunca.</li>
+<li>De cada restaurador se guardan su código, su número de colegiado, si lo tiene, su nombre completo y su especialidad.</li>
+<li>En cada restauración interviene al menos un restaurador, a veces varios, y de cada uno se guardan las horas que le dedicó; un restaurador puede haber intervenido en varias restauraciones o en ninguna todavía.</li>
+<li>Las salas forman un recorrido: desde cada sala se puede pasar a varias salas o a ninguna, si es final de recorrido, y a cada sala se llega desde como mucho una sala.</li>
+<li>De cada exposición de otro centro a la que el museo cede piezas se guardan su código, su título, el centro que la organiza y sus fechas de inicio y de fin; una pieza puede cederse a varias exposiciones a lo largo de los años o a ninguna, y toda exposición registrada ha recibido al menos una pieza; de cada cesión se guardan la fecha de salida y la fecha de regreso, si la pieza ya ha vuelto.</li>
+<li>Una colección no se elimina mientras tenga piezas; si una pieza se da de baja del inventario, su historial de restauraciones se elimina con ella, horas de los restauradores incluidas; una pieza que ha sido cedida alguna vez no puede darse de baja, y una exposición ya registrada no se elimina.</li>
+<li>Si un donante pide que se retire su nombre del registro, las piezas que entregó se conservan sin donante; si un restaurador deja de colaborar con el museo, las horas que dedicó a cada restauración se conservan.</li>
+<li>Cuando una sala se clausura, se elimina del recorrido.</li>
+</ol>
+<p><strong>El diagrama.</strong> Dalo por bueno y tradúcelo. RESTAURACION es la entidad débil: rectángulo doble, rombo doble en <em>recibe</em> y discriminante con el subrayado discontinuo.</p>
+<p><img alt="Figura CP3.2. Diagrama en notación de Chen del museo etnográfico: COLECCION, SALA, PIEZA, DONANTE, EXPOSICION, RESTAURADOR y RESTAURACION como entidad débil de PIEZA, con las relaciones reúne, se expone en, dona, se cede a, recibe, interviene en y la reflexiva da paso a, sus parejas de cardinalidad y su etiqueta de tipo" src="../img/cp3-2-chen.svg" /></p>
+<p><strong>Tareas.</strong></p>
+<ul>
+<li><strong>(a) El mapa de tablas.</strong> Antes de escribir ningún campo, enumera <strong>todas</strong> las tablas que produce la traducción, indicando para cada una de qué elemento del diagrama procede (entidad fuerte, entidad débil, relación N:M) y, en las que proceden de una relación, cuál es su clave primaria. Cuenta cuántas son.</li>
+<li><strong>(b) El esquema íntegro.</strong> Escríbelo completo en la notación de entrega: clave primaria en negrita, clave ajena con flecha. Cuida los tres puntos finos del apartado 4.3: la clave primaria <strong>compuesta</strong> de la entidad débil, el <strong>doble papel</strong> de la clave del padre (parte de la clave propia y clave ajena a la vez) y la <strong>clave ajena compuesta</strong> que la tabla de la N:M <em>interviene en</em> debe llevar hacia la débil. Decide NULL o NOT NULL en cada clave ajena citando la pareja y la frase que lo deciden, y elige la primaria de RESTAURADOR con los cuatro criterios del apartado 2.1.</li>
+<li><strong>(c) Las tres reglas de integridad.</strong> Pon un ejemplo concreto de violación de cada una de las tres reglas del apartado 3 sobre tu esquema, con los valores exactos que la provocarían: una fila que viola la integridad de entidad, una que viola la referencial y una que viola la de dominio.</li>
+<li><strong>(d) Las políticas de borrado.</strong> Haz la tabla de <strong>todas</strong> las claves ajenas del esquema con su política de borrado (rechazar, propagar o poner a NULL) y la frase del enunciado que la decide en una línea. Señala razonadamente el caso más discutible: aquel en que la frase admite dos lecturas o en que la política elegida tiene un coste que el cliente debería conocer. Di también qué pasa con la política de modificación y por qué el apartado 3 la considera una palanca de emergencia.</li>
+<li><strong>(e) La pregunta al cliente.</strong> Hay <strong>una política de borrado que el enunciado no fija</strong>, y afecta a más de una clave ajena. Localízala, escribe la pregunta exacta que le harías al museo y explica qué cambia en el esquema según cuál sea la respuesta. Mientras no tengas respuesta, anota la opción que menos información destruye y déjala señalada.</li>
+<li><strong>(f) Diagrama lógico en pata de gallo.</strong> Dibuja el esquema de la tarea (b) con draw.io, como en el CP3.1, y marca lo nuevo: la línea de la clave ajena que forma parte de una clave primaria va <strong>continua</strong> (la de la débil hacia su padre y las de las tablas que nacen de una N:M), las demás, discontinuas; en la tabla de la débil, las dos columnas de la clave compuesta marcadas como PK y la del padre, además, como FK; la clave ajena compuesta dibujada como <strong>una sola</strong> línea con sus dos columnas en la etiqueta.</li>
+</ul>
+<p><strong>Cómo trabajar.</strong> El orden importa: primero el mapa de tablas (tarea (a)), después los campos; quien escribe campos sin mapa olvida las tablas «invisibles», las que nacen de una N:M. Para la débil, la pregunta de la UD2 sigue valiendo aquí: «¿cómo nombro sin ambigüedad una restauración concreta?» → con la pieza y el número; eso es su clave primaria. Cada política tiene que apoyarse en una frase; si no la encuentras, o la frase no existe —y entonces es la de la tarea (e)— o te la estás inventando. Nombra el fichero con tu alias: <code>ud3-cp3-2-logico-&lt;alias&gt;.drawio</code>, y guárdalo con su exportación para la sesión de corrección.</p>
+<h3 id="cp33-del-diagrama-al-esquema-el-vivero-comarcal-de-empresas">CP3.3 · Del diagrama al esquema: el vivero comarcal de empresas<a class="headerlink" href="#cp33-del-diagrama-al-esquema-el-vivero-comarcal-de-empresas" title="Permanent link">&para;</a></h3>
+<p><strong>Qué refuerza.</strong> Todo lo del CP3.1 y el CP3.2 —terminología, claves y NULL, integridad y políticas, traducción de entidades, atributos y relaciones por su etiqueta de tipo, y la entidad débil— y, además, el resto del <strong>apartado 4.3</strong>: la <strong>jerarquía</strong> con sus tres estrategias de traducción y la <strong>agregación</strong>, y el <strong>apartado 5</strong>: la lista de restricciones semánticas en formato RS como parte del esquema entregable. En este diagrama hay <strong>una entidad débil, una jerarquía parcial y solapada y una agregación</strong> con una N:M colgando de ella.</p>
+<p><strong>Enunciado.</strong></p>
+<ol>
+<li>El vivero comarcal de empresas de las Cinco Villas, con un edificio en Tauste y otro en Ejea de los Caballeros, quiere una base de datos para gestionar sus espacios, las empresas alojadas, las personas vinculadas a ellas y los itinerarios de acompañamiento.</li>
+<li>De cada edificio se guardan su código, su denominación, su población y su superficie útil.</li>
+<li>Los espacios de cada edificio (despachos, naves y salas) se numeran dentro de su edificio, de modo que cada edificio tiene su «espacio 1» y dentro de un edificio no hay dos espacios con el mismo número; de cada espacio se guardan ese número, su clase, sus metros cuadrados y su cuota mensual; cada espacio está en un único edificio, y todo edificio tiene al menos un espacio.</li>
+<li>De cada empresa alojada se guardan su código de alojamiento, su CIF, su razón social, su sector de actividad, su fecha de entrada en el vivero y uno o varios correos de contacto.</li>
+<li>Cada empresa ocupa al menos un espacio; un espacio lo ocupa como mucho una empresa, y los espacios libres se ofertan.</li>
+<li>De cada persona vinculada al vivero se guardan su código, su nombre completo, su teléfono de contacto y su población.</li>
+<li>Cada persona trabaja como mucho en una empresa alojada, y las hay sin empresa, como los mentores externos; toda empresa tiene al menos una persona vinculada.</li>
+<li>Algunas personas son emprendedoras, y de ellas se guardan además la idea de negocio que presentaron y la fecha en que la presentaron; algunas son mentoras, y de ellas se guardan además su especialidad y su tarifa por hora; hay personas que son emprendedoras y mentoras a la vez, y muchas que no son ni lo uno ni lo otro.</li>
+<li>De cada itinerario de acompañamiento se guardan su código, su denominación, su fecha de inicio y su duración en semanas.</li>
+<li>Las empresas se inscriben en itinerarios: una empresa puede inscribirse en varios itinerarios o en ninguno, y un itinerario recién convocado puede no tener aún ninguna empresa inscrita, aunque luego suele tener varias; de cada inscripción se guarda su fecha.</li>
+<li>A cada inscripción de una empresa en un itinerario se le asignan mentores: la inscripción se formaliza primero y los mentores se van asignando a lo largo del itinerario, así que una inscripción puede tener varios mentores asignados o ninguno todavía; un mentor acompaña varias inscripciones o ninguna; de cada asignación se guarda la fecha en que empezó el acompañamiento.</li>
+<li>Un edificio no se elimina mientras tenga espacios; si una empresa abandona el vivero, sus correos de contacto se eliminan con ella, sus espacios quedan libres, las personas que trabajaban en ella se conservan sin empresa, y sus inscripciones se eliminan, con las asignaciones de mentores que tuvieran.</li>
+<li>Un itinerario que ya ha tenido inscripciones no se elimina.</li>
+<li>Las personas que dejan de estar vinculadas al vivero se dan de baja.</li>
+<li>Las consultas habituales del vivero son el directorio de mentores, con su especialidad y su tarifa, y el listado de ideas de negocio presentadas con su fecha; la lista completa de personas vinculadas casi no se consulta.</li>
+</ol>
+<p><strong>El diagrama.</strong> Dalo por bueno y tradúcelo. ESPACIO es débil de EDIFICIO; PERSONA se especializa en MENTOR y EMPRENDEDOR con la anotación de sus dos decisiones; el recuadro discontinuo es la agregación de <em>se inscribe en</em>, y de ella cuelga <em>acompaña</em> hacia MENTOR.</p>
+<p><img alt="Figura CP3.3. Diagrama en notación de Chen del vivero de empresas: EDIFICIO, ESPACIO como entidad débil, EMPRESA, PERSONA con los subtipos MENTOR y EMPRENDEDOR en una jerarquía parcial y solapada, ITINERARIO, la agregación de se inscribe en relacionada con MENTOR mediante acompaña, y las relaciones alberga, ocupa y trabaja en, con sus parejas de cardinalidad y su etiqueta de tipo" src="../img/cp3-3-chen.svg" /></p>
+<p><strong>Tareas.</strong></p>
+<ul>
+<li><strong>(a) El mapa de tablas.</strong> Enumera todas las tablas que produce la traducción, con su procedencia (entidad fuerte, débil, subtipo, N:M, multivalorado, relación sobre la agregación) y, en las que no proceden de una entidad fuerte, su clave primaria. Cuenta cuántas son y di cuáles son las «invisibles», las que un diagrama no dibuja como rectángulo.</li>
+<li><strong>(b) La jerarquía, con dos estrategias.</strong> Escribe el esquema de PERSONA y sus subtipos con la <strong>estrategia 1</strong> (tabla única) y con la <strong>estrategia 2</strong> (tabla del supertipo más una por subtipo), las dos completas en la notación de entrega. Explica por qué la <strong>estrategia 3</strong> (solo tablas hija) queda descartada en este caso con las dos anotaciones de la jerarquía. Elige una de las dos escritas para el vivero justificándolo con la consulta que da la frase 15, y di qué restricción semántica necesitaría la estrategia 1 que la 2 garantiza por construcción.</li>
+<li><strong>(c) La agregación.</strong> Traduce primero la relación agregada <em>se inscribe en</em> y después <em>acompaña</em>, que cuelga de ella: escribe las dos tablas, di cuál es la clave primaria de cada una y qué clave ajena <strong>compuesta</strong> lleva la segunda. Señala qué mínima del diagrama se convierte en qué decisión: ¿hay alguna columna que admita NULL, o la opcionalidad se traduce de otra manera?</li>
+<li><strong>(d) El esquema íntegro.</strong> Escríbelo completo con la estrategia elegida en (b), en la notación de entrega, con la política de borrado junto a cada clave ajena y la frase que la decide; incluye la tabla del multivalorado y la de la débil con su clave compuesta.</li>
+<li><strong>(e) Las restricciones semánticas.</strong> Entrega la lista de <strong>al menos cinco</strong> restricciones del negocio que el esquema no vigila, en el formato RS del apartado 5 (código, enunciado en lenguaje natural, tablas y atributos implicados, mecanismo previsto). Al menos una debe salir de una frase del enunciado que el esquema no puede garantizar, y al menos una debe ser una regla razonable que el enunciado no dice. Si alguna de las que se te ocurran resulta ser integridad declarable del apartado 3, dilo y sácala de la lista.</li>
+<li><strong>(f) La pregunta al cliente.</strong> Hay <strong>una política de borrado que el enunciado no fija</strong>. Localízala, escribe la pregunta exacta que le harías al vivero y explica qué cambia según la respuesta. Mientras no la tengas, anota la opción que menos información destruye y déjala señalada.</li>
+<li><strong>(g) Diagrama lógico en pata de gallo.</strong> Dibuja el esquema de la tarea (d) con draw.io, como en las prácticas anteriores: líneas continuas donde la clave ajena forma parte de la clave primaria, discontinuas en las demás, política en cada etiqueta. Lo nuevo: las tablas de los subtipos con su clave primaria que es a la vez clave ajena al supertipo, y la tabla que cuelga de la agregación con su clave ajena compuesta como una sola línea; la pata de gallo no dibuja ni jerarquías ni agregaciones, así que el diagrama lógico no las dibuja: las tablas que las traducen bastan, con una nota que diga de dónde vienen.</li>
+</ul>
+<p><strong>Cómo trabajar.</strong> La jerarquía se traduce <strong>después</strong> de leer la anotación del triángulo: parcial y solapada descartan la estrategia 3 antes de escribir nada (apartado 4.3, tabla de estrategias). La agregación se traduce en dos pasos y siempre en ese orden: primero la relación agregada, que da una tabla con clave propia, y luego lo que cuelga, que la trata como a cualquier entidad. Para la lista RS, recorre el enunciado frase a frase preguntando «¿qué tabla, clave o clave ajena garantiza esto?»; cuando la respuesta sea «ninguna», tienes una restricción. Nombra el fichero con tu alias: <code>ud3-cp3-3-logico-&lt;alias&gt;.drawio</code>, y guárdalo con su exportación para la sesión de corrección.</p>
+<h3 id="cp34-de-la-hoja-enferma-al-esquema-y-vuelta-la-imprenta-comarcal">CP3.4 · De la hoja enferma al esquema, y vuelta: la imprenta comarcal<a class="headerlink" href="#cp34-de-la-hoja-enferma-al-esquema-y-vuelta-la-imprenta-comarcal" title="Permanent link">&para;</a></h3>
+<p><strong>Qué refuerza.</strong> El <strong>apartado 6</strong> entero: la redundancia y sus tres anomalías (6.1), las dependencias funcionales como instrumento de diagnóstico y la regla de que se deducen del negocio y los datos solo las refutan (6.2), la escalera 1FN → 2FN → 3FN y el procedimiento de cinco pasos (6.3) con el ejemplo resuelto del 6.4 como modelo. Y el <strong>cierre del círculo</strong>: aquí no hay diagrama dado; el negocio se describe con frases y se entrega como hoja de cálculo, tú lo normalizas y, por el otro camino, dibujas su E/R y lo traduces con el apartado 4, para comprobar que las dos rutas llegan al mismo esquema. Las claves (apartado 2), las políticas (apartado 3) y las restricciones semánticas (apartado 5) cierran la práctica.</p>
+<p><strong>Enunciado.</strong></p>
+<ol>
+<li>Una imprenta de Ejea de los Caballeros sirve papel a comercios de la comarca y lleva los pedidos servidos en una hoja de cálculo con una fila por cada tipo de papel servido en cada pedido.</li>
+<li>Cada pedido tiene un número único, se sirve en una fecha y es de un único comercio; un comercio recién dado de alta puede no haber hecho ningún pedido.</li>
+<li>De cada comercio se guardan su código y su nombre comercial; cada comercio tiene asignado un único comercial de la imprenta, que lo atiende en todos sus pedidos, y todo comercial atiende al menos un comercio; de cada comercial se guardan su código y su nombre completo.</li>
+<li>De cada tipo de papel se guardan su referencia, su denominación, su gramaje y el proveedor que lo suministra; cada referencia de papel la suministra un único proveedor, y todo proveedor suministra al menos una referencia; de cada proveedor se guardan su código y su razón social, que no se repite entre proveedores.</li>
+<li>En cada pedido se sirve al menos un tipo de papel, y de cada papel servido se anotan las hojas servidas y el precio por hoja aplicado ese día, que varía de un pedido a otro por los descuentos; un papel del catálogo puede no haberse servido nunca.</li>
+<li>Un mismo papel no aparece dos veces en el mismo pedido.</li>
+<li>Dos comercios distintos pueden tener el mismo nombre comercial, y dos comerciales el mismo nombre; dos papeles de proveedores distintos pueden tener la misma denominación y el mismo gramaje.</li>
+<li>Un comercio con pedidos no se elimina; si se elimina un pedido, sus líneas se eliminan con él; un comercial no se da de baja mientras tenga comercios asignados; un proveedor no se elimina mientras suministre algún papel.</li>
+<li>Los papeles que dejan de fabricarse se retiran del catálogo.</li>
+</ol>
+<p><strong>La hoja de la imprenta</strong>, <code>pedidos_todo</code>, tal como está hoy (las ocho filas de los primeros pedidos de octubre; el precio por hoja, en euros):</p>
+<table>
+<thead>
+<tr>
+<th><code>num_pedido</code></th>
+<th><code>fecha_pedido</code></th>
+<th><code>cod_comercio</code></th>
+<th><code>nombre_comercio</code></th>
+<th><code>cod_vendedor</code></th>
+<th><code>nombre_vendedor</code></th>
+<th><code>ref_papel</code></th>
+<th><code>denominacion_papel</code></th>
+<th><code>gramaje</code></th>
+<th><code>cod_proveedor</code></th>
+<th><code>razon_social_prov</code></th>
+<th><code>hojas_servidas</code></th>
+<th><code>precio_hoja</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P-101</td>
+<td>2026-10-02</td>
+<td>C01</td>
+<td>Papelería Arba</td>
+<td>V3</td>
+<td>Laura Gil</td>
+<td>A80</td>
+<td>Offset blanco</td>
+<td>80</td>
+<td>PR1</td>
+<td>Papeles del Ebro</td>
+<td>500</td>
+<td>0,060</td>
+</tr>
+<tr>
+<td>P-101</td>
+<td>2026-10-02</td>
+<td>C01</td>
+<td>Papelería Arba</td>
+<td>V3</td>
+<td>Laura Gil</td>
+<td>C90</td>
+<td>Estucado brillo</td>
+<td>90</td>
+<td>PR1</td>
+<td>Papeles del Ebro</td>
+<td>200</td>
+<td>0,110</td>
+</tr>
+<tr>
+<td>P-102</td>
+<td>2026-10-06</td>
+<td>C02</td>
+<td>Bar Avenida</td>
+<td>V1</td>
+<td>Laura Gil</td>
+<td>B80</td>
+<td>Offset blanco</td>
+<td>80</td>
+<td>PR2</td>
+<td>Suministros Gráficos Cinco Villas</td>
+<td>1000</td>
+<td>0,050</td>
+</tr>
+<tr>
+<td>P-103</td>
+<td>2026-10-02</td>
+<td>C03</td>
+<td>Bar Avenida</td>
+<td>V2</td>
+<td>Marcos Pina</td>
+<td>A80</td>
+<td>Offset blanco</td>
+<td>80</td>
+<td>PR1</td>
+<td>Papeles del Ebro</td>
+<td>800</td>
+<td>0,060</td>
+</tr>
+<tr>
+<td>P-103</td>
+<td>2026-10-02</td>
+<td>C03</td>
+<td>Bar Avenida</td>
+<td>V2</td>
+<td>Marcos Pina</td>
+<td>D120</td>
+<td>Cartulina marfil</td>
+<td>120</td>
+<td>PR2</td>
+<td>Suministros Gráficos Cinco Villas</td>
+<td>500</td>
+<td>0,200</td>
+</tr>
+<tr>
+<td>P-104</td>
+<td>2026-10-09</td>
+<td>C04</td>
+<td>Ferretería Cinco Villas</td>
+<td>V1</td>
+<td>Laura Gil</td>
+<td>E80</td>
+<td>Reciclado natural</td>
+<td>80</td>
+<td>PR2</td>
+<td>Suministros Gráficos Cinco Villas</td>
+<td>1000</td>
+<td>0,110</td>
+</tr>
+<tr>
+<td>P-105</td>
+<td>2026-10-09</td>
+<td>C01</td>
+<td>Papelería Arba</td>
+<td>V3</td>
+<td>Laura Gil</td>
+<td>F90</td>
+<td>Offset blanco</td>
+<td>90</td>
+<td>PR1</td>
+<td>Papeles del Ebro</td>
+<td>250</td>
+<td>0,070</td>
+</tr>
+<tr>
+<td>P-105</td>
+<td>2026-10-09</td>
+<td>C01</td>
+<td>Papelería Arba</td>
+<td>V3</td>
+<td>Laura Gil</td>
+<td>B80</td>
+<td>Offset blanco</td>
+<td>80</td>
+<td>PR2</td>
+<td>Suministros Gráficos Cinco Villas</td>
+<td>400</td>
+<td>0,048</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Tareas.</strong></p>
+<ul>
+<li><strong>(a) Las dependencias funcionales.</strong> Escribe las dependencias funcionales de la hoja <strong>a partir del enunciado</strong>, cada una con la frase que la sostiene, y di cuál es la clave de la hoja y por qué. Después usa la hoja solo para lo que sirve, refutar: señala, para cada una de estas cuatro dependencias tentadoras, la pareja de filas de la hoja que demuestra que <strong>no</strong> lo es: <code>nombre_comercio → cod_comercio</code>, <code>nombre_vendedor → cod_vendedor</code>, <code>ref_papel → precio_hoja</code> y <code>hojas_servidas → ref_papel</code>. Y explica por qué <code>razon_social_prov → cod_proveedor</code>, que tiene la misma pinta que las anteriores, <strong>sí</strong> es una dependencia funcional.</li>
+<li><strong>(b) Las tres anomalías.</strong> Provoca cada una con filas concretas de la hoja: una modificación que la deja inconsistente, una inserción que no se puede hacer y un borrado que hace desaparecer información que no se quería perder.</li>
+<li><strong>(c) Normalizar hasta 3FN.</strong> Sigue los cinco pasos del apartado 6.3 como en el ejemplo del 6.4: di en qué forma normal está la hoja y por qué; localiza las dependencias <strong>parciales</strong> y extrae sus hechos a tablas propias, escribiendo el <strong>esquema intermedio en 2FN</strong> en la notación de entrega; localiza después las <strong>transitivas</strong> (hay más de una, y una de ellas es una cadena de dos pasos) y extrae sus hechos, escribiendo el <strong>esquema final en 3FN</strong>; y comprueba la no pérdida reconstruyendo, a mano, la cuarta fila de la hoja a partir de las tablas finales.</li>
+<li><strong>(d) El cierre del círculo.</strong> Sin mirar el esquema de (c), aplica el método de la UD2 a las frases 2 a 6: dibuja el diagrama E/R del negocio <strong>en pata de gallo con draw.io</strong> (entidades con sus atributos y la clave marcada, líneas con terminadores en los dos extremos, los atributos de relación anotados), y tradúcelo con el apartado 4 a un esquema en la notación de entrega. Compara ese esquema con el final de (c), tabla por tabla y flecha por flecha, y explica qué ha pasado.</li>
+<li><strong>(e) Políticas y restricciones.</strong> Anota la política de borrado de cada clave ajena del esquema final con la frase que la decide; hay <strong>una política que el enunciado no fija</strong>: localízala, escribe la pregunta al cliente y deja anotada la opción que menos información destruye. Después escribe <strong>tres restricciones semánticas</strong> del negocio en formato RS: al menos dos deben salir de frases del enunciado que ninguna clave puede garantizar.</li>
+</ul>
+<p><strong>Cómo trabajar.</strong> El orden del apartado 6.3 no es negociable: primero las dependencias, luego las violaciones, luego las extracciones; quien trocea la hoja «a ojo» acaba con tablas que parecen razonables y no sabe por qué están ahí. Las dependencias salen de las frases, no de las columnas: «cada comercio tiene asignado un único comercial» es <code>cod_comercio → cod_vendedor</code>; y las filas de la hoja solo valen para refutar (si en dos filas el mismo nombre va con dos códigos, el nombre no determina el código), nunca para confirmar. Para la tarea (d), el diagrama se hace <strong>antes</strong> de mirar las tablas de (c): el sentido de la tarea es que las dos rutas se encuentren solas. Nombra el fichero con tu alias: <code>ud3-cp3-4-er-&lt;alias&gt;.drawio</code>, y guárdalo con su exportación para la sesión de corrección.</p>
+<h3 id="cp35-el-simulacro-del-examen-la-administradora-de-fincas-comarcal">CP3.5 · El simulacro del examen: la administradora de fincas comarcal<a class="headerlink" href="#cp35-el-simulacro-del-examen-la-administradora-de-fincas-comarcal" title="Permanent link">&para;</a></h3>
+<p><strong>Qué refuerza.</strong> Todo lo que entra en el examen de la 1.ª evaluación: el RA1 entero (UD1: síntomas del enfoque por ficheros y mecanismos del SGBD, modelos de datos, centralizadas y distribuidas, elementos y clasificación de los gestores, fragmentación, protección de datos, Big Data) y el RA6 entero (UD2 y UD3: lectura y ampliación de un diagrama E/R, traducción al esquema relacional, claves, integridad y políticas de borrado, normalización hasta 3FN y restricciones semánticas). Tiene la forma del examen: dos partes, una por RA, con las mismas piezas, los mismos puntos y los mismos tiempos. Lo que mide no es si has visto el enunciado antes (está publicado desde el principio de la unidad), sino si lo resuelves <strong>entero</strong>, <strong>en papel</strong> y <strong>en 120 minutos</strong>.</p>
+<p><strong>Cómo se hace.</strong> En la sesión del martes 17 de noviembre, de 10:20 a 12:40, con reloj de examen: 5 minutos de lectura, 38 para la parte A y 77 para la parte B, sin apuntes y sin ordenador; el enunciado se entrega impreso y se responde en hojas aparte, con el alias en cada hoja. Esa misma tarde se publica en el Classroom la solución con sus criterios de corrección (completo, parcial o nulo en cada pieza, con un ejemplo de respuesta de cada nivel) para que cada uno corrija su propio simulacro en casa y calcule su nota por RA. Las dudas de la corrección se resuelven en la sesión del lunes 23. El simulacro no puntúa: es la medida que te queda una semana antes del examen.</p>
+<p><strong>Parte A · RA1 · 38 minutos · 4,00 puntos.</strong></p>
+<p><strong>El contexto.</strong> Una administradora de fincas de las Cinco Villas, con oficinas en Tauste, Ejea de los Caballeros y Sádaba, gestiona 120 comunidades de propietarios: unos 2.400 pisos, 3.100 propietarios, 400 proveedores (fontaneros, ascensoristas, limpieza, seguros), unas 9.000 incidencias al año y unos 29.000 recibos al año, con quince empleados. Cada oficina trabaja con sus propias hojas de cálculo: un libro por comunidad con las hojas de pisos, propietarios y recibos, un fichero de incidencias por oficina y una lista de proveedores que cada oficina copió de la de Ejea hace dos años y ha ido corrigiendo por su cuenta, de modo que el mismo ascensorista aparece en las tres listas con dos teléfonos distintos. A final de mes, una empleada de Ejea copia a mano los recibos de las tres oficinas a un libro de consolidación; el mes pasado un recibo quedó apuntado a un piso que no existe en su comunidad y nadie lo detectó hasta que el propietario reclamó. Cuando dos empleados abren a la vez el libro de una comunidad, el último en guardar pisa los cambios del otro; y un corte de luz en octubre dejó inservible el libro de la comunidad más grande de Sádaba, que se recuperó de una copia de hacía tres semanas. La gerente quiere saber qué proveedores atienden más incidencias y a qué coste por comunidad, y la respuesta es una semana de trabajo de alguien con las tres listas delante. Las macros que generan los recibos dejaron de funcionar cuando se añadió una columna a la hoja de pisos. La hoja de propietarios guarda, además del nombre y el teléfono, la nacionalidad, la situación laboral, si la persona tiene movilidad reducida y una copia de la escritura; quien abre el libro de una comunidad lo ve todo, incluidos los proveedores, a los que se les envía el libro entero para que localicen el piso de una avería.</p>
+<p><strong>A1 · Test (1,25 puntos · 8 min).</strong> Cinco ítems con una sola opción correcta, 0,25 cada uno; el error no resta. Escribe en la hoja el número del ítem y la letra.</p>
+<ul>
+<li><strong>A1.1.</strong> La administradora quiere guardar cada incidencia como un documento que lleva dentro sus avisos, las visitas de los proveedores y las fotos, para leerlo entero de una vez. ¿A qué modelo de datos corresponde?
+  a) Jerárquico · b) En red · c) Relacional · d) Documental, no relacional</li>
+<li><strong>A1.2.</strong> Cada oficina pasa a tener su propio nodo con las comunidades que gobierna, y la gerente consulta «comunidades con recibos pendientes» sobre las 120 como si fuera una sola base de datos. ¿Qué es, según la ubicación de la información, y qué lo define?
+  a) Distribuida: los datos, en su operación normal, viven repartidos en nodos que cooperan y se presentan como una sola base de datos lógica · b) Distribuida solo si los tres nodos tienen una copia completa de las 120 comunidades · c) Tres bases de datos independientes: cada oficina tiene la suya · d) Centralizada: la gerente la consulta como una sola base</li>
+<li><strong>A1.3.</strong> Llega la consulta «incidencias abiertas de la comunidad CM-07». ¿Qué elemento del SGBD decide si se usa un índice por comunidad y en qué orden se combinan las tablas?
+  a) El procesador de consultas, al optimizar · b) El gestor de almacenamiento · c) El diccionario de datos · d) El gestor de recuperación</li>
+<li><strong>A1.4.</strong> Para los recibos, la administradora descarta un gestor documental: cada recibo apunta a un piso, a una comunidad y a conceptos del catálogo, y se consulta cruzándolos (pendientes por comunidad, importes por concepto). ¿En qué eje de clasificación se apoya el descarte?
+  a) El ámbito: un gestor documental es embebido y no admite varias oficinas · b) El despliegue: los gestores documentales solo funcionan en la nube · c) El modelo de datos: los recibos son filas relacionadas por claves que se consultan combinando tablas, y eso lo sirve un gestor relacional · d) La licencia: los gestores documentales son propietarios</li>
+<li><strong>A1.5.</strong> Unos 29.000 recibos al año, diez años de histórico, en un relacional bien indexado. ¿Es un escenario Big Data?
+  a) Sí, por la velocidad: llegan cada mes · b) Sí, por la variedad: hay recibos de conceptos distintos · c) Sí, por el volumen acumulado · d) No: el volumen lo maneja un gestor relacional sin cambiar de herramientas</li>
+</ul>
+<p><strong>A2 · El caso (1,25 puntos · 15 min).</strong> Elige <strong>tres</strong> de los siete síntomas del enfoque por ficheros (apartado 1.3 de la UD1) que aparecen en el contexto. Para cada uno escribe el nombre del síntoma, la <strong>evidencia</strong> concreta del contexto (el hecho que lo muestra) y el <strong>mecanismo del SGBD</strong> que lo resuelve, con su nombre y en una línea que diga cómo lo resuelve, no «un SGBD lo arregla».</p>
+<p><strong>A3 · Fragmentación (0,75 puntos · 8 min).</strong> La administradora va a pasar a un gestor relacional con un nodo por oficina y quiere decidir el reparto de cuatro conjuntos de datos. Para cada uno decide <strong>horizontal, vertical o réplica</strong>, con la consulta o el uso que lo justifica: (1) las comunidades y sus pisos, que cada oficina gestiona y consulta a diario; (2) las incidencias, que abre y sigue la oficina de la comunidad; (3) el catálogo de proveedores, que las tres oficinas consultan constantemente y que cambia unas pocas veces al año; (4) los datos de los propietarios, de los que las tres oficinas necesitan el nombre y el teléfono para los avisos comarcales, pero solo la oficina que cobra los recibos necesita la cuenta de domiciliación. Además, un primer borrador reparte las comunidades así: Tauste, las comunidades dadas de alta en 2025; Ejea, las dadas de alta en 2026; Sádaba, las comunidades con incidencias urgentes abiertas. Tiene dos defectos: di qué propiedad de una buena fragmentación incumple cada uno y escribe un criterio de reparto correcto.</p>
+<p><strong>A4 · Protección de datos (0,75 puntos · 7 min).</strong> La tabla de propietarios del nuevo sistema se ha diseñado copiando la hoja: <code>propietarios(num_propietario, nombre_completo, telefono_contacto, cuenta_domiciliacion, nacionalidad, situacion_laboral, movilidad_reducida, copia_escritura)</code>. Su única finalidad es gestionar los recibos y las incidencias de las comunidades. (a) Audita la tabla columna a columna según el principio de minimización: <strong>se queda / sobra / categoría especial</strong>, con el motivo en una línea. (b) La administradora trata los datos por cuenta de cada comunidad y aloja el sistema en un proveedor de nube: identifica el <strong>responsable</strong> y el <strong>encargado</strong> del tratamiento, di qué papel tiene el proveedor de nube y quién decide cuántos años se conservan los recibos.</p>
+<p><strong>Parte B · RA6 · 77 minutos · 6,00 puntos.</strong></p>
+<p>La misma administradora quiere ahora la base de datos de las comunidades. La figura B1 es el diagrama E/R, ya validado con la gerente, de la parte que está decidida: comunidades, pisos, propietarios, incidencias y proveedores. Se lee con la convención de la UD2 (apartado 3.4): la pareja (mín, máx) junto a una entidad dice cuántas ocurrencias de esa entidad corresponden a cada ocurrencia de la otra, y la etiqueta sobre el rombo es el tipo de la relación. Las incidencias se registran con la primera visita del proveedor que las atiende, así que no hay incidencia sin atención. Los extremos ①-④ están señalados con un círculo.</p>
+<p><img alt="Figura B1 del simulacro CP3.5. Diagrama en notación de Chen de la administradora de fincas: COMUNIDAD, PISO como entidad débil dentro de COMUNIDAD, PROPIETARIO, INCIDENCIA con la reflexiva reabre y PROVEEDOR, con las relaciones tiene, posee, origina, reabre y atiende, sus parejas de cardinalidad y su etiqueta de tipo, y los extremos 1 a 4 señalados con un círculo" src="../img/cp3-5-figB1-chen.svg" /></p>
+<p><strong>B1 · Lectura del diagrama (1,00 punto · 12 min).</strong> (a) Para cada extremo señalado, ①-④, escribe la frase del negocio que expresa su pareja, con el mínimo y el máximo explícitos (0,50). (b) Señala los elementos de la figura que delatan que PISO es una entidad débil y escribe la clave completa de un piso (0,25). (c) Escribe una regla del negocio que la administradora querría y que este diagrama no puede garantizar, y di por qué no puede (0,25).</p>
+<p><strong>B2 · Ampliación (1,00 punto · 12 min).</strong> Amplía el diagrama con estas dos frases, en la notación que prefieras (Chen o pata de gallo), dibujando solo lo nuevo y las entidades a las que se conecta:</p>
+<ol>
+<li>«Los proveedores son sociedades o profesionales autónomos: todo proveedor es una de las dos cosas y ninguno es las dos. De una sociedad se guardan además su CIF y el nombre de su administrador; de un autónomo, su número fiscal y su nombre.»</li>
+<li>«Cada comunidad la gestiona al menos un empleado de la administradora, y las grandes tienen dos; un empleado gestiona varias comunidades, pero los recién incorporados aún no gestionan ninguna. De cada empleado se guardan su código, su nombre completo y la oficina en la que trabaja.»</li>
+</ol>
+<p>Anota el tipo de la jerarquía (total o parcial, exclusiva o solapada) y, en la relación nueva, su etiqueta de tipo y sus dos parejas.</p>
+<p><strong>B3 · Traducción (1,50 puntos · 20 min).</strong> Escribe el esquema relacional íntegro del diagrama ampliado en la notación de entrega de la unidad: cada tabla con sus campos, la clave primaria en negrita (o subrayada, en papel), cada clave ajena con su flecha a la tabla destino, y la palabra NULL junto a las claves ajenas que lo admiten (el resto se da por NOT NULL). Para la jerarquía elige <strong>una</strong> estrategia con esta frase y justifícala en dos líneas: «La consulta de cada día sobre los proveedores es el listado de todos, con su nombre y su gremio, para decidir a quién llamar; una vez al trimestre, las sociedades y los autónomos se facturan por separado, cada grupo con sus datos propios.» Las políticas de borrado no se piden aquí: van en B4.</p>
+<p><strong>B4 · Claves e integridad (0,75 puntos · 12 min).</strong> (a) «Toda comunidad tiene un CIF, pero las recién constituidas tardan semanas en obtenerlo, y la administradora les abre expediente desde el primer día.» Di cuáles son las claves candidatas de COMUNIDAD, cuál eliges como primaria y por qué, con los criterios del apartado 2 (0,25). (b) Con estas tres frases, anota la política de borrado de tres claves ajenas de tu esquema: la de <code>pisos</code> hacia <code>comunidades</code>, la de <code>atenciones</code> hacia <code>proveedores</code> y la reflexiva de <code>incidencias</code>; junto a cada política, la frase que la decide: «Si una comunidad deja la administradora, su expediente se borra entero: pisos, incidencias y asignaciones de empleados; si un empleado se va, sus asignaciones se borran y sus comunidades se reparten de nuevo»; «Un proveedor con atenciones registradas no se elimina»; «Si se borra una incidencia, sus atenciones se borran con ella, y las incidencias que la reabrían pasan a ser incidencias independientes» (0,25). (c) Escribe una violación concreta de cada una de las tres reglas de integridad (de entidad, referencial y de dominio) sobre las tablas de tu esquema, con la fila que la provoca (0,25).</p>
+<p><strong>B5 · Normalización (1,25 puntos · 16 min).</strong> Mientras llega el sistema, los recibos se siguen llevando en la hoja <code>recibos_todo</code>, con una fila por cada concepto cobrado en cada recibo. Lo que dice el negocio:</p>
+<ol>
+<li>Cada comunidad tiene un código y un nombre; los recibos se numeran dentro de cada comunidad, de modo que cada comunidad tiene su recibo 1.</li>
+<li>Cada recibo es de un piso de su comunidad, identificado por la puerta, y de un periodo.</li>
+<li>Cada piso tiene un único titular, del que se anota su nombre.</li>
+<li>Los conceptos cobrables tienen un código y una descripción, que no se repite entre conceptos.</li>
+<li>El importe se fija para cada concepto de cada recibo.</li>
+</ol>
+<p>La hoja, tal como está hoy (las ocho filas de los últimos recibos emitidos; importes en euros):</p>
+<table>
+<thead>
+<tr>
+<th><code>codigo_comunidad</code></th>
+<th><code>num_recibo</code></th>
+<th><code>periodo_recibo</code></th>
+<th><code>nombre_comunidad</code></th>
+<th><code>puerta</code></th>
+<th><code>nombre_titular</code></th>
+<th><code>cod_concepto</code></th>
+<th><code>descripcion_concepto</code></th>
+<th><code>importe_linea</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CM-07</td>
+<td>1</td>
+<td>2026-09</td>
+<td>Edificio Arcos</td>
+<td>1.º A</td>
+<td>Pilar Ansó</td>
+<td>CO</td>
+<td>Cuota ordinaria</td>
+<td>45,00</td>
+</tr>
+<tr>
+<td>CM-07</td>
+<td>1</td>
+<td>2026-09</td>
+<td>Edificio Arcos</td>
+<td>1.º A</td>
+<td>Pilar Ansó</td>
+<td>LZ</td>
+<td>Limpieza de zonas comunes</td>
+<td>12,50</td>
+</tr>
+<tr>
+<td>CM-07</td>
+<td>2</td>
+<td>2026-09</td>
+<td>Edificio Arcos</td>
+<td>3.º C</td>
+<td>Nuria Beltrán</td>
+<td>CO</td>
+<td>Cuota ordinaria</td>
+<td>45,00</td>
+</tr>
+<tr>
+<td>CM-07</td>
+<td>3</td>
+<td>2026-10</td>
+<td>Edificio Arcos</td>
+<td>1.º A</td>
+<td>Pilar Ansó</td>
+<td>CO</td>
+<td>Cuota ordinaria</td>
+<td>47,00</td>
+</tr>
+<tr>
+<td>CM-12</td>
+<td>2</td>
+<td>2026-10</td>
+<td>Residencial La Huerta</td>
+<td>3.º C</td>
+<td>Nuria Beltrán</td>
+<td>SG</td>
+<td>Seguro del edificio</td>
+<td>12,50</td>
+</tr>
+<tr>
+<td>CM-12</td>
+<td>3</td>
+<td>2026-10</td>
+<td>Residencial La Huerta</td>
+<td>1.º A</td>
+<td>Nuria Beltrán</td>
+<td>CO</td>
+<td>Cuota ordinaria</td>
+<td>38,00</td>
+</tr>
+<tr>
+<td>CM-21</td>
+<td>1</td>
+<td>2026-10</td>
+<td>Edificio Arcos</td>
+<td>3.º C</td>
+<td>Jorge Lasierra</td>
+<td>CO</td>
+<td>Cuota ordinaria</td>
+<td>60,00</td>
+</tr>
+<tr>
+<td>CM-21</td>
+<td>1</td>
+<td>2026-10</td>
+<td>Edificio Arcos</td>
+<td>3.º C</td>
+<td>Jorge Lasierra</td>
+<td>DA</td>
+<td>Derrama ascensor</td>
+<td>90,00</td>
+</tr>
+</tbody>
+</table>
+<p>(a) Escribe las dependencias funcionales de la hoja con la frase que sostiene cada una, y di cuál es su clave y por qué (0,35). (b) Di en qué forma normal está la hoja y qué dependencia le impide pasar a la siguiente (0,15). (c) Escribe el esquema en 2FN en la notación de entrega (0,35). (d) Escribe el esquema en 3FN y, en una línea, qué entidad del diagrama B1 ha quedado escondida en la hoja y por qué la hoja no permite recuperarla bien (0,40).</p>
+<p><strong>B6 · Restricciones semánticas (0,50 puntos · 5 min).</strong> Escribe dos restricciones semánticas de este negocio en el formato de la unidad (código · enunciado · tablas y atributos · mecanismo previsto) que ninguna clave primaria ni ajena del esquema de B3 pueda garantizar.</p>
+<p><strong>Puntuación y nota.</strong> Parte A, 4,00 puntos: A1 1,25 · A2 1,25 · A3 0,75 · A4 0,75. Parte B, 6,00 puntos: B1 1,00 · B2 1,00 · B3 1,50 · B4 0,75 · B5 1,25 · B6 0,50. Nota del RA1 = puntos de A ÷ 4 × 10; nota del RA6 = puntos de B ÷ 6 × 10; nota del examen = A + B. Mínimos del examen: 5 en el examen y 4 en cada RA (1,60 puntos en A y 2,40 en B).</p>
+<p><strong>Cómo trabajar.</strong> Reparte el tiempo por piezas como está escrito y no te quedes en la que no sale: en B3 valen más diez tablas con una clave ajena mal que tres tablas perfectas. Lee las parejas de la figura junto a la entidad en la que están escritas, con la pregunta del apartado 3.4 de la UD2 («dado UN x, ¿cuántos y?»). En B5, las dependencias salen de las cinco frases, y las filas de la hoja solo sirven para refutar. Y escribe las políticas y las restricciones con su frase: en el examen, una decisión sin su frase es una decisión a medias.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Apuntes DAW · <a href="https://github.com/codigoRonin">Código Ronin</a> · IES Río Arba
+    </div>
+  
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/codigoRonin" target="_blank" rel="noopener" title="Código Ronin en GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+    
+  </body>
+</html>
