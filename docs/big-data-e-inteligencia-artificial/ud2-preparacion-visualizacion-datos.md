@@ -205,6 +205,26 @@ min      1.000000  -999.000000  -12.000000
 max     35.500000  1250.000000  142.300000
 ```
 
+!!! info "Cómo se lee `describe()`: media, mediana y desviación típica"
+
+    Cinco lecturas de PM10: 20, 22, 25, 28 y 30.
+
+    - **Media** (`mean`): la suma de los valores entre cuántos hay, (20 + 22 + 25 + 28 + 30) ÷ 5 = 25. Es el reparto a partes iguales.
+    - **Mediana** (`50%`): el valor central, una vez ordenados: 25. La mitad de los datos queda por debajo y la otra mitad por encima; con un número par de datos, es la media de los dos centrales.
+    - **Desviación típica** (`std`): cuánto se separan los valores de la media, en promedio: aquí, 4,1. Con 0, todos los valores serían iguales.
+
+    Ahora cambia un solo valor, el 30, por un error del sensor, 1250:
+
+    | | 20, 22, 25, 28, 30 | 20, 22, 25, 28, 1250 |
+    |---|---|---|
+    | Media | 25 | 269 |
+    | Mediana | 25 | 25 |
+    | Desviación típica | 4,1 | 548,4 |
+
+    La media se va a un valor que no se parece a ningún día. La mediana ni se entera: es **resistente**. La desviación típica se multiplica por más de cien, porque eleva al cuadrado las distancias a la media y un valor lejano pesa muchísimo: es **sensible**. El resto de filas: `count` cuenta los valores que no faltan; `min` y `max` son los extremos, que es donde asoman los imposibles; `25%` y `75%` son los cuartiles, los valores por debajo de los cuales queda la cuarta parte y las tres cuartas partes de los datos.
+
+    **Regla práctica:** si la media y la mediana se parecen y la desviación típica es pequeña a su lado, los datos son razonables; si se separan mucho, mira `min` y `max` antes de calcular nada.
+
 Cuánto cuenta esa tabla: `no2` tiene 356 valores de 370 (faltan 14) y `pm10` 360 (faltan 10); `pm10` tiene un mínimo de **−999** — un centinela de "sin dato" codificado como número — y un máximo de **1250**, imposible; `o3` un mínimo negativo; y la desviación típica de `pm10` (114) frente a su mediana (25) delata que unos pocos valores imposibles — los −999 y el 1250 — la disparan: sin ellos baja a 11. Son **errores de los datos** que el tipo numérico permite ver. `temperatura` no aparece porque es texto: su 99 °C sigue escondido.
 
 **Poner el tipo correcto.** La conversión de tipos es el primer paso del preprocesamiento, y hay que hacerla con cuidado. Con la fecha basta pedirla al cargar; con la temperatura la tentación es `decimal=","`, y es una **trampa**:
