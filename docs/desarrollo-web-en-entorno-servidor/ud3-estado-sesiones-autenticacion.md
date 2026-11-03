@@ -560,8 +560,8 @@ var_dump(password_needs_rehash($hash1, PASSWORD_DEFAULT));
 ```
 
 ```
-Hash 1: $2y$10$q4ZKNIs.ikOoV6rJqttZBu0bQCej7L6su9okQX/iEvDBCLvuuKKTy
-Hash 2: $2y$10$WKqcbGeefd0sY5o8VVUY/.m.gn80tnN.7eejrDET5mzDwrYMLjSKm
+Hash 1: $2y$12$ivQy/5YOQFmuTU75bNyKGuslz5Ov5fL2zoeATyMnklOVC96AfeQ/6
+Hash 2: $2y$12$54XCjCNKOp2Y2NFxXCeVg.ZxiWuF0kIh4hxHWuWuVuVjXa0IvuVZW
 bool(false)
 bool(true)
 bool(true)
@@ -569,7 +569,7 @@ bool(false)
 bool(false)
 ```
 
-Tus hashes serán otros — cambian **en cada ejecución** — y esa es precisamente la primera lección: la misma contraseña produce dos hashes distintos porque `password_hash` añade una **sal** aleatoria antes de calcular. Así, dos socios con la misma contraseña tienen hashes distintos, y una tabla precalculada de hashes de contraseñas comunes no sirve contra ninguno. La segunda lección: como no puedes comparar hashes entre sí, la comprobación **siempre** es `password_verify(contraseña, hash)`, que extrae la sal del propio hash y repite el cálculo; jamás `===` (error 4 del apartado 11). La tercera está en el prefijo `$2y$10$`: identifica el algoritmo (bcrypt, el `PASSWORD_DEFAULT` actual) y su **coste** (10, un exponente: cuántas vueltas de cálculo se hacen, deliberadamente lentas para frenar ataques por fuerza bruta). Ese 10 es el de PHP 8.3 y anteriores: **desde PHP 8.4 el coste por defecto es 12**, y tus hashes empezarán por `$2y$12$`. El número cambia, las funciones no, y para eso existe **`password_needs_rehash()`**: dice si un hash guardado se hizo con parámetros más débiles que los actuales, para regenerarlo en el siguiente inicio de sesión (el momento en que, por una vez, tienes la contraseña en la mano). Y la cuarta, en la penúltima línea del código: `Ibones2026` no valida, porque una contraseña es exacta. Con `md5` o `sha1` **no** se hace nada de esto: son rápidos y sin sal, justo lo contrario de lo que una contraseña necesita.
+Tus hashes serán otros — cambian **en cada ejecución** — y esa es precisamente la primera lección: la misma contraseña produce dos hashes distintos porque `password_hash` añade una **sal** aleatoria antes de calcular. Así, dos socios con la misma contraseña tienen hashes distintos, y una tabla precalculada de hashes de contraseñas comunes no sirve contra ninguno. La segunda lección: como no puedes comparar hashes entre sí, la comprobación **siempre** es `password_verify(contraseña, hash)`, que extrae la sal del propio hash y repite el cálculo; jamás `===` (error 4 del apartado 11). La tercera está en el prefijo `$2y$12$`: identifica el algoritmo (bcrypt, el `PASSWORD_DEFAULT` actual) y su **coste** (12, un exponente: cuántas vueltas de cálculo se hacen, deliberadamente lentas para frenar ataques por fuerza bruta). Ese 12 es el coste por defecto **desde PHP 8.4**; con PHP 8.3 o anterior verás `$2y$10$`, y es igual de válido. El número cambia, las funciones no, y para eso existe **`password_needs_rehash()`**: dice si un hash guardado se hizo con parámetros más débiles que los actuales, para regenerarlo en el siguiente inicio de sesión (el momento en que, por una vez, tienes la contraseña en la mano). Y la cuarta, en la penúltima línea del código: `Ibones2026` no valida, porque una contraseña es exacta. Con `md5` o `sha1` **no** se hace nada de esto: son rápidos y sin sal, justo lo contrario de lo que una contraseña necesita.
 
 **Ejercicios del apartado.**
 
@@ -697,7 +697,7 @@ $ cat datos/usuarios.json
         "nombre": "Sara Otal",
         "correo": "sara.otal@example.org",
         "rol": "socio",
-        "hash": "$2y$10$w79u/DkW9aIr03tQnp/GnO23ZNV58ey4igelstrw5HpQYV4FMCZcG"
+        "hash": "$2y$12$1Fhqn3ky7m654wwPy3fHQ.YejJgvoOTWvtegYcXIiieuNGhFLrY2u"
     }
 ]
 ```
