@@ -702,6 +702,8 @@ $ cat datos/usuarios.json
 ]
 ```
 
+Dos detalles del registro. El **rol** queda fijado en `'socio'`, y ninguna página permite cambiarlo: los monitores y la administración no se registran, sino que ya vienen en `datos/usuarios.php` (el fichero íntegro de la unidad). Dar a alguien otro rol es una tarea de administración que se hace en el almacén, nunca desde un formulario. Y las clases `error` y `aviso` que verás en el registro y en el inicio de sesión son solo **ganchos** para una hoja de estilos. En esta unidad no hay CSS, porque todo se prueba con `curl` y lo que importa es lo que responde el servidor. Si quieres que se distingan en el navegador, basta con añadir `<style>.error { color: #b00020; } .aviso { color: #1b5e20; }</style>` en la parte HTML, después del `?>`. Nunca lo pongas antes del `<?php` inicial: rompería las redirecciones (error 1 del apartado 11).
+
 Ahora el **inicio de sesión**, el fichero central de la unidad:
 
 ```php
@@ -755,7 +757,7 @@ Set-Cookie: PHPSESSID=qq3l4lbkeckc7n4llo9njbvt0t; path=/
 Location: mi-ficha.php
 ```
 
-La tercera petición lo cuenta todo: credenciales correctas → **cookie de sesión nueva** (`Set-Cookie` con un identificador distinto del que tenía el tarro: eso es `session_regenerate_id`) → redirección a la ficha. A partir de aquí, cada petición con esa llave encuentra `$_SESSION['usuario']` en su cajón, y la aplicación sabe quién habla.
+La tercera petición lo cuenta todo: credenciales correctas → **cookie de sesión nueva** (`Set-Cookie` con un identificador distinto del que tenía el tarro: eso es `session_regenerate_id`) → redirección a la ficha. Esa ficha, `mi-ficha.php`, la escribes en el apartado 7 junto con su puerta, `auth.php`; hasta entonces, la redirección acaba en un `404`. A partir de aquí, cada petición con esa llave encuentra `$_SESSION['usuario']` en su cajón, y la aplicación sabe quién habla.
 
 Y el **cierre de sesión**, que hace las tres cosas que un cierre serio hace — vaciar, invalidar la cookie y destruir el cajón — y redirige:
 
@@ -782,7 +784,7 @@ El mismo truco de caducidad en el pasado del apartado 2, aplicado a la llave. Co
 
 **Ejercicios del apartado.**
 
-- **E16.** Regístrate con `curl` (un usuario ficticio con tu alias), entra, pide `mi-ficha.php` con el tarro y cierra sesión; vuelve a pedir la ficha. Pega la secuencia con los códigos de estado y los `Set-Cookie`. Marca en qué petición cambió el identificador de sesión y en cuál se borró.
+- **E16.** Copia antes `auth.php` y `mi-ficha.php` del apartado 7. Regístrate con `curl` (un usuario ficticio con tu alias), entra, pide `mi-ficha.php` con el tarro y cierra sesión; vuelve a pedir la ficha. Pega la secuencia con los códigos de estado y los `Set-Cookie`. Marca en qué petición cambió el identificador de sesión y en cuál se borró.
 - **E17.** Cambia el mensaje de error de `login.php` por dos distintos («El usuario no existe» / «Contraseña incorrecta») y, con `curl`, demuestra en dos peticiones cómo un atacante sabría ahora que `lucia.ramos` existe y `lucia.ramoz` no. Vuelve a dejarlo genérico y explica en dos líneas qué es una *enumeración de usuarios*.
 - **E18.** El registro abre la sesión (`session_start()`) solo para dejar el mensaje de un solo uso. Propón y programa una alternativa **sin** sesión para llevar ese aviso al login (pista: un parámetro en la URL, validado) y compara ambas: ¿cuál puede manipular el usuario y con qué consecuencia? Argumenta cuál prefieres.
 
