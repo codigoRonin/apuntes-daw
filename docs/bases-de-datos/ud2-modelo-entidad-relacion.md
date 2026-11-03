@@ -250,7 +250,9 @@ erDiagram
 
     ![Figura 8. Diagrama Chen para interpretar: LECTOR, PRESTAMO, EJEMPLAR como entidad débil y LIBRO, con cardinalidades, etiquetas de tipo y discriminante](img/ud2-fig8-chen-lectura-biblioteca.svg)
 
-    *(a)* Escribe las **ocho frases de cardinalidad** (mínimo y máximo de cada extremo de las tres relaciones) y comprueba que la etiqueta de tipo de cada rombo se deriva de los máximos que has leído; *(b)* identifica la entidad débil, su relación identificativa y su discriminante, explicando por qué símbolo lo sabes; *(c)* di cómo se identifica completamente un ejemplar concreto; *(d)* señala una regla razonable del negocio que este diagrama **no** captura y que iría a la documentación del paso 7 del apartado 7.
+    *Figura 8. El circuito de préstamos de la biblioteca en notación de Chen, para interpretar.*
+
+    *(a)* Escribe las **seis frases de cardinalidad** (mínimo y máximo de cada extremo de las tres relaciones) y comprueba que la etiqueta de tipo de cada rombo se deriva de los máximos que has leído; *(b)* identifica la entidad débil, su relación identificativa y su discriminante, explicando por qué símbolo lo sabes; *(c)* di cómo se identifica completamente un ejemplar concreto; *(d)* señala una regla razonable del negocio que este diagrama **no** captura y que iría a la documentación del paso 7 del apartado 7.
 
 <div style="page-break-before: always;"></div>
 
