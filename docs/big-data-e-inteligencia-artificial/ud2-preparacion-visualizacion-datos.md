@@ -147,6 +147,7 @@ Cada columna tiene además **características** que conviene anotar antes de ana
 
 ```python
 import pandas as pd
+import numpy as np
 
 aire = pd.read_csv("calidad_aire.csv")
 print(aire.head())
@@ -847,7 +848,16 @@ Sádaba                     9     1      1
 Tauste                     2     1      3
 ```
 
-`np.select` evalúa las condiciones en orden y asigna la primera que se cumple; la lista vacía confirma que nada quedó en `otro` (si quedara, se clasifica **a mano**). La última tabla — `unstack` gira la categoría a columnas — es lo publicable: el humo se concentra en Luna y Sádaba, el polvo en Ejea y Tauste, y no hay una persona en ella. Pero el umbral también rige aquí: una celda con 1 o 2 avisos sigue siendo una pista (en Luna solo hay un aviso de polvo: si sabes que tu vecina siempre se queja del polvo, ya sabes que el aviso es suyo). Antes de publicar, esas celdas se muestran como «< 3». La tabla fila a fila, aun sin correo ni texto, **no** se publica (k = 1): se conserva en local para el análisis.
+Línea a línea:
+
+- **`dt.isocalendar().week`**: `isocalendar()` devuelve, para cada fecha, el año, la semana y el día de la semana según la norma ISO (las semanas empiezan en lunes), y `.week` se queda con la semana (de 1 a 53). Guardar la semana en vez del día es otra **generalización**: «semana 24» dice mucho menos que una fecha exacta. La semana sola no distingue años; aquí todos los avisos son de abril a junio de 2026, pero con datos de varios años habría que conservar también `year`.
+- **`str.contains(...)`**: comprueba, aviso a aviso, si el texto contiene alguna de las palabras. La barra `|` significa «o» (es una expresión regular) y `case=False` ignora las mayúsculas. Cada condición devuelve una columna de `True`/`False`. Busca trozos de texto, no palabras enteras: «quema» encuentra «quemado». Y la tilde cuenta: «purin» no encontraría «purín».
+- **`np.select(condiciones, valores, default="otro")`**: recibe las condiciones y los valores en el mismo orden, y a cada fila le asigna el valor de la **primera** condición que sea `True`; si ninguna lo es, `default`. Por eso el orden de las reglas es una decisión: «olor a quemado» cumple la regla del humo y la del olor, y gana el humo porque va primero. En este fichero hay seis avisos así.
+- **`value_counts()` y la lista de `otro`**: el recuento dice cuántos avisos hay de cada categoría; la lista muestra los textos que ninguna regla ha atrapado. Sale vacía, así que no queda nada por revisar. Si saliera algo, se lee y se decide **a mano**: una regla nueva o una categoría asignada directamente.
+- **`filas = rep[[...]]`**: el doble corchete elige columnas. Se quedan la semana, la localidad, el tramo y la categoría; se caen `id`, `fecha`, `edad`, `sexo` y `texto`. Es la **minimización**: solo lo que el análisis necesita.
+- **`groupby(...).size().unstack(fill_value=0)`**: `groupby(...).size()` cuenta los avisos de cada pareja localidad-categoría, y `unstack` gira la categoría a columnas para obtener una tabla de doble entrada. `fill_value=0` escribe 0 donde una pareja no aparece (Ejea no tiene avisos de humo), en lugar de `NaN`.
+
+La última tabla es lo publicable: el humo se concentra en Luna y Sádaba, el polvo en Ejea y Tauste, y no hay una persona en ella. Pero el umbral también rige aquí: una celda con 1 o 2 avisos sigue siendo una pista (en Luna solo hay un aviso de polvo: si sabes que tu vecina siempre se queja del polvo, ya sabes que el aviso es suyo). Antes de publicar, esas celdas se muestran como «< 3». La tabla fila a fila, aun sin correo ni texto, **no** se publica (k = 1): se conserva en local para el análisis.
 
 Queda ver, para cerrar el círculo del apartado 1.1, qué es y qué no es un **seudónimo**. Si el servicio necesita saber que dos avisos vienen de la misma persona sin guardar su correo, lo sustituye por un resumen criptográfico con una **sal** — una cadena secreta que se guarda aparte:
 
