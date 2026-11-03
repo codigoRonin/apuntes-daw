@@ -811,7 +811,7 @@ print(k2.min(), (k2 == 1).sum(), len(k2))
 1 3 12
 ```
 
-Con localidad, tramo y sexo hay 22 combinaciones, **15 con una sola persona** (k = 1): quien sepa que su vecina de 81 años de Sádaba envió un aviso la encuentra. Sin el sexo, 12 combinaciones y aún 3 únicas. Ninguna combinación que conserve la localidad consigue k ≥ 2 fila a fila (E12), y la conclusión es la profesional: **se publica el agregado**, no las filas. Antes, el texto libre se sustituye por una categoría cerrada con reglas de palabras clave **por orden de prioridad** ("olor a plástico quemado" es humo: la primera regla gana), revisando lo que no encaja:
+Con localidad, tramo y sexo hay 22 combinaciones, **15 con una sola persona** (k = 1): quien sepa que su vecina de 81 años de Sádaba envió un aviso la encuentra. Sin el sexo, 12 combinaciones y aún 3 únicas. Mientras la localidad vaya acompañada de la edad o del sexo, ninguna combinación llega a k ≥ 3 fila a fila (la localidad sola sí, con k = 4, pero entonces las filas ya no dicen casi nada; E12), y la conclusión es la profesional: **se publica el agregado**, no las filas. Antes, el texto libre se sustituye por una categoría cerrada con reglas de palabras clave **por orden de prioridad** ("olor a plástico quemado" es humo: la primera regla gana), revisando lo que no encaja:
 
 ```python
 rep["semana"] = rep["fecha"].dt.isocalendar().week
@@ -821,9 +821,9 @@ rep["categoria"] = np.select([rep["texto"].str.contains("humo|quema|hoguera", ca
                              ["humo", "olor", "polvo"], default="otro")
 print(rep["categoria"].value_counts())
 print(rep[rep["categoria"] == "otro"]["texto"].tolist())
-publicable = rep[["semana", "localidad", "tramo_edad", "categoria"]]
-print(publicable.head())
-print(publicable.groupby(["localidad", "categoria"], observed=True).size().unstack(fill_value=0))
+filas = rep[["semana", "localidad", "tramo_edad", "categoria"]]
+print(filas.head())
+print(filas.groupby(["localidad", "categoria"], observed=True).size().unstack(fill_value=0))
 ```
 
 ```
@@ -847,7 +847,7 @@ Sádaba                     9     1      1
 Tauste                     2     1      3
 ```
 
-`np.select` evalúa las condiciones en orden y asigna la primera que se cumple; la lista vacía confirma que nada quedó en `otro` (si quedara, se clasifica **a mano**). La última tabla — `unstack` gira la categoría a columnas — es lo publicable: el humo se concentra en Luna y Sádaba, el polvo en Ejea y Tauste, y no hay una persona en ella. La tabla fila a fila, aun sin correo ni texto, **no** se publica (k = 1): se conserva en local para el análisis.
+`np.select` evalúa las condiciones en orden y asigna la primera que se cumple; la lista vacía confirma que nada quedó en `otro` (si quedara, se clasifica **a mano**). La última tabla — `unstack` gira la categoría a columnas — es lo publicable: el humo se concentra en Luna y Sádaba, el polvo en Ejea y Tauste, y no hay una persona en ella. Pero el umbral también rige aquí: una celda con 1 o 2 avisos sigue siendo una pista (en Luna solo hay un aviso de polvo: si sabes que tu vecina siempre se queja del polvo, ya sabes que el aviso es suyo). Antes de publicar, esas celdas se muestran como «< 3». La tabla fila a fila, aun sin correo ni texto, **no** se publica (k = 1): se conserva en local para el análisis.
 
 Queda ver, para cerrar el círculo del apartado 1.1, qué es y qué no es un **seudónimo**. Si el servicio necesita saber que dos avisos vienen de la misma persona sin guardar su correo, lo sustituye por un resumen criptográfico con una **sal** — una cadena secreta que se guarda aparte:
 
@@ -855,7 +855,7 @@ Queda ver, para cerrar el círculo del apartado 1.1, qué es y qué no es un **s
 import hashlib
 
 todos = pd.read_csv("reportes_olores.csv")
-SAL = "clave-secreta-guardada-aparte"
+SAL = "clave-secreta-guardada-aparte"  # en real, fuera del código (p. ej., una variable de entorno)
 todos["seudonimo"] = todos["correo"].apply(lambda c: hashlib.sha256((SAL + c).encode()).hexdigest()[:10])
 print(todos[["correo", "seudonimo"]].head(3))
 print(todos["seudonimo"].nunique())
@@ -1251,6 +1251,7 @@ El `DECISIONES.md` de esta unidad recoge las decisiones de **protección de dato
   - `edad` → tramos 18-34 / 35-64 / 65+. `texto` → categoría cerrada humo/olor/polvo, revisada.
   - k-anonimidad fila a fila: k = 1 con (localidad, tramo, sexo) y con (localidad, tramo).
     Decisión: se publica solo el agregado localidad × categoría; las filas quedan en local.
+  - Umbral k ≥ 3, también en el agregado: las celdas con 1 o 2 avisos se publican como «< 3».
 
 ## Limpieza de `calidad_aire.csv` (apartado 4)
 - 370 filas → 364 tras retirar 6 duplicadas exactas (4 estaciones × 91 días, comprobado).
