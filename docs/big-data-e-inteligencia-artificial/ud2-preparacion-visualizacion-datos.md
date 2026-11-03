@@ -790,7 +790,14 @@ tramo_edad
 Name: count, dtype: int64
 ```
 
-`pd.cut` convierte una variable continua en categorías **ordinales** con los cortes dados (cada intervalo incluye su límite superior). ¿Es ya anónimo? Se comprueba, no se supone: la **k-anonimidad** cuenta cuántas filas comparten cada combinación de cuasi-identificadores:
+`pd.cut` agrupa una variable numérica en tramos. Recibe dos listas:
+
+- **`bins`**: los puntos de corte. Con `[17, 34, 64, 120]` se forman tres intervalos: (17, 34], (34, 64] y (64, 120]. Cada intervalo **incluye su límite superior y excluye el inferior**: por eso el primer corte es 17 y no 18 (una persona de 18 entra en el primer tramo; una de 17, no). Ojo: en el histograma del apartado 5.4, `bins=20` es otra cosa — un número de intervalos iguales, no una lista de cortes.
+- **`labels`**: el nombre de cada tramo, en el mismo orden. Siempre hay **una etiqueta menos que cortes** (4 cortes → 3 tramos → 3 etiquetas).
+
+Si una edad queda fuera de todos los intervalos (15 o 130, por ejemplo), `pd.cut` no da error: le asigna `NaN`. Por eso los cortes deben cubrir todo el rango de los datos, y se comprueba con `rep["tramo_edad"].isna().sum()` (aquí, 0).
+
+El resultado es una columna de categorías **ordinales**: tienen orden (18-34 < 35-64 < 65+), y por eso `sort_index()` muestra los tramos por edad y no alfabéticamente. Es la generalización que decidió el apartado 1.3: una edad exacta señala mucho más que un tramo. ¿Es ya anónimo? Se comprueba, no se supone: la **k-anonimidad** cuenta cuántas filas comparten cada combinación de cuasi-identificadores:
 
 ```python
 k = rep.groupby(["localidad", "tramo_edad", "sexo"], observed=True).size()
