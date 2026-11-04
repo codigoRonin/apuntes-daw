@@ -913,7 +913,12 @@ La regla para elegir el tipo es la pregunta que quieres responder:
 La pregunta de la unidad — *¿cuándo y dónde fue peor el aire?* — es temporal, y su gráfico es la serie. Cuatro estaciones, una línea cada una, el valor límite como referencia y el episodio sombreado:
 
 ```python
+import pandas as pd
 import matplotlib.pyplot as plt
+from pathlib import Path
+
+aire = pd.read_csv("calidad_aire_limpio.csv", parse_dates=["fecha"])   # la tabla limpia del apartado 4.5
+Path("figuras").mkdir(exist_ok=True)
 
 LIMITE_PM10 = 50   # valor límite diario, µg/m³ (RD 102/2011)
 ESTILOS = {"Ejea de los Caballeros": ("-", "o"), "Tauste": ("--", "s"),
@@ -935,6 +940,27 @@ fig.savefig("figuras/pm10_serie.png", dpi=150)
 ![Serie temporal de PM10 por estación con el valor límite y el episodio de mayo](figuras/pm10_serie.png)
 
 Lo que se ve en dos segundos: el episodio del 18 al 21 de mayo levanta a las cuatro estaciones a la vez por encima del límite; Tauste (tráfico) va casi siempre por encima de las rurales; y la superación aislada del 5 de abril está ahí, sola. Tres decisiones que no son estéticas: **trazo y marcador distintos** por estación además del color (para quien no distingue colores y para imprimir); `axhline` con la **referencia** — sin el valor límite un gráfico de contaminación no dice si el aire es bueno o malo —; y `axvspan` marcando el **periodo** del informe. `autofmt_xdate()` inclina las fechas; `tight_layout()` ajusta márgenes.
+
+Las dos primeras líneas tras los `import` hacen que el bloque funcione también en un cuaderno nuevo: cargan la tabla que guardaste al final del apartado 4.5 (si no la tienes, ejecuta antes ese apartado) y crean la carpeta `figuras/`, porque `savefig` no crea carpetas. Sin `parse_dates`, `fecha` se lee como texto y el eje de fechas falla. Si vienes del apartado 4 en el mismo cuaderno, volver a cargarla no cambia nada.
+
+**Los parámetros que vas a ver en todos los gráficos.** Se repiten del 5.2 al 5.6; aquí se explican una vez:
+
+| Parámetro | Qué hace | En el código |
+|---|---|---|
+| `figsize=(ancho, alto)` | Tamaño de la figura en pulgadas; con `dpi=150` al guardar, 10 pulgadas son 1500 píxeles | `plt.subplots(figsize=(10, 4.5))` |
+| `linestyle` | Trazo de la línea: `"-"` continuo, `"--"` discontinuo, `"-."` raya y punto, `":"` punteado | `linestyle=ls` |
+| `marker` | Forma de cada punto: `"o"` círculo, `"s"` cuadrado, `"^"` triángulo, `"d"` rombo | `marker=mk` |
+| `markersize`, `linewidth`, `s` | Tamaño del marcador, grosor de la línea y, en `scatter`, área de cada punto | `markersize=3, linewidth=1.2` · `s=22` |
+| `label` + `ax.legend()` | `label` da nombre a lo que dibujas; `legend` lo reúne en la leyenda. Opciones: `loc` (dónde), `fontsize`, `ncol` (columnas) y `title` | `ax.legend(loc="upper right", fontsize=8, ncol=2)` |
+| `alpha` | Opacidad, de 0 (invisible) a 1 (opaco); para fondos y nubes de puntos que se solapan | `alpha=0.2` |
+| `edgecolor` | Color del borde de barras y puntos, para que se separen unos de otros | `edgecolor="black"` |
+| `ax.grid(...)` | Cuadrícula de fondo; `axis="y"` la deja solo en horizontal, útil en barras e histogramas | `ax.grid(axis="y", alpha=0.3)` |
+| `axhline` / `axvline` | Línea de referencia horizontal o vertical que cruza todo el gráfico | `ax.axhline(LIMITE_PM10, ...)` |
+| `ax.tick_params(...)` | Ajusta las marcas de los ejes; `rotation=0` deja las etiquetas rectas | `ax.tick_params(axis="x", rotation=0)` |
+| `pd.Timestamp("aaaa-mm-dd")` | Convierte un texto en fecha para que case con un eje de fechas; la fecha es un instante, las 00:00 de ese día | `pd.Timestamp("2026-05-18")` |
+| `Path("figuras").mkdir(exist_ok=True)` | Crea la carpeta si no existe; `exist_ok=True` evita el error si ya está | primera línea tras la carga |
+
+En `for estacion, (ls, mk) in ESTILOS.items():`, `.items()` recorre el diccionario en parejas (clave, valor), y como cada valor es una tupla de dos, `(ls, mk)` la separa en sus dos piezas en la misma línea.
 
 ### Apartado 5.3. Barras: comparar categorías
 
