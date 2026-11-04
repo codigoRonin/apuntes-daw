@@ -846,6 +846,8 @@ Acceso correcto: Teresa Ansó (hortelano), hash $2y$10$…
 (código de salida: 0)
 ```
 
+Esta salida es la de PHP 8.3 o anterior. **Con PHP 8.4 o superior**, `PASSWORD_DEFAULT` calcula el hash con coste 12: la verificación con la nueva dice `hash $2y$12$…` y añade una línea `Hash regenerado: ahora $2y$10$…`, porque `password_needs_rehash` marca cualquier coste distinto del que exige la asociación, también uno mayor. Es lo esperado. Si vuelves a verificar, ya sale como arriba.
+
 ```
 No se cambia: la nueva tiene que tener al menos 8 caracteres.
 (código de salida: 3)
