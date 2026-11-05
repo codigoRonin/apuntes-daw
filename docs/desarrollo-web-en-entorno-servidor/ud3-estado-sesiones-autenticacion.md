@@ -840,7 +840,7 @@ declare(strict_types=1);
 // mi-ficha.php — cualquier usuario autenticado
 require __DIR__ . '/auth.php';
 $yo = requiere_login();
-echo "Ficha de {$yo['nombre']} (rol: {$yo['rol']})\n";
+echo 'Ficha de ', htmlspecialchars($yo['nombre']), ' (rol: ', htmlspecialchars($yo['rol']), ")\n";
 ```
 
 ```php
@@ -850,9 +850,9 @@ declare(strict_types=1);
 require __DIR__ . '/auth.php';
 $yo = requiere_rol('monitor', 'administracion');
 $salidas = require __DIR__ . '/datos/salidas.php';
-echo "Salidas a la vista de {$yo['nombre']}:\n";
+echo 'Salidas a la vista de ', htmlspecialchars($yo['nombre']), ":\n";
 foreach ($salidas as $s) {
-    echo "- {$s['nombre']}: {$s['inscritos']}/{$s['plazas']} inscritos\n";
+    echo '- ', htmlspecialchars($s['nombre']), ": {$s['inscritos']}/{$s['plazas']} inscritos\n";
 }
 ```
 
@@ -864,7 +864,7 @@ require __DIR__ . '/auth.php';
 require __DIR__ . '/almacen.php';
 requiere_rol('administracion');
 foreach (cargar_usuarios() as $u) {
-    echo str_pad($u['usuario'], 14), " ", str_pad($u['rol'], 15), " ", $u['correo'], "\n";
+    echo str_pad(htmlspecialchars($u['usuario']), 14), ' ', str_pad(htmlspecialchars($u['rol']), 15), ' ', htmlspecialchars($u['correo']), "\n";
 }
 ```
 
