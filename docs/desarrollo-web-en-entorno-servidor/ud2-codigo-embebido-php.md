@@ -201,7 +201,7 @@ echo strlen('Añisclo'), ' / ', mb_strlen('Añisclo'), "\n";
 
 - **E5.** Predice el resultado (`true`/`false`) de cada comparación y verifica después con `var_dump`: (1) `'10' == '1e1'`; (2) `'10' === '1e1'`; (3) `0.1 + 0.2 == 0.3`; (4) `5 == true`; (5) `'' == null`; (6) `'' === null`. Para la (3), busca en el manual (apartado 14, "Los tipos") por qué los decimales se comportan así y propón la comparación correcta para dinero.
 - **E6.** Escribe `precio.php`: con `const PRECIO_SOCIO = 8.5;` y `const PRECIO_NO_SOCIO = 14.0;`, y variables `$es_socio` (bool) y `$acompanantes` (int), calcula e imprime con una sola sentencia `echo` — usando el ternario y la interpolación con llaves — una línea como `Total para 3 personas: 25,50 €` (formato español con `number_format($total, 2, ',', '.')`).
-- **E7.** El fragmento `echo 'Quedan ' + $plazas - $inscritos + ' plazas';` compila pero no hace lo que su autor quería. Ejecuta, observa (salida y avisos), explica qué hizo PHP con cada `+` y reescríbelo dos veces: con concatenación y con interpolación.
+- **E7.** El fragmento `echo 'Quedan ' + $plazas - $inscritos + ' plazas';` compila, pero al ejecutarlo falla con un error de tipo. Ejecuta, observa (salida y avisos), explica qué hizo PHP con cada `+` y reescríbelo dos veces: con concatenación y con interpolación.
 
 <div style="page-break-before: always;"></div>
 
