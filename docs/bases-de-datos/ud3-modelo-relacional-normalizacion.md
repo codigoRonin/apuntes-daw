@@ -48,7 +48,7 @@ Una relación no es una pestaña de hoja de cálculo con ínfulas. Sus propiedad
 1. **No hay tuplas duplicadas.** Dos filas idénticas son la misma información dicha dos veces: prohibido. (Consecuencia inmediata: toda relación tiene clave — apartado 2.)
 2. **Las tuplas no tienen orden.** "La primera fila" no significa nada; si el orden importa (llegada, ranking), es un **dato** y merece su atributo.
 3. **Los atributos no tienen orden** y cada uno tiene nombre único dentro de su relación.
-4. **Los valores son atómicos**: en cada celda, un solo valor del dominio. Ni listas ("600111222, 976555444"), ni estructuras. Esta regla es la 1FN y la retomaremos en el apartado 6 — los atributos multivalorados de la UD2 chocan exactamente aquí.
+4. **Los valores son atómicos**: en cada celda, un solo valor del dominio. Ni listas ("600111222, 976555444"), ni estructuras. Esta regla es parte de la 1FN (con la regla 1) y la retomaremos en el apartado 6 — los atributos multivalorados de la UD2 chocan exactamente aquí.
 5. **NULL existe y es traicionero.** NULL significa "valor desconocido o no aplicable" — no es cero, no es cadena vacía, no es "no". Dos NULL no son iguales entre sí. Decidir qué atributos admiten NULL es una decisión de diseño que se toma en esta unidad y se declara en la UD5.
 
 **Ejercicios del apartado.**
@@ -223,7 +223,7 @@ Vamos elipse a elipse. Debajo de cada caso, lo que queda en el esquema.
 
 Qué viaja: `carne`, la clave del lector, como clave ajena. A dónde: a la tabla nueva. La primaria es la pareja, porque cada fila dice "este lector tiene este teléfono": `carne` sola no dejaría apuntar un segundo teléfono, y `telefono` solo impediría que dos hermanos dieran el fijo de casa. Ninguna de las dos columnas admite NULL — son clave (integridad de entidad, apartado 3) —, y un lector sin teléfono es, sencillamente, un lector sin filas en esta tabla.
 
-**La tentación: `telefono1` y `telefono2`.** Si casi nadie da más de dos teléfonos, ¿por qué no dos columnas en `lectores` y asunto resuelto? Porque eso es un **grupo repetido**: el mismo dato, repetido en columnas numeradas. Y la primera forma normal, que verás en el apartado 6.3, es justamente "valores atómicos y sin grupos repetidos". Además, sale caro:
+**La tentación: `telefono1` y `telefono2`.** Si casi nadie da más de dos teléfonos, ¿por qué no dos columnas en `lectores` y asunto resuelto? Porque eso es un **grupo repetido**: el mismo dato, repetido en columnas numeradas. Y la primera forma normal, que verás en el apartado 6.3, es justamente "valores atómicos, sin grupos repetidos y con clave primaria". Además, sale caro:
 
 - fija un máximo artificial: el día que alguien traiga un tercer teléfono, hay que cambiar la tabla;
 - deja `telefono2` a NULL en todos los que solo tienen uno;
@@ -467,22 +467,43 @@ La lista de restricciones semánticas **forma parte del esquema entregable** con
 
 Cuando el diseño no ha pasado por un buen E/R — o el E/R estaba mal — aparecen tablas como esta (la reconocerás: es el cuaderno de la biblioteca con columnas):
 
-`prestamos_todo(carne, nombre, telefono, isbn, titulo, estante, fecha_prest)`
+`prestamos_todo(carne, nombre, telefono, isbn, titulo, cod_estante, planta_estante, fecha_prest)`
 
 Sus síntomas tienen nombre clínico:
-- **Anomalía de modificación**: cambiar el teléfono de Marta exige tocar todas sus filas — y olvidar una crea la inconsistencia de la UD1.
+- **Anomalía de modificación**: cambiar el teléfono de Rosa exige tocar todas sus filas — y olvidar una crea la inconsistencia de la UD1.
 - **Anomalía de inserción**: no puedes dar de alta un lector nuevo **sin préstamo** (¿qué pones en isbn?) ni catalogar un libro que nadie ha sacado.
-- **Anomalía de borrado**: si Rosa devuelve su único préstamo y borras la fila, Rosa desaparece de la base de datos.
+- **Anomalía de borrado**: si Marta devuelve su único préstamo y borras la fila, Marta desaparece de la base de datos.
 
 La causa común: **hechos distintos conviviendo en la misma tabla** (quién es el lector, qué es el libro, qué préstamo hubo). La normalización es el procedimiento que los separa.
 
 ### Apartado 6.2. Dependencias funcionales: el instrumento de diagnóstico
 
-Una **dependencia funcional** X → Y se lee "X determina Y": conocido el valor de X, el de Y queda fijado. En `prestamos_todo`: `carne → nombre, telefono` · `isbn → titulo, estante` · y la clave (carne, isbn, fecha_prest) → todo. Las dependencias **no se inventan mirando los datos de hoy: se deducen del negocio** — los datos solo pueden refutarlas, nunca confirmarlas.
+Una **dependencia funcional** X → Y se lee "X determina Y": conocido el valor de X, el de Y queda fijado. En `prestamos_todo`: `carne → nombre, telefono` · `isbn → titulo, cod_estante` · `cod_estante → planta_estante` · y la clave (carne, isbn, fecha_prest) → todo. Las dependencias **no se inventan mirando los datos de hoy: se deducen del negocio** — los datos solo pueden refutarlas, nunca confirmarlas.
+
+Las dos mitades de esa frase, con filas delante.
+
+**Los datos pueden refutar.** `carne → nombre` dice que un carné lleva siempre el mismo nombre. Si la hoja trajera estas dos filas (solo las columnas que importan):
+
+| carne | nombre | isbn | fecha_prest |
+|---|---|---|---|
+| 102 | Rosa | 978-84-0000-101-8 | 2026-10-06 |
+| 102 | Lucía | 978-84-0000-103-2 | 2026-10-20 |
+
+la dependencia quedaría refutada en esa hoja: el mismo carné con dos nombres es justo lo que `carne → nombre` prohíbe. O hay dos lectores con el mismo carné — y entonces el negocio no era como creíamos — o la hoja tiene un error; en los dos casos, se para y se aclara antes de construir nada sobre ella. Una sola fila que contradiga una dependencia basta para tumbarla: ese es el único poder que tienen los datos.
+
+**Los datos no pueden confirmar.** Una hoja con solo tres préstamos:
+
+| carne | nombre | isbn | titulo | fecha_prest |
+|---|---|---|---|---|
+| 101 | Marta | 978-84-0000-101-8 | Aves del río Arba | 2026-10-01 |
+| 102 | Rosa | 978-84-0000-102-5 | Setas de las Cinco Villas | 2026-10-06 |
+| 102 | Rosa | 978-84-0000-103-2 | Recetario de la huerta del Arba | 2026-10-20 |
+
+Cada título aparece una sola vez, así que `titulo → carne` "se cumple hoy": conocido el título, el lector queda fijado. Nadie diría que el título determina quién se lleva el libro — y mañana, cuando Marta saque *Setas de las Cinco Villas*, la "dependencia" se cae sola. Que hoy no se repita nada no prueba nada: la dependencia sale del negocio, y la hoja solo puede contradecirla.
 
 ### Apartado 6.3. Las formas normales, como escalera
 
-- **1FN**: valores atómicos y sin grupos repetidos — la regla 4 del apartado 1.2. Los multivalorados, a su tabla (apartado 4.1). Toda relación auténtica ya está en 1FN.
+- **1FN**: valores atómicos, sin grupos repetidos y **con clave primaria** — las reglas 4 y 1 del apartado 1.2 (sin tuplas duplicadas; luego hay clave). Los multivalorados, a su tabla (apartado 4.1). Toda relación auténtica ya está en 1FN; una hoja de cálculo, no siempre.
 - **2FN**: en 1FN y, además, **ningún atributo no clave depende de una parte de la clave** (solo importa con claves compuestas). En `prestamos_todo`, `nombre` depende solo de `carne` (parte de la clave): violación. Cura: extraer el hecho a su tabla — nace `lectores`.
 - **3FN**: en 2FN y, además, **ningún atributo no clave depende de otro atributo no clave** (dependencias transitivas). El diagnóstico y la cura, trabajados de principio a fin en el apartado 6.4.
 - **Formas superiores** (mención, bajo una convención que conviene dejar clara): en la práctica profesional, **una base de datos se considera normalizada cuando alcanza la 3FN** — ese es el objetivo operativo del curso y el alcance mínimo declarado del artefacto. Por encima existen, y basta con reconocer sus nombres: la **FNBC**, versión estricta de la 3FN para casos con varias claves candidatas solapadas; la **4FN**, que ataca las dependencias multivaloradas independientes conviviendo en una misma tabla (dos hechos multivalorados sin relación entre sí, multiplicados en filas); y la **5FN**, que trata las dependencias de reunión (tablas solo reconstruibles combinando todas sus piezas a la vez). Ninguna de las tres es exigible en este módulo: se citan para que sus nombres no te asusten en documentación ajena, no para practicarlas.
@@ -493,24 +514,72 @@ Y el cierre del círculo: si haces bien la UD2 y traduces bien el apartado 4, **
 
 ### Apartado 6.4. Ejemplo resuelto: `prestamos_todo`, de la hoja enferma a la 3FN
 
-La hoja real del mostrador, con la ubicación detallada de los libros:
+La hoja real del mostrador:
 
 `prestamos_todo(carne, nombre, telefono, isbn, titulo, cod_estante, planta_estante, fecha_prest)`
 
-**Paso 1 — dependencias funcionales** (del negocio, no de los datos): `carne → nombre, telefono` · `isbn → titulo, cod_estante` · `cod_estante → planta_estante` · clave de la hoja: (**carne, isbn, fecha_prest**) → todo.
+Esta vez con sus filas, de principio a fin: los mismos datos en cada etapa, para que se vea qué cambia y qué no.
 
-**Paso 2 — localizar violaciones.** Hay de los dos tipos, y conviene verlos juntos: `carne → nombre, telefono` e `isbn → titulo, cod_estante` son dependencias de **parte de la clave** (violan 2FN); `cod_estante → planta_estante` es una dependencia **entre atributos no clave** — la planta no depende del préstamo ni del libro directamente, sino del estante: transitiva (violará 3FN cuando lleguemos).
+**Paso 0 — primero, una relación (1FN).** Así la lleva el mostrador: una fila por visita, y el 6 de octubre Rosa se llevó dos libros, que el bibliotecario apuntó en la misma fila separados por una barra. Sin clave declarada: nadie dijo nunca qué identifica a una fila.
 
-**Paso 3 — extraer los hechos parciales.** Cada determinante parcial se lleva su hecho a una tabla propia, dejando FK:
+| carne | nombre | telefono | isbn | titulo | cod_estante | planta_estante | fecha_prest |
+|---|---|---|---|---|---|---|---|
+| 101 | Marta | 600111222 | 978-84-0000-101-8 | Aves del río Arba | E1 | 1 | 2026-10-01 |
+| 102 | Rosa | 976555444 | 978-84-0000-101-8 / 978-84-0000-102-5 | Aves del río Arba / Setas de las Cinco Villas | E1 / E1 | 1 / 1 | 2026-10-06 |
+| 102 | Rosa | 976555444 | 978-84-0000-103-2 | Recetario de la huerta del Arba | E2 | 2 | 2026-10-20 |
+
+Esto todavía no es una relación, así que no está en ninguna forma normal: la segunda fila lleva dos valores en una celda (regla 4 del apartado 1.2) y la hoja no tiene clave (regla 1). La 1FN pide las dos cosas. Cada valor a su celda — la fila de Rosa del 6 de octubre se parte en dos — y la clave declarada: (**carne, isbn, fecha_prest**), porque un lector no se lleva el mismo libro dos veces el mismo día.
+
+| **carne** | nombre | telefono | **isbn** | titulo | cod_estante | planta_estante | **fecha_prest** |
+|---|---|---|---|---|---|---|---|
+| 101 | Marta | 600111222 | 978-84-0000-101-8 | Aves del río Arba | E1 | 1 | 2026-10-01 |
+| 102 | Rosa | 976555444 | 978-84-0000-101-8 | Aves del río Arba | E1 | 1 | 2026-10-06 |
+| 102 | Rosa | 976555444 | 978-84-0000-102-5 | Setas de las Cinco Villas | E1 | 1 | 2026-10-06 |
+| 102 | Rosa | 976555444 | 978-84-0000-103-2 | Recetario de la huerta del Arba | E2 | 2 | 2026-10-20 |
+
+Cuatro filas, una relación de verdad. Ya se puede aplicar el procedimiento del apartado 6.3.
+
+**Paso 1 — dependencias funcionales** (del negocio, no de las filas): `carne → nombre, telefono` · `isbn → titulo, cod_estante` · `cod_estante → planta_estante` · clave: (**carne, isbn, fecha_prest**) → todo. Las cuatro filas las respetan — lo que no demuestra nada, como vimos en el 6.2; pero si alguna las contradijera, habría que parar aquí.
+
+**Paso 2 — localizar violaciones, y verlas doler.** Hay de los dos tipos: `carne → nombre, telefono` e `isbn → titulo, cod_estante` son dependencias de **parte de la clave** (violan 2FN); `cod_estante → planta_estante` es una dependencia **entre atributos no clave** — la planta no depende del préstamo ni del libro directamente, sino del estante: transitiva (violará 3FN cuando lleguemos). Y las tres anomalías del 6.1, señaladas en las filas de arriba:
+
+- **Modificación.** El teléfono de Rosa está escrito **tres veces** (filas 2, 3 y 4). Si cambia de número y se corrige solo la fila 2, Rosa tiene dos teléfonos distintos: la inconsistencia de la UD1.
+- **Inserción.** Jorge (carné 103) se hace socio y todavía no ha sacado nada. No hay fila que escribir: `isbn` y `fecha_prest` son parte de la clave y no pueden quedar vacíos.
+
+| **carne** | nombre | telefono | **isbn** | titulo | cod_estante | planta_estante | **fecha_prest** |
+|---|---|---|---|---|---|---|---|
+| 103 | Jorge | 650777888 | ¿? | ¿? | ¿? | ¿? | ¿? |
+
+- **Borrado.** Marta devuelve *Aves del río Arba*, su único préstamo. Si se borra la fila 1, Marta, su carné y su teléfono desaparecen de la base de datos.
+
+**Paso 3 — extraer los hechos parciales.** Cada determinante parcial se lleva su hecho a una tabla propia, dejando FK. Cada tabla nueva tiene **una fila por valor distinto** de su clave: ahí es donde se deja de repetir.
 
 **Estado intermedio en 2FN:**
 - `lectores(`**carne**`, nombre, telefono)`
 - `libros(`**isbn**`, titulo, cod_estante, planta_estante)`
 - `prestamos(`**carne** `→ lectores,` **isbn** `→ libros,` **fecha_prest**`)`
 
-Ya no hay dependencias parciales — pero `libros` arrastra la transitiva: si la biblioteca reordena la planta de un estante, hay que tocar todos los libros de ese estante (anomalía de modificación en miniatura), y un estante vacío no existe en ninguna parte (inserción).
+| **carne** | nombre | telefono |
+|---|---|---|
+| 101 | Marta | 600111222 |
+| 102 | Rosa | 976555444 |
 
-**Paso 4 — extraer la transitiva.** `cod_estante → planta_estante` se va a su tabla:
+| **isbn** | titulo | cod_estante | planta_estante |
+|---|---|---|---|
+| 978-84-0000-101-8 | Aves del río Arba | E1 | 1 |
+| 978-84-0000-102-5 | Setas de las Cinco Villas | E1 | 1 |
+| 978-84-0000-103-2 | Recetario de la huerta del Arba | E2 | 2 |
+
+| **carne** | **isbn** | **fecha_prest** |
+|---|---|---|
+| 101 | 978-84-0000-101-8 | 2026-10-01 |
+| 102 | 978-84-0000-101-8 | 2026-10-06 |
+| 102 | 978-84-0000-102-5 | 2026-10-06 |
+| 102 | 978-84-0000-103-2 | 2026-10-20 |
+
+El teléfono de Rosa está ahora en una sola celda. Pero `libros` arrastra la transitiva, y se ve: la planta del estante E1 está escrita **dos veces**. Si la biblioteca reordena ese estante a otra planta, hay que tocar los dos libros (anomalía de modificación en miniatura), y un estante vacío no existe en ninguna parte (inserción).
+
+**Paso 4 — extraer la transitiva.** `cod_estante → planta_estante` se va a su tabla, con una fila por estante:
 
 **Esquema final en 3FN, en la notación de entrega:**
 - `lectores(`**carne**`, nombre, telefono)`
@@ -518,9 +587,67 @@ Ya no hay dependencias parciales — pero `libros` arrastra la transitiva: si la
 - `libros(`**isbn**`, titulo, cod_estante → estantes)`
 - `prestamos(`**carne** `→ lectores,` **isbn** `→ libros,` **fecha_prest**`)`
 
-**Paso 5 — comprobación de no-pérdida.** Combinando `prestamos` con `lectores` (por carne), `libros` (por isbn) y `estantes` (por cod_estante) se reconstruye exactamente cada fila original de la hoja: ninguna información se ha perdido — solo ha dejado de repetirse.
+| **carne** | nombre | telefono |
+|---|---|---|
+| 101 | Marta | 600111222 |
+| 102 | Rosa | 976555444 |
 
-**El cierre del círculo, demostrado.** Ahora traduce mentalmente con el apartado 4 el E/R evidente de este dominio — LECTOR y LIBRO fuertes, ESTANTE como entidad (un libro está en un estante: 1:N), *realiza/es objeto de* alrededor del préstamo: obtienes **este mismo esquema**, tabla por tabla y flecha por flecha, sin haber normalizado nada. Diseñar bien y normalizar convergen en el mismo sitio; la diferencia es que el buen E/R llega a la primera y la normalización llega rescatando. Las dos rutas debes dominarlas — los exámenes y la vida traen de las dos.
+| **cod_estante** | planta_estante |
+|---|---|
+| E1 | 1 |
+| E2 | 2 |
+
+| **isbn** | titulo | cod_estante |
+|---|---|---|
+| 978-84-0000-101-8 | Aves del río Arba | E1 |
+| 978-84-0000-102-5 | Setas de las Cinco Villas | E1 |
+| 978-84-0000-103-2 | Recetario de la huerta del Arba | E2 |
+
+| **carne** | **isbn** | **fecha_prest** |
+|---|---|---|
+| 101 | 978-84-0000-101-8 | 2026-10-01 |
+| 102 | 978-84-0000-101-8 | 2026-10-06 |
+| 102 | 978-84-0000-102-5 | 2026-10-06 |
+| 102 | 978-84-0000-103-2 | 2026-10-20 |
+
+Cada hecho, en una tabla; cada dato, escrito una vez.
+
+**Paso 5 — comprobación de no-pérdida.** Combinando `prestamos` con `lectores` (por `carne`), con `libros` (por `isbn`) y, a través de `libros`, con `estantes` (por `cod_estante`), se reconstruye exactamente cada fila de la 1FN:
+
+| carne | nombre | telefono | isbn | titulo | cod_estante | planta_estante | fecha_prest |
+|---|---|---|---|---|---|---|---|
+| 101 | Marta | 600111222 | 978-84-0000-101-8 | Aves del río Arba | E1 | 1 | 2026-10-01 |
+| 102 | Rosa | 976555444 | 978-84-0000-101-8 | Aves del río Arba | E1 | 1 | 2026-10-06 |
+| 102 | Rosa | 976555444 | 978-84-0000-102-5 | Setas de las Cinco Villas | E1 | 1 | 2026-10-06 |
+| 102 | Rosa | 976555444 | 978-84-0000-103-2 | Recetario de la huerta del Arba | E2 | 2 | 2026-10-20 |
+
+Las mismas cuatro filas: ninguna información se ha perdido — solo ha dejado de repetirse. Y las tres anomalías del paso 2, curadas con filas nuevas (marcadas como tales):
+
+- **Inserción, ahora sí.** Jorge entra en `lectores` sin ningún préstamo; ninguna clave se lo impide.
+
+| **carne** | nombre | telefono | |
+|---|---|---|---|
+| 101 | Marta | 600111222 | |
+| 102 | Rosa | 976555444 | |
+| 103 | Jorge | 650777888 | fila nueva |
+
+- **Borrado, ahora sí.** Marta devuelve su libro: desaparece su fila de `prestamos`, y Marta sigue en `lectores`.
+
+| **carne** | **isbn** | **fecha_prest** | |
+|---|---|---|---|
+| 102 | 978-84-0000-101-8 | 2026-10-06 | |
+| 102 | 978-84-0000-102-5 | 2026-10-06 | |
+| 102 | 978-84-0000-103-2 | 2026-10-20 | |
+
+- **Modificación, ahora sí.** Rosa cambia de teléfono: una celda, y ya está en todas partes, porque solo hay una.
+
+| **carne** | nombre | telefono | |
+|---|---|---|---|
+| 101 | Marta | 600111222 | |
+| 102 | Rosa | 976000111 | celda cambiada |
+| 103 | Jorge | 650777888 | |
+
+**El cierre del círculo, demostrado.** Ahora traduce mentalmente con el apartado 4 el E/R evidente de este dominio — LECTOR y LIBRO fuertes, ESTANTE como entidad (un libro está en un estante: 1:N), *realiza/es objeto de* alrededor del préstamo: obtienes **este mismo esquema** salvo dos decisiones que la hoja no podía tomar porque no tenía esa información: el E/R de la unidad da al préstamo su propio número (`num_prestamo`, apartado 2.1) en vez de la clave compuesta (carne, isbn, fecha_prest), y distingue el EJEMPLAR, débil de LIBRO, que la hoja del mostrador no apunta. Lectores, libros y estantes salen iguales por las dos rutas; préstamos guarda la misma información, con su propia clave, sin haber normalizado nada. Diseñar bien y normalizar convergen en el mismo sitio; la diferencia es que el buen E/R llega a la primera y la normalización llega rescatando. Las dos rutas debes dominarlas — los exámenes y la vida traen de las dos.
 
 **Ejercicios del apartado.**
 
