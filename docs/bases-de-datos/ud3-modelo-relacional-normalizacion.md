@@ -93,24 +93,104 @@ Diseñar es también declarar qué estados de la base de datos son **ilegales**.
 2. **Integridad referencial**: toda clave ajena, o es NULL (si se permitió), o **apunta a una primaria existente**. Prohibido el préstamo del carné 999 si no hay lector 999; prohibido el ejemplar de una obra fantasma. Es la regla que mata para siempre las inconsistencias del cuaderno de la UD1.
 3. **Integridad de dominio**: cada valor, dentro de su dominio — fechas que son fechas, cantidades no negativas, estados dentro del catálogo permitido. Parte se declara con tipos (UD5) y parte con restricciones de validación; lo que ningún mecanismo cubra pasará a la lista del apartado 5.
 
-La integridad referencial obliga además a legislar el **borrado y la modificación de lo referenciado**: ¿qué pasa con los préstamos de un lector que se da de baja? Las políticas, que decidirás caso a caso y documentarás en el esquema:
+La integridad referencial obliga además a decidir qué pasa cuando alguien toca **la fila a la que otras apuntan**. Y a esa fila le pueden pasar **dos cosas distintas**, cualquiera de las cuales dejaría claves ajenas apuntando al vacío:
 
-| Política | Efecto al borrar la fila referenciada | Cuándo suele ser la correcta | Cláusula que teclearás (UD5) |
-|---|---|---|---|
-| **Rechazar** (restringir) | El borrado falla si hay filas que apuntan | Lo referenciado tiene historia que debe conservarse (lectores con préstamos) | `ON DELETE RESTRICT` |
-| **Propagar** (en cascada) | Se borran también las filas que apuntan | Las hijas no tienen sentido sin el padre (ejemplares de una obra descatalogada, líneas de una factura) | `ON DELETE CASCADE` |
-| **Poner a NULL** | La FK de las filas que apuntan pasa a NULL | La referencia era opcional y lo demás sobrevive (técnicos cuyo supervisor causa baja) | `ON DELETE SET NULL` |
+- que se **borre** — el lector se da de baja —, o
+- que se **actualice su clave primaria** — al lector le cambian el número de carné.
 
-La última columna es **vocabulario, no sintaxis**: son los nombres que MySQL Workbench te mostrará tal cual si lo usas para el diagrama de la actividad evaluativa (junto a `NO ACTION`, que en MySQL equivale a rechazar). Aquí basta con reconocerlos; en la UD5 los teclearás.
+Son dos operaciones y **cada una lleva su propia política**, que decidirás por separado para cada clave ajena y documentarás en el esquema. Lo que no cambia es el menú: en los dos casos se elige entre **las mismas tres políticas**.
+
+| Política | Al borrar la fila referenciada | Al actualizar su clave | Al borrar, cuándo suele ser la correcta | Palabra que teclearás (UD5) |
+|---|---|---|---|---|
+| **Rechazar** (restringir) | El borrado falla si hay filas que apuntan | El cambio de clave falla si hay filas que apuntan | Lo referenciado tiene historia que debe conservarse (lectores con préstamos) | `RESTRICT` |
+| **Propagar** (en cascada) | Se borran también las filas que apuntan | Las filas que apuntan reciben la clave nueva | Las hijas no tienen sentido sin el padre (ejemplares de una obra descatalogada, líneas de una factura) | `CASCADE` |
+| **Poner a NULL** | La FK de las filas que apuntan pasa a NULL | La FK de las filas que apuntan pasa a NULL | La referencia era opcional y lo demás sobrevive (propuestas de compra cuyo autor causa baja) | `SET NULL` |
+
+La última columna es **vocabulario, no sintaxis**: son los nombres que MySQL Workbench te mostrará tal cual si lo usas para el diagrama de la actividad evaluativa (junto a `NO ACTION`, que en MySQL equivale a rechazar). Aquí basta con reconocerlos; en la UD5 los teclearás. La palabra es la misma para las dos operaciones: lo que cambia es si va detrás de `ON DELETE` (al borrar) o de `ON UPDATE` (al actualizar) — `ON DELETE RESTRICT`, `ON UPDATE CASCADE`.
+
+**Las tres políticas al borrar, con filas delante.** La biblioteca tiene tres lectores:
+
+| carne | nombre |
+|---|---|
+| 101 | Marta |
+| 102 | Rosa |
+| 103 | Jorge |
+
+**Rechazar**, en `prestamos.carne → lectores`. Antes (solo las columnas que importan aquí):
+
+| num_prestamo | carne | fecha_prest |
+|---|---|---|
+| 1 | 101 | 2026-10-01 |
+| 2 | 102 | 2026-10-06 |
+| 3 | 102 | 2026-10-20 |
+
+Rosa pide la baja y alguien intenta borrar la fila 102 de `lectores`. Después: **nada ha cambiado**. El gestor encuentra dos préstamos que apuntan al 102 y rechaza el borrado: Rosa sigue en `lectores` y sus préstamos, intactos. Darla de baja exigirá decidir antes qué se hace con su historial — y esa decisión ya no es del gestor.
+
+**Propagar**, en `ejemplares.isbn → libros`. Antes, `libros` y `ejemplares`:
+
+| isbn | titulo |
+|---|---|
+| 978-84-0000-101-8 | Aves del río Arba |
+| 978-84-0000-102-5 | Setas de las Cinco Villas |
+
+| isbn | num_ejemplar | estado |
+|---|---|---|
+| 978-84-0000-101-8 | 1 | bueno |
+| 978-84-0000-101-8 | 2 | regular |
+| 978-84-0000-102-5 | 1 | bueno |
+
+Se descataloga *Aves del río Arba*, que nunca llegó a prestarse: se borra su fila de `libros`. Después, sus dos ejemplares han desaparecido con ella sin que nadie los borrara uno a uno:
+
+| isbn | titulo |
+|---|---|
+| 978-84-0000-102-5 | Setas de las Cinco Villas |
+
+| isbn | num_ejemplar | estado |
+|---|---|---|
+| 978-84-0000-102-5 | 1 | bueno |
+
+**Poner a NULL**, en `propuestas_compra.carne → lectores`. La biblioteca recoge propuestas de compra, y las admite anónimas (las del buzón), así que aquí la clave ajena **sí admite NULL**: `propuestas_compra(`**num_propuesta**`, titulo, carne → lectores)`. Antes:
+
+| num_propuesta | titulo | carne |
+|---|---|---|
+| 1 | Árboles del Moncayo | 102 |
+| 2 | Historia del Canal de Tauste | 103 |
+| 3 | Recetario de la huerta del Arba | NULL |
+
+Jorge, que no tiene préstamos, pide la baja: se borra la fila 103 de `lectores`. Después, Jorge ya no está y su propuesta **sobrevive sin autor**:
+
+| carne | nombre |
+|---|---|
+| 101 | Marta |
+| 102 | Rosa |
+
+| num_propuesta | titulo | carne |
+|---|---|---|
+| 1 | Árboles del Moncayo | 102 |
+| 2 | Historia del Canal de Tauste | NULL |
+| 3 | Recetario de la huerta del Arba | NULL |
+
+**Dos claves ajenas hacia el mismo lector, cada una con su política.** Rosa tiene dos préstamos y una propuesta: a su fila apuntan dos claves ajenas distintas. Si se intenta su baja, `prestamos.carne` la rechaza — y como el borrado no llega a hacerse, su propuesta tampoco se toca: **basta una clave ajena que rechace para detener el borrado entero**. La baja de Jorge salió adelante porque lo único que le apuntaba era una propuesta, y esa clave ajena dice "poner a NULL". La política no es de la tabla referenciada: es de **cada clave ajena**.
 
 La elección **nunca es técnica: es de negocio** — "¿debe poder borrarse?" y "¿qué debe sobrevivir?" son preguntas para el cliente, y la respuesta se anota junto a cada FK.
 
-¿Y la **modificación** de la clave referenciada? La respuesta profesional es evitarla de raíz: una primaria bien elegida **no cambia** — la estabilidad es uno de los cuatro criterios del apartado 2.1. Por eso la política de actualización (`ON UPDATE ...`, UD5) es una palanca de emergencia, no una herramienta de diseño: si te descubres necesitándola a menudo, el problema no es la política — es la clave.
+**Una política al actualizar, con las mismas filas.** La biblioteca renumera carnés y el de Rosa pasa del 102 al 202. Sus dos préstamos y su propuesta apuntan a un 102 que va a dejar de existir. Si las dos claves ajenas tienen **propagar** como política de actualización, el cambio viaja solo:
+
+| Tabla | Fila | `carne` antes | `carne` después |
+|---|---|---|---|
+| `lectores` | Rosa | 102 | 202 |
+| `prestamos` | préstamo 2 | 102 | 202 |
+| `prestamos` | préstamo 3 | 102 | 202 |
+| `propuestas_compra` | propuesta 1 | 102 | 202 |
+
+Con **rechazar**, el cambio de carné habría fallado mientras quedara una sola fila apuntando al 102. Con **poner a NULL**, la propuesta 1 se habría quedado sin autora — y en `prestamos` ni siquiera es una opción, porque allí `carne` no admite NULL. Observa de paso a `prestamos.carne`: al borrar, rechazar; al actualizar, propagar. Una misma clave ajena, dos operaciones, dos decisiones.
+
+¿Y cada cuánto se modifica la clave referenciada? La respuesta profesional es evitarlo de raíz: una primaria bien elegida **no cambia** — la estabilidad es uno de los cuatro criterios del apartado 2.1. Por eso la política de actualización (`ON UPDATE ...`, UD5) es una palanca de emergencia, no una herramienta de diseño: si te descubres necesitándola a menudo, el problema no es la política — es la clave. Un carné que hay que renumerar ya te está diciendo algo. En los esquemas de esta unidad anotarás siempre la política de borrado de cada FK; la de actualización, cuando el enunciado la pida.
 
 **Ejercicios del apartado.**
 
 - **E7.** Sobre el esquema de la biblioteca (`lectores`, `libros`, `ejemplares`, `prestamos`): pon un ejemplo concreto de violación de cada una de las tres reglas de integridad, con los valores exactos que la provocarían.
-- **E8.** Decide y justifica la política de borrado de cada FK del esquema anterior (cuatro decisiones). Al menos una debe ser distinta de las demás, o tu justificación deberá explicar por qué todas coinciden.
+- **E8.** Decide y justifica la política de borrado de cada FK del esquema anterior (tres decisiones). Al menos una debe ser distinta de las demás, o tu justificación deberá explicar por qué todas coinciden.
 - **E9.** Un instituto tiene `alumnos`, `grupos(cod_grupo, tutor → profesores)` y `profesores`. El profesor tutor de 1.º A se jubila. Analiza qué permite o impide cada política aplicada a `grupos.tutor`, y cuál elegirías sabiendo que "todo grupo debe tener tutor" es norma del centro — y dónde acaba esa norma si ninguna política la garantiza del todo (pista: apartado 5).
 
 <div style="page-break-before: always;"></div>
@@ -121,40 +201,190 @@ Aquí se cosecha la UD2. La traducción es un **algoritmo**, y su variable de co
 
 ### Apartado 4.1. Entidades y atributos
 
-- **Entidad fuerte** → tabla con sus atributos simples; su clave primaria, la elegida en el diagrama.
-- **Atributo compuesto** → se descompone en sus partes simples (`direccion` → `calle`, `numero`, `localidad`): la atomicidad del apartado 1.2 no negocia.
-- **Atributo multivalorado** → **tabla aparte** con FK a su entidad y el valor: `telefonos_lector(carne → lectores, telefono)`. La señal de alarma de la UD2 explota exactamente aquí, y esta es su solución.
-- **Atributo derivado** → no se traduce (no se almacena); se documenta cómo se calcula (apartado 5).
+Los cuatro casos de este apartado caben en una figura que ya conoces: el LECTOR de la UD2, con su clave, sus atributos simples, uno compuesto, uno multivalorado y uno derivado.
+
+![Figura 1 de la UD2. LECTOR en notación de Chen con la taxonomía completa de atributos: clave subrayada, atributo compuesto con sus partes, multivalorado en elipse doble y derivado en elipse punteada conectado a su fuente](img/ud2-fig1-chen-taxonomia-lector.svg)
+
+*Figura 1 de la UD2. La entidad LECTOR con todos los tipos de atributo: `carne` subrayado (clave), `nombre` y `fecha_nacimiento` simples, `direccion` compuesto, `telefonos` en elipse doble (multivalorado) y `edad` en elipse punteada (derivado).*
+
+Vamos elipse a elipse. Debajo de cada caso, lo que queda en el esquema.
+
+**Entidad fuerte** → tabla con sus atributos simples; su clave primaria, la elegida en el diagrama. El rectángulo LECTOR se convierte en la tabla `lectores`, cada elipse simple en una columna y la elipse subrayada en la clave primaria:
+
+- `lectores(`**carne**`, nombre, fecha_nacimiento)`
+
+**Atributo compuesto** → se descompone en sus partes simples (`direccion` → `calle`, `numero`, `localidad`): la atomicidad del apartado 1.2 no negocia. La elipse `direccion` no llega a la tabla; llegan las tres que cuelgan de ella, como columnas normales de `lectores`:
+
+- `lectores(`**carne**`, nombre, fecha_nacimiento, calle, numero, localidad)`
+
+**Atributo multivalorado** → **tabla aparte** con FK a su entidad y el valor. La señal de alarma de la UD2 explota exactamente aquí, y esta es su solución. Un lector puede tener varios teléfonos y en una celda solo cabe un valor, así que los teléfonos salen de `lectores` a una tabla propia, con una fila por teléfono:
+
+- `telefonos_lector(`**carne** `→ lectores,` **telefono**`)`
+
+Qué viaja: `carne`, la clave del lector, como clave ajena. A dónde: a la tabla nueva. La primaria es la pareja, porque cada fila dice "este lector tiene este teléfono": `carne` sola no dejaría apuntar un segundo teléfono, y `telefono` solo impediría que dos hermanos dieran el fijo de casa. Ninguna de las dos columnas admite NULL — son clave (integridad de entidad, apartado 3) —, y un lector sin teléfono es, sencillamente, un lector sin filas en esta tabla.
+
+**La tentación: `telefono1` y `telefono2`.** Si casi nadie da más de dos teléfonos, ¿por qué no dos columnas en `lectores` y asunto resuelto? Porque eso es un **grupo repetido**: el mismo dato, repetido en columnas numeradas. Y la primera forma normal, que verás en el apartado 6.3, es justamente "valores atómicos y sin grupos repetidos". Además, sale caro:
+
+- fija un máximo artificial: el día que alguien traiga un tercer teléfono, hay que cambiar la tabla;
+- deja `telefono2` a NULL en todos los que solo tienen uno;
+- obliga a buscar en varias columnas: para saber de quién es el 600111222 hay que mirar en `telefono1` **y** en `telefono2`.
+
+No se hace. El multivalorado va a su tabla, tenga dos valores o veinte.
+
+**Atributo derivado** → no se traduce (no se almacena); se documenta cómo se calcula (apartado 5). `edad` no es columna de ninguna tabla: se calcula cuando hace falta a partir de `fecha_nacimiento`, que sí se guarda. Almacenarla sería guardar un dato que caduca solo — cada cumpleaños la dejaría mal.
+
+El LECTOR de la figura, traducido entero:
+
+- `lectores(`**carne**`, nombre, fecha_nacimiento, calle, numero, localidad)`
+- `telefonos_lector(`**carne** `→ lectores,` **telefono**`)`
+- `edad` no se almacena: se calcula a partir de `fecha_nacimiento`, y así se anota en la lista del apartado 5.
 
 ### Apartado 4.2. Relaciones, por su etiqueta de tipo
 
-- **1:N** → la clave del lado **uno** viaja como FK al lado **muchos**. LECTOR—realiza—PRESTAMO: `prestamos` lleva `carne → lectores`. Si la relación tenía atributos, viajan con la FK al lado muchos.
-- **N:M** → **tabla intermedia** con las dos FK, cuya PK es (normalmente) la pareja; los atributos de la relación viven en ella. *valora* → `valoraciones(carne → lectores, isbn → libros, puntuacion, fecha)`. Ninguna otra opción conserva las propiedades del apartado 1.2 — es el motivo profundo por el que la UD2 prohibía "resolver" N:M con multivalorados.
-- **1:1** → FK en uno de los dos lados (única, y NOT NULL si su participación era obligatoria). ¿En cuál? En el lado de participación **más obligatoria** (menos NULL) o, si empatan, en el que más se consulte desde el otro. Si ambas participaciones son totales y las entidades viven y mueren juntas, cabe incluso **fusionar** en una tabla — decisión a justificar, no a improvisar.
-- **Reflexiva** → mismo mecanismo según su tipo, con la FK apuntando a la propia tabla y nombre de rol: `tecnicos(…, supervisor → tecnicos)` para la 1:N de la UD2.
-- **Ternaria** → tabla asociativa con las tres FK (la descomposición que la UD2 te enseñó como formato de entrega era, literalmente, esta traducción): `imparticiones(cod_profesor → profesores, cod_modulo → modulos, cod_grupo → grupos, horas_semanales)`.
+Cada caso sigue el mismo guion: el diagrama, el esquema que sale de él, **qué viaja y a dónde**, y qué hace la cardinalidad mínima. El reparto es siempre el mismo: los máximos deciden el mecanismo (son la etiqueta de tipo) y los mínimos deciden los NULL.
+
+**1:N** → la clave del lado **uno** viaja como FK al lado **muchos**.
+
+![Figura 4 de la UD2. LECTOR realiza PRESTAMO en notación de Chen: relación 1:N con (1,1) junto a LECTOR y (0,N) junto a PRESTAMO; LECTOR con clave carne y PRESTAMO con clave num_prestamo y atributo fecha_prest](img/ud2-fig4-chen-existencia-sin-identificacion.svg)
+
+*Figura 4 de la UD2. LECTOR (1,1) —realiza— (0,N) PRESTAMO, cada entidad con su clave.*
+
+- `lectores(`**carne**`, …)`
+- `prestamos(`**num_prestamo**`, fecha_prest, carne → lectores)`
+
+Qué viaja: `carne`, la clave de LECTOR, que es el lado uno. A dónde: a `prestamos`, el lado muchos. Cada préstamo es de un solo lector, así que le basta una columna para decir de quién es; al revés no cabría, porque un lector tiene muchos préstamos y "muchos" no cabe en una celda. La mínima que manda sobre la FK es la de la pareja junto al lado uno: aquí es (1,1) — todo préstamo tiene lector — y `carne` queda **NOT NULL**; con (0,1) admitiría NULL. La pareja junto al lado muchos, (0,N), no deja huella en ninguna columna: un lector sin préstamos es un lector sin filas en `prestamos`. Y si fuera (1,N) — "todo lector tiene al menos un préstamo" —, ninguna tabla podría obligarlo: a la lista del apartado 5. Si la relación tenía atributos, viajan con la FK al lado muchos (lo verás en el apartado 4.4).
+
+**N:M** → **tabla intermedia** con las dos FK, cuya PK es (normalmente) la pareja; los atributos de la relación viven en ella.
+
+![Figura 1 de la UD3. Relación N:M en notación de Chen: LECTOR, con clave carne, valora LIBRO, con clave isbn; (0,N) junto a cada entidad, etiqueta N:M sobre el rombo y los atributos puntuacion y fecha colgando del rombo](img/ud3-fig-1-nm-valora.svg)
+
+*Figura 1 de la UD3. LECTOR —valora— LIBRO, N:M: un lector valora cero o muchos libros y a un libro lo valoran cero o muchos lectores; `puntuacion` y `fecha` cuelgan del rombo porque son de la pareja.*
+
+- `lectores(`**carne**`, nombre)`
+- `libros(`**isbn**`, titulo)`
+- `valoraciones(`**carne** `→ lectores,` **isbn** `→ libros, puntuacion, fecha)`
+
+Aquí no hay lado uno al que pedirle la clave: la FK no cabe en `lectores` (¿cuál de sus libros?) ni en `libros` (¿cuál de sus lectores?). Viajan **las dos claves**, y viajan a una tabla nueva, en la que cada fila es una pareja lector-libro. La primaria es esa pareja y, por ser clave, ninguna de las dos FK admite NULL. `puntuacion` y `fecha`, que colgaban del rombo, viven en la tabla del rombo. Las mínimas: los dos (0,N) no dejan huella — quien no valora no tiene filas —, y un (1,N) en cualquiera de los dos extremos sería otra regla para la lista del apartado 5. Ninguna otra opción conserva las propiedades del apartado 1.2 — es el motivo profundo por el que la UD2 prohibía "resolver" N:M con multivalorados.
+
+**1:1** → FK en uno de los dos lados (única, y NOT NULL si su participación era obligatoria). ¿En cuál? En el lado de participación **más obligatoria** (menos NULL) o, si empatan, en el que más se consulte desde el otro.
+
+![Figura 2 de la UD3. Relación 1:1 en notación de Chen: BIBLIOTECARIO, con clave cod_bibliotecario, dirige BIBLIOTECA, con clave cod_biblioteca; (1,1) junto a BIBLIOTECARIO, (0,1) junto a BIBLIOTECA y etiqueta 1:1 sobre el rombo](img/ud3-fig-2-uno-a-uno-dirige.svg)
+
+*Figura 2 de la UD3. BIBLIOTECARIO (1,1) —dirige— (0,1) BIBLIOTECA: toda biblioteca tiene exactamente un director, y un bibliotecario dirige una biblioteca o ninguna.*
+
+- `bibliotecarios(`**cod_bibliotecario**`, nombre)`
+- `bibliotecas(`**cod_biblioteca**`, nombre, director → bibliotecarios)`
+
+Con máximo 1 en los dos extremos, la clave podría viajar en cualquiera de los dos sentidos; las mínimas desempatan. En `bibliotecas`, la columna `director` nunca queda vacía: el (1,1) junto a BIBLIOTECARIO dice que toda biblioteca tiene director, así que es **NOT NULL**. Al revés — una columna `biblioteca_dirigida` en `bibliotecarios` — estaría a NULL en todos los que no dirigen nada, que son casi todos: es lo que permite el (0,1) junto a BIBLIOTECA. Por eso la clave viaja hacia la tabla en la que nunca va a faltar. Y lleva una segunda marca: **única**. Sin ella, un mismo bibliotecario podría figurar como director de dos bibliotecas y la relación sería, de hecho, 1:N; la unicidad es lo que la mantiene 1:1 (se declarará en la UD5, como las claves alternativas del apartado 2.1). La FK se llama `director` y no `cod_bibliotecario` porque el nombre dice qué papel hace ese bibliotecario en la fila. Si ambas participaciones son totales y las entidades viven y mueren juntas, cabe incluso **fusionar** en una tabla — decisión a justificar, no a improvisar.
+
+**Reflexiva** → mismo mecanismo según su tipo, con la FK apuntando a la propia tabla y nombre de rol. El caso de la UD2, el lector que avala a otro lector, con su dibujo:
+
+![Figura 3 de la UD3. Relación reflexiva en notación de Chen: LECTOR, con clave carne, avala a LECTOR; (0,1) con el rol avalista, (0,N) con el rol avalado y etiqueta 1:N sobre el rombo](img/ud3-fig-3-reflexiva-avala.svg)
+
+*Figura 3 de la UD3. LECTOR —avala— LECTOR, 1:N con roles: cada lector tiene como mucho un avalista, (0,1), y puede avalar a cero o muchos lectores, (0,N).*
+
+- `lectores(`**carne**`, nombre, avalista → lectores)`
+
+Es una 1:N como la primera, solo que los dos lados son la misma tabla: viaja `carne`, y viaja a `lectores`. Una tabla no puede tener dos columnas con el mismo nombre, así que la FK toma el nombre del rol del lado uno: `avalista`. Su valor es el carné de otro lector, es decir, la clave de otra fila de la misma tabla. La mínima: el (0,1) junto al rol avalista hace que `avalista` **admita NULL** — hay lectores sin avalista, y sin ese NULL no se podría dar de alta ni al primero. Si la reflexiva fuera N:M, haría falta tabla intermedia, con dos FK hacia la misma tabla y cada una con el nombre de su rol.
+
+**Ternaria** → tabla asociativa con las tres FK (la descomposición que la UD2 te enseñó como formato de entrega era, literalmente, esta traducción).
+
+![Figura 7 de la UD2. Relación ternaria en Chen: PROFESOR, MODULO y GRUPO unidos por un único rombo imparte con el atributo horas_semanales de la terna](img/ud2-fig7-chen-ternaria.svg)
+
+*Figura 7 de la UD2. PROFESOR, MODULO y GRUPO unidos por el rombo imparte, 1:N:M: (1,1) junto a PROFESOR, (1,N) junto a MODULO y (1,N) junto a GRUPO, con `horas_semanales` en la terna. Las claves, que la figura no dibuja, son `cod_profesor`, `cod_modulo` y `cod_grupo`.*
+
+- `imparticiones(`**cod_modulo** `→ modulos,` **cod_grupo** `→ grupos, cod_profesor → profesores, horas_semanales)`
+
+Viajan las tres claves a una tabla nueva, y el atributo de la terna con ellas. Lo que hay que pensar es la primaria: **en una 1:N:M como esta, la forman las claves de los dos lados de máximo N; en una N:M:P, las tres**. Aquí el (1,1) junto a PROFESOR dice que un módulo, en un grupo, lo imparte un solo profesor: conocidos el módulo y el grupo, el profesor queda fijado. La primaria es la pareja (`cod_modulo`, `cod_grupo`), y `cod_profesor` se queda fuera de la clave. Es **NOT NULL**, y no por una mínima: una fila de la ternaria es siempre la terna completa — las tres cosas a la vez, como decía la UD2 —, así que ninguna de las tres FK admite NULL. Si un módulo en un grupo pudiera existir sin profesor, el diagrama no sería una ternaria sino una agregación (apartado 4.3). Con dos filas se ve para qué sirve la primaria:
+
+| cod_modulo | cod_grupo | cod_profesor | horas_semanales | ¿Entra? |
+|---|---|---|---|---|
+| BD | 1A | P07 | 6 | Sí |
+| BD | 1A | P12 | 6 | No: repite la primaria (BD, 1A) |
+
+Con las tres columnas en la clave, la segunda fila habría entrado — y el grupo 1A tendría dos profesores para el mismo módulo, contra lo que dice la figura.
 
 ### Apartado 4.3. Débiles, jerarquías y agregación
 
-- **Entidad débil** → tabla cuya PK es **compuesta**: clave del padre (que además es FK) + discriminante. `ejemplares(isbn → libros, num_ejemplar, estado)`. Borrado del padre: casi siempre en cascada — la dependencia en existencia de la UD2, hecha política.
-- **Jerarquía (generalización/especialización)** → tres estrategias, y la elección depende de las anotaciones (total/parcial, exclusiva/solapada) que decidiste en la UD2:
+Tres construcciones de la UD2 que no son "una relación más": cada una tiene su propia regla de traducción. El guion sigue siendo el mismo: el diagrama, el esquema, qué viaja y a dónde, y qué hace la mínima.
 
-| Estrategia | Cómo | Encaja bien cuando |
-|---|---|---|
-| Tabla única | Una tabla con todos los atributos + columna `tipo`; los no aplicables, a NULL | Pocos atributos propios; consultas casi siempre sobre el conjunto |
-| Tabla por subtipo (padre + hijas) | Tabla del supertipo + una por subtipo con PK = FK al padre | La general: conserva la jerarquía tal cual; funciona con parcial y con solapada |
-| Solo tablas hija | Una tabla por subtipo repitiendo los atributos comunes; sin tabla padre | Solo si la jerarquía es **total y exclusiva** y nadie consulta el conjunto |
+**Entidad débil** → tabla cuya PK es **compuesta**: clave del padre (que además es FK) + discriminante.
 
-- **Agregación** → la relación agregada se traduce primero (si era N:M, su tabla intermedia); esa tabla, que ya tiene PK propia, recibe las relaciones de la agregación como cualquier entidad. La promesa de la UD2 ("la UD3 lo resuelve con naturalidad") era esto: `organizaciones(cod_biblioteca → bibliotecas, cod_actividad → actividades)` y sobre ella `…, cod_monitor → monitores` (NULL permitido: la pareja existía antes que el monitor).
+![Figura 3 de la UD2. Entidad débil por identificación: LIBRO con clave isbn, relación identificativa tiene en rombo doble, EJEMPLAR en rectángulo doble con discriminante num_ejemplar en subrayado discontinuo](img/ud2-fig3-chen-debil-identificacion.svg)
+
+*Figura 3 de la UD2. LIBRO (1,1) —tiene— (1,N) EJEMPLAR: cada ejemplar es de un solo libro, y todo libro tiene al menos un ejemplar. EJEMPLAR es débil: se identifica como `isbn` + `num_ejemplar`. El atributo `estado` del ejemplar no está dibujado.*
+
+- `libros(`**isbn**`, titulo)`
+- `ejemplares(`**isbn** `→ libros,` **num_ejemplar**`, estado)`
+
+Qué viaja: `isbn`, la clave del padre, al lado muchos — como en cualquier 1:N. La diferencia está en dónde cae: **dentro de la primaria**. El discriminante `num_ejemplar` solo distingue ejemplares del mismo libro (el ejemplar 1 existe en cada obra), así que la fila necesita las dos columnas para identificarse, y `isbn` hace doble papel: clave ajena hacia `libros` y mitad de la clave primaria de `ejemplares`. Por ser parte de la primaria, `isbn` **nunca admite NULL** — aquí ni siquiera hay que mirar la mínima: un ejemplar sin libro no es que esté prohibido, es que no se puede ni escribir. La (1,N) junto a EJEMPLAR, "todo libro tiene al menos un ejemplar", no la vigila ninguna tabla: a la lista del apartado 5. Borrado del padre: casi siempre **propagar** — la dependencia en existencia de la UD2, hecha política (lo viste con filas en el apartado 3).
+
+**Jerarquía (generalización/especialización)** → tres estrategias, y la elección depende de las anotaciones (total/parcial, exclusiva/solapada) que decidiste en la UD2:
+
+| N.º | Estrategia | Otros nombres con los que la encontrarás | Cómo | Encaja bien cuando |
+|---|---|---|---|---|
+| 1 | **Tabla única** | integrar los subtipos en el supertipo | Una tabla con todos los atributos + columna `tipo`; los no aplicables, a NULL | Pocos atributos propios; consultas casi siempre sobre el conjunto |
+| 2 | **Tabla del supertipo más una por subtipo** | padre e hijas; relación 1:1 entre supertipo y subtipos | Tabla del supertipo + una por subtipo con PK = FK al padre | La general: conserva la jerarquía tal cual; funciona con parcial y con solapada |
+| 3 | **Solo tablas hija** | eliminación del supertipo | Una tabla por subtipo repitiendo los atributos comunes; sin tabla padre | Solo si la jerarquía es **total y exclusiva** y nadie consulta el conjunto |
+
+Las tres, sobre el mismo diagrama: una asociación cultural con colaboradores que donan, que echan horas, o las dos cosas.
+
+![Figura 4 de la UD3. Jerarquía en notación de Chen: COLABORADOR, con clave cod_colaborador y atributo nombre, se especializa en DONANTE, con importe_anual, y VOLUNTARIO, con disponibilidad; triángulo es un con la anotación (total, solapada)](img/ud3-fig-4-jerarquia-colaborador.svg)
+
+*Figura 4 de la UD3. COLABORADOR se especializa en DONANTE y VOLUNTARIO. Total: todo colaborador es al menos una de las dos cosas. Solapada: puede ser las dos.*
+
+**Estrategia 1, tabla única.** Todo a `colaboradores`: los atributos comunes, los de cada subtipo y la marca de a qué subtipo pertenece cada fila.
+
+- `colaboradores(`**cod_colaborador**`, nombre, es_donante, es_voluntario, importe_anual, disponibilidad)`
+
+Qué viaja: los atributos de los subtipos suben a la tabla del supertipo. Fíjate en la marca: con una jerarquía exclusiva bastaría una columna `tipo`, pero aquí un colaborador puede ser las dos cosas, así que hacen falta dos columnas de sí/no, una por subtipo. Lo que la tabla no puede vigilar: que `importe_anual` esté relleno exactamente en los donantes y `disponibilidad` en los voluntarios (a NULL en los demás), ni la totalidad — que toda fila tenga al menos una marca a sí. Las dos, a la lista del apartado 5.
+
+**Estrategia 2, tabla del supertipo más una por subtipo.** Una tabla por rectángulo del diagrama.
+
+- `colaboradores(`**cod_colaborador**`, nombre)`
+- `donantes(`**cod_colaborador** `→ colaboradores, importe_anual)`
+- `voluntarios(`**cod_colaborador** `→ colaboradores, disponibilidad)`
+
+Qué viaja: la clave del supertipo baja a cada tabla hija, donde es a la vez primaria y clave ajena — la misma pieza que la entidad débil, y por eso la FK **nunca admite NULL**. Cada colaborador tiene su fila en `colaboradores`; quien dona tiene además una en `donantes`, quien echa horas una en `voluntarios`, y quien hace las dos cosas, una en cada una: el solapamiento sale solo. La totalidad, en cambio, sigue sin vigilarla nadie (un colaborador sin fila en ninguna hija no viola ninguna clave ajena): a la lista del apartado 5. Borrado del padre: **propagar** — sin colaborador no hay donante ni voluntario.
+
+**Estrategia 3, solo tablas hija.** El supertipo desaparece y cada hija repite los atributos comunes.
+
+- `donantes(`**cod_colaborador**`, nombre, importe_anual)`
+- `voluntarios(`**cod_colaborador**`, nombre, disponibilidad)`
+
+Qué viaja: los atributos comunes bajan a cada hija, y no queda tabla de colaboradores. Aquí la jerarquía es solapada, y se nota: quien dona y es voluntario aparece **dos veces**, con su `nombre` repetido en dos tablas — la redundancia que el apartado 6 te enseñará a perseguir —, y nadie puede garantizar que las dos copias coincidan. Y para listar a todos los colaboradores hay que juntar dos tablas. Por eso la tabla de arriba la reserva para jerarquías totales y exclusivas: ahí nadie sale repetido y ninguna fila se pierde.
+
+Para esta jerarquía, la elección es la **2**: respeta el solapamiento sin duplicar a nadie y conserva el conjunto en `colaboradores`.
+
+**Agregación** → la relación agregada se traduce primero (si era N:M, su tabla intermedia); esa tabla, que ya tiene PK propia, recibe las relaciones de la agregación como cualquier entidad.
+
+![Figura 6 de la UD2. Agregación en Chen: un recuadro discontinuo engloba BIBLIOTECA, el rombo organiza y ACTIVIDAD; la pareja agregada se relaciona mediante asignada-a con MONITOR](img/ud2-fig6-chen-agregacion.svg)
+
+*Figura 6 de la UD2. El recuadro engloba BIBLIOTECA (0,N) —organiza— (0,N) ACTIVIDAD, y ese conjunto se relaciona con MONITOR: (0,1) junto a MONITOR, cada pareja tiene como mucho un monitor y puede no tener ninguno; (0,N) junto al recuadro, un monitor atiende cero o muchas parejas. Las claves, que la figura no dibuja, son `cod_biblioteca`, `cod_actividad` y `cod_monitor`.*
+
+Dos pasos, en este orden:
+
+1. Lo de dentro del recuadro. *organiza* es N:M → tabla intermedia, como en el apartado 4.2:
+   - `organizaciones(`**cod_biblioteca** `→ bibliotecas,` **cod_actividad** `→ actividades)`
+2. Lo de fuera. *asignada a* es 1:N entre el recuadro y MONITOR, y la tabla del paso 1 ya tiene primaria: hace de lado muchos como lo haría cualquier entidad. Viaja `cod_monitor` a `organizaciones`:
+   - `organizaciones(`**cod_biblioteca** `→ bibliotecas,` **cod_actividad** `→ actividades, cod_monitor → monitores)`
+
+La mínima: el (0,1) junto a MONITOR hace que `cod_monitor` **admita NULL** — la pareja biblioteca-actividad existía antes que el monitor, y puede seguir sin él. Es exactamente lo que la ternaria del 4.2 no podía decir: allí la fila es siempre la terna completa. La promesa de la UD2 ("la UD3 lo resuelve con naturalidad") era esto.
 
 ### Apartado 4.4. Ejemplo resuelto: del diagrama al esquema, decisión a decisión
 
-El **club deportivo municipal**: socios que se inscriben en cursos dirigidos por monitores, con sesiones programadas por curso. El diagrama, en pata de gallo (la débil, con línea continua):
+El **club deportivo municipal**: socios que se inscriben en cursos dirigidos por monitores, con sesiones programadas por curso. El diagrama, en Chen:
+
+![Figura 5 de la UD3. Club deportivo municipal en notación de Chen: MONITOR dirige CURSO, 1:N con (1,1) junto a MONITOR, (0,N) junto a CURSO y el atributo fecha_asignacion en el rombo; SOCIO inscrito en CURSO, N:M con (0,N) en los dos extremos y el atributo fecha_inscripcion en el rombo; CURSO programa SESION, relacion identificativa 1:N con (1,1) junto a CURSO y (1,N) junto a SESION, SESION debil con discriminante num_sesion; SOCIO con clave num_socio y telefonos multivalorado](img/ud3-fig-5-club-deportivo.svg)
+
+*Figura 5 de la UD3. El club deportivo completo. Lo que el dibujo dice por sí solo: dirige es 1:N con `fecha_asignacion` en el rombo, y el (1,1) junto a MONITOR es "todo curso tiene monitor"; inscrito es N:M con `fecha_inscripcion` en el rombo; SESION es débil de CURSO (rectángulo y rombo dobles, discriminante `num_sesion` con subrayado discontinuo), y el (1,N) junto a SESION es "todo curso tiene al menos una sesión"; `telefonos` es multivalorado.*
+
+El mismo diagrama en pata de gallo (la débil, con línea continua):
 
 ```mermaid
 erDiagram
-    MONITOR ||--o{ CURSO : dirige
-    SOCIO }o--o{ CURSO : inscrito
+    MONITOR ||..o{ CURSO : dirige
+    SOCIO }o..o{ CURSO : inscrito
     CURSO ||--|{ SESION : programa
     SOCIO {
         int num_socio PK
@@ -176,7 +406,7 @@ erDiagram
     }
 ```
 
-Reglas del enunciado que completan el dibujo: *dirige* es **1:N** con atributo `fecha_asignacion` (cuándo se asignó el monitor al curso); *inscrito* es **N:M** con atributo `fecha_inscripcion`; todo curso tiene monitor; SESION es débil de CURSO, numerada dentro de cada curso.
+Esta notación no dibuja los atributos de las relaciones: `fecha_asignacion` y `fecha_inscripcion` hay que leerlas en el enunciado. La débil solo la delata la línea continua de *programa*, y el discriminante, que no tiene símbolo, hay que anotarlo.
 
 **La traducción, narrada con el algoritmo:**
 
@@ -184,7 +414,7 @@ Reglas del enunciado que completan el dibujo: *dirige* es **1:N** con atributo `
 2. **Multivalorado** (4.1): `telefonos` no cabe en una celda (atomicidad) → tabla aparte con FK al socio y el valor; su PK, la pareja (un socio no repite el mismo teléfono).
 3. ***dirige*, etiqueta 1:N** (4.2): la clave del lado uno viaja como FK al lado muchos → `cod_monitor` entra en `cursos`, **NOT NULL** (todo curso tiene monitor: la mínima legisla). Su atributo viaja con la FK: `fecha_asignacion` también a `cursos`.
 4. ***inscrito*, etiqueta N:M** (4.2): tabla intermedia con las dos FK; su PK, la pareja; el atributo de la relación vive en ella → nace `inscripciones`.
-5. **SESION, débil** (4.3): PK compuesta = clave del padre (que además es FK) + discriminante → (`cod_curso`, `num_sesion`).
+5. **SESION, débil** (4.3): PK compuesta = clave del padre (que además es FK) + discriminante → (`cod_curso`, `num_sesion`). La (1,N) junto a SESION — todo curso tiene al menos una sesión — no la vigila ninguna tabla: a la lista RS del apartado 5.
 
 **El esquema íntegro, en la notación de entrega** (política de borrado justificada en cada FK):
 
@@ -227,7 +457,7 @@ La lista de restricciones semánticas **forma parte del esquema entregable** con
 
 - **E14.** Clasifica cada regla en su sitio: (a) "la puntuación de una valoración está entre 1 y 5"; (b) "no se presta a quien tiene vencidos"; (c) "todo préstamo pertenece a un lector existente"; (d) "el correo del lector es único". ¿Cuáles son integridad del apartado 3 (y de qué tipo), y cuáles restricciones semánticas del apartado 5?
 - **E15.** Escribe, en el formato RS de la unidad, las tres restricciones de la lista de la biblioteca que consideres más dañinas si se incumplen, ordenadas por daño y con el mecanismo previsto razonado.
-- **E16.** Recupera tu lista de "no capturadas" de la entrega de la escuela de música (E19 de la UD2) y formalízala en formato RS. Si alguna resulta ser, bien mirada, integridad declarable del apartado 3, reclasifícala y explica el porqué.
+- **E16.** Recupera tu lista de "no capturadas" de la entrega de la escuela de música (E21 de la UD2) y formalízala en formato RS. Si alguna resulta ser, bien mirada, integridad declarable del apartado 3, reclasifícala y explica el porqué.
 
 <div style="page-break-before: always;"></div>
 
