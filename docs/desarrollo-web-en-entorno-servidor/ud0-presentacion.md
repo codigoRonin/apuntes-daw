@@ -31,9 +31,9 @@ El curso recorre esos RA en **8 unidades** repartidas en tres evaluaciones. Fíj
 
 | Evaluación | Unidades |
 |---|---|
-| 1.ª | UD1 Arquitecturas y tecnologías de servidor; panorama de frameworks · UD2 Código embebido: sintaxis, estructuras, funciones y formularios · UD3 Estado, sesiones y autenticación · UD4 Generación dinámica con plantillas |
-| 2.ª | UD5 Separación presentación/lógica: MVC, POO y patrones · UD6 Acceso a datos desde el servidor · UD7 Servicios web REST |
-| 3.ª | UD8 Aplicaciones web híbridas: APIs y repositorios externos, Big Data e inteligencia de negocios |
+| 1.ª | UD1 Arquitecturas y tecnologías de servidor; panorama de frameworks · UD2 Código embebido: sintaxis, estructuras, funciones y formularios · UD3 Estado, sesiones y autenticación |
+| 2.ª | UD4 Generación dinámica con plantillas · UD5 Separación presentación/lógica: MVC, POO y patrones · UD6 Acceso a datos desde el servidor · UD7 Servicios web REST · UD8a Aplicaciones web híbridas (primera parte, antes de la FEOE) |
+| 3.ª | UD8b Aplicaciones web híbridas: APIs y repositorios externos, Big Data e inteligencia de negocios (segunda parte) |
 
 !!! tip "La FEOE de marzo a mayo"
     Entre marzo y mayo harás el segundo periodo de formación en empresa (**360 horas**). No es casualidad que para entonces hayas cerrado la programación en el servidor, el estado y la autenticación y la arquitectura MVC: una pequeña parte de tres RA (**RA3, RA4 y RA5**) se adquiere precisamente allí. Durante la FEOE el módulo no tiene clases presenciales; a la vuelta queda la **3.ª evaluación, corta (unas 3 semanas)**, concentrada en la UD8 — el cierre del curso se juega en ese sprint final.
@@ -101,7 +101,7 @@ Si suspendes una evaluación, la recuperación se organiza sobre los **RA no sup
 
 ## Apartado 4. La aplicación ancla del curso
 
-Hasta la UD5 no hay una aplicación común: la teoría de la UD1 a la UD3 sigue un caso hilo, el Club de Montaña Os Ibones, y cada actividad evaluativa se hace sobre un caso distinto: una academia de idiomas, una protectora de animales, una escuela de música. No es casualidad: razonar sobre un dominio que no conocías es exactamente lo que te pedirá cualquier empresa. A partir de la **UD6**, ya en la 2.ª evaluación, lo que construyas girará sobre una misma **aplicación web ancla**: un dominio realista de nuestro entorno productivo, con una **base de datos de partida** — un sistema heredado que recibirás al arrancar, esquema y datos incluidos, como cuando llegas a una empresa y el sistema ya existe antes que tú. El dominio concreto se presenta y se decide en el aula antes de esa unidad; desde ahí, la aplicación crece unidad a unidad.
+Hasta la UD5 no hay una aplicación común: la teoría de la UD1 a la UD4 sigue un caso hilo, el Club de Montaña Os Ibones, y cada actividad evaluativa se hace sobre un caso distinto: una academia de idiomas, una protectora de animales, una escuela de música, un certamen de fotografía. No es casualidad: razonar sobre un dominio que no conocías es exactamente lo que te pedirá cualquier empresa. A partir de la **UD6**, ya en la 2.ª evaluación, lo que construyas girará sobre una misma **aplicación web ancla**: un dominio realista de nuestro entorno productivo, con una **base de datos de partida** — un sistema heredado que recibirás al arrancar, esquema y datos incluidos, como cuando llegas a una empresa y el sistema ya existe antes que tú. El dominio concreto se presenta y se decide en el aula antes de esa unidad; desde ahí, la aplicación crece unidad a unidad.
 
 | Tramo | Qué construyes |
 |---|---|
