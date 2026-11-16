@@ -2375,7 +2375,7 @@ En `plantillas.php`, la carpeta de plantillas ya no cuelga de la suya:
     incluir_aislado(__DIR__ . '/../plantillas/' . $plantilla . '.php', $datos);
 ```
 
-Y lo mismo en las dos funciones que cargan datos, `cargar_salidas()` y `cargar_usuarios()`: `__DIR__ . '/../datos/…'`. Las plantillas no cambian ni una letra, porque nunca supieron dónde estaban: piden sus parciales por nombre. El servidor se lanza desde `ud4/` diciéndole con `-t` cuál es su carpeta: `php -S localhost:8000 -t publico`. Las mismas cuatro peticiones:
+Y lo mismo en las dos funciones que cargan datos, `cargar_salidas()` y `cargar_usuarios()`, y en la constante `FICHERO_ALTAS` de `almacen.php`: `__DIR__ . '/../datos/…'`. Las plantillas no cambian ni una letra, porque nunca supieron dónde estaban: piden sus parciales por nombre. El servidor se lanza desde `ud4/` diciéndole con `-t` cuál es su carpeta: `php -S localhost:8000 -t publico`. Las mismas cuatro peticiones:
 
 ```
 $ curl -s -i http://localhost:8000/plantillas/parciales/enlace-menu.php | head -n 1
