@@ -1321,3 +1321,532 @@ Location: entrar.php
 #### Al terminar
 
 Desde la raíz de la plantilla (donde está `comprobar-sintaxis.php`), ejecuta **`php comprobar-sintaxis.php simulacro`**: tiene que decir `18 ficheros comprobados, 0 con errores de sintaxis.` Si marca algún `FALLA`, arréglalo antes de dar el simulacro por terminado. Después, compara tus salidas con las esperadas parte a parte y anota qué te ha faltado y por qué. Y borra la carpeta `sesiones/` y los tarros: no son parte de nada.
+
+## UD4 · Generación dinámica con tecnologías y frameworks que añaden código al lenguaje de marcas (plantillas)
+
+Las prácticas de esta unidad siguen con el caso del cuaderno, distinto del club de montaña de los apuntes y del certamen de fotografía de la actividad evaluativa: la **Asociación de Huertos del Soto**, que ahora quiere dejar de escribir a mano sus papeles. La cartelera de avisos, el recibo de la cuota, el cuadrante de riego y el boletín salen de los mismos datos de siempre (las ocho parcelas, H01 a H08, en Ribera, Eras y Soto), y la pregunta de cada práctica es la de la unidad: quién prepara, quién pinta y dónde vive cada cosa. Los datos son de aula, inventados. Son siete prácticas: las cuatro primeras cubren los apartados 1 a 4 de la unidad (la cuarta toca también el 9) y las tres últimas, los apartados 6, 7 y 8. El apartado 5 no tiene práctica: se trabaja con los ejercicios de los apuntes.
+
+Tres cosas valen para todas:
+
+- **`plantillas.php` viene dado en cada carpeta que lo usa** y es, letra a letra, el fichero con el que termina el apartado 4 de la unidad: `e()`, `render()`, `capturar()` y `render_pagina()`, más la auxiliar `incluir_aislado()`, que usa `render()`. En las prácticas de los apartados 2 y 3 solo usarás las dos primeras. No lo modifiques: si una práctica parece pedírtelo, el arreglo está en otro sitio.
+- **El servidor se lanza enseñando los errores**, como en el apartado 10 de la unidad, desde la carpeta de la práctica:
+
+```
+php -d display_errors=1 -d html_errors=0 -S localhost:8000
+```
+
+- **Las trazas se leen enteras.** Casi todas las prácticas traen un error que cazar de los del apartado 10. El mensaje dice qué falta, en qué fichero y en qué línea: antes de tocar nada, abre ese fichero por esa línea.
+
+### CP4.1 · Dos carteleras
+
+**Nivel** básico · **Tiempo orientativo** 20 min.
+
+**Qué refuerza.** El apartado 1 de la [UD4](ud4-generacion-dinamica-plantillas.md): qué hace el servidor y qué hace el navegador con una misma página, cómo se comprueba con `curl` lo que de verdad viaja, y qué se gana cuando el trabajo lo hace cada lado.
+
+**Ficheros de partida.** `cp4-1/avisos-servidor.php`, `cp4-1/avisos-navegador.php`, `cp4-1/avisos-json.php`, `cp4-1/avisos.js` y `cp4-1/datos/avisos.php`, en el repositorio de recursos (enlace en Classroom). El guion `avisos.js` se te da escrito: no hay que modificarlo.
+
+**Enunciado.** La asociación tiene seis avisos en la cartelera de la caseta y quiere verlos en la web. Dos socios han hecho cada uno su versión. En la primera, el servidor envía la página con los avisos ya dentro. En la segunda, el servidor envía una página sin avisos y un guion que los pide y los pinta en el navegador. En pantalla se ven casi iguales. No lo son, y una de las dos tiene un fallo que solo se ve con dos de los avisos.
+
+**Tareas.**
+
+- **(a) Cuenta lo que viaja.** Con el servidor lanzado, pide las dos páginas con `curl` y cuenta los avisos que llegan en cada una con `grep -c '<li>'`. Después ábrelas en el navegador y cuenta los que **ves**. Explica la diferencia: ¿qué es `curl`, que no hace lo que hace el navegador? ¿Qué vería en cada página un programa que solo lee el HTML que recibe?
+- **(b) Pesa y cuenta peticiones.** Mide con `wc -c` los bytes de las dos páginas, del guion y de los datos (`avisos-json.php`). En el navegador, con la pestaña Red abierta, cuenta cuántas peticiones hace falta para ver la cartelera en cada versión. Di cuál de las dos enseña antes los avisos en una conexión lenta, y por qué.
+- **(c) Caza el error.** Dos avisos llevan caracteres con significado en HTML: uno un `&` y otro un `<`. Mira cómo llegan en la versión del servidor (`grep -E 'abonado|bar'`) y cómo se ve ese aviso en el navegador. Es el error que ya conoces de la UD2: arréglalo en `avisos-servidor.php` y repite la orden. Después mira cómo viaja ese mismo aviso en `avisos-json.php` y busca en `avisos.js` la línea que lo pinta: ¿por qué en esa versión no hace falta escapar en el servidor, y quién se encarga?
+- **(d) Elegir zona, de dos maneras.** La versión del servidor admite `?zona=Eras`. Pídela con `curl`, y pide también `?zona=Marte`: explica qué hace el guion con una zona que no está en su lista. En la versión del navegador, elige «Eras» en el desplegable con la pestaña Red abierta: ¿cuántas peticiones nuevas aparecen? Escribe dos líneas: qué gana la asociación con la dirección `?zona=Eras` (piensa en mandarla por mensaje) y qué gana con el desplegable que no pide nada.
+
+**Cómo trabajar.** Para saber qué ha hecho el servidor, mira lo que **llega**: `curl` o «Ver código fuente», nunca el inspector de elementos, que enseña la página después de que el guion la haya cambiado. Salidas esperadas — el recuento de la tarea (a), los dos avisos de la tarea (c) una vez arreglado el fallo, y las dos peticiones de la tarea (d):
+
+```
+$ curl -s http://localhost:8000/avisos-servidor.php | grep -c '<li>'
+6
+$ curl -s http://localhost:8000/avisos-navegador.php | grep -c '<li>'
+0
+```
+
+```
+$ curl -s http://localhost:8000/avisos-servidor.php | grep -E 'abonado|bar'
+    <li>2026-11-24 · Riego &amp; abonado: cambio de turno en las Eras</li>
+    <li>2026-11-25 · Presión del goteo &lt;1 bar: revisad los filtros</li>
+```
+
+```
+$ curl -s 'http://localhost:8000/avisos-servidor.php?zona=Eras' | grep -E '<h1>|vista'
+<h1>Cartelera · Eras</h1>
+<p>Avisos a la vista: 4</p>
+$ curl -s 'http://localhost:8000/avisos-servidor.php?zona=Marte' | grep -E '<h1>|vista'
+<h1>Cartelera</h1>
+<p>Avisos a la vista: 6</p>
+```
+
+### CP4.2 · El recibo de la cuota
+
+**Nivel** intermedio · **Tiempo orientativo** 45 min (30 + 15 de la tarea desde cero).
+
+**Qué refuerza.** El apartado 2 de la [UD4](ud4-generacion-dinamica-plantillas.md): el guion que prepara y la plantilla que pinta, el contrato de la plantilla en su primera línea, `render()` y la regla de escapar una sola vez y al pintar.
+
+**Ficheros de partida.** `cp4-2/recibo-todo.php`, `cp4-2/recibo.php`, `cp4-2/plantillas/recibo.php`, `cp4-2/plantillas.php`, `cp4-2/utilidades.php`, `cp4-2/datos/parcelas.php` y `cp4-2/datos/hortelanos.php`, en el repositorio de recursos (enlace en Classroom).
+
+**Enunciado.** Cada parcela adjudicada paga una cuota anual según su superficie, y la tesorera quiere un recibo por parcela: `recibo.php?ref=H03`. Hay dos versiones. `recibo-todo.php` lo hace todo en un fichero y funciona. `recibo.php` es el intento de separarlo en un guion y una plantilla: la plantilla está bien, pero el guion trae **dos fallos** y le faltan dos casos.
+
+**Tareas.**
+
+- **(a) Lee el «antes».** Pide `recibo-todo.php?ref=H03` y comprueba que el recibo sale bien. Abre el fichero y marca cada línea con una P si **prepara** (lee, decide, calcula) o con una I si **imprime**. ¿En cuántos sitios se decide algo después de haber empezado a imprimir? Explica en una línea por qué eso complica cambiar el aspecto del recibo sin tocar el cálculo.
+- **(b) Caza el primer error.** Pide `recibo.php?ref=H03`: el recibo sale sin importe y con un aviso. Lee el aviso entero, abre la plantilla por su **primera línea**, que es su contrato, y compárala letra a letra con las claves que le pasa el guion. Arréglalo donde toca (error 1 del apartado 10) y explica por qué has elegido ese fichero y no el otro.
+- **(c) Caza el segundo.** El recibo de la H03 ya tiene importe, pero el nombre del huerto se lee mal en el navegador. Mira con `grep huerto` lo que llega y localiza quién ha escapado de más (error 3 del apartado 10). Quita el que sobra, no el otro, y di por qué ese.
+- **(d) Los dos casos que faltan.** Pide `recibo.php?ref=H99` y cuenta los avisos; mira también con qué código responde. Haz que el guion decida **antes de pintar**: si la referencia no existe, responde con un `404` y una página que lo diga; si la parcela existe pero está libre, responde con una página que diga que no tiene recibo. Las dos se pintan con una plantilla nueva, `plantillas/sin-recibo.php`, con su contrato en la primera línea. Comprueba además el recibo de la H06: su huerto lleva comillas.
+
+- **(e) Desde cero.** Dos ficheros vacíos, un guion y su plantilla. Haz la **circular de cuotas**, `circular.php`: una línea por parcela adjudicada, con su referencia, quién la lleva, el nombre del huerto y su cuota, y al final el número de recibos y el total. Los cálculos, en el guion; en la plantilla, solo pintar. Decide tú las claves del contrato. Pruébalo con esta orden y compara letra a letra:
+
+```
+$ curl -s http://localhost:8000/circular.php | grep -E '<li>|Total'
+    <li>H01 · Mateo Larraz · «El Rincón» · 45 €</li>
+    <li>H03 · Teresa Ansó · «Ansó &amp; hijas» · 45 €</li>
+    <li>H04 · Julia Bergés · «La Tajadera» · 60 €</li>
+    <li>H06 · Rubén Asín · «Huerto &quot;Los Chopos&quot;» · 60 €</li>
+    <li>H08 · Noa Lecina · «Tomates &amp; Cía» · 60 €</li>
+<p>Recibos: 5 · Total: 270 €</p>
+```
+
+**Cómo trabajar.** Un `Undefined variable` dentro de una plantilla casi nunca se arregla en la plantilla: dice que el contrato no se ha cumplido, y el contrato lo cumple quien llama. Y un `&amp;amp;` no es un aviso de PHP, pero se lee igual: alguien ha escapado antes de tiempo. Salidas esperadas de la práctica resuelta — el recibo de la H03 y las comprobaciones de la tarea (d):
+
+```
+$ curl -s 'http://localhost:8000/recibo.php?ref=H03' | grep -E '<h1>|<p>'
+<h1>Recibo de la cuota anual · parcela H03</h1>
+<p>A nombre de Teresa Ansó · huerto «Ansó &amp; hijas»</p>
+<p>Eras · 80 m²</p>
+<p><strong>Importe: 45 €</strong></p>
+$ curl -s 'http://localhost:8000/recibo.php?ref=H03' | grep -c Warning
+0
+```
+
+```
+$ curl -s -o /dev/null -w '%{http_code}\n' 'http://localhost:8000/recibo.php?ref=H99'
+404
+$ curl -s 'http://localhost:8000/recibo.php?ref=H99' | grep '<p>'
+<p>No hay ninguna parcela con esa referencia.</p>
+$ curl -s -o /dev/null -w '%{http_code}\n' 'http://localhost:8000/recibo.php?ref=H02'
+200
+$ curl -s 'http://localhost:8000/recibo.php?ref=H02' | grep '<p>'
+<p>La parcela H02 está libre: no tiene recibo.</p>
+$ curl -s 'http://localhost:8000/recibo.php?ref=H06' | grep huerto
+<p>A nombre de Rubén Asín · huerto «Huerto &quot;Los Chopos&quot;»</p>
+```
+
+### CP4.3 · La fila del cuadrante
+
+**Nivel** intermedio · **Tiempo orientativo** 45 min (30 + 15 de la tarea desde cero).
+
+**Qué refuerza.** El apartado 3 de la [UD4](ud4-generacion-dinamica-plantillas.md): los parciales que reciben sus datos como parámetros, su contrato, el parámetro opcional y un parcial que usa otro parcial.
+
+**Ficheros de partida.** `cp4-3/cuadrante.php`, `cp4-3/mi-turno.php`, `cp4-3/plantillas/cuadrante.php`, `cp4-3/plantillas/mi-turno.php`, `cp4-3/plantillas/sin-parcela.php`, `cp4-3/plantillas/parciales/turno.php`, `cp4-3/plantillas.php`, `cp4-3/utilidades.php`, `cp4-3/datos/parcelas.php` y `cp4-3/datos/turnos.php`, en el repositorio de recursos (enlace en Classroom).
+
+**Enunciado.** El agua se reparte por turnos, y hay dos páginas que los enseñan: `cuadrante.php`, con los siete turnos de la semana, y `mi-turno.php?ref=H03`, con los de una parcela. Las dos pintan la misma línea de tabla. La primera la escribe a mano dentro de su plantilla; la segunda ya la ha sacado a un parcial, `parciales/turno.php`, pero quien lo hizo copió la línea tal cual y el parcial no funciona.
+
+**Tareas.**
+
+- **(a) Caza el error.** Pide `mi-turno.php?ref=H03` y lee el primer aviso: dice qué variable falta y en qué fichero. Abre el parcial, lee su contrato y compáralo con lo que usa. Hay dos arreglos posibles: pasarle al parcial lo que echa de menos, o que el guion le entregue cada turno **con su zona ya resuelta**. Elige el segundo, escribe en `utilidades.php` la función que lo prepara y explica por qué un parcial que solo pinta lo que recibe es más fácil de reutilizar.
+- **(b) Una sola línea para las dos páginas.** Haz que `plantillas/cuadrante.php` use también el parcial, y borra de ella la línea escrita a mano. Antes y después, cuenta las líneas de tabla que llegan con `grep -c '<tr'`: el número no puede cambiar.
+- **(c) Un parámetro opcional.** En `mi-turno.php` hacen falta dos columnas más, los minutos y la observación; en el cuadrante, no. Añade al parcial un parámetro `$detalle` que valga `false` si no se le pasa, y actualiza su contrato. Pásalo solo desde la plantilla que lo necesita, y añade allí las dos cabeceras.
+- **(d) Lo que llega.** Un turno de la H03 lleva una observación con un `<`. Comprueba con `grep -o 'Presión[^<]*'` cómo llega al navegador y di qué línea de qué fichero lo ha dejado así. Pide también `mi-turno.php?ref=H02`, una parcela sin turnos, y `mi-turno.php?ref=H99`, y anota qué responde cada una.
+
+- **(e) Desde cero.** Una página nueva, `por-dias.php`: el cuadrante agrupado por días. Cada día lleva su nombre en un `<h2>`, una tabla con sus turnos, con detalle, y una línea con el total de minutos de ese día. Cada día lo pinta un parcial nuevo, `parciales/dia.php`, que a su vez usa `parciales/turno.php` para cada línea de la tabla. Agrupar y sumar es preparar: va en el guion o en `utilidades.php`, no en las plantillas. Pruébalo con estas dos órdenes y compara letra a letra:
+
+```
+$ curl -s http://localhost:8000/por-dias.php | grep -E '<h2>|Total'
+<h2>lunes</h2>
+<p>Total del día: 100 min</p>
+<h2>martes</h2>
+<p>Total del día: 50 min</p>
+<h2>miércoles</h2>
+<p>Total del día: 90 min</p>
+<h2>jueves</h2>
+<p>Total del día: 125 min</p>
+<h2>sábado</h2>
+<p>Total del día: 40 min</p>
+$ curl -s http://localhost:8000/por-dias.php | grep -c '<tr'
+7
+```
+
+**Cómo trabajar.** Un parcial es una plantilla pequeña con contrato propio: solo ve lo que le pasan. Si al sacarlo de su página deja de funcionar, es que usaba algo de la página sin decirlo. Salidas esperadas de la práctica resuelta — el cuadrante y los turnos de la H03:
+
+```
+$ curl -s http://localhost:8000/cuadrante.php | grep '<tr'
+    <tr><th>Día</th><th>Hora</th><th>Parcela</th><th>Zona</th></tr>
+    <tr><td>lunes</td><td>07:30</td><td>H01</td><td>Ribera</td></tr>
+    <tr><td>lunes</td><td>08:15</td><td>H08</td><td>Ribera</td></tr>
+    <tr><td>martes</td><td>07:30</td><td>H03</td><td>Eras</td></tr>
+    <tr><td>miércoles</td><td>07:30</td><td>H04</td><td>Eras</td></tr>
+    <tr><td>jueves</td><td>07:30</td><td>H06</td><td>Soto</td></tr>
+    <tr><td>jueves</td><td>19:00</td><td>H03</td><td>Eras</td></tr>
+    <tr><td>sábado</td><td>08:00</td><td>H01</td><td>Ribera</td></tr>
+```
+
+```
+$ curl -s 'http://localhost:8000/mi-turno.php?ref=H03' | grep '<tr'
+    <tr><th>Día</th><th>Hora</th><th>Parcela</th><th>Zona</th><th>Minutos</th><th>Observación</th></tr>
+    <tr><td>martes</td><td>07:30</td><td>H03</td><td>Eras</td><td>50</td><td>Presión baja: &lt;1 bar</td></tr>
+    <tr><td>jueves</td><td>19:00</td><td>H03</td><td>Eras</td><td>50</td><td></td></tr>
+$ curl -s 'http://localhost:8000/mi-turno.php?ref=H03' | grep -c Warning
+0
+$ curl -s -o /dev/null -w '%{http_code}\n' 'http://localhost:8000/mi-turno.php?ref=H02'
+200
+$ curl -s 'http://localhost:8000/mi-turno.php?ref=H02' | grep '<p>'
+<p>Esta semana no tiene turnos.</p>
+$ curl -s -o /dev/null -w '%{http_code}\n' 'http://localhost:8000/mi-turno.php?ref=H99'
+404
+```
+
+### CP4.4 · El boletín, generado
+
+**Nivel** avanzado · **Tiempo orientativo** 60 min (40 + 20 de la tarea desde cero).
+
+**Qué refuerza.** Los apartados 4 y 9 de la [UD4](ud4-generacion-dinamica-plantillas.md): el layout como una plantilla más, `capturar()` para tener una página como texto, las rutas con `__DIR__` cuando los ficheros cambian de carpeta, y la idea de que una plantilla no es una página que se pueda pedir.
+
+**Ficheros de partida.** `cp4-4/generar.php`, `cp4-4/plantillas.php`, `cp4-4/comun/utilidades.php`, `cp4-4/plantillas/boletin.php`, `cp4-4/plantillas/normas.php`, `cp4-4/plantillas/libres.php`, `cp4-4/datos/boletin.php`, `cp4-4/datos/avisos.php` y `cp4-4/datos/parcelas.php`, en el repositorio de recursos (enlace en Classroom). Esta práctica empieza en el terminal: `generar.php` no se sirve, se ejecuta.
+
+**Enunciado.** El boletín mensual de la asociación son tres páginas: los avisos, las normas del huerto y las parcelas libres. No cambian en todo el mes, así que no hace falta pintarlas en cada visita: un guion las genera una vez y las guarda como ficheros `.html` en la carpeta `sitio/`, que es lo único que se publica. Las tres plantillas de contenido están escritas. Falta el layout, `generar.php` solo genera una página y, desde que alguien ordenó las carpetas, ni eso.
+
+**Tareas.**
+
+- **(a) Caza el primer error.** Ejecuta `php -d display_errors=1 -d log_errors=0 generar.php`. Lee la ruta completa que PHP ha intentado abrir y compárala con dónde está ese fichero de verdad (error 4 del apartado 10). Arréglalo y vuelve a ejecutar: ahora se genera `sitio/boletin.html`. Mira sus dos primeras líneas con `head -n 2` y cuenta con `grep -c '<html'`: tiene contenido, pero no es una página.
+- **(b) El layout.** Escribe `plantillas/layout.php` con su contrato: recibe `$rotulo` (para el `<title>`), `$contenido` (HTML ya pintado) y `$pie`. Lleva la estructura completa de la página, una cabecera (`<header>`) con el nombre de la asociación y un pie (`<footer>`). `render_pagina()` no te sirve tal cual, porque **envía** la página y aquí la quieres como texto: léela en `plantillas.php`, mira de qué dos pasos está hecha y haz tú esos dos pasos con `capturar()`. El pie de las tres páginas es «Boletín n.º 14 · noviembre de 2026», montado en el guion con los datos de `datos/boletin.php`.
+- **(c) Las otras dos páginas.** Genera también `sitio/normas.html` y `sitio/libres.html` con sus plantillas y el mismo layout. Para la de parcelas libres, el guion prepara la lista de las libres y los metros que suman. Comprueba las tres con las órdenes de «Cómo trabajar».
+- **(d) Lo que se puede pedir.** Ejecuta una plantilla sola: `php -d display_errors=1 -d log_errors=0 plantillas/boletin.php`. Es el error 2 del apartado 10; explica por qué el arreglo **no** es añadirle un `require`. Después sirve solo la carpeta generada, `php -S localhost:8000 -t sitio`, y pide con `curl -s -o /dev/null -w '%{http_code}\n'` estas cuatro direcciones: `boletin.html`, `plantillas/boletin.php`, `generar.php` y `datos/avisos.php`. Explica qué habría podido pedir un visitante si se sirviera la carpeta entera.
+
+- **(e) Desde cero.** Un guion nuevo, `generar-zonas.php`, y una plantilla, `plantillas/zona.php`: una página por zona (`sitio/zona-ribera.html`, `sitio/zona-eras.html` y `sitio/zona-soto.html`), las tres con la misma plantilla y con tu layout. Cada una lista las parcelas de su zona con la referencia, la superficie y el estado, y termina con un enlace «Volver al boletín». Las zonas salen de los datos, en el orden en que aparecen: si mañana hay una cuarta, el guion genera cuatro páginas sin tocarlo. El nombre de cada fichero te lo da `fichero_de_zona()`, que ya está en `comun/utilidades.php`. Pruébalo con estas órdenes; los bytes de cada página dependen de tu layout, lo demás tiene que coincidir:
+
+```
+$ php generar-zonas.php
+sitio/zona-ribera.html: 529 bytes
+sitio/zona-eras.html: 490 bytes
+sitio/zona-soto.html: 521 bytes
+$ ls sitio
+boletin.html
+libres.html
+normas.html
+zona-eras.html
+zona-ribera.html
+zona-soto.html
+$ grep '<li>' sitio/zona-soto.html
+    <li>H05 · 40 m² · libre</li>
+    <li>H06 · 120 m² · adjudicada</li>
+    <li>H07 · 55 m² · libre</li>
+$ grep -c 'Volver al boletín' sitio/zona-*.html
+sitio/zona-eras.html:1
+sitio/zona-ribera.html:1
+sitio/zona-soto.html:1
+```
+
+**Cómo trabajar.** `capturar()` es `render()` con el resultado en la mano: lo que devuelve es texto, y un texto se puede guardar en un fichero o pasárselo a otra plantilla, que es justo lo que hace un layout. Salidas esperadas — la tarea (a) con el `require` arreglado, las comprobaciones de las tres páginas (el orden en que las generes lo decides tú) y los cuatro códigos de la tarea (d):
+
+```
+$ php generar.php
+sitio/boletin.html: 509 bytes
+$ head -n 2 sitio/boletin.html
+<h1>Boletín n.º 14 · noviembre de 2026</h1>
+<ul>
+$ grep -c '<html' sitio/boletin.html
+0
+```
+
+```
+$ ls sitio
+boletin.html
+libres.html
+normas.html
+$ grep -c '<html' sitio/*.html
+sitio/boletin.html:1
+sitio/libres.html:1
+sitio/normas.html:1
+$ grep -c '<footer' sitio/*.html
+sitio/boletin.html:1
+sitio/libres.html:1
+sitio/normas.html:1
+$ grep -h '<h1>' sitio/*.html
+<h1>Boletín n.º 14 · noviembre de 2026</h1>
+<h1>Parcelas libres</h1>
+<h1>Normas del huerto</h1>
+$ grep 'Suman' sitio/libres.html
+<p>Suman 140 m².</p>
+```
+
+```
+$ grep '<li>' sitio/normas.html
+    <li>El agua se pide por turno: nadie abre la tajadera fuera de su hora.</li>
+    <li>Herramientas &amp; carretillas vuelven a la caseta antes de las 20:00.</li>
+    <li>Prohibido quemar restos de poda si el cierzo sopla a más de 30 km/h.</li>
+    <li>Las parcelas de &lt;50 m² no pueden tener caseta propia.</li>
+```
+
+```
+$ curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8000/boletin.html
+200
+$ curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8000/plantillas/boletin.php
+404
+$ curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8000/generar.php
+404
+$ curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8000/datos/avisos.php
+404
+```
+
+### CP4.5 · La caseta, ordenada
+
+**Nivel** intermedio · **Tiempo orientativo** 50 min (35 + 15 de la tarea desde cero).
+
+**Qué refuerza.** El apartado 6 de la [UD4](ud4-generacion-dinamica-plantillas.md): leer lo que llega por `GET` sin fiarse de su forma, ordenar con `usort()`, la lista cerrada escrita una sola vez y los enlaces que no pierden lo que el visitante ya había elegido.
+
+**Ficheros de partida.** `cp4-5/prestamos.php`, `cp4-5/plantillas/prestamos.php`, `cp4-5/plantillas.php`, `cp4-5/utilidades.php` y `cp4-5/datos/prestamos.php`, en el repositorio de recursos (enlace en Classroom).
+
+**Enunciado.** La caseta presta herramientas y lo apunta todo en un libro: qué se lleva cada cual, desde qué día y cuántos días. `prestamos.php` enseña el libro con una caja para buscar por herramienta o por persona. La junta quiere además ordenarlo pulsando en la cabecera de cada columna. Antes de añadir nada hay que arreglar lo que ya hay: una petición fabricada tumba la página.
+
+**Tareas.**
+
+- **(a) Caza el error.** Pide la página con la búsqueda enviada como lista: `curl -s -g 'http://localhost:8000/prestamos.php?busca[]=x' | grep -m 1 'Fatal error'`. Es el error 6 del apartado 10. Arregla la lectura de `busca` para que lo que no sea un texto cuente como una búsqueda vacía, y repite la petición: tiene que salir el libro entero.
+- **(b) Ordenar.** Añade el parámetro `orden`, que se lee contra una **lista cerrada escrita una sola vez**: un array `COLUMNAS` que relaciona cada clave (`util`, `persona`, `desde`, `dias`) con el rótulo de su columna. Lo que no esté en la lista, o no sea un texto, vale `desde`. Escribe una función de comparación por columna y elige con `match`. Tres órdenes van de menor a mayor; `dias`, al revés: los préstamos más largos, primero. Pruébalo con `orden=dias`, `orden=xyz` y `orden[]=dias`.
+- **(c) Las cabeceras ordenan.** Cada cabecera de la tabla pasa a ser un enlace que ordena por su columna. Las cabeceras salen de `COLUMNAS`, no se escriben a mano en la plantilla, y la de la columna por la que se está ordenando lleva `aria-current="true"`. Cada enlace tiene que **conservar la búsqueda**: si no, ordenar la borraría. Las direcciones se montan en el guion, que es quien prepara, con `http_build_query()`; la plantilla recibe una lista de cabeceras con su rótulo, su enlace y si es la activa, y solo pinta. Mira los enlaces que llegan con `grep -o 'href="[^"]*"[^>]*'` y explica por qué el `&` que separa los parámetros llega escrito `&amp;`.
+- **(d) La caja recuerda, y el orden también.** Haz que la caja de búsqueda vuelva con lo que se buscó, y que buscar no pierda el orden elegido (un campo oculto en el formulario). Busca `<b>` con `curl -s -G --data-urlencode 'busca=<b>'` y comprueba cómo llega al atributo `value`.
+
+- **(e) Desde cero.** Una página nueva, `vuelven.php?hasta=2026-11-20`: las herramientas que vuelven a la caseta ese día o antes, ordenadas por su día de vuelta, una por línea con el día, la herramienta y la persona, y delante cuántas son. El día de vuelta de un préstamo te lo da `dia_de_vuelta()`, y `fecha_valida()` te dice si una fecha existe; las dos están en `utilidades.php`. Sin `hasta`, salen todas; con una fecha que no existe, también, y un aviso lo dice. Pruébalo con estas tres peticiones y compara letra a letra:
+
+```
+$ curl -s 'http://localhost:8000/vuelven.php?hasta=2026-11-20' | grep -E '<h1>|aviso|Devoluciones|<li>'
+<h1>Herramientas que vuelven hasta el 2026-11-20</h1>
+<p>Devoluciones: 3</p>
+    <li>2026-11-18 · Motoazada · Teresa Ansó</li>
+    <li>2026-11-18 · Carretilla &amp; capazos · Mateo Larraz</li>
+    <li>2026-11-20 · Escalera · Noa Lecina</li>
+$ curl -s 'http://localhost:8000/vuelven.php?hasta=2026-02-30' | grep -E '<h1>|aviso|Devoluciones'
+<h1>Herramientas que vuelven</h1>
+<p class="aviso">Esa fecha no existe: se enseñan todos los préstamos.</p>
+<p>Devoluciones: 10</p>
+$ curl -s http://localhost:8000/vuelven.php | grep -E '<h1>|aviso|Devoluciones'
+<h1>Herramientas que vuelven</h1>
+<p>Devoluciones: 10</p>
+```
+
+**Cómo trabajar.** Tres parámetros, tres lecturas, la misma pregunta cada vez: ¿es un texto?, ¿está en mi lista? Lo que no pasa las dos se cambia por un valor por defecto, sin avisos. Salidas esperadas de la práctica resuelta — la tarea (a), el libro por `orden=dias`, y una búsqueda ordenada con sus enlaces:
+
+```
+$ curl -s -g 'http://localhost:8000/prestamos.php?busca[]=x' | grep encontrados
+<p>Préstamos encontrados: 10 de 10</p>
+```
+
+```
+$ curl -s 'http://localhost:8000/prestamos.php?orden=dias' | grep '<td>'
+    <tr><td>Tijeras de podar</td><td>Julia Bergés</td><td>2026-11-18</td><td>7</td></tr>
+    <tr><td>Manguera de 25 m</td><td>Teresa Ansó</td><td>2026-11-21</td><td>5</td></tr>
+    <tr><td>Azada</td><td>Ibai Sanjuán</td><td>2026-11-22</td><td>4</td></tr>
+    <tr><td>Desbrozadora</td><td>Rubén Asín</td><td>2026-11-18</td><td>3</td></tr>
+    <tr><td>Motoazada</td><td>Teresa Ansó</td><td>2026-11-16</td><td>2</td></tr>
+    <tr><td>Motoazada</td><td>Rubén Asín</td><td>2026-11-20</td><td>2</td></tr>
+    <tr><td>Sulfatadora</td><td>Olga Pardo</td><td>2026-11-24</td><td>2</td></tr>
+    <tr><td>Carretilla &amp; capazos</td><td>Mateo Larraz</td><td>2026-11-17</td><td>1</td></tr>
+    <tr><td>Escalera</td><td>Noa Lecina</td><td>2026-11-19</td><td>1</td></tr>
+    <tr><td>Carretilla &amp; capazos</td><td>Julia Bergés</td><td>2026-11-23</td><td>1</td></tr>
+```
+
+```
+$ curl -s 'http://localhost:8000/prestamos.php?busca=an&orden=persona' | grep '<td>'
+    <tr><td>Azada</td><td>Ibai Sanjuán</td><td>2026-11-22</td><td>4</td></tr>
+    <tr><td>Motoazada</td><td>Teresa Ansó</td><td>2026-11-16</td><td>2</td></tr>
+    <tr><td>Manguera de 25 m</td><td>Teresa Ansó</td><td>2026-11-21</td><td>5</td></tr>
+$ curl -s 'http://localhost:8000/prestamos.php?busca=an&orden=persona' | grep -o 'href="[^"]*"[^>]*'
+href="prestamos.php?orden=util&amp;busca=an"
+href="prestamos.php?orden=persona&amp;busca=an" aria-current="true"
+href="prestamos.php?orden=desde&amp;busca=an"
+href="prestamos.php?orden=dias&amp;busca=an"
+$ curl -s -G --data-urlencode 'busca=Carretilla & c' http://localhost:8000/prestamos.php | grep -o 'href="[^"]*"' | head -n 1
+href="prestamos.php?orden=util&amp;busca=Carretilla+%26+c"
+```
+
+```
+$ curl -s -G --data-urlencode 'busca=<b>' http://localhost:8000/prestamos.php | grep -E 'type="search"|encontrados'
+    <input type="search" id="busca" name="busca" value="&lt;b&gt;">
+<p>Préstamos encontrados: 0 de 10</p>
+$ curl -s 'http://localhost:8000/prestamos.php?busca=an&orden=dias' | grep 'type="hidden"'
+    <input type="hidden" name="orden" value="dias">
+```
+
+### CP4.6 · La calculadora del riego
+
+**Nivel** avanzado · **Tiempo orientativo** 60 min (40 + 20 de la tarea desde cero).
+
+**Qué refuerza.** El apartado 7 de la [UD4](ud4-generacion-dinamica-plantillas.md): verificar en el servidor recogiendo todos los errores, devolver el formulario con cada error junto a su campo y con lo que se había escrito, y pintar un resultado solo cuando todo es válido. Y, de paso, el error 5 del apartado 10.
+
+**Ficheros de partida.** `cp4-6/calculadora.php`, `cp4-6/plantillas/calculadora.php`, `cp4-6/apuntarse.php`, `cp4-6/plantillas/apuntarse.php`, `cp4-6/sello.php`, `cp4-6/plantillas.php`, `cp4-6/utilidades.php` y `cp4-6/datos/parcelas.php`, en el repositorio de recursos (enlace en Classroom).
+
+**Enunciado.** Dos formularios. El primero es pequeño y está roto: un botón para apuntarse a la limpieza de la acequia que siempre contesta `403`. El segundo es la **calculadora del riego**: se escribe la referencia de una parcela, los minutos de cada riego y se marcan los días de la semana, y la página dice cuántos litros gasta esa parcela a la semana (los minutos, por los litros por minuto de su tipo de riego, por el número de días). Es un formulario `GET`: no cambia nada en el servidor, solo pregunta. El guion ya lee los tres campos y la plantilla ya pinta el formulario; falta todo lo demás.
+
+**Tareas.**
+
+- **(a) Caza el error.** Con un tarro de cookies, pide `apuntarse.php` y cuenta los campos del sello: `grep -c 'name="sello"'`. Después envía el formulario con cualquier sello. El guion está bien y no se toca: saca el sello de la sesión y se lo entrega a la plantilla, como dice su contrato. Localiza qué le falta a la plantilla, arréglalo y comprueba el envío bueno: `302`, y a la vuelta, el mensaje.
+- **(b) Verificar y decir dónde.** En la calculadora, escribe la verificación en una función que reciba los valores y devuelva los errores **por campo** (`campo => mensaje`), todos y no solo el primero: la referencia es obligatoria y tiene que ser la de una parcela que exista; los minutos, un número entero entre 10 y 120; hay que marcar al menos un día, y todos tienen que estar en la lista. Solo se verifica si el formulario se ha enviado. En la plantilla, pinta cada mensaje **junto a su campo**, en un `<span class="error">`.
+- **(c) Devolver lo escrito.** Cuando hay errores, el formulario vuelve con lo que el usuario escribió, también lo que está mal, y con sus días marcados. Envía `ref=<H03>` y comprueba cómo llega al atributo `value`.
+- **(d) El resultado, solo si procede.** Si no hay ningún error, calcula los litros en el guion y pinta el resultado en un `<p class="resultado">` encima del formulario; si lo hay, ese párrafo no existe. Prueba un envío válido, la página recién abierta y estas cuatro peticiones fabricadas: `minutos=5`, `minutos=media+hora`, `dias=lunes` (un texto donde se espera una lista) y `dias[]=festivo`.
+
+- **(e) Desde cero.** Otro formulario `GET`, `reparto.php`: dos parcelas comparten un turno y los minutos se reparten según la superficie de cada una. Tres campos: `primera`, `segunda` y `minutos` (un entero entre 20 y 180). Las dos referencias tienen que existir y la segunda no puede ser la misma que la primera: ese error va junto al campo de la segunda. El resultado, una línea por parcela. Para la primera, los minutos por su superficie entre la suma de las dos, convertido a entero con `(int)`; el resto, para la segunda. Pruébalo con estas peticiones y compara letra a letra:
+
+```
+$ curl -s 'http://localhost:8000/reparto.php?primera=H01&segunda=H08&minutos=50&repartir=1' | grep -E '<li>|class="error"'
+    <li>H01: 20 min</li>
+    <li>H08: 30 min</li>
+$ curl -s 'http://localhost:8000/reparto.php?primera=H03&segunda=H04&minutos=90&repartir=1' | grep -E '<li>|class="error"'
+    <li>H03: 40 min</li>
+    <li>H04: 50 min</li>
+$ curl -s 'http://localhost:8000/reparto.php?primera=H03&segunda=H03&minutos=500&repartir=1' | grep -E '<li>|class="error"'
+        <span class="error">Tiene que ser una parcela distinta de la primera.</span>
+        <span class="error">Tiene que ser un número entero entre 20 y 180.</span>
+$ curl -s 'http://localhost:8000/reparto.php?primera=H99&segunda=H04&minutos=60&repartir=1' | grep -E '<li>|class="error"'
+        <span class="error">No hay ninguna parcela con esa referencia.</span>
+$ curl -s http://localhost:8000/reparto.php | grep -c -E '<li>|class="error"'
+0
+```
+
+**Cómo trabajar.** El orden es siempre el mismo: leer, verificar, y solo entonces decidir qué se pinta. La plantilla no verifica nada: pregunta si hay un error para este campo y, si lo hay, lo escribe. Salidas esperadas de la práctica resuelta — el botón de la tarea (a), un envío con tres errores, lo que vuelve escrito, y los envíos de la tarea (d):
+
+```
+$ curl -s -c tarro.txt -b tarro.txt http://localhost:8000/apuntarse.php | grep -c 'name="sello"'
+1
+$ SELLO=$(curl -s -c tarro.txt -b tarro.txt http://localhost:8000/apuntarse.php | grep -o 'value="[0-9a-f]*"' | cut -d'"' -f2)
+$ curl -s -i -c tarro.txt -b tarro.txt -d "sello=$SELLO" http://localhost:8000/apuntarse.php | grep -E 'HTTP|Location'
+HTTP/1.1 302 Found
+Location: apuntarse.php
+$ curl -s -c tarro.txt -b tarro.txt http://localhost:8000/apuntarse.php | grep aviso
+<p class="aviso">Estás en la lista. Trae guantes y azada.</p>
+```
+
+```
+$ curl -s -g 'http://localhost:8000/calculadora.php?ref=H99&minutos=45,5&calcular=1' | grep 'class="error"'
+        <span class="error">No hay ninguna parcela con esa referencia.</span>
+        <span class="error">Tiene que ser un número entero entre 10 y 120.</span>
+        <span class="error">Marca al menos un día.</span>
+```
+
+```
+$ curl -s -g 'http://localhost:8000/calculadora.php?ref=H99&minutos=45,5&dias[]=martes&calcular=1' | grep -E 'value="(H99|45,5)"|checked'
+        <input type="text" id="ref" name="ref" value="H99">
+        <input type="text" id="minutos" name="minutos" value="45,5">
+        <label><input type="checkbox" name="dias[]" value="martes" checked> martes</label>
+$ curl -s -G --data-urlencode 'ref=<H03>' -d calcular=1 http://localhost:8000/calculadora.php | grep 'id="ref"'
+        <input type="text" id="ref" name="ref" value="&lt;H03&gt;">
+```
+
+```
+$ curl -s -g 'http://localhost:8000/calculadora.php?ref=H03&minutos=50&dias[]=martes&dias[]=jueves&calcular=1' | grep -E 'resultado|class="error"'
+<p class="resultado">La parcela H03 gasta 800 litros a la semana.</p>
+$ curl -s -g 'http://localhost:8000/calculadora.php?ref=H04&minutos=30&dias[]=lunes&calcular=1' | grep -E 'resultado|class="error"'
+<p class="resultado">La parcela H04 gasta 1200 litros a la semana.</p>
+$ curl -s http://localhost:8000/calculadora.php | grep -c -E 'resultado|class="error"'
+0
+```
+
+```
+$ curl -s -g 'http://localhost:8000/calculadora.php?ref=H03&minutos=5&dias[]=lunes&calcular=1' | grep -E 'resultado|class="error"'
+        <span class="error">Tiene que ser un número entero entre 10 y 120.</span>
+$ curl -s -g 'http://localhost:8000/calculadora.php?ref=H03&minutos=media+hora&dias[]=lunes&calcular=1' | grep -E 'resultado|class="error"'
+        <span class="error">Tiene que ser un número entero entre 10 y 120.</span>
+$ curl -s -g 'http://localhost:8000/calculadora.php?ref=H03&minutos=50&dias=lunes&calcular=1' | grep -E 'resultado|class="error"'
+        <span class="error">Marca al menos un día.</span>
+$ curl -s -g 'http://localhost:8000/calculadora.php?ref=H03&minutos=50&dias[]=festivo&calcular=1' | grep -E 'resultado|class="error"'
+        <span class="error">Hay un día que no está en la lista.</span>
+```
+
+### CP4.7 · El panel del día
+
+**Nivel** avanzado · **Tiempo orientativo** 50 min (35 + 15 de la tarea desde cero).
+
+**Qué refuerza.** El apartado 8 de la [UD4](ud4-generacion-dinamica-plantillas.md): una página cuyo contenido y cuya estructura dependen de los datos, las decisiones tomadas en el guion y entregadas a la plantilla ya resueltas, y la costumbre de probar cada página con datos distintos.
+
+**Ficheros de partida.** `cp4-7/panel.php`, `cp4-7/plantillas/panel.php`, `cp4-7/plantillas.php`, `cp4-7/datos/supuestos/normal.php`, `cp4-7/datos/supuestos/averia.php`, `cp4-7/datos/supuestos/vacio.php`, `cp4-7/datos/parcelas.php` y `cp4-7/datos/hortelanos.php`, en el repositorio de recursos (enlace en Classroom).
+
+**Enunciado.** El panel del día reúne en una página los avisos, los turnos de riego de hoy, las parcelas libres y la próxima asamblea. Quien lo hizo lo probó con un día cualquiera y salió bien. Pero los días no son todos iguales, y el panel tiene que cambiar de forma con ellos. Para no tocar datos a mano hay tres días preparados, que se eligen con `?supuesto=normal`, `averia` o `vacio`.
+
+**Tareas.**
+
+- **(a) Caza el error.** Pide el panel con los tres supuestos y cuenta en cada uno los bloques (`grep -c '<section'`) y los avisos de PHP (`grep -c Warning`). En uno de los tres la página se rompe: lee el primer aviso, abre la plantilla por esa línea y di qué dato ha llegado con un valor que la plantilla no esperaba. Arréglalo como pide el apartado 8: si ese dato no existe, **su bloque entero no se pinta**.
+- **(b) Listas vacías.** Con el supuesto `vacio`, el bloque de avisos es un título sobre una lista sin nada, y el de parcelas libres, una tabla con su cabecera y ninguna línea. Decide para cada bloque qué pasa cuando no hay datos: el de avisos desaparece; el de turnos dice «Hoy no riega nadie.»; el de parcelas libres dice «No hay parcelas libres.» y no pinta la tabla.
+- **(c) Una avería cambia la página.** Los datos de cada día dicen cómo está la bomba, y la plantilla ni se entera. Cuando esté averiada, la página lleva arriba un bloque nuevo, `<section class="alerta">`, con el título «Bomba averiada» y el texto «Riego suspendido hasta que se repare la bomba.», y el bloque de turnos **no está**. La pregunta «¿hay riego?» se contesta una vez, en el guion, y la plantilla recibe la respuesta en una variable.
+- **(d) El contenido también cambia.** El título del bloque de avisos lleva cuántos son, «Avisos (3)»; los urgentes van los primeros y dentro de un `<strong>`; y encima de la tabla de parcelas libres un párrafo dice «1 parcela libre» o «3 parcelas libres». Ordenar los avisos y montar ese texto es preparar: va en el guion.
+
+- **(e) Desde cero.** Una página nueva, `hoja.php?ref=H03`: la hoja de una parcela, con bloques que dependen de sus datos. El título lleva la referencia, la zona y la superficie. Si la parcela está adjudicada, un bloque «Quién la lleva» con la persona; si está libre, un bloque «Cómo solicitarla». Si se riega por goteo, un bloque «Riego por goteo»; si no, «Riego a manta». Una referencia que no existe responde con un `404` y su propia plantilla. Los textos de dentro de cada bloque los pones tú; los títulos son estos. Pruébalo con estas peticiones y compara letra a letra:
+
+```
+$ curl -s -o /dev/null -w '%{http_code}\n' 'http://localhost:8000/hoja.php?ref=H03'
+200
+$ curl -s 'http://localhost:8000/hoja.php?ref=H03' | grep -E '<h1>|<h2>'
+<h1>Parcela H03 · Eras · 80 m²</h1>
+    <h2>Quién la lleva</h2>
+    <h2>Riego por goteo</h2>
+$ curl -s -o /dev/null -w '%{http_code}\n' 'http://localhost:8000/hoja.php?ref=H02'
+200
+$ curl -s 'http://localhost:8000/hoja.php?ref=H02' | grep -E '<h1>|<h2>'
+<h1>Parcela H02 · Ribera · 45 m²</h1>
+    <h2>Cómo solicitarla</h2>
+    <h2>Riego a manta</h2>
+$ curl -s -o /dev/null -w '%{http_code}\n' 'http://localhost:8000/hoja.php?ref=H99'
+404
+$ curl -s 'http://localhost:8000/hoja.php?ref=H99' | grep -E '<h1>|<h2>'
+<h1>Parcela desconocida</h1>
+```
+
+**Cómo trabajar.** Una plantilla probada con un solo juego de datos está a medio probar. Para cada dato que recibe, pregúntate qué pinta si viene vacío, si no viene y si trae un valor que cambia las reglas. Y que la plantilla pregunte lo menos posible: un `if` sobre algo que el guion ya ha decidido. Salidas esperadas de la práctica resuelta — el recuento de la tarea (a), los títulos de cada supuesto y los detalles de la tarea (d):
+
+```
+$ for s in normal averia vacio; do curl -s "http://localhost:8000/panel.php?supuesto=$s" | grep -c '<section'; done
+4
+4
+2
+$ for s in normal averia vacio; do curl -s "http://localhost:8000/panel.php?supuesto=$s" | grep -c Warning; done
+0
+0
+0
+```
+
+```
+$ curl -s 'http://localhost:8000/panel.php?supuesto=normal' | grep -E '<section|<h2>'
+<section>
+    <h2>Avisos (3)</h2>
+<section>
+    <h2>Turnos de riego de hoy</h2>
+<section>
+    <h2>Parcelas libres</h2>
+<section>
+    <h2>Próxima asamblea</h2>
+```
+
+```
+$ curl -s 'http://localhost:8000/panel.php?supuesto=averia' | grep -E '<section|<h2>'
+<section class="alerta">
+    <h2>Bomba averiada</h2>
+<section>
+    <h2>Avisos (1)</h2>
+<section>
+    <h2>Parcelas libres</h2>
+<section>
+    <h2>Próxima asamblea</h2>
+```
+
+```
+$ curl -s 'http://localhost:8000/panel.php?supuesto=vacio' | grep -E '<section|<h2>'
+<section>
+    <h2>Turnos de riego de hoy</h2>
+<section>
+    <h2>Parcelas libres</h2>
+```
+
+```
+$ curl -s 'http://localhost:8000/panel.php?supuesto=normal' | grep '<li>' | head -n 3
+        <li><strong>Cuotas del año: último día de pago</strong></li>
+        <li>Reparto de compost en las Eras</li>
+        <li>Riego &amp; abonado: cambio de turno</li>
+$ curl -s 'http://localhost:8000/panel.php?supuesto=normal' | grep 'libres</p>'
+    <p>3 parcelas libres</p>
+$ curl -s 'http://localhost:8000/panel.php?supuesto=averia' | grep -E 'libre</p>|strong'
+        <li><strong>Avería en la bomba: presión &lt;1 bar</strong></li>
+    <p>1 parcela libre</p>
+$ curl -s 'http://localhost:8000/panel.php?supuesto=averia' | grep -c 'Turnos de riego'
+0
+$ curl -s 'http://localhost:8000/panel.php?supuesto=vacio' | grep '<p>'
+    <p>Hoy no riega nadie.</p>
+    <p>No hay parcelas libres.</p>
+```
