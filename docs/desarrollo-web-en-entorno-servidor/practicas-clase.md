@@ -1324,7 +1324,7 @@ Desde la raíz de la plantilla (donde está `comprobar-sintaxis.php`), ejecuta *
 
 ## UD4 · Generación dinámica con tecnologías y frameworks que añaden código al lenguaje de marcas (plantillas)
 
-Las prácticas de esta unidad siguen con el caso del cuaderno, distinto del club de montaña de los apuntes y del certamen de fotografía de la actividad evaluativa: la **Asociación de Huertos del Soto**, que ahora quiere dejar de escribir a mano sus papeles. La cartelera de avisos, el recibo de la cuota, el cuadrante de riego y el boletín salen de los mismos datos de siempre (las ocho parcelas, H01 a H08, en Ribera, Eras y Soto), y la pregunta de cada práctica es la de la unidad: quién prepara, quién pinta y dónde vive cada cosa. Los datos son de aula, inventados. Son siete prácticas: las cuatro primeras cubren los apartados 1 a 4 de la unidad (la cuarta toca también el 9) y las tres últimas, los apartados 6, 7 y 8. El apartado 5 no tiene práctica: se trabaja con los ejercicios de los apuntes.
+Las prácticas de esta unidad siguen con el caso del cuaderno, distinto del club de montaña de los apuntes y del certamen de fotografía de la actividad evaluativa: la **Asociación de Huertos del Soto**, que ahora quiere dejar de escribir a mano sus papeles. La cartelera de avisos, el recibo de la cuota, el cuadrante de riego y el boletín salen de los mismos datos de siempre (las ocho parcelas, H01 a H08, en Ribera, Eras y Soto), y la pregunta de cada práctica es la de la unidad: quién prepara, quién pinta y dónde vive cada cosa. Los datos son de aula, inventados. Son ocho prácticas, de la CP4.1 a la CP4.9: el número que falta, la CP4.8, se publica más adelante. Las cuatro primeras cubren los apartados 1 a 4 de la unidad (la cuarta toca también el 9); la CP4.5, la CP4.6 y la CP4.7, los apartados 6, 7 y 8; y la CP4.9, el apartado 5. Esta última es de lectura: se trabaja con papel y terminal, sin servidor, y lo que trae escrito en Twig o en Blade no se ejecuta.
 
 Tres cosas valen para todas:
 
@@ -1849,4 +1849,46 @@ $ curl -s 'http://localhost:8000/panel.php?supuesto=averia' | grep -c 'Turnos de
 $ curl -s 'http://localhost:8000/panel.php?supuesto=vacio' | grep '<p>'
     <p>Hoy no riega nadie.</p>
     <p>No hay parcelas libres.</p>
+```
+
+### CP4.9 · La misma página, mal traducida
+
+**Nivel** intermedio · **Tiempo orientativo** 45 min (30 + 15 de la tarea desde cero).
+
+**Qué refuerza.** El apartado 5 de la [UD4](ud4-generacion-dinamica-plantillas.md): las piezas que has escrito a mano, leídas en las plantillas de dos motores con la tabla de equivalencias delante, y las dos cosas que un motor cambia de sitio: el escape, que viene puesto, y los parciales, que por defecto ven más de lo que se les pasa.
+
+**Ficheros de partida.** `cp4-9/ver.php`, `cp4-9/plantillas.php`, `cp4-9/plantillas/layout.php`, `cp4-9/plantillas/mercadillo.php`, `cp4-9/plantillas/parciales/parada.php` y `cp4-9/datos/mercadillo.php`, y la carpeta `cp4-9/leer/`, con la misma página pasada a Blade (`leer/blade/`, tres ficheros) y a Twig (`leer/twig/`, otros tres), en el repositorio de recursos (enlace en Classroom). Esta práctica se hace con papel y terminal: no hay servidor, y lo que hay en `leer/` **no se ejecuta ni se instala**: se lee.
+
+**Enunciado.** La página del mercadillo de la cosecha está hecha con las plantillas de la unidad y funciona: un layout, la página y un parcial que pinta cada parada. Un socio que trabaja con frameworks la ha pasado a Blade y a Twig, «para cuando la asociación dé el salto». Las dos traducciones se parecen mucho al original, pero no hacen lo mismo: la de Blade tiene **tres fallos** y la de Twig, **otros tres**. Ninguno es una errata: con cada uno, el navegador recibiría algo distinto de lo que envía el original. La junta quiere tu revisión antes de guardarlas.
+
+**Tareas.**
+
+- **(a) Lo que tiene que llegar.** Ejecuta `php ver.php` y `php ver.php vacio` y guarda las dos salidas: son la vara de medir de toda la práctica. En la primera, marca qué líneas ha pintado el layout, cuáles la página y cuáles el parcial. Solo una parada lleva «Parada del mes»: busca en `plantillas/mercadillo.php` quién lo decide y qué le llega al parcial. Mira también cómo han llegado el `&` y el `<` de dos productos.
+- **(b) La traducción a Blade.** Lee los tres ficheros de `leer/blade/` con el original al lado y la tabla de equivalencias del apartado 5 delante. Por cada fallo, una línea en tu hoja de revisión con cuatro cosas: el fichero y la línea; qué hace ahí el original; **qué recibiría el navegador** con los datos de `ver.php`, con paradas o sin ellas, lo que haga falta para que el fallo se vea; y la corrección, escrita en Blade.
+- **(c) La traducción a Twig.** Lo mismo con los tres ficheros de `leer/twig/`. Un aviso: con uno de los tres fallos la página no llegaría a pintarse. Búscalos todos igualmente, como si ese ya estuviera arreglado.
+- **(d) Desde cero.** Uno de los fallos de la traducción a Twig se puede reproducir sin instalar nada, porque es lo que hacía el `include` de la UD2. Escribe un guion de terminal, `prestado.php`, y su plantilla, `plantillas/prestado.php`, que recibe `$paradas` y `$destacada` y pinta la lista de paradas **dos veces**, cada una bajo su `<h2>`. La primera pide el parcial con `include __DIR__ . '/parciales/parada.php';` dentro del bucle, sin pasarle nada. La segunda lo pide con `render()` y le pasa lo mismo que `plantillas/mercadillo.php`. El parcial no se toca. Pruébalo con esta orden y compara letra a letra; después explica de dónde saca el parcial, en la primera lista, un `$destacada` que nadie le ha pasado, y qué vale.
+
+```
+$ php prestado.php | grep -E '<h2>|<em>'
+<h2>Con include: el parcial ve lo que hay alrededor</h2>
+        <em>Parada del mes</em>
+        <em>Parada del mes</em>
+        <em>Parada del mes</em>
+<h2>Con render(): el parcial ve lo que se le pasa</h2>
+        <em>Parada del mes</em>
+```
+
+**Cómo trabajar.** Una traducción no se revisa por lo que se parece, sino por lo que hace: para cada línea, la pregunta es qué llegaría al navegador, con paradas y sin ellas. No todo lo distinto es un fallo. En un motor, una impresión entre llaves dobles no necesita `e()`; la línea «Este domingo no hay paradas.» de Twig va dentro del bucle; y las dos páginas empiezan diciendo de quién heredan. Las tres cosas están en la tabla de equivalencias. Y lo que afirmes de un motor no se demuestra ejecutándolo aquí: se comprueba en su documentación oficial, enlazada en el apartado 5. Salidas esperadas de la tarea (a):
+
+```
+$ php ver.php | grep -E '<h1>|<strong>|<em>'
+<h1>Mercadillo de la cosecha · domingo 29 de noviembre</h1>
+        <strong>Tomate &amp; pimiento</strong>
+        <strong>Calabaza &lt;2 kg</strong>
+        <strong>Borraja</strong>
+        <em>Parada del mes</em>
+$ php ver.php vacio | grep '<li>'
+    <li>Este domingo no hay paradas.</li>
+$ php ver.php | grep -c 'Pendiente'
+0
 ```
