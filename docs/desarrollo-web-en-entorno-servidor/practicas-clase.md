@@ -1324,7 +1324,7 @@ Desde la raíz de la plantilla (donde está `comprobar-sintaxis.php`), ejecuta *
 
 ## UD4 · Generación dinámica con tecnologías y frameworks que añaden código al lenguaje de marcas (plantillas)
 
-Las prácticas de esta unidad siguen con el caso del cuaderno, distinto del club de montaña de los apuntes y del certamen de fotografía de la actividad evaluativa: la **Asociación de Huertos del Soto**, que ahora quiere dejar de escribir a mano sus papeles. La cartelera de avisos, el recibo de la cuota, el cuadrante de riego y el boletín salen de los mismos datos de siempre (las ocho parcelas, H01 a H08, en Ribera, Eras y Soto), y la pregunta de cada práctica es la de la unidad: quién prepara, quién pinta y dónde vive cada cosa. Los datos son de aula, inventados. Son ocho prácticas, de la CP4.1 a la CP4.9: el número que falta, la CP4.8, se publica más adelante. Las cuatro primeras cubren los apartados 1 a 4 de la unidad (la cuarta toca también el 9); la CP4.5, la CP4.6 y la CP4.7, los apartados 6, 7 y 8; y la CP4.9, el apartado 5. Esta última es de lectura: se trabaja con papel y terminal, sin servidor, y lo que trae escrito en Twig o en Blade no se ejecuta.
+Las prácticas de esta unidad siguen con el caso del cuaderno, distinto del club de montaña de los apuntes y del certamen de fotografía de la actividad evaluativa: la **Asociación de Huertos del Soto**, que ahora quiere dejar de escribir a mano sus papeles. La cartelera de avisos, el recibo de la cuota, el cuadrante de riego y el boletín salen de los mismos datos de siempre (las ocho parcelas, H01 a H08, en Ribera, Eras y Soto), y la pregunta de cada práctica es la de la unidad: quién prepara, quién pinta y dónde vive cada cosa. Los datos son de aula, inventados. Son diez prácticas. Las cuatro primeras cubren los apartados 1 a 4 de la unidad (la cuarta toca también el 9); la CP4.5, la CP4.6 y la CP4.7, los apartados 6, 7 y 8; la CP4.8 vuelve sobre el 8, con perfiles; la CP4.9 es la del apartado 5, de lectura, con papel y terminal y sin servidor; y la CP4.10 cierra con el apartado 9 y su lista de comprobación.
 
 Tres cosas valen para todas:
 
@@ -1851,6 +1851,66 @@ $ curl -s 'http://localhost:8000/panel.php?supuesto=vacio' | grep '<p>'
     <p>No hay parcelas libres.</p>
 ```
 
+### CP4.8 · El panel, según quién mira
+
+**Nivel** avanzado · **Tiempo orientativo** 35 min.
+
+**Qué refuerza.** El apartado 8 de la [UD4](ud4-generacion-dinamica-plantillas.md): la estructura de una página depende también de quién la pide, y lo que alguien no debe ver no se esconde: no se envía. Recupera la matriz de permisos como dato del CP3.7.
+
+**Ficheros de partida.** `cp4-8/panel.php`, `cp4-8/plantillas/panel.php`, `cp4-8/entrar-como.php`, `cp4-8/plantillas.php` y `cp4-8/datos/panel.php`, en el repositorio de recursos (enlace en Classroom). `entrar-como.php` es un atajo de aula para probar el panel con cada perfil; no es un inicio de sesión y no se modifica.
+
+**Enunciado.** El panel de la asociación tiene ahora bloques que no son para todo el mundo: las cuotas pendientes, para tesorería y presidencia; las incidencias abiertas, para vocales y presidencia. En el navegador todo parece en orden: cada perfil ve lo suyo. El fallo no se ve en la pantalla.
+
+**Tareas.**
+
+- **(a) Caza el error.** Entra como hortelano con un tarro: `curl -s -L -c hortelano.txt -b hortelano.txt 'http://localhost:8000/entrar-como.php?perfil=hortelano' | grep '<section'`. Después busca en lo que ha recibido ese hortelano el nombre de alguien que debe una cuota. Explica qué hace el atributo `hidden`, quién lo obedece y quién no, y por qué un dato que viaja está entregado aunque no se vea.
+- **(b) La matriz, como dato.** Escribe en un fichero nuevo, `permisos.php`, la matriz bloque → perfiles que lo ven (cuenta también con el `visitante`, que solo ve los avisos) y una función que conteste si un perfil ve un bloque. Lo que no esté anotado no lo ve nadie. El guion prepara cada bloque **solo si** ese perfil lo ve; la plantilla pinta los bloques que le llegan con datos y no pregunta por perfiles.
+- **(c) Recuento.** Con un tarro por perfil, cuenta los bloques que recibe cada uno y busca en cada respuesta el nombre de quien debe una cuota y el de quien abrió una incidencia. Ningún bloque puede llevar ya el atributo `hidden`.
+- **(d) Un bloque nuevo solo toca el dato.** Añade la lista de espera, que solo ve presidencia. Está en `datos/panel.php`. Una línea en la matriz y un bloque en la plantilla: el guion no cambia.
+
+**Cómo trabajar.** La prueba de una página con perfiles no es mirarla: es pedirla con cada perfil y buscar en lo recibido lo que ese perfil no debería tener. Salidas esperadas de la práctica resuelta — el recuento por perfil (bloques, quien debe una cuota, quien abrió una incidencia, atributos `hidden`) y los títulos que reciben dos perfiles y un visitante:
+
+```
+$ for p in visitante hortelano vocal tesoreria presidencia; do curl -s -L -c $p.txt -b $p.txt "http://localhost:8000/entrar-como.php?perfil=$p" | grep -c '<section'; done
+1
+1
+2
+2
+4
+$ for p in visitante hortelano vocal tesoreria presidencia; do curl -s -b $p.txt http://localhost:8000/panel.php | grep -c 'Julia Bergés'; done
+0
+0
+0
+1
+1
+$ for p in visitante hortelano vocal tesoreria presidencia; do curl -s -b $p.txt http://localhost:8000/panel.php | grep -c 'Rubén Asín'; done
+0
+0
+1
+0
+1
+$ for p in visitante hortelano vocal tesoreria presidencia; do curl -s -b $p.txt http://localhost:8000/panel.php | grep -c ' hidden'; done
+0
+0
+0
+0
+0
+```
+
+```
+$ curl -s -b vocal.txt http://localhost:8000/panel.php | grep '<h2>'
+    <h2>Avisos</h2>
+    <h2>Incidencias abiertas</h2>
+$ curl -s -b presidencia.txt http://localhost:8000/panel.php | grep '<h2>'
+    <h2>Avisos</h2>
+    <h2>Cuotas pendientes</h2>
+    <h2>Incidencias abiertas</h2>
+    <h2>Lista de espera</h2>
+$ curl -s http://localhost:8000/panel.php | grep -E 'como:|<h2>'
+<p>Estás viendo el panel como: visitante</p>
+    <h2>Avisos</h2>
+```
+
 ### CP4.9 · La misma página, mal traducida
 
 **Nivel** intermedio · **Tiempo orientativo** 45 min (30 + 15 de la tarea desde cero).
@@ -1891,4 +1951,70 @@ $ php ver.php vacio | grep '<li>'
     <li>Este domingo no hay paradas.</li>
 $ php ver.php | grep -c 'Pendiente'
 0
+```
+
+### CP4.10 · Lo que la lista no ve
+
+**Nivel** avanzado · **Tiempo orientativo** 50 min.
+
+**Qué refuerza.** El apartado 9 de la [UD4](ud4-generacion-dinamica-plantillas.md): la carpeta que se sirve, las búsquedas que vigilan las plantillas y la lista de comprobación de la unidad. Y la pregunta del CP3.9, hecha ahora a esas comprobaciones: antes de fiarte de un «bien», di qué habría hecho falta para que saliera mal.
+
+**Ficheros de partida.** `cp4-10/web/` (tres guiones de página y la carpeta `datos/`), `cp4-10/comun/utilidades.php`, `cp4-10/plantillas/` (el layout, tres plantillas y `parciales/enlace.php`) y `cp4-10/plantillas.php`, en el repositorio de recursos (enlace en Classroom). Aquí el servidor se lanza desde la carpeta de la práctica diciéndole cuál es la suya: `php -d display_errors=1 -d html_errors=0 -S localhost:8000 -t web`.
+
+**Enunciado.** La asociación ha repartido su web en carpetas, como pide el apartado 9: lo que se sirve, en `web/`; las funciones, en `comun/`; las plantillas, fuera. Quien lo hizo pasó las comprobaciones de la unidad con prisa y lo dio por bueno. Tu trabajo tiene dos mitades. Primero, pasarlas tú y arreglar lo que cacen. Después, lo contrario: estropear la aplicación a propósito y anotar si la comprobación que debería enterarse se entera. En esta práctica no se escribe ningún guion: cada orden se lanza a mano y se lee lo que contesta. Lo que traes a la corrección es una tabla con una fila por defecto.
+
+**Tareas.**
+
+- **(a) Lo que las comprobaciones sí ven.** Lanza cinco sobre la partida: las tres búsquedas del apartado 9 sobre `plantillas/` (la de lógica, la de impresiones sin `e()` y la del `<!doctype`), el recuento de `aria-current` en `avisos.php` y tres peticiones con su código de estado: `plantillas/layout.php`, `comun/utilidades.php` y `datos/parcelas.php`. Tres de las cinco encuentran algo. Enseña el síntoma de cada hallazgo (busca `bar` en lo que llega de `avisos.php`; pide `parcelas.php?zona=Marte` y mira el título y cuántas parcelas salen) y arréglalo: la impresión; la plantilla que busca en vez de recibir, que ya tiene en su contrato lo que necesita; y la carpeta que sobra en `web/`, que sube un nivel y te obliga a corregir **una** ruta. Repite las cinco: tienen que quedar como en «Cómo trabajar».
+- **(b) Cinco defectos, sembrados de uno en uno.** Con la práctica arreglada, aplica el primero de la lista de abajo, lanza la comprobación que le toca, anota y **deshazlo** antes de pasar al siguiente. Al 1 y al 2 les toca la búsqueda de lógica; al 3, la de impresiones; al 4, el recuento del menú; al 5, las tres peticiones. De cada uno, tres cosas: qué contesta su comprobación; la prueba de que el defecto está ahí (otra orden: una petición, un `grep` sobre el fichero, un `ls`); y por qué la comprobación no lo ha visto.
+
+```
+1. plantillas/parcelas.php — añade esta línea debajo de la del <h1>:
+<?php if (isset($_REQUEST['zona'])): ?><p>Filtro activo.</p><?php endif; ?>
+
+2. plantillas/parcelas.php — añade esta línea debajo de la del <h1>:
+<p>Zona pedida: <?= e(zona_pedida()) ?></p>
+
+3. plantillas/parcelas.php — cambia la línea del <li> por esta:
+<li><?= e($parcela['ref']) . ' · ' . $parcela['zona'] ?> · <?= e($parcela['superficie']) ?> m²</li>
+
+4. plantillas/layout.php — en la llamada al parcial del enlace, cambia  'actual' => $destino === $abierta  por esto:
+'actual' => true
+
+5. En el terminal, desde la carpeta de la práctica:
+echo 'Cuotas pendientes: H04 y H08' > web/notas.txt
+```
+
+- **(c) Dos alarmas.** Ahora al revés. Antes de tocar nada, guarda la página buena con `curl -s http://localhost:8000/avisos.php > buena.html`. Aplica el 6: comprueba con `diff` que la página sigue siendo la misma, y lanza la búsqueda de impresiones. Deshazlo y aplica el 7: no cambia nada de lo que se pinta, y lanza la búsqueda de lógica. En cada caso decide qué se toca, la plantilla o la comprobación, y por qué.
+
+```
+6. plantillas/parciales/enlace.php — cambia el trozo  <?php if ($actual): ?> aria-current="page"<?php endif; ?>  por este:
+<?= $actual ? ' aria-current="page"' : '' ?>
+
+7. plantillas/normas.php — añade esta línea debajo de la del <h1>:
+<?php // el pie no lleva include: lo pinta el layout ?>
+```
+
+- **(d) La tabla.** Reúne las diez filas (los tres hallazgos de la tarea (a), los cinco defectos y las dos alarmas) con tres columnas: la comprobación que le toca, el veredicto (**lo caza**, **no lo ve** o **falsa alarma**) y cómo se ve de verdad. Termina con una línea para cada una de las cuatro comprobaciones que han fallado alguna vez: «si sale bien, demuestra que…; no demuestra que…».
+
+**Cómo trabajar.** Una comprobación contesta a una pregunta más pequeña que la tuya. Tú preguntas si las plantillas reciben y no buscan; la búsqueda contesta si aparece alguna palabra de una lista. Tú preguntas si el menú marca una sola página; el recuento contesta en cuántas líneas hay una marca. Lo que una comprobación saca se revisa siempre, y lo que no saca no queda certificado. Borra `buena.html` y `web/notas.txt` al terminar. Salidas esperadas con la práctica arreglada y antes de sembrar nada — las búsquedas y el recuento, y las tres peticiones:
+
+```
+$ grep -rnE '\$_(GET|POST|SESSION|SERVER|COOKIE)|\b(require|include)(_once)?\b|filter_var|header\(' plantillas/ | wc -l
+0
+$ grep -rnoE '(<\?=|\b(echo|print)\b) *[^ ;?]*' plantillas/ | grep -vE '(<\?=|echo|print) *e\(' | sort
+plantillas/layout.php:15:<?= $contenido
+$ grep -rl "<!doctype" plantillas/
+plantillas/layout.php
+$ curl -s http://localhost:8000/avisos.php | grep -c "aria-current"
+1
+```
+
+```
+$ curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8000/plantillas/layout.php
+404
+$ curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8000/comun/utilidades.php
+404
+$ curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8000/datos/parcelas.php
+404
 ```
