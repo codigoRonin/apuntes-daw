@@ -379,7 +379,7 @@ El **club deportivo municipal**: socios que se inscriben en cursos dirigidos por
 
 *Figura 5 de la UD3. El club deportivo completo. Lo que el dibujo dice por sí solo: dirige es 1:N con `fecha_asignacion` en el rombo, y el (1,1) junto a MONITOR es "todo curso tiene monitor"; inscrito es N:M con `fecha_inscripcion` en el rombo; SESION es débil de CURSO (rectángulo y rombo dobles, discriminante `num_sesion` con subrayado discontinuo), y el (1,N) junto a SESION es "todo curso tiene al menos una sesión"; `telefonos` es multivalorado.*
 
-El mismo diagrama en pata de gallo (la débil, con línea continua):
+El mismo diagrama entidad-relación en pata de gallo (la débil, con línea continua). Todavía no es el diagrama lógico: dibuja entidades y relaciones, no tablas.
 
 ```mermaid
 erDiagram
@@ -424,6 +424,12 @@ Esta notación no dibuja los atributos de las relaciones: `fecha_asignacion` y `
 - `telefonos_socio(`**num_socio** `→ socios,` **telefono**`)` — borrado de socio: **propagar** (los teléfonos no sobreviven a su dueño; además, minimización de la UD1: datos de contacto sin titular sobran).
 - `inscripciones(`**num_socio** `→ socios,` **cod_curso** `→ cursos, fecha_inscripcion)` — borrado de socio: **propagar** (baja del club arrastra sus inscripciones); borrado de curso: **rechazar** (un curso con inscritos no se elimina sin resolverlos antes).
 - `sesiones(`**cod_curso** `→ cursos,` **num_sesion**`, fecha, aula)` — borrado de curso: **propagar** (la dependencia en existencia de la débil, hecha política).
+
+Y el mismo esquema dibujado como **diagrama lógico**, que es lo que pide la AE10:
+
+![Figura 6 de la UD3. Diagrama lógico del club deportivo en pata de gallo: seis tablas con todos sus campos. monitores (cod_monitor PK, nombre); cursos (cod_curso PK, nombre, cod_monitor FK, fecha_asignacion); sesiones (cod_curso PK y FK, num_sesion PK, fecha, aula); socios (num_socio PK, nombre); inscripciones (num_socio PK y FK, cod_curso PK y FK, fecha_inscripcion); telefonos_socio (num_socio PK y FK, telefono PK). Líneas: monitores a cursos, discontinua, uno obligatorio a cero o muchos; cursos a sesiones, continua, uno obligatorio a uno o muchos; cursos a inscripciones y socios a inscripciones, continuas, uno obligatorio a cero o muchos; socios a telefonos_socio, continua, uno obligatorio a cero o muchos](img/ud3-fig-6-club-deportivo-logico.svg)
+
+*Figura 6 de la UD3. El club deportivo como diagrama lógico. Compáralo con el pata de gallo de arriba, que era todavía el diagrama entidad-relación: aquí cada caja es una tabla con todos sus campos; la N:M `inscrito` es ya la tabla `inscripciones`; el multivalorado `telefonos` es la tabla `telefonos_socio`; las claves ajenas aparecen como campos (`cod_monitor` en `cursos`), y la débil `sesiones` lleva en su clave primaria la de su padre. Trazo continuo cuando la clave ajena forma parte de la clave primaria; discontinuo cuando no.*
 
 Este es, exactamente, el artefacto que E10 y la actividad evaluativa te pedirán producir por tu cuenta: mismo formato, mismas justificaciones, mismo nivel de detalle.
 
