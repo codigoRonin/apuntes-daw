@@ -68,6 +68,8 @@ Deja esa terminal abierta (el servidor se queda "escuchando") y abre el navegado
 
 Existe una extensión (**PHP Server**) que lanza ese mismo servidor con un botón. Puedes instalarla más adelante como atajo, pero solo **después** de tener claro qué hace por debajo —que es exactamente ese `php -S`—. Primero el mecanismo; el atajo, cuando ya no lo necesites.
 
+**Desde la UD4, ese atajo es el entorno de trabajo.** La extensión PHP Server (`brapifra.phpserver`) lanza ese mismo servidor en el puerto 3000 y sirve la carpeta que tengas abierta en VS Code. Cómo se usa, y qué cambia en las direcciones, lo explica el [entorno de trabajo de la UD4](../desarrollo-web-en-entorno-servidor/ud4-generacion-dinamica-plantillas.md#entorno-de-trabajo-de-la-unidad).
+
 ## Consistencia en el aula: el fichero `.editorconfig`
 
 Cuando muchas personas trabajan sobre los mismos repositorios con equipos distintos, aparece el clásico "a mí me sale con otra sangría". La extensión EditorConfig resuelve esto: si en la raíz del repositorio hay un fichero llamado `.editorconfig` con las reglas de formato, todos los editores las respetan por igual. Un `.editorconfig` sencillo para trabajar con PHP:

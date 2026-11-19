@@ -16,7 +16,68 @@
 
 **Al terminar esta unidad sabrás:** explicar, con una página delante, qué ha hecho el servidor y qué hace el navegador, y qué se gana repartiendo el trabajo entre los dos; separar cada página en un **guion** que prepara y una **plantilla** que pinta; escapar todo lo que se imprime sin pensarlo; componer páginas con **parciales** que reciben datos y con un **layout** común; reconocer esas mismas piezas en los motores de plantillas de los frameworks; construir listados con filtro, orden y paginación; verificar formularios mostrando cada error junto a su campo; hacer que el contenido y la estructura de una página dependan de los datos y de quién la pide; y juntarlo todo en una aplicación pequeña y ordenada.
 
-**Entorno de trabajo de la unidad.** El de siempre: **PHP instalado**, `php -l fichero.php` antes de ejecutar, el servidor embebido (`php -S localhost:8000`) y **`curl`** con su tarro de cookies. No se instala nada nuevo. Trabaja en la carpeta `ud4/` de tu repositorio de la unidad en el aula de código, con tu **alias**. El caso hilo sigue siendo el **Club de Montaña Os Ibones** (ficticio), y esta vez no empiezas de cero: partes de la **zona privada que construiste en la UD3**. Copia a `ud4/` estos ficheros tal como quedaron al final de aquella unidad: `sesion.php`, `auth.php`, `csrf.php`, `almacen.php`, `login.php`, `logout.php`, `mi-ficha.php`, `mis-salidas.php` y `gestion-usuarios.php`, y la carpeta `datos/` con `salidas.php` (las doce salidas) y `usuarios.php` (los ocho usuarios). Si alguno no te quedó completo, están todos en la carpeta `ud4/partida/` del repositorio de recursos (enlace en Classroom). Las contraseñas de aula son las de entonces. Cuatro fronteras de alcance: separar la presentación de la lógica es aquí una **consecuencia** de usar plantillas, pero se evalúa en la UD5 (RA5), donde llegan el enrutador y los controladores; las sesiones, los roles, la redirección tras un POST y el token de los formularios son los de la UD3 y se usan sin volver a explicarlos; el poco **JavaScript** que aparece se te da escrito, no se evalúa y no hay que modificarlo, porque es territorio del módulo de cliente (0612); y los datos en JSON y las API son de la UD7. Esta unidad empieza la misma semana que el examen de la 1.ª evaluación, que no la incluye: el RA8 entra en el examen de la 2.ª.
+## Entorno de trabajo de la unidad
+
+**Qué cambia.** Hasta aquí has probado tus páginas con `curl`. Desde esta unidad las pruebas **en el navegador**, que es donde las verá quien las use, y lo que antes le pedías a `curl -i` lo miras en sus herramientas de desarrollador. `curl` no desaparece: se queda para lo que el navegador no deja hacer, y cada vez que aparezca se dice por qué.
+
+**Qué necesitas.** PHP instalado y `php -l fichero.php` antes de ejecutar, como siempre. Y dos cosas más:
+
+- **Visual Studio Code con la extensión PHP Server** (identificador `brapifra.phpserver`). Es el atajo que anunciaba la [guía del entorno](../recursos/entorno-vscode-php.md): por dentro lanza el mismo servidor embebido que tú has lanzado a mano desde la UD1 con `php -S`.
+- **Google Chrome.**
+
+**Cómo se arranca.**
+
+1. En VS Code, abre **la raíz de tu repositorio de la unidad**: la carpeta que contiene `ud4/` y `DECISIONES.md`, no `ud4/`.
+2. Abre un guion de `ud4/`, por ejemplo `ud4/filtro.php`, y lanza el servidor: `Ctrl+Mayús+P` y escribe `PHP Server: Serve project`. La misma orden está en el menú del botón derecho sobre el editor.
+3. VS Code avisa con «Serving project», enseña el panel **Salida** con el canal «PHP Server», que es el registro del servidor, y abre el navegador en la dirección del fichero que tenías delante.
+
+El servidor sirve **la carpeta abierta en VS Code** en el **puerto 3000**. Por eso todas las direcciones de la unidad empiezan igual: `http://localhost:3000/ud4/`. El `ud4/` es la carpeta, y forma parte de la dirección. Si el navegador que se abre no es Chrome, copia la dirección y pégala en Chrome. Para parar el servidor, `PHP Server: Stop server`. Si lo lanzas dos veces, la segunda contesta «Server is already running».
+
+Si lanzas el servidor sin ningún guion delante, el navegador se abre en la raíz, `http://localhost:3000/`, y verás esto:
+
+![Captura de Chrome: la página «Not Found» del servidor embebido de PHP, que dice que el recurso / no se ha encontrado en este servidor](figuras/ud4-cap-01-raiz-sin-pagina.png)
+
+*Captura 1 de la UD4. Lo que contesta el servidor en la raíz: ahí no hay ninguna página. No es un fallo: escribe la dirección de tu guion. `http://localhost:3000/`*
+
+| Hasta la UD3 | Desde esta unidad |
+|---|---|
+| `php -S localhost:8000`, lanzado desde `ud4/` | PHP Server, con la raíz del repositorio abierta en VS Code |
+| `http://localhost:8000/filtro.php` | `http://localhost:3000/ud4/filtro.php` |
+| La terminal donde lanzaste el servidor | El panel Salida de VS Code, canal «PHP Server» |
+| `curl -s` y la dirección | La dirección, en la barra de Chrome |
+| `curl -s … \| grep …`, para mirar el HTML que llega | «Ver código fuente» (`Ctrl+U`), y `Ctrl+F` para buscar y contar |
+| `curl -i`, para el código de estado y las cabeceras | `F12`, pestaña **Red**, la petición, **Encabezados** |
+| Un tarro de cookies por persona | Entrar por `login.php`, y «Salir» para cambiar de persona |
+
+**Las herramientas de desarrollador, lo justo.** Se abren con `F12`. En la pestaña **Red**, cada petición es una fila, con su **Estado** y su **Tamaño**. Al pulsar una fila, la pestaña **Encabezados** enseña arriba, en «General», la «URL de solicitud», el «Método de solicitud» y el «Código de estado», y debajo los «Encabezados de respuesta», donde están `Location` y `Set-Cookie` cuando los hay. Con el botón derecho sobre la fila, **Copiar → Copiar encabezado de respuesta** los deja en el portapapeles como texto. Abre las herramientas **antes** de pedir la página: la pestaña Red solo anota lo que pasa mientras está abierta. Y marca **Conservar registro** si quieres que las filas no se borren al cambiar de página.
+
+**Cómo leer los ejemplos.** Donde antes había una orden y su salida, ahora hay una de estas cuatro cosas:
+
+- una **captura** de la página, con su dirección en el pie;
+- **lo que se ve**, en un bloque de texto cuya primera línea es la dirección;
+- **el HTML que llega**, en un bloque cuya primera línea empieza por `view-source:`, que es lo que escribe Chrome en la barra de direcciones cuando pulsas `Ctrl+U`. Si el bloque no trae la página entera, el texto dice qué líneas son. Los recuentos van en una tabla: lo que se busca con `Ctrl+F` en ese código fuente y cuántas veces lo encuentra;
+- **lo que dice la pestaña Red** de una petición: un bloque que empieza por «Red ›», con la fila, el código de estado y las cabeceras que importan. Tu navegador te enseñará más (`Host`, `Date`, `Connection`, `X-Powered-By`): son las de siempre.
+
+**Cuatro cosas que cambian al dejar `curl`.**
+
+- **El navegador pide por su cuenta el icono de la pestaña.** En el registro del servidor verás de vez en cuando un `GET /favicon.ico` con un `404`. No es una petición tuya ni un fallo de tu página.
+- **El navegador sigue las redirecciones.** Si una página contesta con un `302`, pide la siguiente sin preguntar, y tú ves esa. El `302` no se ha perdido: es una fila de la pestaña Red, encima de la página a la que te ha llevado.
+- **El navegador guarda la cookie de sesión y la envía a todo lo que sirvas en `localhost`**, sea cual sea el puerto. Con `curl`, cada tarro era una persona. El navegador es una sola persona hasta que pulsas «Salir». Para tener **dos personas a la vez**, o para pedir algo **sin sesión**, abre una ventana de incógnito (`Ctrl+Mayús+N`): es una sesión más, y solo una, porque todas las ventanas de incógnito comparten la misma. Para un tercer papel, sal y entra con otro usuario, o usa un segundo perfil de Chrome.
+- **Los errores de PHP se leen en la página.** PHP Server lanza PHP con la configuración que tenga tu equipo. En los equipos del aula eso quiere decir que los avisos y los errores salen en la propia página, que es lo que la unidad da por hecho, y que el registro del servidor solo anota las peticiones. Si en tu equipo una página que falla se queda en blanco, tu PHP los está ocultando: para PHP Server y lanza el servidor a mano, como se explica a continuación, con `-d display_errors=1`.
+
+**Cuando hace falta otra configuración.** PHP Server no deja pasar directivas a PHP. Dos experimentos de la unidad, en los apartados 3 y 4, necesitan un servidor con los errores ocultos, como estará en producción. Para ellos paras PHP Server y lanzas el servidor a mano, en el terminal integrado y **desde la raíz del repositorio**, con el mismo puerto y la misma carpeta, para que las direcciones no cambien:
+
+```
+php -d display_errors=0 -S localhost:3000 -t .
+```
+
+Es la orden de siempre con dos añadidos: `-d` fija una directiva solo para ese arranque, y `-t .` dice qué carpeta se sirve. Se para con `Ctrl+C`, y después vuelves a PHP Server.
+
+**El terminal sigue ahí.** Las órdenes que no pasan por el servidor (`php -l`, `php cartel.php`, las búsquedas con `grep`) se escriben como siempre, **desde `ud4/`**. El terminal integrado de VS Code se abre en la raíz del repositorio: empieza por `cd ud4`.
+
+**Dónde sigue `curl`.** En cuatro sitios, y solo en ellos: para **enviar lo que el formulario no deja enviar** (un valor fuera de su lista o de su cota, un campo como lista), que es la única forma de probar la validación del servidor; para **ver un `302` sin seguirlo**, cuando lo que importa es que no lleva cuerpo; para **enviar un POST sin el token**; y cuando hay que **repetir una batería de comprobaciones o comparar dos respuestas** línea a línea, que es trabajo de un guion. En los tres primeros hay otra forma de hacerlo sin salir del navegador, editando el formulario en el panel Elementos, y se te da como opción. Las órdenes de `curl` son las que conoces, con la dirección nueva: `http://localhost:3000/ud4/…`. Todos llegan a partir del apartado 7.
+
+**Tu carpeta y tu punto de partida.** Trabaja en la carpeta `ud4/` de tu repositorio de la unidad en el aula de código, con tu **alias**. El caso hilo sigue siendo el **Club de Montaña Os Ibones** (ficticio), y esta vez no empiezas de cero: partes de la **zona privada que construiste en la UD3**. Copia a `ud4/` estos ficheros tal como quedaron al final de aquella unidad: `sesion.php`, `auth.php`, `csrf.php`, `almacen.php`, `login.php`, `logout.php`, `mi-ficha.php`, `mis-salidas.php` y `gestion-usuarios.php`, y la carpeta `datos/` con `salidas.php` (las doce salidas) y `usuarios.php` (los ocho usuarios). Si alguno no te quedó completo, están todos en la carpeta `ud4/partida/` del repositorio de recursos (enlace en Classroom). Las contraseñas de aula son las de entonces. Cuatro fronteras de alcance: separar la presentación de la lógica es aquí una **consecuencia** de usar plantillas, pero se evalúa en la UD5 (RA5), donde llegan el enrutador y los controladores; las sesiones, los roles, la redirección tras un POST y el token de los formularios son los de la UD3 y se usan sin volver a explicarlos; el poco **JavaScript** que aparece se te da escrito, no se evalúa y no hay que modificarlo, porque es territorio del módulo de cliente (0612); y los datos en JSON y las API son de la UD7. Esta unidad empieza la misma semana que el examen de la 1.ª evaluación, que no la incluye: el RA8 entra en el examen de la 2.ª.
 
 <div style="page-break-before: always;"></div>
 
@@ -55,10 +116,18 @@ $filtro  = in_array($pedida, $validas, true) ? $pedida : 'todas';
 </ul>
 ```
 
-Sírvelo y pídelo con `curl` filtrando por `alta`. Esto es todo lo que llega:
+Lanza el servidor y ábrelo en el navegador filtrando por `alta`:
+
+![Captura de Chrome: el calendario del club con el desplegable de dificultad en «todas», el texto «Filtro aplicado: alta» y una lista de cuatro salidas, todas de dificultad alta](figuras/ud4-cap-02-filtro-alta.png)
+
+*Captura 2 de la UD4. El calendario filtrado en el servidor: cuatro salidas. El desplegable ha vuelto a «todas». `http://localhost:3000/ud4/filtro.php?dificultad=alta`*
+
+Cuatro salidas. Fíjate de paso en el desplegable: ha vuelto a «todas», aunque el filtro aplicado es `alta`. No es un fallo del filtro. Este formulario todavía no recuerda lo que se eligió: lo hará en el apartado 6.
+
+Eso es lo que se ve. Lo que **ha llegado** se mira con «Ver código fuente» (`Ctrl+U`): Chrome abre otra pestaña con el HTML tal como lo envió el servidor. Esto es todo lo que llega:
 
 ```
-$ curl -s "http://localhost:8000/filtro.php?dificultad=alta"
+view-source:http://localhost:3000/ud4/filtro.php?dificultad=alta
 <h1>Calendario del club</h1>
 <form action="" method="get">
     <label>Dificultad
@@ -80,38 +149,33 @@ $ curl -s "http://localhost:8000/filtro.php?dificultad=alta"
 </ul>
 ```
 
-**Lo que se ejecutó en el servidor ya no está.** Busca en la respuesta el `if` que decide qué salidas pasan el filtro:
+![Captura de la pestaña «Ver código fuente» de Chrome: el HTML de la misma página, con sus líneas numeradas; no hay ninguna etiqueta de PHP y la lista tiene cuatro elementos](figuras/ud4-cap-03-ver-codigo-fuente.png)
 
-```
-$ curl -s "http://localhost:8000/filtro.php?dificultad=alta" | grep -c "<?php"
-0
-$ curl -s "http://localhost:8000/filtro.php?dificultad=alta" | grep -c "<li>"
-4
-$ curl -s "http://localhost:8000/filtro.php" | grep -c "<li>"
-12
-```
+*Captura 3 de la UD4. «Ver código fuente» de la misma página: lo que llegó, sin una sola etiqueta de PHP. `view-source:http://localhost:3000/ud4/filtro.php?dificultad=alta`*
+
+**Lo que se ejecutó en el servidor ya no está.** Busca en ese código fuente, con `Ctrl+F`, el `if` que decide qué salidas pasan el filtro. Y cuenta los elementos de la lista, con el filtro y sin él:
+
+| Dirección, tras `http://localhost:3000` | Busca con `Ctrl+F` | Coincidencias |
+|---|---|---|
+| `/ud4/filtro.php?dificultad=alta` | `<?php` | 0 |
+| `/ud4/filtro.php?dificultad=alta` | `<li>` | 4 |
+| `/ud4/filtro.php` | `<li>` | 12 |
 
 Ninguna etiqueta de PHP y cuatro elementos de doce. El fichero se ejecutó entero **antes** de que saliera el primer byte: recorrió las doce salidas, descartó ocho y escribió cuatro líneas. Al navegador le llega un documento terminado, sin la decisión y sin las ocho salidas que no pasaron. De ahí salen las dos diferencias que ordenan la unidad. El navegador no puede repetir ni deshacer lo que decidió el servidor, porque no tiene ni el código ni los datos. Y el servidor no ve nada de lo que el navegador haga después con la página.
 
-**Cada pregunta al servidor es una petición.** Cambia el filtro tres veces y mira la terminal donde lanzaste el servidor:
+**Cada pregunta al servidor es una petición.** Abre `filtro.php`, elige «todas», «alta» y «baja», pulsando «Filtrar» cada vez, y mira el registro del servidor, en el panel Salida de VS Code. Entre sus líneas están estas tres:
 
 ```
-$ curl -s "http://localhost:8000/filtro.php" > /dev/null
-$ curl -s "http://localhost:8000/filtro.php?dificultad=alta" > /dev/null
-$ curl -s "http://localhost:8000/filtro.php?dificultad=baja" > /dev/null
+[Thu Nov 19 10:48:06 2026] 127.0.0.1:60334 [200]: GET /ud4/filtro.php?dificultad=
+[Thu Nov 19 10:48:06 2026] 127.0.0.1:60336 [200]: GET /ud4/filtro.php?dificultad=alta
+[Thu Nov 19 10:48:06 2026] 127.0.0.1:60340 [200]: GET /ud4/filtro.php?dificultad=baja
 ```
 
-```
-[Thu Nov 12 19:40:31 2026] 127.0.0.1:39244 [200]: GET /filtro.php
-[Thu Nov 12 19:40:31 2026] 127.0.0.1:39252 [200]: GET /filtro.php?dificultad=alta
-[Thu Nov 12 19:40:31 2026] 127.0.0.1:39264 [200]: GET /filtro.php?dificultad=baja
-```
-
-Tres cambios, tres peticiones y tres ejecuciones completas del fichero. El desplegable no filtra nada: solo prepara la petición siguiente. Y tampoco limita lo que llega, porque `curl` no usa desplegables:
+Tres cambios, tres peticiones y tres ejecuciones completas del fichero. El desplegable no filtra nada: solo prepara la petición siguiente. Y tampoco limita lo que llega, porque la barra de direcciones no usa desplegables. Escribe en ella un valor que el desplegable no ofrece:
 
 ```
-$ curl -s "http://localhost:8000/filtro.php?dificultad=marte" | grep "Filtro"
-<p>Filtro aplicado: todas</p>
+http://localhost:3000/ud4/filtro.php?dificultad=marte
+Filtro aplicado: todas
 ```
 
 «marte» no está entre las opciones, pero ha llegado al servidor igual; es el `in_array` de la línea 7 el que lo descarta. Lo que la página ofrece es una propuesta de uso, no una regla.
@@ -153,18 +217,21 @@ desplegable.addEventListener('change', function () {
 });
 ```
 
-Abre `filtro-cliente.php` en el navegador con la pestaña Red a la vista y elige «alta»: quedan cuatro salidas en pantalla y **no aparece ninguna petición nueva**. El filtro es instantáneo porque no pregunta a nadie. Lo que cuesta se ve con `curl`:
+Abre `filtro-cliente.php` en el navegador con la pestaña Red a la vista y elige «alta»: quedan cuatro salidas en pantalla y **no aparece ninguna petición nueva**. El filtro es instantáneo porque no pregunta a nadie.
 
-```
-$ curl -s http://localhost:8000/filtro-cliente.php | grep -c "<li"
-12
-$ curl -s http://localhost:8000/filtro-cliente.php | wc -c
-1094
-$ curl -s http://localhost:8000/filtro.js | wc -c
-604
-$ curl -s "http://localhost:8000/filtro.php?dificultad=alta" | wc -c
-579
-```
+![Captura de Chrome: el calendario filtrado en el navegador, con el desplegable en «alta» y cuatro salidas a la vista](figuras/ud4-cap-04-filtro-en-el-navegador.png)
+
+*Captura 4 de la UD4. El mismo filtro, hecho en el navegador: cuatro salidas a la vista y la dirección sin cambiar. `http://localhost:3000/ud4/filtro-cliente.php`*
+
+Lo que cuesta se ve en la misma pestaña Red. Al cargar la página hay dos filas, `/ud4/filtro-cliente.php`, `/ud4/filtro.js`; compáralas con la de `filtro.php?dificultad=alta`. En el código fuente de `filtro-cliente.php`, `Ctrl+F` con `<li` encuentra 12.
+
+| Fila de la pestaña Red | Estado | Tamaño del recurso |
+|---|---|---|
+| `filtro-cliente.php` | 200 | 1094 bytes |
+| `filtro.js` | 200 | 604 bytes |
+| `filtro.php?dificultad=alta` | 200 | 579 bytes |
+
+El **tamaño del recurso** es lo que ocupa lo que llega, sin contar las cabeceras. La columna «Tamaño» de la pestaña Red enseña una cifra algo mayor, porque las cuenta; el tamaño del recurso sale al dejar el puntero sobre ella.
 
 | | Filtro en el servidor (`filtro.php`) | Filtro en el navegador (`filtro-cliente.php`) |
 |---|---|---|
@@ -185,11 +252,11 @@ La última fila es la que más errores evita: **esconder no es no enviar**. Lo q
 | Avisar de que falta un campo obligatorio | Los dos | El navegador avisa sin gastar una petición; el servidor lo comprueba igual, porque nada obliga a enviar desde el formulario (apartado 7) |
 | Filtrar el calendario | El servidor; el navegador, como mejora | Con doce salidas, enviarlas todas cuesta poco; con dos mil, enviar todas para esconder casi todas no compensa |
 
-**La tentación al depurar.** Tocar la página en el panel Elementos (borrar un `<li>`, cambiar un texto) y esperar que el servidor lo sepa; o buscar en el código fuente por qué no se cumple un `if`. Elementos enseña la copia de la página que tiene el navegador, y la deja modificar; «Ver código fuente» enseña lo que llegó. Al recargar, tus cambios desaparecen: el servidor vuelve a fabricar la página sin haberse enterado de nada. Y un `if` de PHP se depura donde vive, con `var_dump` y con la terminal del servidor.
+**La tentación al depurar.** Tocar la página en el panel Elementos (borrar un `<li>`, cambiar un texto) y esperar que el servidor lo sepa; o buscar en el código fuente por qué no se cumple un `if`. Elementos enseña la copia de la página que tiene el navegador, y la deja modificar; «Ver código fuente» enseña lo que llegó. Al recargar, tus cambios desaparecen: el servidor vuelve a fabricar la página sin haberse enterado de nada. Y un `if` de PHP se depura donde vive, con `var_dump`, que escribe en la página que recibes.
 
 **Ejercicios del apartado.**
 
-- **E1.** Sirve `filtro.php` y pídelo con `curl` de cuatro formas: sin parámetro, con `?dificultad=baja`, con `?dificultad=` (vacío) y con `?dificultad=BAJA`. Para cada una anota el texto de «Filtro aplicado» y cuenta los `<li>` con `grep -c`. Explica las dos últimas señalando la línea del código que decide.
+- **E1.** Abre `filtro.php` en el navegador de cuatro formas, escribiendo la dirección: sin parámetro, con `?dificultad=baja`, con `?dificultad=` (vacío) y con `?dificultad=BAJA`. Para cada una anota el texto de «Filtro aplicado» y cuenta las salidas de la lista. Explica las dos últimas señalando la línea del código que decide.
 - **E2.** Abre `filtro.php?dificultad=alta` en el navegador. En el panel Elementos borra un `<li>` y cambia el texto de otro; compara lo que ves con «Ver código fuente» y después recarga. Explica en tres líneas qué copia de la página enseña cada herramienta, por qué tus cambios se han perdido y por qué el servidor no podía conocerlos.
 - **E3.** Con `filtro-cliente.php` abierto y la pestaña Red a la vista, elige «media» y anota cuántas peticiones aparecen; desactiva JavaScript en el navegador, recarga y repite. Después reparte entre servidor y navegador estas tres necesidades del club, en una tabla como la del apartado: ordenar el calendario por fecha, mostrar a cada socio sus inscripciones y avisar de que la contraseña es corta mientras se teclea. Para cada una: quién la resuelve, cuántas peticiones cuesta y qué pasa sin JavaScript.
 
@@ -231,12 +298,11 @@ $salidas = require __DIR__ . '/datos/salidas.php';
 include __DIR__ . '/plantillas/espia.php';
 ```
 
-Entra como monitora y pídela:
+Entra como monitora: abre `http://localhost:3000/ud4/login.php`, con el usuario `elena.pueyo` y la contraseña `monitor2026`. Después pide la página:
 
 ```
-$ curl -s -c monitora.txt -b monitora.txt -d "usuario=elena.pueyo&clave=monitor2026" http://localhost:8000/login.php
-$ curl -s -b monitora.txt http://localhost:8000/espia-include.php
-<p>Veo: _GET, _POST, _COOKIE, _FILES, yo, salidas, _SERVER, ahora, _SESSION</p>
+http://localhost:3000/ud4/espia-include.php
+Veo: _GET, _POST, _COOKIE, _FILES, yo, salidas, _SERVER, ahora, _SESSION
 ```
 
 Nueve variables. Dos son las que querías pasar, `yo` y `salidas`. Las otras siete no las ha pasado nadie: las superglobales y `$ahora`, que es una variable interna de `sesion.php`. Una plantilla incluida así **lo ve todo**: hoy `$ahora`, mañana el array de usuarios con sus hashes. Y al revés: nadie sabe qué necesita esa plantilla sin leerla entera.
@@ -257,8 +323,8 @@ function render(string $plantilla, array $datos = []): void {
 `extract()` es nueva: convierte cada clave de un array en una variable con ese nombre, de modo que `['yo' => …]` crea `$yo`. El guion carga `plantillas.php`, sustituye su `include` por `render('espia', ['yo' => $yo, 'salidas' => $salidas]);` y la espía contesta:
 
 ```
-$ curl -s -b monitora.txt http://localhost:8000/espia.php
-<p>Veo: plantilla, datos, yo, salidas</p>
+http://localhost:3000/ud4/espia.php
+Veo: plantilla, datos, yo, salidas
 ```
 
 Mejor: `$ahora` ya no está. Pero hay dos variables que tampoco has pasado, `plantilla` y `datos`: los parámetros de la propia función. Parece inofensivo hasta que un dato se llama igual. El club elige el diseño de su cartel:
@@ -322,8 +388,11 @@ function incluir_aislado(): void {
 `incluir_aislado()` no declara parámetros a propósito. Recibe la ruta y los datos, pero los lee con `func_get_arg(n)`, que devuelve el argumento número *n* de la llamada sin darle nombre. Dentro no existe ninguna variable hasta que `extract` crea las de los datos. Las mismas dos pruebas:
 
 ```
-$ curl -s -b monitora.txt http://localhost:8000/espia.php
-<p>Veo: yo, salidas</p>
+http://localhost:3000/ud4/espia.php
+Veo: yo, salidas
+```
+
+```
 $ php cartel.php
 <p>Diseño elegido: cartel de otoño</p>
 ```
@@ -356,22 +425,36 @@ render('mis-salidas', ['yo' => $yo, 'salidas' => $salidas]);
 </table>
 ```
 
+![Captura de Chrome: el título «Salidas a la vista de Elena Pueyo» y una tabla sin estilos con tres columnas (salida, fecha e inscritos) y las doce salidas del club](figuras/ud4-cap-06-mis-salidas-tabla.png)
+
+*Captura 6 de la UD4. La página de los monitores, ya en HTML, vista por Elena Pueyo. `http://localhost:3000/ud4/mis-salidas.php`*
+
+Las seis primeras líneas de su código fuente:
+
 ```
-$ curl -s -b monitora.txt http://localhost:8000/mis-salidas.php | head -n 6
+view-source:http://localhost:3000/ud4/mis-salidas.php
 <h1>Salidas a la vista de Elena Pueyo</h1>
 <table>
     <tr><th>Salida</th><th>Fecha</th><th>Inscritos</th></tr>
     <tr><td>Ibón de Estanés</td><td>2026-10-04</td><td>17 de 20</td></tr>
     <tr><td>Peña Oroel</td><td>2026-10-11</td><td>25 de 25</td></tr>
     <tr><td>Cañón de Añisclo</td><td>2026-10-18</td><td>9 de 15</td></tr>
-$ curl -s -b monitora.txt http://localhost:8000/mis-salidas.php | grep -c "<tr>"
-13
 ```
+
+En ese código fuente, `Ctrl+F` con `<tr>` encuentra 13.
 
 Trece filas: la cabecera y las doce salidas. La primera línea de la plantilla lleva, como en la UD2, la directiva de tipos estrictos, y un comentario con lo que **recibe**: es su contrato, y desde hoy toda plantilla empieza así. La puerta no se ha movido de sitio: sin sesión, el guion redirige antes de llegar a `render()`.
 
+Compruébalo en una ventana de incógnito, que no tiene tu sesión, con la pestaña Red abierta. Pides `mis-salidas.php` y acabas en el inicio de sesión:
+
+![Captura de Chrome: el formulario de inicio de sesión del club, con los campos de usuario y contraseña y el botón «Entrar»](figuras/ud4-cap-05-sin-sesion-login.png)
+
+*Captura 5 de la UD4. Sin sesión, quien pide `mis-salidas.php` acaba aquí: el navegador ha seguido la redirección. `http://localhost:3000/ud4/login.php`*
+
+El navegador ha seguido la redirección sin preguntar. El porqué está en la pestaña Red, en la fila de `mis-salidas.php`, encima de la de `login.php`:
+
 ```
-$ curl -s -i http://localhost:8000/mis-salidas.php | grep -E "HTTP|Location"
+Red › mis-salidas.php › Encabezados de respuesta
 HTTP/1.1 302 Found
 Location: login.php
 ```
@@ -388,19 +471,29 @@ require __DIR__ . '/plantillas.php';
 render($_GET['p'] ?? 'portada');
 ```
 
-Para verlo, crea **fuera** de `ud4/`, en una carpeta `privado/` junto a ella, el fichero `notas-junta.php` con una línea de texto, y pide:
+Para verlo, crea **fuera de tu repositorio**, en una carpeta `privado/` junto a la carpeta del repositorio, el fichero `notas-junta.php` con una línea de texto. Primero, la página como se pensó:
 
 ```
-$ curl -s "http://localhost:8000/pagina.php?p=normas"
+view-source:http://localhost:3000/ud4/pagina.php?p=normas
 <h1>Normas de las salidas</h1>
 <p>Botas de montaña, agua y frontal en todas las salidas.</p>
-$ curl -s -i http://localhost:8000/notas-junta.php | head -n 1
+```
+
+El fichero de fuera no tiene dirección. Pruébalo con la que quieras, por ejemplo `http://localhost:3000/privado/notas-junta.php`:
+
+```
+Red › notas-junta.php › Encabezados de respuesta
 HTTP/1.1 404 Not Found
-$ curl -s "http://localhost:8000/pagina.php?p=../../privado/notas-junta"
+```
+
+Y ahora pídelo a través de la página:
+
+```
+http://localhost:3000/ud4/pagina.php?p=../../../privado/notas-junta
 Notas de la junta: revisar las cuotas pendientes antes de la asamblea.
 ```
 
-Por su dirección, el fichero no existe: está fuera de la carpeta que el servidor sirve. Por `?p=` sale entero, porque `../../` sube desde `plantillas/` hasta fuera de la aplicación y `require` ejecuta cualquier fichero `.php` al que llegue la ruta. La regla no tiene matices: **a `render()` se le pasa un nombre escrito en el código, nunca un dato de la petición**. Si la URL tiene que elegir página, elige entre nombres que has escrito tú, con el `match` de la UD2:
+Por su dirección, el fichero no existe: está fuera de la carpeta que el servidor sirve. Por `?p=` sale entero, porque `../../../` sube desde `plantillas/` hasta fuera del repositorio y `require` ejecuta cualquier fichero `.php` al que llegue la ruta. La regla no tiene matices: **a `render()` se le pasa un nombre escrito en el código, nunca un dato de la petición**. Si la URL tiene que elegir página, elige entre nombres que has escrito tú, con el `match` de la UD2:
 
 ```php
 <?php
@@ -415,10 +508,13 @@ render($plantilla);
 ```
 
 ```
-$ curl -s "http://localhost:8000/pagina-cerrada.php?p=../../privado/notas-junta"
+view-source:http://localhost:3000/ud4/pagina-cerrada.php?p=../../../privado/notas-junta
 <h1>Club de Montaña Os Ibones</h1>
 <p>Calendario de otoño abierto.</p>
-$ curl -s "http://localhost:8000/pagina-cerrada.php?p=normas"
+```
+
+```
+view-source:http://localhost:3000/ud4/pagina-cerrada.php?p=normas
 <h1>Normas de las salidas</h1>
 <p>Botas de montaña, agua y frontal en todas las salidas.</p>
 ```
@@ -471,6 +567,12 @@ $ php escape-demo.php
 <p>Escapado dos veces: Peña Oroel &amp;lt;b&amp;gt;</p>
 ```
 
+Eso es lo que llega. Abre la misma página en el navegador, `http://localhost:3000/ud4/escape-demo.php`, y mira lo que lee el visitante:
+
+![Captura de Chrome: la página de los tres datos con trampa; se lee «Peña Oroel <b>» con sus ángulos, un campo de texto con «Ana "la rápida" O'Hara», el enlace «Ver la ficha» y, en la última línea, «Peña Oroel &lt;b&gt;» escrito con las entidades a la vista](figuras/ud4-cap-07-escape-en-pantalla.png)
+
+*Captura 7 de la UD4. Lo que lee el visitante: los tres datos, enteros y sin obedecer; y en la última línea, el doble escape. `http://localhost:3000/ud4/escape-demo.php`*
+
 - En el **texto**, `<b>` llega como `&lt;b&gt;`: se ve, no se obedece.
 - En un **atributo**, las comillas del dato llegan como `&quot;` y `&#039;`. Sin eso, la primera comilla cerraría el `value` y el resto del nombre pasaría a ser marcado. `e()` sirve igual para texto y para atributos, siempre que el atributo vaya entre comillas.
 - En una **URL**, el dato pasa primero por `rawurlencode()`, que lo convierte a la forma que admite una dirección (`%C3%B1` es la `ñ`), y después por `e()`. Para varios parámetros a la vez hay una herramienta mejor, en el apartado 6.
@@ -513,7 +615,7 @@ Cuatro líneas, y cada una se revisa. Las dos de la trampa son fallos de verdad:
 
 **Ejercicios del apartado.**
 
-- **E4.** Convierte `mi-ficha.php` de la UD3 en guion y plantilla. La plantilla recibe solo `$yo` y pinta el nombre en un `<h1>` y el rol en un párrafo; su primera línea declara lo que recibe. Evidencias: `php -l` de los dos ficheros, la respuesta con el tarro de una socia y la redirección sin tarro.
+- **E4.** Convierte `mi-ficha.php` de la UD3 en guion y plantilla. La plantilla recibe solo `$yo` y pinta el nombre en un `<h1>` y el rol en un párrafo; su primera línea declara lo que recibe. Evidencias: `php -l` de los dos ficheros, la página habiendo entrado como una socia y, sin sesión, la redirección tal como la enseña la pestaña Red.
 - **E5.** Desde un guion tuyo, pasa a la plantilla espía tres datos llamados `titulo`, `salidas` y `datos`, y pega lo que ve. Repítelo con la primera versión de `render()` y explica en dos líneas qué variables sobran en una y por qué en la otra no pueden existir.
 - **E6.** Escribe una plantilla que reciba `$busqueda` y la pinte en un párrafo, en el `value` de un campo de texto y en un enlace a `filtro.php?q=…`. Pruébala con el dato `Añisclo & "Ordesa"` y pega el HTML. Después escapa el dato también en el guion, antes de pasarlo, y pega cómo cambia la salida: ¿qué leería el visitante en la pantalla?
 - **E7.** Reproduce el experimento de `pagina.php` con un fichero tuyo fuera de la carpeta servida. Después cierra la página con `match` para tres plantillas (`portada`, `normas` y `contacto`) y demuestra con cuatro peticiones, las tres válidas y la del fichero de fuera, que solo se pintan esas tres. Borra el fichero de prueba al terminar.
@@ -594,8 +696,14 @@ render('calendario', ['salidas' => $salidas]);
 </ul>
 ```
 
+![Captura de Chrome: el título «Calendario de otoño» y una lista de doce salidas; cada una con su nombre en negrita, la fecha, la dificultad y, en cursiva, las plazas libres o la palabra COMPLETA](figuras/ud4-cap-08-calendario-tarjetas.png)
+
+*Captura 8 de la UD4. El calendario público, con una tarjeta por salida. `http://localhost:3000/ud4/calendario.php`*
+
+Las doce primeras líneas de su código fuente:
+
 ```
-$ curl -s http://localhost:8000/calendario.php | head -n 12
+view-source:http://localhost:3000/ud4/calendario.php
 <h1>Calendario de otoño</h1>
 <ul>
     <li class="tarjeta">
@@ -608,9 +716,9 @@ $ curl -s http://localhost:8000/calendario.php | head -n 12
         <span>2026-10-11, dificultad baja</span>
         <em>COMPLETA</em>
     </li>
-$ curl -s http://localhost:8000/calendario.php | grep -c "COMPLETA"
-3
 ```
+
+En la página, 3 tarjetas dicen «COMPLETA».
 
 ```php
 <?php declare(strict_types=1); // plantillas/mis-salidas.php — recibe: $yo, $salidas ?>
@@ -622,9 +730,16 @@ $ curl -s http://localhost:8000/calendario.php | grep -c "COMPLETA"
 </ul>
 ```
 
+Entra como monitora, si no lo estás ya, y pide su página:
+
+![Captura de Chrome: «Salidas a la vista de Elena Pueyo» y la misma lista de tarjetas, cada una con una línea más en letra pequeña: «17 de 20 inscritos», «25 de 25 inscritos»…](figuras/ud4-cap-09-mis-salidas-tarjetas.png)
+
+*Captura 9 de la UD4. La misma tarjeta en la página de los monitores, con los inscritos. `http://localhost:3000/ud4/mis-salidas.php`*
+
+Las ocho primeras líneas de su código fuente, y el recuento de líneas de inscritos en las dos páginas:
+
 ```
-$ curl -s -c monitora.txt -b monitora.txt -d "usuario=elena.pueyo&clave=monitor2026" http://localhost:8000/login.php
-$ curl -s -b monitora.txt http://localhost:8000/mis-salidas.php | head -n 8
+view-source:http://localhost:3000/ud4/mis-salidas.php
 <h1>Salidas a la vista de Elena Pueyo</h1>
 <ul>
     <li class="tarjeta">
@@ -633,20 +748,19 @@ $ curl -s -b monitora.txt http://localhost:8000/mis-salidas.php | head -n 8
         <em>3 libres</em>
         <small>17 de 20 inscritos</small>
     </li>
-$ curl -s -b monitora.txt http://localhost:8000/mis-salidas.php | grep -c "<small>"
-12
-$ curl -s http://localhost:8000/calendario.php | grep -c "<small>"
-0
 ```
 
-Doce líneas de inscritos en la página de los monitores y ninguna en la pública, con una sola plantilla de tarjeta. La prueba de que es una sola: cambia en `tarjeta.php` la palabra «dificultad» por «nivel» y cuenta en las dos páginas.
+| Dirección, tras `http://localhost:3000` | Busca con `Ctrl+F` | Coincidencias |
+|---|---|---|
+| `/ud4/mis-salidas.php` | `<small>` | 12 |
+| `/ud4/calendario.php` | `<small>` | 0 |
 
-```
-$ curl -s http://localhost:8000/calendario.php | grep -c ", nivel "
-12
-$ curl -s -b monitora.txt http://localhost:8000/mis-salidas.php | grep -c ", nivel "
-12
-```
+Doce líneas de inscritos en la página de los monitores y ninguna en la pública, con una sola plantilla de tarjeta. La prueba de que es una sola: cambia en `tarjeta.php` la palabra «dificultad» por «nivel» y cuenta en las dos páginas, con `Ctrl+F`.
+
+| Dirección, tras `http://localhost:3000` | Busca con `Ctrl+F` | Coincidencias |
+|---|---|---|
+| `/ud4/calendario.php` | `, nivel ` | 12 |
+| `/ud4/mis-salidas.php` | `, nivel ` | 12 |
 
 Un cambio, dos páginas. La tentación contraria, copiar el HTML de la tarjeta en las dos plantillas, funciona el primer día y se paga en el primer retoque, cuando una de las dos copias se queda atrás.
 
@@ -681,19 +795,20 @@ $plantilla = ($_GET['p'] ?? 'a') === 'b' ? 'acoplado-b' : 'acoplado-a';
 render($plantilla, ['salidas' => $salidas]);
 ```
 
+Las cuatro primeras líneas del código fuente de la primera:
+
 ```
-$ curl -s "http://localhost:8000/acoplado.php" | head -n 4
+view-source:http://localhost:3000/ud4/acoplado.php
 <ul>
     <li>Ibón de Estanés (media)</li>
     <li>Peña Oroel (baja)</li>
     <li>Cañón de Añisclo (alta)</li>
-$ curl -s "http://localhost:8000/acoplado.php?p=b" > /dev/null
 ```
 
-En la terminal del servidor, el mismo aviso 24 veces, dos por cada salida:
+Pide ahora la segunda, `acoplado.php?p=b`. La página se llena de avisos. El primero se repite 24 veces, dos por cada salida:
 
 ```
-[Thu Nov 12 19:40:33 2026] PHP Warning:  Undefined variable $s in /ruta/plantillas/parciales/tarjeta-acoplada.php on line 2
+Warning: Undefined variable $s in /ruta/plantillas/parciales/tarjeta-acoplada.php on line 2
 ```
 
 El parcial funcionaba por casualidad: dependía del nombre que otra plantilla había dado a la variable de su bucle. Con `render('parciales/tarjeta', ['salida' => $s])` esa dependencia no puede existir, porque lo que el parcial usa está escrito en la llamada.
@@ -718,40 +833,58 @@ require __DIR__ . '/plantillas.php';
 render(($_GET['con'] ?? '') === 'require' ? 'con-require' : 'con-include');
 ```
 
-Lanza el servidor como estará en producción, con los errores ocultos y con la salida acumulada en un búfer antes de enviarla (`php -d display_errors=0 -d output_buffering=4096 -S localhost:8000`), y pide las dos:
+Para verlo hay que lanzar el servidor como estará en producción: con los errores ocultos, anotados en su registro, y con la salida acumulada en un búfer antes de enviarla. PHP Server no deja pasar directivas, así que para este experimento páralo (`PHP Server: Stop server`) y lanza el servidor a mano, en el terminal y desde la raíz del repositorio:
 
 ```
-$ curl -s -i "http://localhost:8000/falta.php" | head -n 1
+php -d display_errors=0 -d log_errors=1 -d output_buffering=4096 -S localhost:3000 -t .
+```
+
+Las direcciones no cambian. Pide las dos páginas con la pestaña Red abierta. La primera:
+
+```
+Red › falta.php › Encabezados de respuesta
 HTTP/1.1 200 OK
-$ curl -s "http://localhost:8000/falta.php"
+```
+
+![Captura de Chrome: una página con el título «Normas de las salidas» y una frase sobre botas, agua y frontal; nada indica que le falte el pie](figuras/ud4-cap-10-falta-una-pieza.png)
+
+*Captura 10 de la UD4. La página a la que le falta el pie. Contesta `200` y nada lo delata. `http://localhost:3000/ud4/falta.php`*
+
+```
+view-source:http://localhost:3000/ud4/falta.php
 <h1>Normas de las salidas</h1>
 <p>Botas de montaña, agua y frontal en todas las salidas.</p>
 ```
 
+Y la segunda:
+
 ```
-$ curl -s -i "http://localhost:8000/falta.php?con=require" | head -n 1
+Red › falta.php?con=require › Encabezados de respuesta
 HTTP/1.0 500 Internal Server Error
-$ curl -s "http://localhost:8000/falta.php?con=require"
+```
+
+```
+view-source:http://localhost:3000/ud4/falta.php?con=require
 <h1>Normas de las salidas</h1>
 ```
 
-En la terminal del servidor:
+En la terminal del servidor, que ahora sí es una terminal:
 
 ```
-[Thu Nov 12 19:40:35 2026] PHP Warning:  include(/ruta/plantillas/parciales/pie.php): Failed to open stream: No such file or directory in /ruta/plantillas/con-include.php on line 3
+[Thu Nov 19 10:48:12 2026] PHP Warning:  include(/ruta/plantillas/parciales/pie.php): Failed to open stream: No such file or directory in /ruta/plantillas/con-include.php on line 3
 ```
 
 ```
-[Thu Nov 12 19:40:35 2026] PHP Fatal error:  Uncaught Error: Failed opening required '/ruta/plantillas/parciales/pie.php' (include_path='.:/usr/share/php') in /ruta/plantillas/con-require.php:3
+[Thu Nov 19 10:48:13 2026] PHP Fatal error:  Uncaught Error: Failed opening required '/ruta/plantillas/parciales/pie.php' (include_path='.:/usr/share/php') in /ruta/plantillas/con-require.php:3
 ```
 
-Con `include`, el visitante recibe un `200` y una página a la que le falta un trozo sin que nada lo delate: el aviso solo está en el registro del servidor. Con `require`, la página se corta donde falta la pieza y el código es `500`. Que la página siga o se corte no depende de la configuración; el código sí, de dos directivas. Con `display_errors=1`, como en desarrollo, el mensaje sale dentro de la página y el código es `200` en los dos casos. Y con `output_buffering=0`, el `<h1>` ya ha viajado con su `200` cuando llega el fallo: la página se corta igual, pero el código no cambia (el búfer de salida es asunto del apartado 4). Para una pieza sin la que la página no tiene sentido interesa que la página se detenga: un fallo que se ve. Por eso `incluir_aislado()` usa `require`, y por eso en esta unidad las plantillas no llaman a `include` directamente: piden sus parciales con `render()`.
+Con `include`, el visitante recibe un `200` y una página a la que le falta un trozo sin que nada lo delate: el aviso solo está en el registro del servidor. Con `require`, la página se corta donde falta la pieza y el código es `500`. Que la página siga o se corte no depende de la configuración; el código sí, de dos directivas. Con `display_errors=1`, como en desarrollo, el mensaje sale dentro de la página y el código es `200` en los dos casos. Y con `output_buffering=0`, el `<h1>` ya ha viajado con su `200` cuando llega el fallo: la página se corta igual, pero el código no cambia (el búfer de salida es asunto del apartado 4). Para una pieza sin la que la página no tiene sentido interesa que la página se detenga: un fallo que se ve. Por eso `incluir_aislado()` usa `require`, y por eso en esta unidad las plantillas no llaman a `include` directamente: piden sus parciales con `render()`. Cuando termines, para ese servidor con `Ctrl+C` y vuelve a lanzar PHP Server.
 
 **Ejercicios del apartado.**
 
 - **E8.** Escribe el parcial `parciales/aviso.php`, que recibe `$texto` y, opcional, `$tipo` (`ok` por defecto, o `error`), y pinta un párrafo con la clase correspondiente. Pruébalo solo, desde un guion de terminal, con tres llamadas: sin tipo, con `error` y con un texto que lleve un `<`. Úsalo después en `calendario` y en `mis-salidas`.
-- **E9.** Reproduce el parcial que vive de prestado: escribe `tarjeta-acoplada.php`, inclúyelo con `include` desde dos plantillas cuyos bucles usen nombres distintos y pega el aviso de la terminal del servidor. Arréglalo sin tocar los bucles y explica por qué el arreglo no depende de cómo se llame la variable en cada plantilla.
-- **E10.** Lanza el servidor de tres formas (con `-d display_errors=0 -d output_buffering=4096`, con `-d display_errors=0 -d output_buffering=0` y con `-d display_errors=1`) y pide en cada una las dos versiones de `falta.php`. Completa una tabla de seis celdas con el código de estado y lo que ve el visitante, y responde: ¿en cuáles de las seis situaciones nadie se enteraría del fallo mirando solo el código de estado?
+- **E9.** Reproduce el parcial que vive de prestado: escribe `tarjeta-acoplada.php`, inclúyelo con `include` desde dos plantillas cuyos bucles usen nombres distintos y pega el aviso que sale en la página. Arréglalo sin tocar los bucles y explica por qué el arreglo no depende de cómo se llame la variable en cada plantilla.
+- **E10.** Lanza el servidor a mano de tres formas, como en el apartado (con `-d display_errors=0 -d output_buffering=4096`, con `-d display_errors=0 -d output_buffering=0` y con `-d display_errors=1`) y pide en cada una las dos versiones de `falta.php` con la pestaña Red abierta. Completa una tabla de seis celdas con el código de estado y lo que ve el visitante, y responde: ¿en cuáles de las seis situaciones nadie se enteraría del fallo mirando solo el código de estado?
 
 <div style="page-break-before: always;"></div>
 
@@ -800,18 +933,25 @@ Funciona. Ahora llega una segunda página, y a quien la escribe se le olvida la 
 <p>Escribe a club@example.org o pásate los jueves por el local.</p>
 ```
 
-Un guion `mitades.php` pinta una u otra según el parámetro `p`, con el `match` del apartado 2. Pide las dos y cuenta los cierres del documento:
+Un guion `mitades.php` pinta una u otra según el parámetro `p`, con el `match` del apartado 2. Pide la de contacto con la pestaña Red abierta:
 
 ```
-$ curl -s -i "http://localhost:8000/mitades.php?p=contacto" | head -n 1
+Red › mitades.php?p=contacto › Encabezados de respuesta
 HTTP/1.1 200 OK
-$ curl -s "http://localhost:8000/mitades.php?p=normas" | grep -c "</html>"
-1
-$ curl -s "http://localhost:8000/mitades.php?p=contacto" | grep -c "</html>"
-0
 ```
 
-La página de contacto contesta `200` y no cierra ni el `<main>`, ni el `<body>`, ni el `<html>`. Nadie avisa: no hay código de error ni un solo aviso en la terminal del servidor, porque para PHP no ha fallado nada. Ha pintado lo que se le pidió. El defecto es de diseño: **ningún fichero contiene el documento entero**. Las etiquetas se abren en un fichero y se cierran en otro, y que el resultado sea correcto depende de que cada plantilla se acuerde de las dos mitades. De aquí sale una norma que vale para toda la unidad: **una plantilla cierra todo lo que abre**.
+![Captura de Chrome: la página de contacto, con su título y una frase; se ve completa y sin ningún aviso](figuras/ud4-cap-11-documento-sin-cerrar.png)
+
+*Captura 11 de la UD4. La página de contacto, que no cierra su documento. En la pantalla no se nota: el navegador lo cierra por su cuenta. `http://localhost:3000/ud4/mitades.php?p=contacto`*
+
+Un `200`, y en la pantalla no se nota nada. Ahora cuenta los cierres del documento en el código fuente de las dos:
+
+| Dirección, tras `http://localhost:3000` | Busca con `Ctrl+F` | Coincidencias |
+|---|---|---|
+| `/ud4/mitades.php?p=normas` | `</html>` | 1 |
+| `/ud4/mitades.php?p=contacto` | `</html>` | 0 |
+
+La página de contacto contesta `200` y no cierra ni el `<main>`, ni el `<body>`, ni el `<html>`. Nadie avisa: no hay código de error ni un solo aviso de PHP, porque para PHP no ha fallado nada. Ha pintado lo que se le pidió. Y el navegador tampoco protesta: cierra por su cuenta lo que quedó abierto y enseña la página. Por eso se mira «Ver código fuente», que enseña lo que llegó, y no el panel Elementos, que enseña el documento ya arreglado. El defecto es de diseño: **ningún fichero contiene el documento entero**. Las etiquetas se abren en un fichero y se cierran en otro, y que el resultado sea correcto depende de que cada plantilla se acuerde de las dos mitades. De aquí sale una norma que vale para toda la unidad: **una plantilla cierra todo lo que abre**.
 
 **Darle la vuelta: un documento con un hueco.** Lo que hace falta es un solo fichero con el documento completo y, en medio, el contenido de cada página. Para ponerlo «en medio» hay que tener ese contenido **guardado en una variable**, y `render()` no devuelve nada: imprime. Falta una herramienta.
 
@@ -915,8 +1055,14 @@ render_pagina('calendario', ['salidas' => $salidas], ['titulo' => 'Calendario', 
 
 *Figura 1 de la UD4. Cómo se compone una página. El guion manda pintar una vez; `render_pagina()` lo hace en dos pasos: captura el contenido sin enviar nada y pinta después el layout con ese contenido dentro.*
 
+![Captura de Chrome: arriba, tres enlaces de menú (Calendario, Mi ficha, Salidas a la vista) y el enlace «Entrar»; en el centro, el calendario de otoño con sus doce tarjetas; abajo, el pie «Club de Montaña Os Ibones · Temporada de otoño»](figuras/ud4-cap-12-calendario-con-layout.png)
+
+*Captura 12 de la UD4. La primera página completa del club: el menú y el pie los pone el layout; el contenido, la plantilla del calendario. `http://localhost:3000/ud4/calendario.php`*
+
+Las dieciocho primeras líneas de su código fuente:
+
 ```
-$ curl -s http://localhost:8000/calendario.php | head -n 18
+view-source:http://localhost:3000/ud4/calendario.php
 <!doctype html>
 <html lang="es">
 <head>
@@ -943,11 +1089,15 @@ Tres cosas que mirar, entre esa salida y el fichero del layout.
 
 **`<?= $contenido ?>` va sin `e()`**, y es la única impresión de la unidad que puede. No es un dato: es HTML que tus plantillas ya han pintado, escapando cada dato en su sitio. Escaparlo otra vez es el doble escape del apartado 2, pero con la página entera. Cambia esa línea por `<?= e($contenido) ?>` y pide el calendario:
 
+![Captura de Chrome: bajo el menú, en lugar del calendario, un bloque de texto corrido con las etiquetas a la vista: <h1>Calendario de otoño</h1> <ul> <li class="tarjeta">…](figuras/ud4-cap-13-contenido-escapado.png)
+
+*Captura 13 de la UD4. Con `e($contenido)`, el visitante lee las etiquetas en vez de ver la página. `http://localhost:3000/ud4/calendario.php`*
+
+En el código fuente, la línea del título, y el recuento de `<li`: 0.
+
 ```
-$ curl -s http://localhost:8000/calendario.php | grep "h1"
+view-source:http://localhost:3000/ud4/calendario.php
 &lt;h1&gt;Calendario de otoño&lt;/h1&gt;
-$ curl -s http://localhost:8000/calendario.php | grep -c "<li"
-0
 ```
 
 El visitante leería las etiquetas en la pantalla, y la lista ya no tiene ni un `<li>`. La excepción tiene dueño: `contenido` lo fabrica `render_pagina()` con `capturar()`, nunca llega escrito desde un guion. Y la búsqueda del apartado 2 la deja a la vista: sobre las plantillas de este apartado saca una sola línea, la del hueco.
@@ -971,31 +1121,40 @@ render_pagina('mis-salidas', ['yo' => $yo, 'salidas' => $salidas], ['titulo' => 
 
 En `mis-salidas`, `yo` viaja dos veces porque lo necesitan los dos destinatarios: la plantilla, para el saludo, y el layout, para la línea de la sesión. Entra como monitora y mira lo que cambia de una página a otra:
 
+De cada página, las líneas de su código fuente que llevan el título y el enlace marcado:
+
 ```
-$ curl -s -b monitora.txt http://localhost:8000/calendario.php | grep -E "<title>|aria-current"
+view-source:http://localhost:3000/ud4/calendario.php
     <title>Calendario · Club de Montaña Os Ibones</title>
         <a href="calendario.php" aria-current="page">Calendario</a>
-$ curl -s -b monitora.txt http://localhost:8000/mi-ficha.php | grep -E "<title>|aria-current"
+view-source:http://localhost:3000/ud4/mi-ficha.php
     <title>Mi ficha · Club de Montaña Os Ibones</title>
         <a href="mi-ficha.php" aria-current="page">Mi ficha</a>
-$ curl -s -b monitora.txt http://localhost:8000/mis-salidas.php | grep -E "<title>|aria-current"
+view-source:http://localhost:3000/ud4/mis-salidas.php
     <title>Salidas a la vista · Club de Montaña Os Ibones</title>
         <a href="mis-salidas.php" aria-current="page">Salidas a la vista</a>
 ```
 
 Un título distinto y un enlace marcado distinto en cada una, con el mismo layout.
 
-**Cómo se comprueba un layout.** Cuatro comprobaciones por página y una sobre la carpeta:
+**Cómo se comprueba un layout.** Cuatro comprobaciones por página, sobre su código fuente, y una sobre la carpeta. La primera: su primera línea tiene que ser esta.
 
 ```
-$ curl -s -b monitora.txt http://localhost:8000/mis-salidas.php | head -n 1
+view-source:http://localhost:3000/ud4/mis-salidas.php
 <!doctype html>
-$ curl -s -b monitora.txt http://localhost:8000/mis-salidas.php | grep -c "<html"
-1
-$ curl -s -b monitora.txt http://localhost:8000/mis-salidas.php | grep -c "</html>"
-1
-$ curl -s -b monitora.txt http://localhost:8000/mis-salidas.php | grep -c "aria-current"
-1
+```
+
+Las otras tres son recuentos, y los tres tienen que dar uno:
+
+| Dirección, tras `http://localhost:3000` | Busca con `Ctrl+F` | Coincidencias |
+|---|---|---|
+| `/ud4/mis-salidas.php` | `<html` | 1 |
+| `/ud4/mis-salidas.php` | `</html>` | 1 |
+| `/ud4/mis-salidas.php` | `aria-current` | 1 |
+
+La quinta se hace en el terminal, desde `ud4/`:
+
+```
 $ grep -rl "<!doctype" plantillas/
 plantillas/layout.php
 ```
@@ -1004,16 +1163,13 @@ El documento empieza donde debe, se abre una vez, se cierra una vez y marca una 
 
 **Error típico: recoger el búfer sin vaciarlo.** Existe una función casi igual, `ob_get_contents()`, que devuelve lo guardado pero **ni lo vacía ni cierra el búfer**. Cámbiala en `capturar()` y pide el calendario:
 
-```
-$ curl -s http://localhost:8000/calendario.php | head -n 1
-<h1>Calendario de otoño</h1>
-$ curl -s http://localhost:8000/calendario.php | grep -c 'class="tarjeta"'
-24
-$ curl -s http://localhost:8000/calendario.php | grep -n "<!doctype"
-64:<!doctype html>
-```
+![Captura de Chrome: el calendario aparece dos veces; primero suelto, sin menú, y debajo otra vez, ya con su menú y su pie](figuras/ud4-cap-14-contenido-dos-veces.png)
 
-La primera línea ya no es el `<!doctype`, que aparece en la línea 64, y hay 24 tarjetas en vez de 12. El contenido sale dos veces. El búfer sigue abierto con el contenido dentro; el layout, que lleva su copia, se pinta detrás y cae en ese mismo búfer; y al terminar el guion PHP lo envía todo en ese orden: el contenido suelto y, después, el documento. La primera de las cuatro comprobaciones lo caza sin abrir el navegador.
+*Captura 14 de la UD4. Con `ob_get_contents()`, el contenido sale dos veces: suelto y, debajo, dentro del documento. `http://localhost:3000/ud4/calendario.php`*
+
+En su código fuente, la primera línea es `<h1>Calendario de otoño</h1>`; `Ctrl+F` con `class="tarjeta"` encuentra 24, y el `<!doctype` está en la línea 64 (la pestaña de «Ver código fuente» numera las líneas).
+
+La primera línea ya no es el `<!doctype`, que aparece en la línea 64, y hay 24 tarjetas en vez de 12. El contenido sale dos veces. El búfer sigue abierto con el contenido dentro; el layout, que lleva su copia, se pinta detrás y cae en ese mismo búfer; y al terminar el guion PHP lo envía todo en ese orden: el contenido suelto y, después, el documento. En la pantalla es una lista repetida; la primera de las cuatro comprobaciones dice qué ha pasado.
 
 **Error típico: el layout que busca en vez de recibir.** La línea «Has entrado como…» necesita al usuario, y pasarle `yo` desde cada guion parece un trámite. La tentación es que el layout lo coja él mismo de la sesión:
 
@@ -1035,24 +1191,37 @@ $salidas = require __DIR__ . '/datos/salidas.php';
 render_pagina('calendario', ['salidas' => $salidas], ['titulo' => 'Calendario', 'activa' => 'calendario']);
 ```
 
-Entra como monitora y pide dos páginas con el mismo tarro:
+Entra como monitora y pide dos páginas, una detrás de otra:
+
+![Captura de Chrome: el calendario con el enlace «Entrar» bajo el menú, como si no hubiera entrado nadie](figuras/ud4-cap-15-layout-que-busca-calendario.png)
+
+*Captura 15 de la UD4. Elena Pueyo ha entrado, pero el calendario la trata como a una visitante. `http://localhost:3000/ud4/calendario.php`*
+
+![Captura de Chrome: la ficha de la usuaria, con la frase «Has entrado como Elena Pueyo» y el enlace «Salir» bajo el menú](figuras/ud4-cap-16-layout-que-busca-mi-ficha.png)
+
+*Captura 16 de la UD4. La misma sesión, un momento después, en su ficha. `http://localhost:3000/ud4/mi-ficha.php`*
 
 ```
-$ curl -s -b monitora.txt http://localhost:8000/calendario.php | grep -E "Entrar|Has entrado"
-    <p><a href="login.php">Entrar</a></p>
-$ curl -s -b monitora.txt http://localhost:8000/mi-ficha.php | grep -E "Entrar|Has entrado"
-    <p>Has entrado como Elena Pueyo. <a href="logout.php">Salir</a></p>
+http://localhost:3000/ud4/calendario.php
+Entrar
+http://localhost:3000/ud4/mi-ficha.php
+Has entrado como Elena Pueyo. Salir
 ```
 
-La misma persona, con la misma cookie, es una visitante en el calendario y Elena en su ficha. Sin error y sin aviso en la terminal. El calendario es público, su guion no carga `sesion.php`, y sin sesión arrancada `$_SESSION` no existe: el `??` lo convierte en `null` sin protestar. El layout dependía de algo que cada guion hace o no hace, y esa dependencia no estaba escrita en ningún sitio. Es la norma del apartado 2 aplicada al layout: **recibe, no busca**. Con `yo` en su contrato, la dependencia está a la vista, y si a un guion se le olvida pasarlo, el layout no decide por su cuenta: PHP avisa con `Undefined variable $yo`. La versión buena, con y sin tarro:
+La misma persona, con la misma cookie, es una visitante en el calendario y Elena en su ficha. Sin error y sin aviso. El calendario es público, su guion no carga `sesion.php`, y sin sesión arrancada `$_SESSION` no existe: el `??` lo convierte en `null` sin protestar. El layout dependía de algo que cada guion hace o no hace, y esa dependencia no estaba escrita en ningún sitio. Es la norma del apartado 2 aplicada al layout: **recibe, no busca**. Con `yo` en su contrato, la dependencia está a la vista, y si a un guion se le olvida pasarlo, el layout no decide por su cuenta: PHP avisa con `Undefined variable $yo`. La versión buena, con sesión y sin ella:
 
 ```
-$ curl -s -b monitora.txt http://localhost:8000/calendario.php | grep -E "Entrar|Has entrado"
-    <p>Has entrado como Elena Pueyo. <a href="logout.php">Salir</a></p>
-$ curl -s -b monitora.txt http://localhost:8000/mi-ficha.php | grep -E "Entrar|Has entrado"
-    <p>Has entrado como Elena Pueyo. <a href="logout.php">Salir</a></p>
-$ curl -s http://localhost:8000/calendario.php | grep -E "Entrar|Has entrado"
-    <p><a href="login.php">Entrar</a></p>
+http://localhost:3000/ud4/calendario.php
+Has entrado como Elena Pueyo. Salir
+http://localhost:3000/ud4/mi-ficha.php
+Has entrado como Elena Pueyo. Salir
+```
+
+Y en una ventana de incógnito, sin sesión:
+
+```
+http://localhost:3000/ud4/calendario.php
+Entrar
 ```
 
 **El búfer y los fallos.** Quedaba una cuenta pendiente del apartado 3: qué código de estado recibe el visitante cuando una pieza falla. Pinta dentro del layout la plantilla `con-require`, la que pedía un pie que no existe (con `activa` vacío, porque esa página no está en el menú y ningún enlace debe marcarse):
@@ -1066,12 +1235,19 @@ require __DIR__ . '/plantillas.php';
 render_pagina('con-require', [], ['titulo' => 'Normas', 'activa' => '', 'yo' => null]);
 ```
 
-Lanza el servidor con los errores ocultos y sin búfer de configuración (`php -d display_errors=0 -d output_buffering=0 -S localhost:8000`), la combinación que en el apartado 3 daba un `200` con la página cortada:
+Lanza el servidor a mano, como en el apartado 3, con los errores ocultos y sin búfer de configuración. Es la combinación que allí daba un `200` con la página cortada:
 
 ```
-$ curl -s -i http://localhost:8000/falta-pagina.php | head -n 1
+php -d display_errors=0 -d output_buffering=0 -S localhost:3000 -t .
+```
+
+```
+Red › falta-pagina.php › Encabezados de respuesta
 HTTP/1.0 500 Internal Server Error
-$ curl -s http://localhost:8000/falta-pagina.php
+```
+
+```
+view-source:http://localhost:3000/ud4/falta-pagina.php
 <h1>Normas de las salidas</h1>
 ```
 
@@ -1081,9 +1257,9 @@ Dos límites de este apartado. El menú es el mismo para todos: una socia ve el 
 
 **Ejercicios del apartado.**
 
-- **E11.** Mete `gestion-usuarios.php` en el layout: guion, plantilla `gestion-usuarios` (una tabla con usuario, rol y correo) y su enlace en el menú. Evidencias: las cuatro comprobaciones de página con el tarro de `junta`, y el código de estado que recibe una socia al pedirla.
-- **E12.** Reproduce el error de `ob_get_contents()`. Anota la primera línea de la respuesta, el número de tarjetas y en qué línea aparece el `<!doctype` (`grep -n`), y explica con tus palabras por qué el contenido sale dos veces y por qué la copia suelta va delante. Restaura `capturar()` y demuéstralo con las cuatro comprobaciones.
-- **E13.** Añade al layout un hueco **opcional**, `$aviso`: si llega, se pinta encima del contenido con tu parcial `aviso` del E8; si no llega, no se pinta nada. Úsalo solo en `mi-ficha`, con el texto «Recuerda traer la licencia federativa a la próxima salida». Cuenta con `grep -c` cuántas veces aparece el aviso en cada una de las tres páginas y pasa la búsqueda del apartado 2 sobre `plantillas/`: ¿cuántas líneas saca y cuáles tienen justificación?
+- **E11.** Mete `gestion-usuarios.php` en el layout: guion, plantilla `gestion-usuarios` (una tabla con usuario, rol y correo) y su enlace en el menú. Evidencias: las cuatro comprobaciones de página habiendo entrado como `junta`, y el código de estado que recibe una socia al pedirla (pestaña Red).
+- **E12.** Reproduce el error de `ob_get_contents()`. Anota la primera línea de la respuesta, el número de tarjetas y en qué línea aparece el `<!doctype` (la pestaña de «Ver código fuente» numera las líneas), y explica con tus palabras por qué el contenido sale dos veces y por qué la copia suelta va delante. Restaura `capturar()` y demuéstralo con las cuatro comprobaciones.
+- **E13.** Añade al layout un hueco **opcional**, `$aviso`: si llega, se pinta encima del contenido con tu parcial `aviso` del E8; si no llega, no se pinta nada. Úsalo solo en `mi-ficha`, con el texto «Recuerda traer la licencia federativa a la próxima salida». Cuenta cuántas veces aparece el aviso en cada una de las tres páginas y pasa la búsqueda del apartado 2 sobre `plantillas/`: ¿cuántas líneas saca y cuáles tienen justificación?
 
 <div style="page-break-before: always;"></div>
 
@@ -1389,8 +1565,10 @@ function leer_filtros(array $get): array {
 
 Pide un filtro y un orden que ningún desplegable ofrece:
 
+De su código fuente, las líneas del resumen y de las opciones marcadas:
+
 ```
-$ curl -s "http://localhost:8000/calendario.php?dificultad=marte&orden=precio" | grep -E 'resumen|selected'
+view-source:http://localhost:3000/ud4/calendario.php?dificultad=marte&orden=precio
         <option value="fecha" selected>Por fecha</option>
 <p class="resumen">12 salidas</p>
 ```
@@ -1439,8 +1617,14 @@ function ordenar_salidas(array $salidas, string $orden): array {
 - En `por_libres`, `$b` va delante de `$a`: así salen primero las que tienen más plazas. Las que empatan conservan el orden que traían.
 - El nombre de la función que compara sale de un `match` con nombres escritos en el código. No hay orden por nombre a propósito: `<=>` compara los textos byte a byte y coloca «Ibón» detrás de «Ibones». Ordenar bien textos con tildes es trabajo de la base de datos.
 
+![Captura de Chrome: el formulario del calendario con la caja de búsqueda vacía, el desplegable de dificultad en «Alta» y el de orden en «Más plazas libres primero»; debajo, «4 salidas» y cuatro tarjetas, de más a menos plazas libres](figuras/ud4-cap-17-filtro-y-orden.png)
+
+*Captura 17 de la UD4. Dificultad alta, de más a menos plazas libres. Los dos desplegables conservan lo elegido. `http://localhost:3000/ud4/calendario.php?dificultad=alta&orden=libres`*
+
+Del código fuente, el resumen, las opciones marcadas y los nombres:
+
 ```
-$ curl -s "http://localhost:8000/calendario.php?dificultad=alta&orden=libres" | grep -E 'resumen|selected|<strong>'
+view-source:http://localhost:3000/ud4/calendario.php?dificultad=alta&orden=libres
         <option value="alta" selected>Alta</option>
         <option value="libres" selected>Más plazas libres primero</option>
 <p class="resumen">4 salidas</p>
@@ -1462,15 +1646,21 @@ Cuatro salidas de dificultad alta, de más a menos plazas, y los dos desplegable
     usort($salidas, 'por_' . $orden);   // el nombre de la función, montado con lo que llega
 ```
 
+Con `orden=libres`, y con un orden que el desplegable no ofrece:
+
+| Dirección, tras `http://localhost:3000` | Busca con `Ctrl+F` | Coincidencias |
+|---|---|---|
+| `/ud4/calendario.php?orden=libres` | `class="tarjeta"` | 5 |
+| `/ud4/calendario.php?orden=precio` | `class="tarjeta"` | 0 |
+
 ```
-$ curl -s "http://localhost:8000/calendario.php?orden=libres" | grep -c 'class="tarjeta"'
-5
-$ curl -s -i "http://localhost:8000/calendario.php?orden=precio" | head -n 1
+Red › calendario.php?orden=precio › Encabezados de respuesta
 HTTP/1.1 200 OK
-$ curl -s "http://localhost:8000/calendario.php?orden=precio" | grep -o 'Uncaught TypeError[^,]*'
+```
+
+```
+http://localhost:3000/ud4/calendario.php?orden=precio
 Uncaught TypeError: usort(): Argument #2 ($callback) must be a valid callback
-$ curl -s "http://localhost:8000/calendario.php?orden=precio" | grep -c 'class="tarjeta"'
-0
 ```
 
 Con `libres` funciona, y por eso pasa las pruebas. Con `precio`, que el desplegable no ofrece pero cualquiera escribe en la URL, la página se rompe: con los errores ocultos sería un `500` en blanco. Y lo grave no es el error, sino lo que significa: quien escribe la dirección ha elegido qué función se ejecuta. Aquí solo puede romper una página. Cuando lo que se monta con el dato es una consulta SQL, el mismo descuido es la inyección que viste asomar en el apartado 9 de la UD3. Es la regla del nombre de plantilla del apartado 2, otra vez: **lo que decide qué código se ejecuta lo escribe el programador**.
@@ -1515,23 +1705,41 @@ El campo de búsqueda se repuebla como en `registro.php`: `value` con `e()`. Un 
     </select>
 ```
 
+Tres búsquedas, escritas en la caja «Buscar». La primera, `peña`:
+
+![Captura de Chrome: la caja de búsqueda con la palabra «peña», «3 salidas» y tres tarjetas: Peña Oroel, San Juan de la Peña y Peña Foratata](figuras/ud4-cap-18-busqueda-repoblada.png)
+
+*Captura 18 de la UD4. La búsqueda «peña», escrita en la caja: tres salidas, y la caja conserva lo buscado. `http://localhost:3000/ud4/calendario.php?q=peña&dificultad=&orden=fecha`*
+
 ```
-$ curl -s -G --data-urlencode "q=peña" http://localhost:8000/calendario.php | grep -E 'resumen|<strong>|name="q"'
+view-source:http://localhost:3000/ud4/calendario.php?q=peña&dificultad=&orden=fecha
     <input type="search" id="q" name="q" value="peña">
 <p class="resumen">3 salidas</p>
         <strong>Peña Oroel</strong>
         <strong>San Juan de la Peña</strong>
         <strong>Peña Foratata</strong>
-$ curl -s "http://localhost:8000/calendario.php?q=zzz" | grep -E 'resumen|No hay'
+```
+
+La segunda, `zzz`. En su código fuente, `Ctrl+F` con `class="tarjeta"` encuentra 0:
+
+```
+view-source:http://localhost:3000/ud4/calendario.php?q=zzz&dificultad=&orden=fecha
 <p class="resumen">0 salidas</p>
     <li>No hay salidas con ese filtro. <a href="calendario.php">Ver todas</a></li>
-$ curl -s "http://localhost:8000/calendario.php?q=zzz" | grep -c 'class="tarjeta"'
-0
-$ curl -s -G --data-urlencode 'q="><b>' http://localhost:8000/calendario.php | grep 'name="q"'
+```
+
+Y la tercera, un texto con comillas y ángulos: `"><b>`.
+
+![Captura de Chrome: la caja de búsqueda con el texto "><b> tal cual, «0 salidas» y la frase «No hay salidas con ese filtro. Ver todas»](figuras/ud4-cap-19-busqueda-sin-resultados.png)
+
+*Captura 19 de la UD4. Una búsqueda con comillas y ángulos: vuelve a la caja como texto, y la lista vacía tiene su propio bloque. `http://localhost:3000/ud4/calendario.php?q=%22%3E%3Cb%3E&dificultad=&orden=fecha`*
+
+```
+view-source:http://localhost:3000/ud4/calendario.php?q=%22%3E%3Cb%3E&dificultad=&orden=fecha
     <input type="search" id="q" name="q" value="&quot;&gt;&lt;b&gt;">
 ```
 
-Tres búsquedas. La primera usa `-G`, que manda los datos de `--data-urlencode` en la URL, como un formulario GET: «peña» encuentra tres salidas aunque esté en minúsculas, y el campo conserva lo buscado. La segunda no encuentra nada, y la plantilla pinta el bloque alternativo, con un enlace para volver a verlas todas, en vez de una lista vacía. La tercera busca un texto con comillas y ángulos: vuelve al `value` escapado.
+La dirección de cada una la ha montado el navegador con lo que escribiste en el formulario: un formulario GET envía sus campos en la URL. «peña» encuentra tres salidas aunque esté en minúsculas, y el campo conserva lo buscado. La segunda no encuentra nada, y la plantilla pinta el bloque alternativo, con un enlace para volver a verlas todas, en vez de una lista vacía. La tercera vuelve al `value` escapado: en la caja se lee tal como se escribió, y en la dirección el navegador ha codificado sus comillas y sus ángulos.
 
 **Error típico: la opción que no se marca.** El parcial compara con `(string) $valor === $elegida`. Ese `(string)` parece sobrar. Quítalo y prueba el parcial solo, como en el apartado 3, con un desplegable de valores numéricos:
 
@@ -1611,26 +1819,34 @@ function paginar(array $elementos, string $pedida, int $por_pagina): array {
 - `array_slice($array, $desde, $cuantos)` devuelve un trozo del array sin tocar el original. La página 2 empieza en la posición 5.
 - El número de página llega de la petición, así que pasa por `filter_var`. Lo que no es un entero, o es menor que 1, se convierte en la página 1; lo que se pasa del final, en la última.
 
+Del código fuente del calendario sin filtros, el resumen y el paginador:
+
 ```
-$ curl -s "http://localhost:8000/calendario.php" | grep -E 'resumen|Página|rel='
+view-source:http://localhost:3000/ud4/calendario.php
 <p class="resumen">12 salidas</p>
     <span>Página 1 de 3</span>
     <a rel="next" href="calendario.php?q=&amp;dificultad=&amp;orden=fecha&amp;pagina=2">Siguiente</a>
-$ curl -s "http://localhost:8000/calendario.php?pagina=1" | grep -c 'class="tarjeta"'
-5
-$ curl -s "http://localhost:8000/calendario.php?pagina=2" | grep -c 'class="tarjeta"'
-5
-$ curl -s "http://localhost:8000/calendario.php?pagina=3" | grep -c 'class="tarjeta"'
-2
 ```
 
+| Dirección, tras `http://localhost:3000` | Busca con `Ctrl+F` | Coincidencias |
+|---|---|---|
+| `/ud4/calendario.php?pagina=1` | `class="tarjeta"` | 5 |
+| `/ud4/calendario.php?pagina=2` | `class="tarjeta"` | 5 |
+| `/ud4/calendario.php?pagina=3` | `class="tarjeta"` | 2 |
+
+![Captura de Chrome: el calendario en su segunda página: «12 salidas», cinco tarjetas y, debajo, el enlace «Anterior», el texto «Página 2 de 3» y el enlace «Siguiente»](figuras/ud4-cap-20-paginacion.png)
+
+*Captura 20 de la UD4. La segunda página de tres, con sus dos enlaces. `http://localhost:3000/ud4/calendario.php?pagina=2`*
+
+Y tres páginas que no existen, escritas a mano en la barra de direcciones:
+
 ```
-$ curl -s "http://localhost:8000/calendario.php?pagina=0" | grep "Página"
-    <span>Página 1 de 3</span>
-$ curl -s "http://localhost:8000/calendario.php?pagina=99" | grep "Página"
-    <span>Página 3 de 3</span>
-$ curl -s "http://localhost:8000/calendario.php?pagina=abc" | grep "Página"
-    <span>Página 1 de 3</span>
+http://localhost:3000/ud4/calendario.php?pagina=0
+Página 1 de 3 Siguiente
+http://localhost:3000/ud4/calendario.php?pagina=99
+Anterior Página 3 de 3
+http://localhost:3000/ud4/calendario.php?pagina=abc
+Página 1 de 3 Siguiente
 ```
 
 Cinco, cinco y dos: doce. Y ninguna de las tres direcciones imposibles rompe la página ni la deja vacía.
@@ -1667,10 +1883,10 @@ calendario.php?q=Bierge+%26+Vero&amp;dificultad=baja&amp;orden=fecha&amp;pagina=
 En la primera línea, hecha a mano, el `&` de la búsqueda se confunde con el que separa parámetros. En la segunda, `http_build_query` lo ha convertido en `%26` y el espacio en `+`. La tercera es la que se escribe en un `href`: la dirección es un dato más y pasa por `e()`, que convierte en `&amp;` los `&` que separan. `array_merge()` une dos arrays: aquí añade la página a los filtros. Lo que entiende el servidor en cada caso:
 
 ```
-$ curl -s "http://localhost:8000/calendario.php?q=Bierge+&+Vero&dificultad=baja" | grep -E 'name="q"|resumen'
+view-source:http://localhost:3000/ud4/calendario.php?q=Bierge+&+Vero&dificultad=baja
     <input type="search" id="q" name="q" value="Bierge">
 <p class="resumen">1 salida</p>
-$ curl -s "http://localhost:8000/calendario.php?q=Bierge+%26+Vero&dificultad=baja" | grep -E 'name="q"|resumen'
+view-source:http://localhost:3000/ud4/calendario.php?q=Bierge+%26+Vero&dificultad=baja
     <input type="search" id="q" name="q" value="Bierge &amp; Vero">
 <p class="resumen">0 salidas</p>
 ```
@@ -1700,8 +1916,10 @@ No pinta «Anterior» en la primera página, ni «Siguiente» en la última, ni 
     <a rel="next" href="<?= e($base) ?>?pagina=<?= e($pagina + 1) ?>">Siguiente</a>
 ```
 
+Busca `de`. Del código fuente, el resumen, los nombres y el enlace:
+
 ```
-$ curl -s "http://localhost:8000/calendario.php?q=de" | grep -E 'resumen|<strong>|rel='
+view-source:http://localhost:3000/ud4/calendario.php?q=de
 <p class="resumen">8 salidas</p>
         <strong>Ibón de Estanés</strong>
         <strong>Cañón de Añisclo</strong>
@@ -1709,7 +1927,16 @@ $ curl -s "http://localhost:8000/calendario.php?q=de" | grep -E 'resumen|<strong
         <strong>Ibones de Anayet</strong>
         <strong>Mallos de Riglos</strong>
     <a rel="next" href="calendario.php?pagina=2">Siguiente</a>
-$ curl -s "http://localhost:8000/calendario.php?pagina=2" | grep -E 'resumen|<strong>'
+```
+
+Ahora pulsa «Siguiente»:
+
+![Captura de Chrome: la caja de búsqueda vacía, «12 salidas» y cinco tarjetas, entre ellas Mallos de Riglos y Moncayo por Agramonte; debajo, «Anterior», «Página 2 de 3» y «Siguiente»](figuras/ud4-cap-21-enlace-que-pierde-el-filtro.png)
+
+*Captura 21 de la UD4. Adonde lleva «Siguiente» cuando el enlace pierde el filtro: la segunda página de las doce, sin búsqueda. `http://localhost:3000/ud4/calendario.php?pagina=2`*
+
+```
+view-source:http://localhost:3000/ud4/calendario.php?pagina=2
 <p class="resumen">12 salidas</p>
         <strong>Mallos de Riglos</strong>
         <strong>Cañón del Vero</strong>
@@ -1723,22 +1950,23 @@ La búsqueda encuentra 8 salidas y enseña 5. El enlace «Siguiente» lleva a `?
 **Cómo se comprueba un listado paginado.** Siguiendo los enlaces y sumando:
 
 ```
-$ curl -s "http://localhost:8000/calendario.php?q=de" | grep -E 'resumen|rel='
+view-source:http://localhost:3000/ud4/calendario.php?q=de
 <p class="resumen">8 salidas</p>
     <a rel="next" href="calendario.php?q=de&amp;dificultad=&amp;orden=fecha&amp;pagina=2">Siguiente</a>
-$ curl -s "http://localhost:8000/calendario.php?q=de" | grep -c 'class="tarjeta"'
-5
-$ curl -s "http://localhost:8000/calendario.php?q=de&dificultad=&orden=fecha&pagina=2" | grep -c 'class="tarjeta"'
-3
 ```
 
-Cinco más tres, ocho: lo que dice el resumen. La dirección de la segunda petición está copiada del `href`, cambiando cada `&amp;` por `&`, que es lo que hace el navegador al leer el HTML. Las otras comprobaciones de este apartado son las que ya has visto: un valor fuera de cada lista cerrada, las tres páginas imposibles, una búsqueda sin resultados y otra con comillas.
+| Dirección, tras `http://localhost:3000` | Busca con `Ctrl+F` | Coincidencias |
+|---|---|---|
+| `/ud4/calendario.php?q=de` | `class="tarjeta"` | 5 |
+| `/ud4/calendario.php?q=de&dificultad=&orden=fecha&pagina=2` | `class="tarjeta"` | 3 |
+
+Cinco más tres, ocho: lo que dice el resumen. La segunda dirección no la has escrito tú: es adonde lleva «Siguiente». El navegador la ha leído del `href` cambiando cada `&amp;` por `&`. Las otras comprobaciones de este apartado son las que ya has visto: un valor fuera de cada lista cerrada, las tres páginas imposibles, una búsqueda sin resultados y otra con comillas.
 
 **Ejercicios del apartado.**
 
-- **E17.** Añade un tercer orden, `plazas` (de más a menos plazas totales): su función de comparación, su entrada en la lista cerrada y su rama en el `match`. Evidencias: los cinco primeros nombres con `curl`, la opción marcada en el desplegable y la respuesta a `?orden=inventado`.
-- **E18.** Cambia `POR_PAGINA` a 4. **Antes de ejecutar**, escribe cuántas páginas tendrá el calendario sin filtro, con `dificultad=media` y con `q=de`, y cuántas salidas habrá en la última de cada caso. Compruébalo siguiendo los enlaces «Siguiente» con `curl` y sumando.
-- **E19.** Reproduce el enlace que pierde el filtro y demuestra el fallo con una suma que no cuadra. Arréglalo y prueba el paginador con una búsqueda incómoda, la letra `ñ` sola, que encuentra seis salidas: pega el `href` de «Siguiente» y señala en él qué ha codificado `http_build_query` y qué ha escapado `e()`. Después sigue ese enlace con `curl` y suma.
+- **E17.** Añade un tercer orden, `plazas` (de más a menos plazas totales): su función de comparación, su entrada en la lista cerrada y su rama en el `match`. Evidencias: los cinco primeros nombres, la opción marcada en el desplegable y la respuesta a `?orden=inventado`.
+- **E18.** Cambia `POR_PAGINA` a 4. **Antes de ejecutar**, escribe cuántas páginas tendrá el calendario sin filtro, con `dificultad=media` y con `q=de`, y cuántas salidas habrá en la última de cada caso. Compruébalo siguiendo los enlaces «Siguiente» y sumando.
+- **E19.** Reproduce el enlace que pierde el filtro y demuestra el fallo con una suma que no cuadra. Arréglalo y prueba el paginador con una búsqueda incómoda, la letra `ñ` sola, que encuentra seis salidas: pega el `href` de «Siguiente» y señala en él qué ha codificado `http_build_query` y qué ha escapado `e()`. Después sigue ese enlace y suma.
 
 <div style="page-break-before: always;"></div>
 

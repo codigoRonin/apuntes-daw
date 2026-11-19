@@ -1329,11 +1329,14 @@ Las prácticas de esta unidad siguen con el caso del cuaderno, distinto del club
 Tres cosas valen para todas:
 
 - **`plantillas.php` viene dado en cada carpeta que lo usa** y es, letra a letra, el fichero con el que termina el apartado 4 de la unidad: `e()`, `render()`, `capturar()` y `render_pagina()`, más la auxiliar `incluir_aislado()`, que usa `render()`. En las prácticas de los apartados 2 y 3 solo usarás las dos primeras. No lo modifiques: si una práctica parece pedírtelo, el arreglo está en otro sitio.
-- **El servidor se lanza enseñando los errores**, como en el apartado 10 de la unidad, desde la carpeta de la práctica:
+- **El servidor es PHP Server, con la carpeta de la práctica abierta en VS Code**, como explica el [entorno de trabajo de la unidad](ud4-generacion-dinamica-plantillas.md#entorno-de-trabajo-de-la-unidad). Aquí lo que se abre es la carpeta de la práctica (por ejemplo `cuaderno/ud4/cp4-2/`), no un repositorio, así que las direcciones no llevan carpeta delante: `http://localhost:3000/recibo.php`. Dos ventanas de VS Code no pueden servir a la vez en el puerto 3000: para el servidor de la otra antes de lanzar este.
+- **Los errores se leen en la página**, como en el apartado 10 de la unidad. Si en tu equipo una página que falla se queda en blanco, para PHP Server y lanza el servidor a mano, desde la carpeta de la práctica:
 
 ```
-php -d display_errors=1 -d html_errors=0 -S localhost:8000
+php -d display_errors=1 -S localhost:3000
 ```
+
+- **Las salidas esperadas son código fuente.** Los bloques que empiezan por `view-source:` traen las líneas del código fuente de esa página (`Ctrl+U`) que tienes que encontrar en la tuya, letra a letra; los que empiezan por «Red ›», lo que dice la pestaña Red de esa petición.
 
 - **Las trazas se leen enteras.** Casi todas las prácticas traen un error que cazar de los del apartado 10. El mensaje dice qué falta, en qué fichero y en qué línea: antes de tocar nada, abre ese fichero por esa línea.
 
@@ -1341,7 +1344,7 @@ php -d display_errors=1 -d html_errors=0 -S localhost:8000
 
 **Nivel** básico · **Tiempo orientativo** 20 min.
 
-**Qué refuerza.** El apartado 1 de la [UD4](ud4-generacion-dinamica-plantillas.md): qué hace el servidor y qué hace el navegador con una misma página, cómo se comprueba con `curl` lo que de verdad viaja, y qué se gana cuando el trabajo lo hace cada lado.
+**Qué refuerza.** El apartado 1 de la [UD4](ud4-generacion-dinamica-plantillas.md): qué hace el servidor y qué hace el navegador con una misma página, cómo se comprueba lo que de verdad viaja, y qué se gana cuando el trabajo lo hace cada lado.
 
 **Ficheros de partida.** `cp4-1/avisos-servidor.php`, `cp4-1/avisos-navegador.php`, `cp4-1/avisos-json.php`, `cp4-1/avisos.js` y `cp4-1/datos/avisos.php`, en el repositorio de recursos (enlace en Classroom). El guion `avisos.js` se te da escrito: no hay que modificarlo.
 
@@ -1349,34 +1352,36 @@ php -d display_errors=1 -d html_errors=0 -S localhost:8000
 
 **Tareas.**
 
-- **(a) Cuenta lo que viaja.** Con el servidor lanzado, pide las dos páginas con `curl` y cuenta los avisos que llegan en cada una con `grep -c '<li>'`. Después ábrelas en el navegador y cuenta los que **ves**. Explica la diferencia: ¿qué es `curl`, que no hace lo que hace el navegador? ¿Qué vería en cada página un programa que solo lee el HTML que recibe?
-- **(b) Pesa y cuenta peticiones.** Mide con `wc -c` los bytes de las dos páginas, del guion y de los datos (`avisos-json.php`). En el navegador, con la pestaña Red abierta, cuenta cuántas peticiones hace falta para ver la cartelera en cada versión. Di cuál de las dos enseña antes los avisos en una conexión lenta, y por qué.
-- **(c) Caza el error.** Dos avisos llevan caracteres con significado en HTML: uno un `&` y otro un `<`. Mira cómo llegan en la versión del servidor (`grep -E 'abonado|bar'`) y cómo se ve ese aviso en el navegador. Es el error que ya conoces de la UD2: arréglalo en `avisos-servidor.php` y repite la orden. Después mira cómo viaja ese mismo aviso en `avisos-json.php` y busca en `avisos.js` la línea que lo pinta: ¿por qué en esa versión no hace falta escapar en el servidor, y quién se encarga?
-- **(d) Elegir zona, de dos maneras.** La versión del servidor admite `?zona=Eras`. Pídela con `curl`, y pide también `?zona=Marte`: explica qué hace el guion con una zona que no está en su lista. En la versión del navegador, elige «Eras» en el desplegable con la pestaña Red abierta: ¿cuántas peticiones nuevas aparecen? Escribe dos líneas: qué gana la asociación con la dirección `?zona=Eras` (piensa en mandarla por mensaje) y qué gana con el desplegable que no pide nada.
+- **(a) Cuenta lo que viaja.** Con el servidor lanzado, abre las dos páginas y cuenta los avisos que **ves** en cada una. Después abre el código fuente de las dos (`Ctrl+U`) y cuenta con `Ctrl+F` los `<li>` que **han llegado**. Explica la diferencia: ¿qué enseña «Ver código fuente», que no es lo que enseña la página? ¿Qué vería en cada página un programa que solo lee el HTML que recibe?
+- **(b) Pesa y cuenta peticiones.** Con la pestaña Red abierta, anota el tamaño de las dos páginas, del guion y de los datos (`avisos-json.php`), y cuenta cuántas peticiones hacen falta para ver la cartelera en cada versión. Di cuál de las dos enseña antes los avisos en una conexión lenta, y por qué.
+- **(c) Caza el error.** Dos avisos llevan caracteres con significado en HTML: uno un `&` y otro un `<`. Mira cómo llegan en la versión del servidor (busca `abonado` y `bar` en su código fuente) y cómo se ve ese aviso en la página. Es el error que ya conoces de la UD2: arréglalo en `avisos-servidor.php` y vuelve a mirar. Después mira cómo viaja ese mismo aviso en `avisos-json.php` y busca en `avisos.js` la línea que lo pinta: ¿por qué en esa versión no hace falta escapar en el servidor, y quién se encarga?
+- **(d) Elegir zona, de dos maneras.** La versión del servidor admite `?zona=Eras`. Pídela, y pide también `?zona=Marte`: explica qué hace el guion con una zona que no está en su lista. En la versión del navegador, elige «Eras» en el desplegable con la pestaña Red abierta: ¿cuántas peticiones nuevas aparecen? Escribe dos líneas: qué gana la asociación con la dirección `?zona=Eras` (piensa en mandarla por mensaje) y qué gana con el desplegable que no pide nada.
 
-**Cómo trabajar.** Para saber qué ha hecho el servidor, mira lo que **llega**: `curl` o «Ver código fuente», nunca el inspector de elementos, que enseña la página después de que el guion la haya cambiado. Salidas esperadas — el recuento de la tarea (a), los dos avisos de la tarea (c) una vez arreglado el fallo, y las dos peticiones de la tarea (d):
+**Cómo trabajar.** Para saber qué ha hecho el servidor, mira lo que **llega**: «Ver código fuente», nunca el panel Elementos, que enseña la página después de que el guion la haya cambiado. Salidas esperadas — el recuento de la tarea (a), los dos avisos de la tarea (c) una vez arreglado el fallo, y las dos peticiones de la tarea (d):
 
-```
-$ curl -s http://localhost:8000/avisos-servidor.php | grep -c '<li>'
-6
-$ curl -s http://localhost:8000/avisos-navegador.php | grep -c '<li>'
-0
-```
+| Dirección, tras `http://localhost:3000` | Busca con `Ctrl+F` | Coincidencias |
+|---|---|---|
+| `/avisos-servidor.php` | `<li>` | 6 |
+| `/avisos-navegador.php` | `<li>` | 0 |
 
 ```
-$ curl -s http://localhost:8000/avisos-servidor.php | grep -E 'abonado|bar'
+view-source:http://localhost:3000/avisos-servidor.php
     <li>2026-11-24 · Riego &amp; abonado: cambio de turno en las Eras</li>
     <li>2026-11-25 · Presión del goteo &lt;1 bar: revisad los filtros</li>
 ```
 
 ```
-$ curl -s 'http://localhost:8000/avisos-servidor.php?zona=Eras' | grep -E '<h1>|vista'
+view-source:http://localhost:3000/avisos-servidor.php?zona=Eras
 <h1>Cartelera · Eras</h1>
 <p>Avisos a la vista: 4</p>
-$ curl -s 'http://localhost:8000/avisos-servidor.php?zona=Marte' | grep -E '<h1>|vista'
+view-source:http://localhost:3000/avisos-servidor.php?zona=Marte
 <h1>Cartelera</h1>
 <p>Avisos a la vista: 6</p>
 ```
+
+![Captura de Chrome: la cartelera de la asociación, con un desplegable de zona y una lista de seis avisos con su fecha; en dos de ellos se leen tal cual un signo & y un signo <](figuras/cp4-1-cap-cartelera.png)
+
+*Captura de la CP4.1. La cartelera pintada en el servidor, ya arreglada. La del navegador se ve igual: la diferencia está en «Ver código fuente». `http://localhost:3000/avisos-servidor.php`*
 
 ### CP4.2 · El recibo de la cuota
 
@@ -1392,13 +1397,13 @@ $ curl -s 'http://localhost:8000/avisos-servidor.php?zona=Marte' | grep -E '<h1>
 
 - **(a) Lee el «antes».** Pide `recibo-todo.php?ref=H03` y comprueba que el recibo sale bien. Abre el fichero y marca cada línea con una P si **prepara** (lee, decide, calcula) o con una I si **imprime**. ¿En cuántos sitios se decide algo después de haber empezado a imprimir? Explica en una línea por qué eso complica cambiar el aspecto del recibo sin tocar el cálculo.
 - **(b) Caza el primer error.** Pide `recibo.php?ref=H03`: el recibo sale sin importe y con un aviso. Lee el aviso entero, abre la plantilla por su **primera línea**, que es su contrato, y compárala letra a letra con las claves que le pasa el guion. Arréglalo donde toca (error 1 del apartado 10) y explica por qué has elegido ese fichero y no el otro.
-- **(c) Caza el segundo.** El recibo de la H03 ya tiene importe, pero el nombre del huerto se lee mal en el navegador. Mira con `grep huerto` lo que llega y localiza quién ha escapado de más (error 3 del apartado 10). Quita el que sobra, no el otro, y di por qué ese.
-- **(d) Los dos casos que faltan.** Pide `recibo.php?ref=H99` y cuenta los avisos; mira también con qué código responde. Haz que el guion decida **antes de pintar**: si la referencia no existe, responde con un `404` y una página que lo diga; si la parcela existe pero está libre, responde con una página que diga que no tiene recibo. Las dos se pintan con una plantilla nueva, `plantillas/sin-recibo.php`, con su contrato en la primera línea. Comprueba además el recibo de la H06: su huerto lleva comillas.
+- **(c) Caza el segundo.** El recibo de la H03 ya tiene importe, pero el nombre del huerto se lee mal en la página. Mira en el código fuente la línea del huerto y localiza quién ha escapado de más (error 3 del apartado 10). Quita el que sobra, no el otro, y di por qué ese.
+- **(d) Los dos casos que faltan.** Pide `recibo.php?ref=H99` y cuenta los avisos; mira también, en la pestaña Red, con qué código responde. Haz que el guion decida **antes de pintar**: si la referencia no existe, responde con un `404` y una página que lo diga; si la parcela existe pero está libre, responde con una página que diga que no tiene recibo. Las dos se pintan con una plantilla nueva, `plantillas/sin-recibo.php`, con su contrato en la primera línea. Comprueba además el recibo de la H06: su huerto lleva comillas.
 
-- **(e) Desde cero.** Dos ficheros vacíos, un guion y su plantilla. Haz la **circular de cuotas**, `circular.php`: una línea por parcela adjudicada, con su referencia, quién la lleva, el nombre del huerto y su cuota, y al final el número de recibos y el total. Los cálculos, en el guion; en la plantilla, solo pintar. Decide tú las claves del contrato. Pruébalo con esta orden y compara letra a letra:
+- **(e) Desde cero.** Dos ficheros vacíos, un guion y su plantilla. Haz la **circular de cuotas**, `circular.php`: una línea por parcela adjudicada, con su referencia, quién la lleva, el nombre del huerto y su cuota, y al final el número de recibos y el total. Los cálculos, en el guion; en la plantilla, solo pintar. Decide tú las claves del contrato. Compara letra a letra estas líneas con las de tu código fuente:
 
 ```
-$ curl -s http://localhost:8000/circular.php | grep -E '<li>|Total'
+view-source:http://localhost:3000/circular.php
     <li>H01 · Mateo Larraz · «El Rincón» · 45 €</li>
     <li>H03 · Teresa Ansó · «Ansó &amp; hijas» · 45 €</li>
     <li>H04 · Julia Bergés · «La Tajadera» · 60 €</li>
@@ -1407,28 +1412,38 @@ $ curl -s http://localhost:8000/circular.php | grep -E '<li>|Total'
 <p>Recibos: 5 · Total: 270 €</p>
 ```
 
-**Cómo trabajar.** Un `Undefined variable` dentro de una plantilla casi nunca se arregla en la plantilla: dice que el contrato no se ha cumplido, y el contrato lo cumple quien llama. Y un `&amp;amp;` no es un aviso de PHP, pero se lee igual: alguien ha escapado antes de tiempo. Salidas esperadas de la práctica resuelta — el recibo de la H03 y las comprobaciones de la tarea (d):
+**Cómo trabajar.** Un `Undefined variable` dentro de una plantilla casi nunca se arregla en la plantilla: dice que el contrato no se ha cumplido, y el contrato lo cumple quien llama. Y un `&amp;amp;` no es un aviso de PHP, pero se lee igual: alguien ha escapado antes de tiempo. Salidas esperadas de la práctica resuelta — el recibo de la H03, sin ningún aviso en la página, y las comprobaciones de la tarea (d):
+
+![Captura de Chrome: el recibo de la cuota anual de la parcela H03, a nombre de Teresa Ansó, huerto «Ansó & hijas», en las Eras, 80 metros cuadrados, con el importe de 45 euros en negrita](figuras/cp4-2-cap-recibo.png)
+
+*Captura de la CP4.2. El recibo de la H03, con la práctica resuelta. `http://localhost:3000/recibo.php?ref=H03`*
 
 ```
-$ curl -s 'http://localhost:8000/recibo.php?ref=H03' | grep -E '<h1>|<p>'
+view-source:http://localhost:3000/recibo.php?ref=H03
 <h1>Recibo de la cuota anual · parcela H03</h1>
 <p>A nombre de Teresa Ansó · huerto «Ansó &amp; hijas»</p>
 <p>Eras · 80 m²</p>
 <p><strong>Importe: 45 €</strong></p>
-$ curl -s 'http://localhost:8000/recibo.php?ref=H03' | grep -c Warning
-0
 ```
 
 ```
-$ curl -s -o /dev/null -w '%{http_code}\n' 'http://localhost:8000/recibo.php?ref=H99'
-404
-$ curl -s 'http://localhost:8000/recibo.php?ref=H99' | grep '<p>'
+Red › recibo.php?ref=H99 › Encabezados de respuesta
+HTTP/1.1 404 Not Found
+
+view-source:http://localhost:3000/recibo.php?ref=H99
 <p>No hay ninguna parcela con esa referencia.</p>
-$ curl -s -o /dev/null -w '%{http_code}\n' 'http://localhost:8000/recibo.php?ref=H02'
-200
-$ curl -s 'http://localhost:8000/recibo.php?ref=H02' | grep '<p>'
+```
+
+```
+Red › recibo.php?ref=H02 › Encabezados de respuesta
+HTTP/1.1 200 OK
+
+view-source:http://localhost:3000/recibo.php?ref=H02
 <p>La parcela H02 está libre: no tiene recibo.</p>
-$ curl -s 'http://localhost:8000/recibo.php?ref=H06' | grep huerto
+```
+
+```
+view-source:http://localhost:3000/recibo.php?ref=H06
 <p>A nombre de Rubén Asín · huerto «Huerto &quot;Los Chopos&quot;»</p>
 ```
 
@@ -1445,14 +1460,14 @@ $ curl -s 'http://localhost:8000/recibo.php?ref=H06' | grep huerto
 **Tareas.**
 
 - **(a) Caza el error.** Pide `mi-turno.php?ref=H03` y lee el primer aviso: dice qué variable falta y en qué fichero. Abre el parcial, lee su contrato y compáralo con lo que usa. Hay dos arreglos posibles: pasarle al parcial lo que echa de menos, o que el guion le entregue cada turno **con su zona ya resuelta**. Elige el segundo, escribe en `utilidades.php` la función que lo prepara y explica por qué un parcial que solo pinta lo que recibe es más fácil de reutilizar.
-- **(b) Una sola línea para las dos páginas.** Haz que `plantillas/cuadrante.php` use también el parcial, y borra de ella la línea escrita a mano. Antes y después, cuenta las líneas de tabla que llegan con `grep -c '<tr'`: el número no puede cambiar.
+- **(b) Una sola línea para las dos páginas.** Haz que `plantillas/cuadrante.php` use también el parcial, y borra de ella la línea escrita a mano. Antes y después, cuenta en el código fuente, con `Ctrl+F`, los `<tr` que llegan: el número no puede cambiar.
 - **(c) Un parámetro opcional.** En `mi-turno.php` hacen falta dos columnas más, los minutos y la observación; en el cuadrante, no. Añade al parcial un parámetro `$detalle` que valga `false` si no se le pasa, y actualiza su contrato. Pásalo solo desde la plantilla que lo necesita, y añade allí las dos cabeceras.
-- **(d) Lo que llega.** Un turno de la H03 lleva una observación con un `<`. Comprueba con `grep -o 'Presión[^<]*'` cómo llega al navegador y di qué línea de qué fichero lo ha dejado así. Pide también `mi-turno.php?ref=H02`, una parcela sin turnos, y `mi-turno.php?ref=H99`, y anota qué responde cada una.
+- **(d) Lo que llega.** Un turno de la H03 lleva una observación con un `<`. Busca «Presión» en el código fuente, mira cómo llega al navegador y di qué línea de qué fichero lo ha dejado así. Pide también `mi-turno.php?ref=H02`, una parcela sin turnos, y `mi-turno.php?ref=H99`, y anota qué responde cada una.
 
-- **(e) Desde cero.** Una página nueva, `por-dias.php`: el cuadrante agrupado por días. Cada día lleva su nombre en un `<h2>`, una tabla con sus turnos, con detalle, y una línea con el total de minutos de ese día. Cada día lo pinta un parcial nuevo, `parciales/dia.php`, que a su vez usa `parciales/turno.php` para cada línea de la tabla. Agrupar y sumar es preparar: va en el guion o en `utilidades.php`, no en las plantillas. Pruébalo con estas dos órdenes y compara letra a letra:
+- **(e) Desde cero.** Una página nueva, `por-dias.php`: el cuadrante agrupado por días. Cada día lleva su nombre en un `<h2>`, una tabla con sus turnos, con detalle, y una línea con el total de minutos de ese día. Cada día lo pinta un parcial nuevo, `parciales/dia.php`, que a su vez usa `parciales/turno.php` para cada línea de la tabla. Agrupar y sumar es preparar: va en el guion o en `utilidades.php`, no en las plantillas. Compara letra a letra estas líneas con las de tu código fuente; en él, `Ctrl+F` con `<tr` tiene que encontrar 7:
 
 ```
-$ curl -s http://localhost:8000/por-dias.php | grep -E '<h2>|Total'
+view-source:http://localhost:3000/por-dias.php
 <h2>lunes</h2>
 <p>Total del día: 100 min</p>
 <h2>martes</h2>
@@ -1463,14 +1478,16 @@ $ curl -s http://localhost:8000/por-dias.php | grep -E '<h2>|Total'
 <p>Total del día: 125 min</p>
 <h2>sábado</h2>
 <p>Total del día: 40 min</p>
-$ curl -s http://localhost:8000/por-dias.php | grep -c '<tr'
-7
 ```
 
-**Cómo trabajar.** Un parcial es una plantilla pequeña con contrato propio: solo ve lo que le pasan. Si al sacarlo de su página deja de funcionar, es que usaba algo de la página sin decirlo. Salidas esperadas de la práctica resuelta — el cuadrante y los turnos de la H03:
+**Cómo trabajar.** Un parcial es una plantilla pequeña con contrato propio: solo ve lo que le pasan. Si al sacarlo de su página deja de funcionar, es que usaba algo de la página sin decirlo. Salidas esperadas de la práctica resuelta — el cuadrante y los turnos de la H03, sin ningún aviso en la página:
+
+![Captura de Chrome: el cuadrante de riego de la semana, una tabla sin estilos con las columnas día, hora, parcela y zona y siete turnos, de lunes a sábado](figuras/cp4-3-cap-cuadrante.png)
+
+*Captura de la CP4.3. El cuadrante de riego, con la práctica resuelta. `http://localhost:3000/cuadrante.php`*
 
 ```
-$ curl -s http://localhost:8000/cuadrante.php | grep '<tr'
+view-source:http://localhost:3000/cuadrante.php
     <tr><th>Día</th><th>Hora</th><th>Parcela</th><th>Zona</th></tr>
     <tr><td>lunes</td><td>07:30</td><td>H01</td><td>Ribera</td></tr>
     <tr><td>lunes</td><td>08:15</td><td>H08</td><td>Ribera</td></tr>
@@ -1482,18 +1499,23 @@ $ curl -s http://localhost:8000/cuadrante.php | grep '<tr'
 ```
 
 ```
-$ curl -s 'http://localhost:8000/mi-turno.php?ref=H03' | grep '<tr'
+view-source:http://localhost:3000/mi-turno.php?ref=H03
     <tr><th>Día</th><th>Hora</th><th>Parcela</th><th>Zona</th><th>Minutos</th><th>Observación</th></tr>
     <tr><td>martes</td><td>07:30</td><td>H03</td><td>Eras</td><td>50</td><td>Presión baja: &lt;1 bar</td></tr>
     <tr><td>jueves</td><td>19:00</td><td>H03</td><td>Eras</td><td>50</td><td></td></tr>
-$ curl -s 'http://localhost:8000/mi-turno.php?ref=H03' | grep -c Warning
-0
-$ curl -s -o /dev/null -w '%{http_code}\n' 'http://localhost:8000/mi-turno.php?ref=H02'
-200
-$ curl -s 'http://localhost:8000/mi-turno.php?ref=H02' | grep '<p>'
+```
+
+```
+Red › mi-turno.php?ref=H02 › Encabezados de respuesta
+HTTP/1.1 200 OK
+
+view-source:http://localhost:3000/mi-turno.php?ref=H02
 <p>Esta semana no tiene turnos.</p>
-$ curl -s -o /dev/null -w '%{http_code}\n' 'http://localhost:8000/mi-turno.php?ref=H99'
-404
+```
+
+```
+Red › mi-turno.php?ref=H99 › Encabezados de respuesta
+HTTP/1.1 404 Not Found
 ```
 
 ### CP4.4 · El boletín, generado
@@ -1511,7 +1533,7 @@ $ curl -s -o /dev/null -w '%{http_code}\n' 'http://localhost:8000/mi-turno.php?r
 - **(a) Caza el primer error.** Ejecuta `php -d display_errors=1 -d log_errors=0 generar.php`. Lee la ruta completa que PHP ha intentado abrir y compárala con dónde está ese fichero de verdad (error 4 del apartado 10). Arréglalo y vuelve a ejecutar: ahora se genera `sitio/boletin.html`. Mira sus dos primeras líneas con `head -n 2` y cuenta con `grep -c '<html'`: tiene contenido, pero no es una página.
 - **(b) El layout.** Escribe `plantillas/layout.php` con su contrato: recibe `$rotulo` (para el `<title>`), `$contenido` (HTML ya pintado) y `$pie`. Lleva la estructura completa de la página, una cabecera (`<header>`) con el nombre de la asociación y un pie (`<footer>`). `render_pagina()` no te sirve tal cual, porque **envía** la página y aquí la quieres como texto: léela en `plantillas.php`, mira de qué dos pasos está hecha y haz tú esos dos pasos con `capturar()`. El pie de las tres páginas es «Boletín n.º 14 · noviembre de 2026», montado en el guion con los datos de `datos/boletin.php`.
 - **(c) Las otras dos páginas.** Genera también `sitio/normas.html` y `sitio/libres.html` con sus plantillas y el mismo layout. Para la de parcelas libres, el guion prepara la lista de las libres y los metros que suman. Comprueba las tres con las órdenes de «Cómo trabajar».
-- **(d) Lo que se puede pedir.** Ejecuta una plantilla sola: `php -d display_errors=1 -d log_errors=0 plantillas/boletin.php`. Es el error 2 del apartado 10; explica por qué el arreglo **no** es añadirle un `require`. Después sirve solo la carpeta generada, `php -S localhost:8000 -t sitio`, y pide con `curl -s -o /dev/null -w '%{http_code}\n'` estas cuatro direcciones: `boletin.html`, `plantillas/boletin.php`, `generar.php` y `datos/avisos.php`. Explica qué habría podido pedir un visitante si se sirviera la carpeta entera.
+- **(d) Lo que se puede pedir.** Ejecuta una plantilla sola: `php -d display_errors=1 -d log_errors=0 plantillas/boletin.php`. Es el error 2 del apartado 10; explica por qué el arreglo **no** es añadirle un `require`. Después sirve **solo** la carpeta generada. PHP Server sirve la carpeta abierta en VS Code, salvo que un ajuste le diga otra: crea en la carpeta de la práctica la carpeta `.vscode/` y, dentro, el fichero `settings.json` con `{ "phpserver.relativePath": "sitio" }`, y lanza el servidor (si ya estaba lanzado, `PHP Server: Reload server`). El navegador se abrirá en una dirección que ya no existe: escribe tú `http://localhost:3000/boletin.html`. Con la pestaña Red abierta, pide estas cuatro direcciones: `boletin.html`, `plantillas/boletin.php`, `generar.php` y `datos/avisos.php`. Explica qué habría podido pedir un visitante si se sirviera la carpeta entera. El apartado 9 de la unidad vuelve sobre este ajuste.
 
 - **(e) Desde cero.** Un guion nuevo, `generar-zonas.php`, y una plantilla, `plantillas/zona.php`: una página por zona (`sitio/zona-ribera.html`, `sitio/zona-eras.html` y `sitio/zona-soto.html`), las tres con la misma plantilla y con tu layout. Cada una lista las parcelas de su zona con la referencia, la superficie y el estado, y termina con un enlace «Volver al boletín». Las zonas salen de los datos, en el orden en que aparecen: si mañana hay una cuarta, el guion genera cuatro páginas sin tocarlo. El nombre de cada fichero te lo da `fichero_de_zona()`, que ya está en `comun/utilidades.php`. Pruébalo con estas órdenes; los bytes de cada página dependen de tu layout, lo demás tiene que coincidir:
 
@@ -1578,16 +1600,16 @@ $ grep '<li>' sitio/normas.html
     <li>Las parcelas de &lt;50 m² no pueden tener caseta propia.</li>
 ```
 
-```
-$ curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8000/boletin.html
-200
-$ curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8000/plantillas/boletin.php
-404
-$ curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8000/generar.php
-404
-$ curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8000/datos/avisos.php
-404
-```
+| Dirección | Código de estado (pestaña Red) |
+|---|---|
+| `http://localhost:3000/boletin.html` | 200 OK |
+| `http://localhost:3000/plantillas/boletin.php` | 404 Not Found |
+| `http://localhost:3000/generar.php` | 404 Not Found |
+| `http://localhost:3000/datos/avisos.php` | 404 Not Found |
+
+![Captura de Chrome: el boletín número 14 de la asociación, de noviembre de 2026, con su cabecera, la lista de avisos y el pie](figuras/cp4-4-cap-boletin.png)
+
+*Captura de la CP4.4. El boletín generado, servido solo desde `sitio/`. `http://localhost:3000/boletin.html`*
 
 ### CP4.5 · La caseta, ordenada
 
