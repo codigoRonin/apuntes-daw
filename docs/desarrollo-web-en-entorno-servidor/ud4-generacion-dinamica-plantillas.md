@@ -2117,21 +2117,33 @@ render_pagina(
 </form>
 ```
 
-El **token** llega como un dato más. `csrf.php` trae `csrf_campo()`, que devuelve el campo oculto ya hecho, pero usarla desde la plantilla sería buscar en la sesión en vez de recibir, y además imprimir HTML sin `e()`. El guion pide el token con `csrf_token()` y la plantilla lo pinta como cualquier valor. En el layout, el menú gana la entrada `'publicar' => 'Publicar salida'`. La puerta, sin sesión y con el tarro de una socia:
+El **token** llega como un dato más. `csrf.php` trae `csrf_campo()`, que devuelve el campo oculto ya hecho, pero usarla desde la plantilla sería buscar en la sesión en vez de recibir, y además imprimir HTML sin `e()`. El guion pide el token con `csrf_token()` y la plantilla lo pinta como cualquier valor. En el layout, el menú gana la entrada `'publicar' => 'Publicar salida'`. La puerta, vista en la pestaña Red: sin sesión, en una ventana de incógnito, y después de entrar como una socia (`lucia.ramos`, contraseña `ibones2026`):
 
 ```
-$ curl -s -i http://localhost:8000/publicar.php | grep -E "HTTP|Location"
+Red › publicar.php › Encabezados de respuesta
 HTTP/1.1 302 Found
 Location: login.php
-$ curl -s -i -b socia.txt http://localhost:8000/publicar.php | head -n 1
+```
+
+```
+Red › publicar.php › Encabezados de respuesta
 HTTP/1.1 403 Forbidden
 ```
 
-**Tres envíos.** Para enviar el formulario con `curl` hace falta el token, que cambia en cada sesión. En vez de copiarlo a mano, guárdalo en una variable de la terminal: `TOKEN=$( … )` guarda lo que imprime la orden de dentro, el `grep -o` se queda con las 64 cifras del token y, desde entonces, `$TOKEN` lo escribe donde haga falta. El primer envío lleva dos errores, el nombre vacío y 500 plazas:
+**Tres envíos.** Entra como monitora y abre el formulario:
+
+![Captura de Chrome: bajo un menú de cuatro entradas, el formulario «Publicar una salida de invierno», con los campos nombre, fecha, dificultad («Elige una») y plazas, la casilla «Con autobús del club» y el botón «Publicar»](figuras/ud4-cap-22-publicar-vacio.png)
+
+*Captura 22 de la UD4. El formulario, vacío, visto por una monitora. `http://localhost:3000/ud4/publicar.php`*
+
+Déjalo con el nombre vacío, escribe 500 plazas y pulsa «Publicar». No sale ninguna petición. El navegador se para en el primer campo que no cumple y lo dice en un globo: «Completa este campo». Si rellenas el nombre, se para en las plazas: «El valor debe ser inferior o igual a 40». Es la mitad de la regla que le toca al navegador, y vuelve al final del apartado. Pero tiene una consecuencia para quien prueba: **desde el formulario no se puede enviar lo que el servidor tiene que rechazar**. Para probar la validación del servidor hay que saltarse el formulario, y este es el primer sitio de la unidad donde `curl` sigue haciendo falta.
+
+`curl` no tiene tu sesión del navegador: necesita la suya. Desde `ud4/`, crea un tarro de cookies entrando como monitora, como en la UD3. Hace falta también el token del formulario, que cambia en cada sesión. En vez de copiarlo a mano, guárdalo en una variable de la terminal: `TOKEN=$( … )` guarda lo que imprime la orden de dentro, el `grep -o` se queda con las 64 cifras del token y, desde entonces, `$TOKEN` lo escribe donde haga falta. El primer envío lleva dos errores, el nombre vacío y 500 plazas:
 
 ```
-$ TOKEN=$(curl -s -b monitora.txt http://localhost:8000/publicar.php | grep -o '[0-9a-f]\{64\}')
-$ curl -s -b monitora.txt -d "csrf=$TOKEN" -d "nombre=" -d "fecha=2027-02-14" -d "dificultad=alta" -d "plazas=500" -d "autobus=1" http://localhost:8000/publicar.php | grep -B 1 'class="error"'
+$ curl -s -c monitora.txt -b monitora.txt -d "usuario=elena.pueyo&clave=monitor2026" http://localhost:3000/ud4/login.php
+$ TOKEN=$(curl -s -b monitora.txt http://localhost:3000/ud4/publicar.php | grep -o '[0-9a-f]\{64\}')
+$ curl -s -b monitora.txt -d "csrf=$TOKEN" -d "nombre=" -d "fecha=2027-02-14" -d "dificultad=alta" -d "plazas=500" -d "autobus=1" http://localhost:3000/ud4/publicar.php | grep -B 1 'class="error"'
         <input type="text" id="nombre" name="nombre" value="" required="required" minlength="3" maxlength="60">
         <span class="error">El nombre debe tener entre 3 y 60 caracteres.</span>
 --
@@ -2142,20 +2154,26 @@ $ curl -s -b monitora.txt -d "csrf=$TOKEN" -d "nombre=" -d "fecha=2027-02-14" -d
 `grep -B 1` enseña también la línea anterior a cada coincidencia: cada error está justo debajo de su control. Los campos que estaban bien vuelven como se enviaron:
 
 ```
-$ curl -s -b monitora.txt -d "csrf=$TOKEN" -d "nombre=" -d "fecha=2027-02-14" -d "dificultad=alta" -d "plazas=500" -d "autobus=1" http://localhost:8000/publicar.php | grep -E 'name="fecha"|selected|checked'
+$ curl -s -b monitora.txt -d "csrf=$TOKEN" -d "nombre=" -d "fecha=2027-02-14" -d "dificultad=alta" -d "plazas=500" -d "autobus=1" http://localhost:3000/ud4/publicar.php | grep -E 'name="fecha"|selected|checked'
         <input type="date" id="fecha" name="fecha" value="2027-02-14" required="required" min="2027-01-10" max="2027-03-28">
         <option value="alta" selected>Alta</option>
         <label><input type="checkbox" name="autobus" value="1" checked> Con autobús del club</label>
 ```
 
+**La otra forma, sin salir del navegador.** En el panel Elementos (`F12`), pulsa con el botón derecho sobre la etiqueta `<form>`, elige «Editar como HTML» y añádele el atributo `novalidate`. Con él, el navegador deja de comprobar los campos de ese formulario hasta que recargues la página. Envía ahora el nombre vacío y las 500 plazas:
+
+![Captura de Chrome: el mismo formulario devuelto por el servidor; junto al nombre, vacío, «El nombre debe tener entre 3 y 60 caracteres.»; junto a las plazas, con 500, «Las plazas deben ser un número entero entre 5 y 40.»; la fecha, la dificultad «Alta» y la casilla conservan lo enviado](figuras/ud4-cap-23-publicar-dos-errores.png)
+
+*Captura 23 de la UD4. El envío con dos errores, hecho desde el navegador con `novalidate` en el formulario: cada mensaje junto a su campo, y lo demás, como se envió. `http://localhost:3000/ud4/publicar.php`*
+
 La fecha en su `value`, la dificultad con `selected` y la casilla con `checked`. El segundo envío es el que ningún formulario permite y `curl` sí: una dificultad que no está en el desplegable, una fecha que no existe y un nombre con comillas y ángulos.
 
 ```
-$ curl -s -b monitora.txt -d "csrf=$TOKEN" --data-urlencode 'nombre="><b>x' -d "fecha=2027-02-30" -d "dificultad=extrema" -d "plazas=20" http://localhost:8000/publicar.php | grep -E 'name="nombre"|class="error"'
+$ curl -s -b monitora.txt -d "csrf=$TOKEN" --data-urlencode 'nombre="><b>x' -d "fecha=2027-02-30" -d "dificultad=extrema" -d "plazas=20" http://localhost:3000/ud4/publicar.php | grep -E 'name="nombre"|class="error"'
         <input type="text" id="nombre" name="nombre" value="&quot;&gt;&lt;b&gt;x" required="required" minlength="3" maxlength="60">
         <span class="error">Escribe una fecha que exista, con el formato AAAA-MM-DD.</span>
         <span class="error">Elige una dificultad de la lista.</span>
-$ curl -s -b monitora.txt -d "csrf=$TOKEN" --data-urlencode 'nombre="><b>x' -d "fecha=2027-02-30" -d "dificultad=extrema" -d "plazas=20" http://localhost:8000/publicar.php | grep -c "selected"
+$ curl -s -b monitora.txt -d "csrf=$TOKEN" --data-urlencode 'nombre="><b>x' -d "fecha=2027-02-30" -d "dificultad=extrema" -d "plazas=20" http://localhost:3000/ud4/publicar.php | grep -c "selected"
 0
 ```
 
@@ -2173,7 +2191,7 @@ El nombre es válido (tiene seis caracteres) y vuelve escapado dentro de su `val
 **Una regla, dos lados.** En el apartado 1 quedó pendiente la segunda fila de la tabla: avisar de un campo mal relleno lo hacen los dos lados. El navegador avisa sin gastar una petición si el control lleva `required`, `min` o `max`; el servidor comprueba igual, porque nada obliga a enviar desde el formulario. Lo que no debe pasar es que la regla esté escrita dos veces. `atributos_salida()` saca los atributos de las mismas constantes que usa la validación, el guion se los pasa a la plantilla y el parcial los pinta:
 
 ```
-$ curl -s -b monitora.txt http://localhost:8000/publicar.php | grep -E 'name="(nombre|fecha|plazas|autobus)"'
+view-source:http://localhost:3000/ud4/publicar.php
         <input type="text" id="nombre" name="nombre" value="" required="required" minlength="3" maxlength="60">
         <input type="date" id="fecha" name="fecha" value="" required="required" min="2027-01-10" max="2027-03-28">
         <input type="number" id="plazas" name="plazas" value="" required="required" min="5" max="40">
@@ -2183,7 +2201,7 @@ $ curl -s -b monitora.txt http://localhost:8000/publicar.php | grep -E 'name="(n
 Fiarse del atributo es el primer error. `max="40"` no impide enviar 50 plazas con `curl`:
 
 ```
-$ curl -s -b monitora.txt -d "csrf=$TOKEN" -d "nombre=Raquetas en Lizara" -d "fecha=2027-02-14" -d "dificultad=media" -d "plazas=50" http://localhost:8000/publicar.php | grep -B 1 'class="error"'
+$ curl -s -b monitora.txt -d "csrf=$TOKEN" -d "nombre=Raquetas en Lizara" -d "fecha=2027-02-14" -d "dificultad=media" -d "plazas=50" http://localhost:3000/ud4/publicar.php | grep -B 1 'class="error"'
         <input type="number" id="plazas" name="plazas" value="50" required="required" min="5" max="40">
         <span class="error">Las plazas deben ser un número entero entre 5 y 40.</span>
 ```
@@ -2191,34 +2209,47 @@ $ curl -s -b monitora.txt -d "csrf=$TOKEN" -d "nombre=Raquetas en Lizara" -d "fe
 El segundo error es escribir `max="40"` a mano en la plantilla: el día que el club amplíe el máximo, alguien cambiará la constante y el formulario seguirá diciendo 40. Con una sola fuente, cambiar `PLAZAS_MAX` a 60 mueve las tres cosas a la vez, el atributo, el mensaje y la decisión:
 
 ```
-$ curl -s -b monitora.txt http://localhost:8000/publicar.php | grep 'name="plazas"'
+view-source:http://localhost:3000/ud4/publicar.php
         <input type="number" id="plazas" name="plazas" value="" required="required" min="5" max="60">
-$ curl -s -b monitora.txt -d "csrf=$TOKEN" -d "nombre=Raquetas en Lizara" -d "fecha=2027-02-14" -d "dificultad=media" -d "plazas=500" http://localhost:8000/publicar.php | grep 'class="error"'
+```
+
+```
+$ curl -s -b monitora.txt -d "csrf=$TOKEN" -d "nombre=Raquetas en Lizara" -d "fecha=2027-02-14" -d "dificultad=media" -d "plazas=500" http://localhost:3000/ud4/publicar.php | grep 'class="error"'
         <span class="error">Las plazas deben ser un número entero entre 5 y 60.</span>
-$ curl -s -i -b monitora.txt -d "csrf=$TOKEN" -d "nombre=Raquetas en Lizara" -d "fecha=2027-02-14" -d "dificultad=media" -d "plazas=50" http://localhost:8000/publicar.php | grep -E "HTTP|Location"
+```
+
+Y las 50 plazas, que ahora caben, salen del formulario sin tocar nada. En la pestaña Red, la fila del envío:
+
+```
+Red › publicar.php › Encabezados de respuesta
 HTTP/1.1 302 Found
 Location: calendario.php
 ```
 
-**El ciclo completo.** Un formulario que cambia algo en el servidor lleva token y termina en una redirección, como en la UD3. Sin el token:
+**El ciclo completo.** Un formulario que cambia algo en el servidor lleva token y termina en una redirección, como en la UD3. El formulario siempre envía su token, así que el envío sin él es otro trabajo para `curl`:
 
 ```
-$ curl -s -i -b monitora.txt -d "nombre=Raquetas en Lizara" -d "fecha=2027-02-14" -d "dificultad=media" -d "plazas=20" http://localhost:8000/publicar.php | grep -E "HTTP|^403"
+$ curl -s -i -b monitora.txt -d "nombre=Raquetas en Lizara" -d "fecha=2027-02-14" -d "dificultad=media" -d "plazas=20" http://localhost:3000/ud4/publicar.php | grep -E "HTTP|^403"
 HTTP/1.1 403 Forbidden
 403 — Petición rechazada: token no válido.
 ```
 
-Eso es lo que recibiría cada monitor si la plantilla olvidara el campo oculto: el formulario se pinta bien y ningún envío entra. Con todo en su sitio:
+Eso es lo que recibiría cada monitor si la plantilla olvidara el campo oculto: el formulario se pinta bien y ningún envío entra. En el navegador se llega al mismo `403` borrando en el panel Elementos el campo oculto `csrf` antes de enviar. Con todo en su sitio, rellena el formulario (Raquetas en Lizara, el 14 de febrero de 2027, dificultad media, 20 plazas y con autobús) y envíalo con la pestaña Red abierta. La fila del envío:
 
 ```
-$ curl -s -i -b monitora.txt -d "csrf=$TOKEN" -d "nombre=Raquetas en Lizara" -d "fecha=2027-02-14" -d "dificultad=media" -d "plazas=20" -d "autobus=1" http://localhost:8000/publicar.php | grep -E "HTTP|Location"
+Red › publicar.php › Encabezados de respuesta
 HTTP/1.1 302 Found
 Location: calendario.php
-$ curl -s -b monitora.txt -d "csrf=$TOKEN" -d "nombre=Raquetas en Lizara" -d "fecha=2027-02-14" -d "dificultad=media" -d "plazas=20" -d "autobus=1" http://localhost:8000/publicar.php | wc -c
-0
-$ curl -s -b monitora.txt http://localhost:8000/calendario.php | grep 'class="aviso"'
-<p class="aviso">Salida publicada: Raquetas en Lizara, el 2027-02-14.</p>
-$ curl -s -b monitora.txt http://localhost:8000/calendario.php | grep -c 'class="aviso"'
+```
+
+![Captura de Chrome: el calendario del club con una línea nueva encima del formulario de filtros: «Salida publicada: Raquetas en Lizara, el 2027-02-14.»](figuras/ud4-cap-24-mensaje-de-un-solo-uso.png)
+
+*Captura 24 de la UD4. Tras el envío válido, el navegador ha seguido la redirección y el calendario enseña el mensaje, una vez. `http://localhost:3000/ud4/calendario.php`*
+
+El navegador ha seguido la redirección y enseña el calendario con el mensaje. Recarga la página: el mensaje ya no está. Lo que el navegador no puede enseñarte es la respuesta al envío, porque no se queda en ella. `curl` no sigue las redirecciones, y deja contar lo que trae ese `302`:
+
+```
+$ curl -s -b monitora.txt -d "csrf=$TOKEN" -d "nombre=Raquetas en Lizara" -d "fecha=2027-02-14" -d "dificultad=media" -d "plazas=20" -d "autobus=1" http://localhost:3000/ud4/publicar.php | wc -c
 0
 ```
 
@@ -2248,8 +2279,8 @@ La salida todavía no se guarda en ningún sitio: como en la UD3, guardar llega 
 
 **Ejercicios del apartado.**
 
-- **E20.** Añade al formulario el campo `desnivel` (metros, entero entre 100 y 1500): sus dos constantes, su regla en `validar_salida()`, sus atributos y su parcial. Evidencias: el control en el formulario vacío y tres envíos con `curl` (válido, fuera de cota y con texto), con el error debajo de su campo.
-- **E21.** Viste `login.php` con el layout y el parcial `campo`. El usuario se repuebla; la contraseña, no. Demuéstralo con un intento fallido y un `grep` de los dos controles, y explica por qué aquí el error es **uno y genérico**, encima del formulario, y no uno por campo.
+- **E20.** Añade al formulario el campo `desnivel` (metros, entero entre 100 y 1500): sus dos constantes, su regla en `validar_salida()`, sus atributos y su parcial. Evidencias: el control en el formulario vacío y tres envíos, con el error debajo de su campo: el válido, desde el formulario; el de fuera de cota y el de texto, con `curl`, porque el formulario no los deja salir.
+- **E21.** Viste `login.php` con el layout y el parcial `campo`. El usuario se repuebla; la contraseña, no. Demuéstralo con un intento fallido y las líneas de los dos controles en el código fuente, y explica por qué aquí el error es **uno y genérico**, encima del formulario, y no uno por campo.
 - **E22.** Añade la casilla «Apta para principiantes» (`principiantes`). Envía el formulario con un error en otro campo, una vez con la casilla y otra sin ella, y cuenta los `checked` de cada respuesta. Después contesta: ¿qué diferencia vería `leer_salida()` entre una casilla desmarcada y un formulario que no tiene esa casilla?
 - **E23.** Rompe dos cosas, de una en una, y pega lo que ve un monitor en cada caso: quita el campo oculto del token de la plantilla, y escribe `max="40"` a mano en el control de plazas mientras cambias `PLAZAS_MAX` a 60. Para la segunda, di qué envío rechazaría el navegador y aceptaría el servidor. Restaura y pasa las seis comprobaciones del apartado.
 
@@ -2333,56 +2364,57 @@ La tarjeta recibe el rol y, solo si quien mira es un socio, el token de su formu
 
 Los dos últimos bloques son los nuevos. El primero depende de quién mira (`$con_inscritos`). El segundo, de quién mira **y del dato**: un socio ve el botón si quedan plazas y una nota si no quedan; un visitante, un enlace para entrar; un monitor, nada. El mismo calendario pedido por cuatro personas:
 
-```
-$ curl -s http://localhost:8000/calendario.php | grep -o -E 'Calendario</a>|Mi ficha</a>|Salidas a la vista</a>|Publicar salida</a>|Inscribirme|Entra para inscribirte|inscritos</small>|No admite' | sort | uniq -c
-      1 Calendario</a>
-      5 Entra para inscribirte
-$ curl -s -b socia.txt http://localhost:8000/calendario.php | grep -o -E 'Calendario</a>|Mi ficha</a>|Salidas a la vista</a>|Publicar salida</a>|Inscribirme|Entra para inscribirte|inscritos</small>|No admite' | sort | uniq -c
-      1 Calendario</a>
-      3 Inscribirme
-      1 Mi ficha</a>
-      2 No admite
-$ curl -s -b monitora.txt http://localhost:8000/calendario.php | grep -o -E 'Calendario</a>|Mi ficha</a>|Salidas a la vista</a>|Publicar salida</a>|Inscribirme|Entra para inscribirte|inscritos</small>|No admite' | sort | uniq -c
-      1 Calendario</a>
-      1 Mi ficha</a>
-      1 Publicar salida</a>
-      1 Salidas a la vista</a>
-      5 inscritos</small>
-$ curl -s -b junta.txt http://localhost:8000/calendario.php | grep -o -E 'Calendario</a>|Mi ficha</a>|Salidas a la vista</a>|Publicar salida</a>|Inscribirme|Entra para inscribirte|inscritos</small>|No admite' | sort | uniq -c
-      1 Calendario</a>
-      1 Mi ficha</a>
-      1 Publicar salida</a>
-      1 Salidas a la vista</a>
-      5 inscritos</small>
-```
+![Captura de Chrome: el calendario sin sesión; el menú solo tiene «Calendario», y cada tarjeta con plazas lleva el enlace «Entra para inscribirte»](figuras/ud4-cap-25-calendario-visitante.png)
 
-`grep -o` saca cada aparición, `sort` las junta y `uniq -c` las cuenta. Sin sesión: una entrada de menú y cinco enlaces para entrar. La socia: dos entradas, tres botones y dos notas, porque dos de las cinco salidas de la página están completas. La monitora y la junta: cuatro entradas y cinco recuentos, sin botones. Cuatro estructuras con una plantilla.
+*Captura 25 de la UD4. El calendario para quien no ha entrado. `http://localhost:3000/ud4/calendario.php`*
 
-**No pintar el botón no es la regla.** En la tarjeta de Peña Oroel, que está completa, la socia no tiene formulario (`grep -A 3` enseña la línea encontrada y las tres siguientes):
+![Captura de Chrome: el calendario para una socia; el menú tiene «Calendario» y «Mi ficha»; las tarjetas con plazas llevan un botón «Inscribirme» y las completas, la nota «No admite más inscripciones.»](figuras/ud4-cap-26-calendario-socia.png)
+
+*Captura 26 de la UD4. El mismo calendario para Lucía Ramos, socia. `http://localhost:3000/ud4/calendario.php`*
+
+![Captura de Chrome: el calendario para una monitora; el menú tiene cuatro entradas, hasta «Publicar salida», y cada tarjeta lleva en letra pequeña su recuento de inscritos; no hay botones](figuras/ud4-cap-27-calendario-monitora.png)
+
+*Captura 27 de la UD4. El mismo calendario para Elena Pueyo, monitora. `http://localhost:3000/ud4/calendario.php`*
+
+El recuento, sobre el código fuente de cada uno: las entradas del menú y lo que llevan las cinco tarjetas de la página.
+
+| Quién mira | Entradas del menú | «Inscribirme» | «No admite más inscripciones» | «Entra para inscribirte» | Recuentos de inscritos |
+|---|---|---|---|---|---|
+| Nadie (sin sesión) | 1 | 0 | 0 | 5 | 0 |
+| Una socia | 2 | 3 | 2 | 0 | 0 |
+| Una monitora | 4 | 0 | 0 | 0 | 5 |
+| La junta | 4 | 0 | 0 | 0 | 5 |
+
+Sin sesión: una entrada de menú y cinco enlaces para entrar. La socia: dos entradas, tres botones y dos notas, porque dos de las cinco salidas de la página están completas. La monitora y la junta: cuatro entradas y cinco recuentos, sin botones. Cuatro estructuras con una plantilla.
+
+**No pintar el botón no es la regla.** En la tarjeta de Peña Oroel, que está completa, la socia no tiene formulario:
 
 ```
-$ curl -s -b socia.txt http://localhost:8000/calendario.php | grep -A 3 '<strong>Peña Oroel'
-        <strong>Peña Oroel</strong>
-        <span>2026-10-11, dificultad baja</span>
-        <em>COMPLETA</em>
-        <p class="nota">No admite más inscripciones.</p>
-$ curl -s -b socia.txt http://localhost:8000/calendario.php | grep -c 'name="salida" value="1"'
-0
+http://localhost:3000/ud4/calendario.php
+Peña Oroel 2026-10-11, dificultad baja COMPLETA
+No admite más inscripciones.
 ```
 
-Pero `curl` no necesita botón. La salida 1 es Peña Oroel:
+| Dirección, tras `http://localhost:3000` | Busca con `Ctrl+F` | Coincidencias |
+|---|---|---|
+| `/ud4/calendario.php` | `name="salida" value="1"` | 0 |
+
+Pero una petición no necesita botón. Es otro envío que la página no deja hacer, y otra vez toca `curl`, con el tarro y el token de la socia (la receta del apartado 7). La salida 1 es Peña Oroel:
 
 ```
-$ TOKEN=$(curl -s -b socia.txt http://localhost:8000/calendario.php | grep -o '[0-9a-f]\{64\}' | head -n 1)
-$ curl -s -i -b socia.txt -d "csrf=$TOKEN" -d "salida=1" http://localhost:8000/inscribir.php | grep -E "HTTP|Location"
+$ curl -s -c socia.txt -b socia.txt -d "usuario=lucia.ramos&clave=ibones2026" http://localhost:3000/ud4/login.php
+$ TOKEN=$(curl -s -b socia.txt http://localhost:3000/ud4/calendario.php | grep -o '[0-9a-f]\{64\}' | head -n 1)
+$ curl -s -i -b socia.txt -d "csrf=$TOKEN" -d "salida=1" http://localhost:3000/ud4/inscribir.php | grep -E "HTTP|Location"
 HTTP/1.1 302 Found
 Location: calendario.php
-$ curl -s -b socia.txt http://localhost:8000/calendario.php | grep 'class="aviso"'
+$ curl -s -b socia.txt http://localhost:3000/ud4/calendario.php | grep 'class="aviso"'
 <p class="aviso">Esa salida está completa.</p>
-$ curl -s -b socia.txt -d "csrf=$TOKEN" -d "salida=0" http://localhost:8000/inscribir.php
-$ curl -s -b socia.txt http://localhost:8000/calendario.php | grep 'class="aviso"'
+$ curl -s -b socia.txt -d "csrf=$TOKEN" -d "salida=0" http://localhost:3000/ud4/inscribir.php
+$ curl -s -b socia.txt http://localhost:3000/ud4/calendario.php | grep 'class="aviso"'
 <p class="aviso">Inscripción registrada en Ibón de Estanés.</p>
 ```
+
+En el navegador se llega al mismo aviso cambiando en el panel Elementos, en el formulario de otra tarjeta, el `value` del campo oculto `salida` por `1`.
 
 El `302` es el de siempre; el mensaje dice que está completa. Lo ha decidido `inscribir.php` mirando el dato real, igual que en el apartado 10 de la UD2. La plantilla quita el botón por cortesía y el guion comprueba por autoridad: son las dos mitades de la misma regla, y la segunda no se puede omitir.
 
@@ -2416,23 +2448,25 @@ exit;
 
 `requiere_rol('socio')` es la puerta y `csrf_verificar()` comprueba el token que la tarjeta lleva en su campo oculto: sin sesión de socio o sin token, el guion no llega a mirar la salida. El `elseif` es la autoridad: vuelve a contar las plazas en el dato real, se haya pintado el botón o no.
 
-**Error típico: pintarlo todo y esconder lo que no toca.** Es la tentación de quien piensa en la pantalla: pintar siempre el recuento de inscritos y ocultarlo a quien no es monitor, con el atributo `hidden` o con una regla de CSS. Lo que recibe un visitante sin sesión (`-m 1` se queda con la primera línea encontrada):
+**Error típico: pintarlo todo y esconder lo que no toca.** Es la tentación de quien piensa en la pantalla: pintar siempre el recuento de inscritos y ocultarlo a quien no es monitor, con el atributo `hidden` o con una regla de CSS. Lo que recibe un visitante sin sesión:
+
+En su código fuente, `Ctrl+F` con `inscritos</small>` encuentra 5. La primera:
 
 ```
-$ curl -s http://localhost:8000/calendario.php | grep -c "inscritos</small>"
-5
-$ curl -s http://localhost:8000/calendario.php | grep -m 1 "inscritos</small>"
+view-source:http://localhost:3000/ud4/calendario.php
         <small hidden>17 de 20 inscritos</small>
 ```
 
-Los cinco recuentos han viajado. En la pantalla no se ven; en «Ver código fuente», y con `curl`, sí. Es la última fila de la tabla del apartado 1, ahora con un dato que no es público: **esconder no es no enviar**. Lo que alguien no debe ver no se pinta, y eso solo puede decidirlo el servidor.
+Los cinco recuentos han viajado. En la pantalla no se ven; en «Ver código fuente», sí. Es la última fila de la tabla del apartado 1, ahora con un dato que no es público: **esconder no es no enviar**. Lo que alguien no debe ver no se pinta, y eso solo puede decidirlo el servidor.
 
 **Error típico: creer que quitar el enlace protege la página.** El menú de la socia no tiene «Publicar salida». La dirección sigue existiendo:
 
+| Dirección, tras `http://localhost:3000` | Busca con `Ctrl+F` | Coincidencias |
+|---|---|---|
+| `/ud4/calendario.php` | `publicar.php` | 0 |
+
 ```
-$ curl -s -b socia.txt http://localhost:8000/calendario.php | grep -c "publicar.php"
-0
-$ curl -s -i -b socia.txt http://localhost:8000/publicar.php | head -n 1
+Red › publicar.php › Encabezados de respuesta
 HTTP/1.1 403 Forbidden
 ```
 
@@ -2483,28 +2517,40 @@ if (texto($_GET, 'fragmento') === '1') {
 
 Es **un solo guion**: la misma lectura de filtros, la misma sesión y el mismo parcial. Lo único que cambia con `fragmento=1` es que no hay layout alrededor.
 
+Pide el fragmento por su dirección:
+
+![Captura de Chrome: una página sin menú ni pie, solo con «4 salidas» y la lista de cuatro tarjetas de dificultad alta](figuras/ud4-cap-28-fragmento.png)
+
+*Captura 28 de la UD4. El fragmento, pedido por su dirección: la lista, sin layout alrededor. `http://localhost:3000/ud4/calendario.php?dificultad=alta&fragmento=1`*
+
+Las cinco primeras líneas de su código fuente, dos recuentos y lo que pesa cada respuesta en la pestaña Red:
+
 ```
-$ curl -s "http://localhost:8000/calendario.php?dificultad=alta&fragmento=1" | head -n 5
+view-source:http://localhost:3000/ud4/calendario.php?dificultad=alta&fragmento=1
 <p class="resumen">4 salidas</p>
 <ul>
     <li class="tarjeta">
         <strong>Cañón de Añisclo</strong>
         <span>2026-10-18, dificultad alta</span>
-$ curl -s "http://localhost:8000/calendario.php?dificultad=alta&fragmento=1" | grep -c "<html"
-0
-$ curl -s "http://localhost:8000/calendario.php?dificultad=alta&fragmento=1" | grep -c 'class="tarjeta"'
-4
-$ curl -s "http://localhost:8000/calendario.php?dificultad=alta&fragmento=1" | wc -c
-879
-$ curl -s "http://localhost:8000/calendario.php?dificultad=alta" | wc -c
-2057
 ```
+
+| Dirección, tras `http://localhost:3000` | Busca con `Ctrl+F` | Coincidencias |
+|---|---|---|
+| `/ud4/calendario.php?dificultad=alta&fragmento=1` | `<html` | 0 |
+| `/ud4/calendario.php?dificultad=alta&fragmento=1` | `class="tarjeta"` | 4 |
+
+| Fila de la pestaña Red | Tamaño del recurso |
+|---|---|
+| `calendario.php?dificultad=alta&fragmento=1` | 879 bytes |
+| `calendario.php?dificultad=alta` | 2057 bytes |
 
 Sin `<html>`, con las cuatro tarjetas y con menos de la mitad de bytes que la página. Y no es «parecido» al trozo de la página: es ese trozo.
 
+Comparar dos respuestas línea a línea no es trabajo de un navegador: se guardan con `curl` y se comparan con `diff`, desde `ud4/`.
+
 ```
-$ curl -s "http://localhost:8000/calendario.php?dificultad=alta&fragmento=1" > fragmento.html
-$ curl -s "http://localhost:8000/calendario.php?dificultad=alta" > pagina.html
+$ curl -s "http://localhost:3000/ud4/calendario.php?dificultad=alta&fragmento=1" > fragmento.html
+$ curl -s "http://localhost:3000/ud4/calendario.php?dificultad=alta" > pagina.html
 $ diff fragmento.html pagina.html | grep -c '^<'
 0
 $ diff fragmento.html pagina.html | grep -c '^>'
@@ -2536,25 +2582,28 @@ formulario.addEventListener('submit', async (evento) => {
 
 Es el reparto del apartado 1, aplicado. La página **funciona primero entera con peticiones**: sin JavaScript, el formulario es el del apartado 6. Con JavaScript, el navegador ahorra el layout en cada filtrado y la dirección sigue guardando el filtro. Y la decisión de qué salidas hay y qué puede hacer cada uno con ellas no se ha movido del servidor: el fragmento que recibe una socia lleva sus botones, y el de un visitante no.
 
-**Error típico: devolver la página entera dentro del hueco.** Si el guion no atiende al parámetro, el JavaScript recibe un documento completo y lo mete dentro de la lista: una página dentro de otra, con la cabecera y el pie repetidos. Se caza sin navegador:
+**Error típico: devolver la página entera dentro del hueco.** Si el guion no atiende al parámetro, el JavaScript recibe un documento completo y lo mete dentro de la lista: una página dentro de otra, con la cabecera y el pie repetidos. Filtra por «alta» y se ve así:
 
-```
-$ curl -s "http://localhost:8000/calendario.php?dificultad=alta&fragmento=1" | grep -c "<html"
-1
-$ curl -s "http://localhost:8000/calendario.php?dificultad=alta&fragmento=1" | wc -c
-2057
-```
+![Captura de Chrome: el calendario con una segunda copia de la página dentro de la lista: otra vez el menú, el título, el formulario de filtros y el pie, y debajo el pie verdadero](figuras/ud4-cap-29-pagina-dentro-de-pagina.png)
+
+*Captura 29 de la UD4. El error: el guion no atiende a `fragmento` y el JavaScript mete un documento entero dentro de la lista. `http://localhost:3000/ud4/calendario.php?q=&dificultad=alta&orden=fecha`*
+
+Se caza antes de llegar ahí, pidiendo el fragmento por su dirección: tiene un `<html` y pesa 2057 bytes, lo mismo que la página.
+
+| Dirección, tras `http://localhost:3000` | Busca con `Ctrl+F` | Coincidencias |
+|---|---|---|
+| `/ud4/calendario.php?dificultad=alta&fragmento=1` | `<html` | 1 |
 
 Las otras dos formas de estropearlo se evitan con el diseño de un solo guion: escribir **otra plantilla** para el fragmento, que el primer retoque dejará distinta de la página, y servirlo desde **otro guion sin la puerta** de la página a la que pertenece.
 
-**Cómo se comprueba.** La estructura por rol, con un tarro por rol y el recuento de bloques de cada uno, más lo que no debe viajar (`grep -c` igual a cero) y la dirección escrita a mano. El fragmento, con tres comprobaciones: no tiene `<html>`, `diff` no encuentra líneas propias y lleva lo que corresponde al tarro con que se pide.
+**Cómo se comprueba.** La estructura por rol, con una sesión por rol y el recuento de bloques de cada uno, más lo que no debe viajar (cero coincidencias en el código fuente) y la dirección escrita a mano. El fragmento, con tres comprobaciones: no tiene `<html>`, `diff` no encuentra líneas propias y lleva lo que corresponde a la sesión con que se pide.
 
 **Ejercicios del apartado.**
 
-- **E24.** Añade al menú la entrada «Gestión de usuarios» solo para `administracion` (la página la vestiste en el E11). Evidencias: el recuento de entradas del menú con los cuatro tarros y el código de estado de una monitora que escribe la dirección a mano.
-- **E25.** En la página `mis-salidas`, pinta para cada salida completa una línea «Lista de espera abierta» y, para las que tienen menos de la mitad de las plazas ocupadas, «Necesita difusión». **Antes de ejecutar**, calcula con `datos/salidas.php` cuántas habrá de cada una; compruébalo con `grep -c`.
-- **E26.** Reproduce el error de esconder: pinta el recuento de inscritos para todos con `hidden` y demuestra con `curl`, sin sesión, que viaja. Después arréglalo y demuestra que ya no viaja ni en la página ni en el fragmento.
-- **E27.** Haz que la página `mis-salidas` sirva también su lista como fragmento con `?fragmento=1`, desde el mismo guion. Demuestra con cuatro peticiones (página y fragmento, con el tarro de una monitora y con el de una socia) que el fragmento pasa por la misma puerta que la página.
+- **E24.** Añade al menú la entrada «Gestión de usuarios» solo para `administracion` (la página la vestiste en el E11). Evidencias: el recuento de entradas del menú en las cuatro situaciones (sin sesión, socia, monitora y junta) y el código de estado de una monitora que escribe la dirección a mano.
+- **E25.** En la página `mis-salidas`, pinta para cada salida completa una línea «Lista de espera abierta» y, para las que tienen menos de la mitad de las plazas ocupadas, «Necesita difusión». **Antes de ejecutar**, calcula con `datos/salidas.php` cuántas habrá de cada una; compruébalo contando en la página.
+- **E26.** Reproduce el error de esconder: pinta el recuento de inscritos para todos con `hidden` y demuestra, sin sesión y con «Ver código fuente», que viaja. Después arréglalo y demuestra que ya no viaja ni en la página ni en el fragmento.
+- **E27.** Haz que la página `mis-salidas` sirva también su lista como fragmento con `?fragmento=1`, desde el mismo guion. Demuestra con cuatro peticiones (página y fragmento, como monitora y como socia) que el fragmento pasa por la misma puerta que la página.
 
 <div style="page-break-before: always;"></div>
 
@@ -2562,20 +2611,16 @@ Las otras dos formas de estropearlo se evitan con el diseño de un solo guion: e
 
 La zona del club ya es una aplicación: ocho guiones, un layout, seis parciales y seis ficheros de funciones. Queda **aplicar** todo lo anterior a su conjunto, que es lo que pide el último criterio del resultado de aprendizaje, y cerrar la pregunta que el apartado 2 dejó abierta: todo está en la carpeta que se sirve.
 
-**Lo que hoy puede pedir cualquiera.** Con el servidor lanzado como hasta ahora, desde `ud4/`:
+**Lo que hoy puede pedir cualquiera.** Con el servidor como hasta ahora, sirviendo la raíz del repositorio, escribe estas cuatro direcciones en el navegador, con la pestaña Red abierta:
 
-```
-$ curl -s -i http://localhost:8000/plantillas/parciales/enlace-menu.php | head -n 1
-HTTP/1.1 200 OK
-$ curl -s -i http://localhost:8000/datos/usuarios.php | head -n 1
-HTTP/1.1 200 OK
-$ curl -s -i http://localhost:8000/club.php | head -n 1
-HTTP/1.1 200 OK
-$ curl -s http://localhost:8000/monitora.txt | grep -c "PHPSESSID"
-1
-```
+| Dirección | Código de estado | Lo que se ve |
+|---|---|---|
+| `http://localhost:3000/ud4/plantillas/parciales/enlace-menu.php` | 200 OK | Una página en blanco |
+| `http://localhost:3000/ud4/datos/usuarios.php` | 200 OK | Una página en blanco |
+| `http://localhost:3000/ud4/club.php` | 200 OK | Una página en blanco |
+| `http://localhost:3000/ud4/monitora.txt` | 200 OK | El contenido del tarro, con su línea `PHPSESSID` |
 
-Tres `200`: un parcial, el fichero de usuarios y el de funciones se ejecutan sueltos si alguien escribe su dirección. Y la cuarta línea es la peor: tu tarro de cookies está en la carpeta servida. Quien pida `monitora.txt` se lleva la llave de sesión de una monitora, y con ella entra sin contraseña. Nada de eso es un fallo de PHP. El servidor sirve lo que hay en su carpeta.
+Cuatro `200`. Un parcial, el fichero de usuarios y el de funciones se ejecutan sueltos si alguien escribe su dirección. Los tres dejan la página en blanco, pero los tres han contestado, y el parcial lleva además su error escondido en el código fuente. La cuarta es la peor, y esta vez se lee en la pantalla: es el tarro de cookies que creaste en el apartado 7 para probar el formulario con `curl`. Está en la carpeta servida, y dentro va la llave de sesión de una monitora: quien la pida entra sin contraseña. Nada de eso es un fallo de PHP. El servidor sirve lo que hay en su carpeta.
 
 **Una carpeta pública y todo lo demás fuera.** La regla es corta: **en la carpeta que se sirve solo está lo que el navegador debe poder pedir**. Eso son los guiones de página y el JavaScript. El resto sube un nivel:
 
@@ -2603,41 +2648,70 @@ En `plantillas.php`, la carpeta de plantillas ya no cuelga de la suya:
     incluir_aislado(__DIR__ . '/../plantillas/' . $plantilla . '.php', $datos);
 ```
 
-Y lo mismo en las dos funciones que cargan datos, `cargar_salidas()` y `cargar_usuarios()`, y en la constante `FICHERO_ALTAS` de `almacen.php`: `__DIR__ . '/../datos/…'`. Las plantillas no cambian ni una letra, porque nunca supieron dónde estaban: piden sus parciales por nombre. El servidor se lanza desde `ud4/` diciéndole con `-t` cuál es su carpeta: `php -S localhost:8000 -t publico`. Las mismas cuatro peticiones:
+Y lo mismo en las dos funciones que cargan datos, `cargar_salidas()` y `cargar_usuarios()`, y en la constante `FICHERO_ALTAS` de `almacen.php`: `__DIR__ . '/../datos/…'`. Las plantillas no cambian ni una letra, porque nunca supieron dónde estaban: piden sus parciales por nombre. Falta decirle al servidor cuál es su carpeta. PHP Server lo lee de un ajuste, `phpserver.relativePath`, que hasta ahora valía `.`: la carpeta abierta en VS Code. Crea en la raíz del repositorio la carpeta `.vscode/` y, dentro, el fichero `settings.json`:
 
-```
-$ curl -s -i http://localhost:8000/plantillas/parciales/enlace-menu.php | head -n 1
-HTTP/1.1 404 Not Found
-$ curl -s -i http://localhost:8000/datos/usuarios.php | head -n 1
-HTTP/1.1 404 Not Found
-$ curl -s -i http://localhost:8000/club.php | head -n 1
-HTTP/1.1 404 Not Found
-$ curl -s http://localhost:8000/monitora.txt | grep -c "PHPSESSID"
-0
+```json
+{
+    "phpserver.relativePath": "ud4/publico"
+}
 ```
 
-Tres `404` y ningún tarro: los ficheros siguen en el disco, donde PHP los lee, pero ya no tienen dirección. Los tarros de `curl` se guardan ahora en `ud4/`, fuera de `publico/`. Y la aplicación responde como antes:
+El ajuste se lee al arrancar: reinicia el servidor con `PHP Server: Reload server`. Por dentro es la opción `-t` del servidor embebido, la que fija su carpeta: lo mismo que escribir `php -S localhost:3000 -t ud4/publico` desde la raíz del repositorio.
+
+**Qué cambia en las direcciones.** La raíz del servidor ya no es el repositorio: es `ud4/publico/`. Una dirección nombra lo que hay **dentro** de la carpeta servida, nunca la carpeta. Por eso de las direcciones desaparece `ud4/` y no aparece `publico/`:
+
+| Fichero | Con la raíz en el repositorio | Con la raíz en `ud4/publico/` |
+|---|---|---|
+| `ud4/publico/calendario.php` | `http://localhost:3000/ud4/publico/calendario.php` | `http://localhost:3000/calendario.php` |
+| `ud4/publico/calendario.js` | `http://localhost:3000/ud4/publico/calendario.js` | `http://localhost:3000/calendario.js` |
+| `ud4/datos/usuarios.php` | `http://localhost:3000/ud4/datos/usuarios.php` | No tiene dirección |
+| `ud4/plantillas/layout.php` | `http://localhost:3000/ud4/plantillas/layout.php` | No tiene dirección |
+
+Dentro de la aplicación no hay que tocar nada: los enlaces del menú, los `action` de los formularios y los `Location` de las redirecciones son relativos (`calendario.php`, `login.php`), y un enlace relativo se resuelve contra la dirección de la página que lo lleva, esté donde esté.
+
+Un aviso: al reiniciar, PHP Server abre el navegador en `http://localhost:3000/ud4/publico/…`, que ahora contesta `404`. Monta esa dirección con la ruta del fichero dentro de la carpeta abierta, sin contar con el ajuste. Escribe tú la dirección buena. Y el ajuste vale para todo el repositorio:
+
+| Qué estás haciendo | `phpserver.relativePath` | Direcciones |
+|---|---|---|
+| Los ejercicios de los apartados 1 a 8 | `.` | `http://localhost:3000/ud4/…` |
+| Este apartado, desde aquí, y la actividad evaluativa | `ud4/publico` | `http://localhost:3000/…` |
+
+Cada vez que lo cambies, `PHP Server: Reload server`. Las mismas cuatro peticiones, en su dirección nueva:
+
+| Dirección | Código de estado |
+|---|---|
+| `http://localhost:3000/plantillas/parciales/enlace-menu.php` | 404 Not Found |
+| `http://localhost:3000/datos/usuarios.php` | 404 Not Found |
+| `http://localhost:3000/club.php` | 404 Not Found |
+| `http://localhost:3000/monitora.txt` | 404 Not Found |
+
+![Captura de Chrome: la página «Not Found» del servidor, que dice que el recurso /datos/usuarios.php no se ha encontrado en este servidor](figuras/ud4-cap-30-sin-direccion.png)
+
+*Captura 30 de la UD4. Con `ud4/publico/` como raíz, el fichero de usuarios ya no tiene dirección. `http://localhost:3000/datos/usuarios.php`*
+
+Cuatro `404`: los ficheros siguen en el disco, donde PHP los lee, pero ya no tienen dirección. El tarro tampoco: desde ahora, cuando hagan falta, los tarros de `curl` se crean en `ud4/`, fuera de `publico/`, y sus órdenes llevan la dirección nueva (`http://localhost:3000/publicar.php`). Y la aplicación responde como antes:
+
+![Captura de Chrome: el calendario del club para una socia, igual que antes de mover los ficheros: menú, filtros, tarjetas con sus botones y pie](figuras/ud4-cap-31-calendario-en-publico.png)
+
+*Captura 31 de la UD4. La aplicación, igual que antes, en su dirección nueva. `http://localhost:3000/calendario.php`*
+
+| Quién mira | Entradas del menú | «Inscribirme» | «No admite más inscripciones» | «Entra para inscribirte» | Recuentos de inscritos |
+|---|---|---|---|---|---|
+| Nadie (sin sesión) | 1 | 0 | 0 | 5 | 0 |
+| Una socia | 2 | 3 | 2 | 0 | 0 |
+| Una monitora | 4 | 0 | 0 | 0 | 5 |
+
+| Dirección, tras `http://localhost:3000` | Busca con `Ctrl+F` | Coincidencias |
+|---|---|---|
+| `/calendario.php?dificultad=alta&fragmento=1` | `class="tarjeta"` | 4 |
 
 ```
-$ curl -s http://localhost:8000/calendario.php | grep -o -E 'Calendario</a>|Mi ficha</a>|Salidas a la vista</a>|Publicar salida</a>|Inscribirme|Entra para inscribirte|inscritos</small>|No admite' | sort | uniq -c
-      1 Calendario</a>
-      5 Entra para inscribirte
-$ curl -s -b socia.txt http://localhost:8000/calendario.php | grep -o -E 'Calendario</a>|Mi ficha</a>|Salidas a la vista</a>|Publicar salida</a>|Inscribirme|Entra para inscribirte|inscritos</small>|No admite' | sort | uniq -c
-      1 Calendario</a>
-      3 Inscribirme
-      1 Mi ficha</a>
-      2 No admite
-$ curl -s -b monitora.txt http://localhost:8000/calendario.php | grep -o -E 'Calendario</a>|Mi ficha</a>|Salidas a la vista</a>|Publicar salida</a>|Inscribirme|Entra para inscribirte|inscritos</small>|No admite' | sort | uniq -c
-      1 Calendario</a>
-      1 Mi ficha</a>
-      1 Publicar salida</a>
-      1 Salidas a la vista</a>
-      5 inscritos</small>
-$ curl -s "http://localhost:8000/calendario.php?dificultad=alta&fragmento=1" | grep -c 'class="tarjeta"'
-4
-$ curl -s -i -b socia.txt http://localhost:8000/publicar.php | head -n 1
+Red › publicar.php › Encabezados de respuesta
 HTTP/1.1 403 Forbidden
-$ curl -s -i http://localhost:8000/mi-ficha.php | grep -E "HTTP|Location"
+```
+
+```
+Red › mi-ficha.php › Encabezados de respuesta
 HTTP/1.1 302 Found
 Location: login.php
 ```
@@ -2660,15 +2734,15 @@ Cero líneas con superglobales, cargas de ficheros, validaciones o cabeceras; un
 | N.º | Qué se comprueba | Cómo | Apartado |
 |---|---|---|---|
 | 1 | Cada página es un documento completo | Primera línea; `<html` y `</html>` una vez | 4 |
-| 2 | El menú marca una sola página | `grep -c "aria-current"` igual a 1 | 4 |
+| 2 | El menú marca una sola página | `aria-current`, una sola vez en el código fuente | 4 |
 | 3 | Ninguna impresión sin escapar | La búsqueda del apartado 2: solo el hueco del layout | 2 |
 | 4 | Las plantillas reciben, no buscan | La búsqueda de lógica en `plantillas/`: cero líneas | 9 |
 | 5 | Los valores de la URL pasan por una lista cerrada | Un valor inventado en cada parámetro | 6 |
 | 6 | Los enlaces conservan el estado | Seguir «Siguiente» y sumar | 6 |
-| 7 | Cada error, junto a su campo, y los campos repoblados | Un envío con varios errores y `grep -B 1` | 7 |
+| 7 | Cada error, junto a su campo, y los campos repoblados | Un envío con varios errores: cada mensaje, debajo de su control | 7 |
 | 8 | Una regla, dos lados | Un envío fuera de cota con `curl` | 7 |
 | 9 | Token, redirección y mensaje de un solo uso | Sin token, `403`; válido, `302` sin cuerpo | 7 |
-| 10 | La estructura depende de quién mira, y nada viaja escondido | Un tarro por rol y recuento de bloques | 8 |
+| 10 | La estructura depende de quién mira, y nada viaja escondido | Una sesión por rol y recuento de bloques | 8 |
 | 11 | La puerta sigue en cada página privada | La dirección escrita a mano con otro rol | 8 |
 | 12 | Solo se sirve lo público | Pedir una plantilla, un fichero de funciones y un tarro | 9 |
 
@@ -2676,22 +2750,21 @@ Una frontera para terminar. Esto todavía no es la arquitectura de la UD5: cada 
 
 **Ejercicios del apartado.**
 
-- **E28.** Reorganiza tu `ud4/` en las cuatro carpetas y lanza el servidor con `-t publico`. Evidencias: las cuatro peticiones del apartado antes y después, y la lista de comprobación entera sobre tu aplicación, con la orden y la salida de cada punto.
+- **E28.** Reorganiza tu `ud4/` en las cuatro carpetas y sirve solo `ud4/publico/`, con el ajuste `phpserver.relativePath`. Evidencias: las cuatro peticiones del apartado antes y después, y la lista de comprobación entera sobre tu aplicación, con lo que has hecho y lo que ha salido en cada punto.
 - **E29.** Alguien del equipo ha escrito en la plantilla del calendario `<?php if (($_GET['dificultad'] ?? '') === 'alta'): ?><p>Recuerda el casco.</p><?php endif; ?>`. Demuestra con la búsqueda del apartado que se detecta, explica qué dos normas de la unidad incumple y muévelo a su sitio: qué prepara el guion, qué recibe la plantilla y qué pasa en el fragmento.
 
 <div style="page-break-before: always;"></div>
 
 ## Apartado 10. Errores frecuentes
 
-Los seis errores de este apartado tienen algo en común: dejan una pista, casi siempre una traza de PHP, y la pista dice dónde mirar. Las trazas están tomadas con el servidor lanzado con `-d display_errors=1 -d html_errors=0`; la segunda directiva quita las etiquetas HTML del mensaje, que así se lee mejor con `curl`.
+Los seis errores de este apartado tienen algo en común: dejan una pista, casi siempre una traza de PHP, y la pista dice dónde mirar. Las trazas son las que se leen en la página con los errores a la vista, y de cada mensaje va su primera línea. Donde quien pide es `curl`, el mensaje llega con las etiquetas con que PHP lo adorna para el navegador.
 
 1. **`Undefined variable` en una plantilla: el contrato no se cumple.** La plantilla espera un dato y el guion no se lo pasa, o se lo pasa con otro nombre. Aquí el guion del calendario envía `listado` y la plantilla recibe `lista`:
 
     ```
-    $ curl -s http://localhost:8000/calendario.php | grep -m 1 "Warning"
-    Warning: Undefined variable $lista in /ruta/plantillas/calendario.php on line 8
-    $ curl -s http://localhost:8000/calendario.php | grep -m 1 "Fatal error"
-    Fatal error: Uncaught TypeError: render(): Argument #2 ($datos) must be of type array, null given, called in /ruta/plantillas/calendario.php on line 16 and defined in /ruta/plantillas.php:11
+    http://localhost:3000/ud4/calendario.php
+Warning: Undefined variable $lista in /ruta/plantillas/calendario.php on line 8
+Fatal error: Uncaught TypeError: render(): Argument #2 ($datos) must be of type array, null given, called in /ruta/plantillas/calendario.php on line 16 and defined in /ruta/plantillas.php:11
     ```
 
     El primer aviso ya lo dice todo: qué variable falta, en qué plantilla y en qué línea. El error fatal de después es su consecuencia, no otro fallo. Diagnóstico: abre la plantilla, lee su primera línea, que es el contrato, y compárala letra a letra con las claves del array de la llamada a `render()` o `render_pagina()`.
@@ -2699,8 +2772,8 @@ Los seis errores de este apartado tienen algo en común: dejan una pista, casi s
 2. **`Call to undefined function e()`: una plantilla ejecutada sin su guion.** Aparece cuando alguien pide una plantilla por su dirección, o cuando un guion nuevo olvida el `require` de `plantillas.php` (entonces la función que falta es `render_pagina()`):
 
     ```
-    $ curl -s http://localhost:8000/plantillas/mi-ficha.php | grep -m 1 "Fatal error"
-    Fatal error: Uncaught Error: Call to undefined function e() in /ruta/plantillas/mi-ficha.php:2
+    http://localhost:3000/ud4/plantillas/mi-ficha.php
+Fatal error: Uncaught Error: Call to undefined function e() in /ruta/plantillas/mi-ficha.php:2
     ```
 
     Mira la ruta del mensaje. Si es la de una plantilla, se ha ejecutado sola, y la solución no es añadirle un `require`: es que no se pueda pedir (apartado 9). Si es la de un guion, le falta cargar las funciones.
@@ -2718,8 +2791,8 @@ Los seis errores de este apartado tienen algo en común: dejan una pista, casi s
 4. **`Failed to open stream` después de mover ficheros.** Al repartir la aplicación en carpetas, una ruta se queda sin corregir:
 
     ```
-    $ curl -s http://localhost:8000/mi-ficha.php | grep -m 1 "Warning"
-    Warning: require(/ruta/publico/auth.php): Failed to open stream: No such file or directory in /ruta/publico/mi-ficha.php on line 4
+    http://localhost:3000/mi-ficha.php
+Warning: require(/ruta/publico/auth.php): Failed to open stream: No such file or directory in /ruta/publico/mi-ficha.php on line 4
     ```
 
     El mensaje enseña la ruta completa que PHP ha intentado abrir. Compárala con dónde está el fichero de verdad: aquí busca `auth.php` dentro de `publico/`, y está en `funciones/`. Por eso las rutas se escriben siempre con `__DIR__`: el error te da una ruta absoluta que puedes comprobar, y no depende de desde dónde lanzaste el servidor.
@@ -2727,27 +2800,35 @@ Los seis errores de este apartado tienen algo en común: dejan una pista, casi s
 5. **El formulario que siempre contesta `403`.** La página se pinta bien y ningún envío entra. El campo oculto del token no está en la plantilla, o está con otro nombre:
 
     ```
-    $ curl -s -b monitora.txt -d "token=$TOKEN" -d "nombre=Raquetas en Lizara" -d "fecha=2027-02-14" -d "dificultad=media" -d "plazas=20" http://localhost:8000/publicar.php
-    403 — Petición rechazada: token no válido.
-    $ curl -s -b monitora.txt http://localhost:8000/publicar.php | grep -c 'name="csrf"'
-    0
+    $ curl -s -b monitora.txt -d "token=$TOKEN" -d "nombre=Raquetas en Lizara" -d "fecha=2027-02-14" -d "dificultad=media" -d "plazas=20" http://localhost:3000/ud4/publicar.php
+403 — Petición rechazada: token no válido.
     ```
+
+    | Dirección, tras `http://localhost:3000` | Busca con `Ctrl+F` | Coincidencias |
+|---|---|---|
+| `/ud4/publicar.php` | `name="csrf"` | 0 |
 
     `csrf_verificar()` busca el campo `csrf`. Si el recuento de `name="csrf"` en el formulario es cero, ya sabes qué falta. Y si el formulario lo lleva pero el `403` sigue, comprueba que la página que pinta el formulario y la que lo recibe usan la misma sesión.
 
 6. **`TypeError` en `trim()`: un parámetro que llega como lista.** Una petición fabricada puede enviar un campo como lista (`usuario[]=a`). Lo que no espera recibir un array se rompe:
 
     ```
-    $ curl -s -g -d "usuario[]=a" -d "clave=x" http://localhost:8000/login.php | grep -m 1 "Fatal error"
-    Fatal error: Uncaught TypeError: trim(): Argument #1 ($string) must be of type string, array given in /ruta/login.php:12
-    $ grep -rnE 'trim\(\$_(GET|POST)' .
-    ./login.php:12:    $usuario = trim($_POST['usuario'] ?? '');
+    $ curl -s -g -d "usuario[]=a" -d "clave=x" http://localhost:3000/ud4/login.php | grep -m 1 "Fatal error"
+<b>Fatal error</b>:  Uncaught TypeError: trim(): Argument #1 ($string) must be of type string, array given in /ruta/login.php:12
+$ grep -rnE 'trim\(\$_(GET|POST)' .
+./login.php:12:    $usuario = trim($_POST['usuario'] ?? '');
     ```
 
+    Con los errores ocultos (el servidor lanzado a mano, como en el apartado 3, con `php -d display_errors=0 -S localhost:3000 -t .`):
+
     ```
-    $ curl -s -i -g -d "usuario[]=a" -d "clave=x" http://localhost:8000/login.php | head -n 1
-    HTTP/1.0 500 Internal Server Error
+    $ curl -s -i -g -d "usuario[]=a" -d "clave=x" http://localhost:3000/ud4/login.php | head -n 1
+HTTP/1.0 500 Internal Server Error
     ```
+
+    ![Captura de Chrome: la página de error del propio navegador, con el texto «Esta página no funciona. La página localhost no puede procesar esta solicitud ahora. HTTP ERROR 500» y el botón «Volver a cargar»](figuras/ud4-cap-32-error-500-sin-cuerpo.png)
+
+*Captura 32 de la UD4. Un `500` sin cuerpo, tal como lo enseña Chrome. El envío se ha hecho desde el navegador, cambiando en el panel Elementos el `name` del campo por `usuario[]`. `http://localhost:3000/ud4/login.php`*
 
     Con los errores ocultos, el visitante recibe un `500`. No entra nadie ni se filtra nada, pero una sola petición tumba la página. El `login.php` que traes de la UD3 lee así su campo, como enseña la segunda orden; el punto del final le dice a `grep` que mire en la carpeta actual y en todas sus subcarpetas. La función `texto()` del apartado 6 lo evita: lo que no es un texto se trata como vacío.
 
@@ -2762,7 +2843,7 @@ Los seis errores de este apartado tienen algo en común: dejan una pista, casi s
 Puedes usar un asistente de IA en esta unidad con la regla del módulo: **el uso se declara en el `DECISIONES.md` de cada entrega**, y lo que entregas lo defiendes.
 
 - **Usos razonables aquí**: pedir otra explicación de un mecanismo que se resista (por qué `render()` aísla las variables, qué hace exactamente el búfer de salida, en qué se diferencian un parcial y un layout); que te proponga envíos difíciles para probar un formulario; que te ayude a leer una traza del apartado 10; o que te traduzca a Twig o a Blade una plantilla tuya para compararlas, sabiendo que aquí no vas a ejecutar esa traducción.
-- **Lo que debes verificar siempre**: **ejecuta y prueba con `curl`** todo código que te dé un asistente, y pásale las tres búsquedas del apartado 9. Busca en particular estos fallos, que en una plantilla pasan desapercibidos porque la página «se ve bien»: impresiones sin `e()`, o con `e()` puesto dos veces; lógica dentro de la plantilla (leer `$_GET`, validar, cargar ficheros); direcciones montadas pegando trozos, sin `http_build_query`; validación hecha solo con atributos HTML; bloques ocultos con CSS en vez de no pintados; y funciones que **no existen en tu proyecto** porque son de un framework (`view()`, `old()`, `route()`, directivas con `@`). Lo que afirme sobre Twig o Blade, contrástalo con su documentación oficial (apartado 13): es evidencia con caducidad.
+- **Lo que debes verificar siempre**: **ejecuta y prueba** todo código que te dé un asistente, en el navegador y, lo que el formulario no deja enviar, con `curl`, y pásale las tres búsquedas del apartado 9. Busca en particular estos fallos, que en una plantilla pasan desapercibidos porque la página «se ve bien»: impresiones sin `e()`, o con `e()` puesto dos veces; lógica dentro de la plantilla (leer `$_GET`, validar, cargar ficheros); direcciones montadas pegando trozos, sin `http_build_query`; validación hecha solo con atributos HTML; bloques ocultos con CSS en vez de no pintados; y funciones que **no existen en tu proyecto** porque son de un framework (`view()`, `old()`, `route()`, directivas con `@`). Lo que afirme sobre Twig o Blade, contrástalo con su documentación oficial (apartado 13): es evidencia con caducidad.
 - **Lo que se te pedirá defender**: la actividad evaluativa se defiende. Tendrás que explicar **qué recibe cada plantilla y de quién**, por qué una impresión concreta lleva `e()` y otra no, y qué contesta tu aplicación a una petición fabricada: un valor fuera de la lista, un campo como lista, un envío sin token, una dirección escrita a mano. Si el código lo escribió un asistente y no sabes por qué el contenido se captura antes de pintar el layout, la defensa lo descubre en la primera pregunta. Si está en tu entrega, es tuyo, y lo has probado.
 
 <div style="page-break-before: always;"></div>
@@ -2823,17 +2904,17 @@ return [
 ];
 ```
 
-**Instrucciones.** 10 ejercicios, 1 punto cada uno. Esta vez no hay un fichero por ejercicio: construyes **una sola aplicación** y cada ejercicio le añade una pieza o la pone a prueba. Se responde **con código que se ejecuta** (los ficheros que no pasen `php -l` no puntúan) y, donde se pida, razonando la decisión. Puedes traer y adaptar todo lo que has escrito en la unidad (`plantillas.php`, tus parciales, `texto()`, `paginar()`) y la zona privada de la UD3 (`sesion.php`, `auth.php`, `csrf.php`, el inicio de sesión). **Tiempo estimado: 6 horas**, más la preparación de evidencias. **Entrega**: carpeta `ud4/` en tu repositorio de la unidad del aula de código, con la aplicación en sus cuatro carpetas (`publico/`, `funciones/`, `plantillas/` y `datos/`), los ficheros `ae1.md` y `ae2.md`, las evidencias en `ud4/evidencias/` (salidas de `curl` y de `grep` en texto y, en la AE9, una captura de la pestaña Red), commits por bloques de ejercicios y el `DECISIONES.md` actualizado (incluida la declaración de uso de IA). **Defensa individual de 4–5 minutos** según el calendario publicado: sin defensa, la actividad no puntúa. La fecha límite está en la tarea de Classroom desde el primer día de la unidad; puedes entregar antes de esa fecha.
+**Instrucciones.** 10 ejercicios, 1 punto cada uno. Esta vez no hay un fichero por ejercicio: construyes **una sola aplicación** y cada ejercicio le añade una pieza o la pone a prueba. Se responde **con código que se ejecuta** (los ficheros que no pasen `php -l` no puntúan) y, donde se pida, razonando la decisión. Puedes traer y adaptar todo lo que has escrito en la unidad (`plantillas.php`, tus parciales, `texto()`, `paginar()`) y la zona privada de la UD3 (`sesion.php`, `auth.php`, `csrf.php`, el inicio de sesión). **Tiempo estimado: 6 horas**, más la preparación de evidencias. **Entrega**: carpeta `ud4/` en tu repositorio de la unidad del aula de código, con la aplicación en sus cuatro carpetas (`publico/`, `funciones/`, `plantillas/` y `datos/`), los ficheros `ae1.md` y `ae2.md`, las evidencias en `ud4/evidencias/` (capturas de la página **recortadas**: sin la barra de tareas, sin el nombre de usuario del equipo y sin la terminal; donde se pida un código de estado o una cabecera, copiados de la pestaña Red **en texto**; las salidas de `curl` y de `grep` en texto siguen valiendo; y, en la AE9, una captura de la pestaña Red, recortada igual), commits por bloques de ejercicios y el `DECISIONES.md` actualizado (incluida la declaración de uso de IA). **Defensa individual de 4–5 minutos** según el calendario publicado: sin defensa, la actividad no puntúa. La fecha límite está en la tarea de Classroom desde el primer día de la unidad; puedes entregar antes de esa fecha.
 
 - **AE1** `[RA8.a, RA8.b]` Antes de programar, reparte el trabajo. En `ae1.md`, una tabla con estas seis tareas de la web del certamen: (1) que nadie vea el autor de una foto antes de tiempo; (2) que una puntuación esté entre 1 y 10; (3) avisar al jurado de que ha escrito un 11 antes de que lo envíe; (4) cambiar de categoría sin volver a descargar la cabecera y el pie; (5) que «Editar» solo aparezca en tus fotos; (6) numerar los puestos de la clasificación. Para cada una: **quién la hace** (el servidor, el navegador o los dos), **qué pasaría si la hiciera solo el otro** y, en las que hacen los dos, **qué se gana** con la unión. Sin código: es la justificación del diseño.
 - **AE2** `[RA8.c]` El año pasado alguien empezó esta web con otra tecnología y dejó la plantilla de la clasificación y su parcial, que tienes debajo de esta lista. En `ae2.md`: (a) di de qué motor de plantillas son, con qué framework llega ese motor y en qué lo has reconocido; (b) para cada una de sus cinco construcciones (la herencia, el bloque, el bucle con su rama para la lista vacía, el parcial con datos y la impresión), di qué pieza de la unidad es y cómo la escribes tú en tus plantillas PHP; (c) una sola impresión sale sin escapar: di cuál, qué tendría que cumplirse para aceptarla y qué línea de tu aplicación está en el mismo caso; (d) nombra otro motor de plantillas y una diferencia con este que se vea en el código. No hay que instalar ni ejecutar nada: es lectura.
-- **AE3** `[RA8.g]` Monta la aplicación: las cuatro carpetas, el servidor lanzado con `-t publico`, tu `plantillas.php` y un **layout** que enseñe en todas las páginas el nombre del certamen, la fase (con un texto para personas, no con su clave) y el menú con la página actual marcada. La primera página es `tablon.php`, con las fotos pintadas por un parcial: título, categoría (su texto, no su clave) y lugar. Añade `login.php` y `logout.php` sobre `usuarios-concurso.php`, con el inicio de sesión **vestido** con el layout. Evidencias: las cuatro comprobaciones de página completa sobre `tablon.php` y sobre `login.php`; cómo llegan al navegador los títulos de las fotos 2, 4 y 5, y por qué; y qué contesta el servidor cuando se le pide por su dirección una plantilla, un fichero de funciones y un fichero de datos.
+- **AE3** `[RA8.g]` Monta la aplicación: las cuatro carpetas, servida solo `ud4/publico/` (el ajuste `phpserver.relativePath` del apartado 9: tus direcciones son `http://localhost:3000/tablon.php`, sin `ud4/`), tu `plantillas.php` y un **layout** que enseñe en todas las páginas el nombre del certamen, la fase (con un texto para personas, no con su clave) y el menú con la página actual marcada. La primera página es `tablon.php`, con las fotos pintadas por un parcial: título, categoría (su texto, no su clave) y lugar. Añade `login.php` y `logout.php` sobre `usuarios-concurso.php`, con el inicio de sesión **vestido** con el layout. Evidencias: las cuatro comprobaciones de página completa sobre `tablon.php` y sobre `login.php`; cómo llegan al navegador los títulos de las fotos 2, 4 y 5, y por qué; y qué contesta el servidor cuando se le pide por su dirección una plantilla, un fichero de funciones y un fichero de datos.
 - **AE4** `[RA8.d]` Filtro por categoría: un formulario `GET` con un desplegable, pintado por un parcial, que **recuerda** la categoría elegida, y un resumen con el número de fotos encontradas. La categoría se lee contra una **lista cerrada** escrita una sola vez, de la que salen también las opciones del desplegable. Evidencias: el resumen sin filtro y con cada una de las cuatro categorías; y qué contesta tu página a `categoria=bodas` y a `categoria[]=paisaje`, y por qué has elegido esa respuesta.
 - **AE5** `[RA8.d]` Paginación de 6 en 6, con un paginador, también un parcial, cuyos enlaces **conservan el filtro**. Evidencias: las tres páginas sin filtro, con el número de fichas de cada una y la comprobación de que ninguna foto se repite; el enlace «Siguiente» seguido desde `categoria=paisaje`, con la suma; y qué contesta a `pagina=99`, a `pagina=0` y a `pagina=abc`. Explica qué enseñaría ese «Siguiente» si el enlace no conservara el filtro.
-- **AE6** `[RA8.e]` `editar.php`: un participante corrige el título, la categoría y el lugar de **una foto suya** mientras el certamen está `abierto`. Verificación completa **en el servidor** (título y lugar obligatorios, categoría de la lista), cada error **junto a su campo**, los campos **repoblados** con lo enviado, el token recibido por la plantilla como un dato más, y Post/Redirect/Get con un mensaje de un solo uso en el tablón. El cambio se guarda en la sesión, y el tablón se lo enseña a quien lo hizo. Evidencias: un envío con dos errores (con `grep -B 1`); un campo repoblado con un valor que lleve `<` o comillas; el envío sin token; el envío válido, con su `302` sin cuerpo; el mensaje, que aparece una vez y desaparece; y el tablón visto por quien editó y por otro cliente.
-- **AE7** `[RA8.e, RA8.b]` `puntuar.php`: en la fase `votacion`, cada ficha lleva para el jurado un formulario con la puntuación. **Una regla, dos lados**: el mínimo y el máximo se escriben una sola vez, y de ahí salen los atributos del campo y la verificación del servidor. La puntuación válida se guarda en la sesión, y la ficha pasa a enseñar «Tu puntuación: N» en lugar del formulario; la que no cumple la regla se rechaza con un mensaje y no se guarda. No hace falta que una puntuación ya dada se pueda cambiar. Evidencias con `curl`: los envíos `0`, `11`, `7.5` y `siete`, la puntuación enviada como lista y una puntuación válida, con lo que enseña el tablón después de cada uno. Explica qué aporta cada lado y por qué ninguno de los dos sobra.
-- **AE8** `[RA8.f]` La estructura depende de la **fase** y de **quién mira**. Escribe la matriz en tus evidencias: en cada una de las tres fases, qué lleva la ficha de una foto para un visitante, para un participante cuando la foto es de otro, para un participante cuando es suya y para el jurado. Haz que tu ficha la cumpla, con la marca «Tuya», el enlace «Editar», el formulario de puntuación, el autor y los puntos. Añade `clasificacion.php`, con las fotos de más a menos puntos; fuera de la fase `cerrado` enseña un aviso y ninguna cifra, y su entrada en el menú solo aparece cuando hay clasificación. **Nada viaja escondido**: lo que alguien no debe ver no está en el HTML que recibe. Evidencias: un tarro por rol y el recuento de bloques en cada fase; la búsqueda de un nombre de participante en lo que recibe el jurado durante la votación; y las direcciones escritas a mano: `editar.php` con una foto ajena y con una propia en fase `votacion`, y `puntuar.php` con un participante y fuera de la votación. En ninguna de las cuatro se hace lo que se pide; con qué responde cada una lo decides tú, y lo justificas.
-- **AE9** `[RA8.f, RA8.a]` El fragmento: `tablon.php?fragmento=1` responde solo con el listado, pintado por **el mismo guion y el mismo parcial** que la página entera. `publico/tablon.js` viene escrito: no se evalúa ni hay que modificarlo, y busca en tu página un formulario con `action="tablon.php"` y un elemento con `id="listado"`. Sin él, la web tiene que funcionar igual. Evidencias: la primera línea, el tamaño en bytes y el número de fichas de la página y del fragmento con el mismo filtro; y una captura de la pestaña Red al filtrar con el guion cargado. Explica, sobre la captura, qué ha hecho el servidor y qué ha hecho el navegador.
+- **AE6** `[RA8.e]` `editar.php`: un participante corrige el título, la categoría y el lugar de **una foto suya** mientras el certamen está `abierto`. Verificación completa **en el servidor** (título y lugar obligatorios, categoría de la lista), cada error **junto a su campo**, los campos **repoblados** con lo enviado, el token recibido por la plantilla como un dato más, y Post/Redirect/Get con un mensaje de un solo uso en el tablón. El cambio se guarda en la sesión, y el tablón se lo enseña a quien lo hizo. Evidencias: un envío con dos errores, con cada mensaje junto a su campo; un campo repoblado con un valor que lleve `<` o comillas; el envío sin token; el envío válido, con su `302` sin cuerpo; el mensaje, que aparece una vez y desaparece; y el tablón visto por quien editó y por otro cliente.
+- **AE7** `[RA8.e, RA8.b]` `puntuar.php`: en la fase `votacion`, cada ficha lleva para el jurado un formulario con la puntuación. **Una regla, dos lados**: el mínimo y el máximo se escriben una sola vez, y de ahí salen los atributos del campo y la verificación del servidor. La puntuación válida se guarda en la sesión, y la ficha pasa a enseñar «Tu puntuación: N» en lugar del formulario; la que no cumple la regla se rechaza con un mensaje y no se guarda. No hace falta que una puntuación ya dada se pueda cambiar. Evidencias con `curl` (o editando el formulario en el panel Elementos): los envíos `0`, `11`, `7.5` y `siete`, la puntuación enviada como lista y una puntuación válida, con lo que enseña el tablón después de cada uno. Explica qué aporta cada lado y por qué ninguno de los dos sobra.
+- **AE8** `[RA8.f]` La estructura depende de la **fase** y de **quién mira**. Escribe la matriz en tus evidencias: en cada una de las tres fases, qué lleva la ficha de una foto para un visitante, para un participante cuando la foto es de otro, para un participante cuando es suya y para el jurado. Haz que tu ficha la cumpla, con la marca «Tuya», el enlace «Editar», el formulario de puntuación, el autor y los puntos. Añade `clasificacion.php`, con las fotos de más a menos puntos; fuera de la fase `cerrado` enseña un aviso y ninguna cifra, y su entrada en el menú solo aparece cuando hay clasificación. **Nada viaja escondido**: lo que alguien no debe ver no está en el HTML que recibe. Evidencias: una sesión por rol y el recuento de bloques en cada fase; la búsqueda de un nombre de participante en lo que recibe el jurado durante la votación; y las direcciones escritas a mano: `editar.php` con una foto ajena y con una propia en fase `votacion`, y `puntuar.php` con un participante y fuera de la votación. En ninguna de las cuatro se hace lo que se pide; con qué responde cada una lo decides tú, y lo justificas.
+- **AE9** `[RA8.f, RA8.a]` El fragmento: `tablon.php?fragmento=1` responde solo con el listado, pintado por **el mismo guion y el mismo parcial** que la página entera. `publico/tablon.js` viene escrito: no se evalúa ni hay que modificarlo, y busca en tu página un formulario con `action="tablon.php"` y un elemento con `id="listado"`. Sin él, la web tiene que funcionar igual. Evidencias: la primera línea, el tamaño en bytes y el número de fichas de la página y del fragmento con el mismo filtro; y una captura, recortada, de la pestaña Red al filtrar con el guion cargado. Explica, sobre la captura, qué ha hecho el servidor y qué ha hecho el navegador.
 - **AE10** `[RA8.g]` Pasa la **lista de comprobación de la unidad** (los doce puntos del apartado 9) sobre tu aplicación y entrega la tabla con el **resultado y la evidencia** de cada punto, más el guion `pruebas.sh`, que la reproduce de una vez con el certamen en fase `abierto` (lo que solo ocurre en otra fase ya lo has evidenciado en la AE7 y la AE8). Se defiende sin leer: en la defensa se te pedirá ejecutar el guion, cambiar de fase y explicar dos comprobaciones a elección del docente.
 
 La plantilla y el parcial de la AE2:
@@ -2868,5 +2949,5 @@ La plantilla y el parcial de la AE2:
 - [Bufferización de salida (Manual de PHP, en español)](https://www.php.net/manual/es/book.outcontrol.php) — el capítulo del búfer de salida del apartado 4: `ob_start`, `ob_get_clean` y el resto de la familia, con la explicación de qué controlan y qué no.
 - [`http_build_query` (Manual de PHP, en español)](https://www.php.net/manual/es/function.http-build-query.php) — la función que monta la cadena de consulta del apartado 6 a partir de un array, con sus ejemplos de codificación.
 - [`usort` (Manual de PHP, en español)](https://www.php.net/manual/es/function.usort.php) — ordenar con una función de comparación propia: qué debe devolver esa función y un ejemplo con el operador `<=>`.
-- [Opciones de la línea de órdenes (Manual de PHP, en español)](https://www.php.net/manual/es/features.commandline.options.php) — las opciones `-S` y `-t` con las que lanzas el servidor y le dices cuál es su carpeta pública (apartado 9).
+- [Opciones de la línea de órdenes (Manual de PHP, en español)](https://www.php.net/manual/es/features.commandline.options.php) — las opciones `-S` y `-t` con las que se lanza el servidor, a mano o desde PHP Server, y se le dice cuál es su carpeta pública (apartado 9).
 - Los motores del apartado 5, en su documentación oficial: [Twig](https://twig.symfony.com/doc/), [las plantillas en Symfony](https://symfony.com/doc/current/templates.html), [Blade](https://laravel.com/framework/docs/blade) y [Plates](https://platesphp.com/). Empieza por lo que te pregunta el E16: qué escapan por defecto, cómo se desactiva y qué ve un parcial incluido.

@@ -1623,25 +1623,27 @@ $ grep '<li>' sitio/normas.html
 
 **Tareas.**
 
-- **(a) Caza el error.** Pide la página con la búsqueda enviada como lista: `curl -s -g 'http://localhost:8000/prestamos.php?busca[]=x' | grep -m 1 'Fatal error'`. Es el error 6 del apartado 10. Arregla la lectura de `busca` para que lo que no sea un texto cuente como una búsqueda vacía, y repite la petición: tiene que salir el libro entero.
+- **(a) Caza el error.** Pide la página con la búsqueda enviada como lista, escribiendo la dirección en la barra: `http://localhost:3000/prestamos.php?busca[]=x`. Lee el `Fatal error` que sale en la página. Es el error 6 del apartado 10. Arregla la lectura de `busca` para que lo que no sea un texto cuente como una búsqueda vacía, y repite la petición: tiene que salir el libro entero.
 - **(b) Ordenar.** Añade el parámetro `orden`, que se lee contra una **lista cerrada escrita una sola vez**: un array `COLUMNAS` que relaciona cada clave (`util`, `persona`, `desde`, `dias`) con el rótulo de su columna. Lo que no esté en la lista, o no sea un texto, vale `desde`. Escribe una función de comparación por columna y elige con `match`. Tres órdenes van de menor a mayor; `dias`, al revés: los préstamos más largos, primero. Pruébalo con `orden=dias`, `orden=xyz` y `orden[]=dias`.
-- **(c) Las cabeceras ordenan.** Cada cabecera de la tabla pasa a ser un enlace que ordena por su columna. Las cabeceras salen de `COLUMNAS`, no se escriben a mano en la plantilla, y la de la columna por la que se está ordenando lleva `aria-current="true"`. Cada enlace tiene que **conservar la búsqueda**: si no, ordenar la borraría. Las direcciones se montan en el guion, que es quien prepara, con `http_build_query()`; la plantilla recibe una lista de cabeceras con su rótulo, su enlace y si es la activa, y solo pinta. Mira los enlaces que llegan con `grep -o 'href="[^"]*"[^>]*'` y explica por qué el `&` que separa los parámetros llega escrito `&amp;`.
-- **(d) La caja recuerda, y el orden también.** Haz que la caja de búsqueda vuelva con lo que se buscó, y que buscar no pierda el orden elegido (un campo oculto en el formulario). Busca `<b>` con `curl -s -G --data-urlencode 'busca=<b>'` y comprueba cómo llega al atributo `value`.
+- **(c) Las cabeceras ordenan.** Cada cabecera de la tabla pasa a ser un enlace que ordena por su columna. Las cabeceras salen de `COLUMNAS`, no se escriben a mano en la plantilla, y la de la columna por la que se está ordenando lleva `aria-current="true"`. Cada enlace tiene que **conservar la búsqueda**: si no, ordenar la borraría. Las direcciones se montan en el guion, que es quien prepara, con `http_build_query()`; la plantilla recibe una lista de cabeceras con su rótulo, su enlace y si es la activa, y solo pinta. Mira en el código fuente los `href` de las cabeceras y explica por qué el `&` que separa los parámetros llega escrito `&amp;`.
+- **(d) La caja recuerda, y el orden también.** Haz que la caja de búsqueda vuelva con lo que se buscó, y que buscar no pierda el orden elegido (un campo oculto en el formulario). Busca `<b>`, escribiéndolo en la caja, y comprueba en el código fuente cómo llega al atributo `value`.
 
 - **(e) Desde cero.** Una página nueva, `vuelven.php?hasta=2026-11-20`: las herramientas que vuelven a la caseta ese día o antes, ordenadas por su día de vuelta, una por línea con el día, la herramienta y la persona, y delante cuántas son. El día de vuelta de un préstamo te lo da `dia_de_vuelta()`, y `fecha_valida()` te dice si una fecha existe; las dos están en `utilidades.php`. Sin `hasta`, salen todas; con una fecha que no existe, también, y un aviso lo dice. Pruébalo con estas tres peticiones y compara letra a letra:
 
 ```
-$ curl -s 'http://localhost:8000/vuelven.php?hasta=2026-11-20' | grep -E '<h1>|aviso|Devoluciones|<li>'
+view-source:http://localhost:3000/vuelven.php?hasta=2026-11-20
 <h1>Herramientas que vuelven hasta el 2026-11-20</h1>
 <p>Devoluciones: 3</p>
     <li>2026-11-18 · Motoazada · Teresa Ansó</li>
     <li>2026-11-18 · Carretilla &amp; capazos · Mateo Larraz</li>
     <li>2026-11-20 · Escalera · Noa Lecina</li>
-$ curl -s 'http://localhost:8000/vuelven.php?hasta=2026-02-30' | grep -E '<h1>|aviso|Devoluciones'
+
+view-source:http://localhost:3000/vuelven.php?hasta=2026-02-30
 <h1>Herramientas que vuelven</h1>
 <p class="aviso">Esa fecha no existe: se enseñan todos los préstamos.</p>
 <p>Devoluciones: 10</p>
-$ curl -s http://localhost:8000/vuelven.php | grep -E '<h1>|aviso|Devoluciones'
+
+view-source:http://localhost:3000/vuelven.php
 <h1>Herramientas que vuelven</h1>
 <p>Devoluciones: 10</p>
 ```
@@ -1649,12 +1651,12 @@ $ curl -s http://localhost:8000/vuelven.php | grep -E '<h1>|aviso|Devoluciones'
 **Cómo trabajar.** Tres parámetros, tres lecturas, la misma pregunta cada vez: ¿es un texto?, ¿está en mi lista? Lo que no pasa las dos se cambia por un valor por defecto, sin avisos. Salidas esperadas de la práctica resuelta — la tarea (a), el libro por `orden=dias`, y una búsqueda ordenada con sus enlaces:
 
 ```
-$ curl -s -g 'http://localhost:8000/prestamos.php?busca[]=x' | grep encontrados
+view-source:http://localhost:3000/prestamos.php?busca[]=x
 <p>Préstamos encontrados: 10 de 10</p>
 ```
 
 ```
-$ curl -s 'http://localhost:8000/prestamos.php?orden=dias' | grep '<td>'
+view-source:http://localhost:3000/prestamos.php?orden=dias
     <tr><td>Tijeras de podar</td><td>Julia Bergés</td><td>2026-11-18</td><td>7</td></tr>
     <tr><td>Manguera de 25 m</td><td>Teresa Ansó</td><td>2026-11-21</td><td>5</td></tr>
     <tr><td>Azada</td><td>Ibai Sanjuán</td><td>2026-11-22</td><td>4</td></tr>
@@ -1668,24 +1670,31 @@ $ curl -s 'http://localhost:8000/prestamos.php?orden=dias' | grep '<td>'
 ```
 
 ```
-$ curl -s 'http://localhost:8000/prestamos.php?busca=an&orden=persona' | grep '<td>'
+view-source:http://localhost:3000/prestamos.php?busca=an&orden=persona
     <tr><td>Azada</td><td>Ibai Sanjuán</td><td>2026-11-22</td><td>4</td></tr>
     <tr><td>Motoazada</td><td>Teresa Ansó</td><td>2026-11-16</td><td>2</td></tr>
     <tr><td>Manguera de 25 m</td><td>Teresa Ansó</td><td>2026-11-21</td><td>5</td></tr>
-$ curl -s 'http://localhost:8000/prestamos.php?busca=an&orden=persona' | grep -o 'href="[^"]*"[^>]*'
+
+view-source:http://localhost:3000/prestamos.php?busca=an&orden=persona
 href="prestamos.php?orden=util&amp;busca=an"
 href="prestamos.php?orden=persona&amp;busca=an" aria-current="true"
 href="prestamos.php?orden=desde&amp;busca=an"
 href="prestamos.php?orden=dias&amp;busca=an"
-$ curl -s -G --data-urlencode 'busca=Carretilla & c' http://localhost:8000/prestamos.php | grep -o 'href="[^"]*"' | head -n 1
+
+view-source:http://localhost:3000/prestamos.php?busca=Carretilla+%26+c
 href="prestamos.php?orden=util&amp;busca=Carretilla+%26+c"
 ```
 
+![Captura de Chrome: el libro de préstamos de la caseta, con «an» en la caja de búsqueda y una tabla cuyas cabeceras son enlaces; la de la persona es la activa](figuras/cp4-5-cap-prestamos.png)
+
+*Captura de la CP4.5. Una búsqueda ordenada por persona: la caja y las cabeceras conservan las dos cosas. `http://localhost:3000/prestamos.php?busca=an&orden=persona`*
+
 ```
-$ curl -s -G --data-urlencode 'busca=<b>' http://localhost:8000/prestamos.php | grep -E 'type="search"|encontrados'
+view-source:http://localhost:3000/prestamos.php?busca=%3Cb%3E
     <input type="search" id="busca" name="busca" value="&lt;b&gt;">
 <p>Préstamos encontrados: 0 de 10</p>
-$ curl -s 'http://localhost:8000/prestamos.php?busca=an&orden=dias' | grep 'type="hidden"'
+
+view-source:http://localhost:3000/prestamos.php?busca=an&orden=dias
     <input type="hidden" name="orden" value="dias">
 ```
 
@@ -1701,7 +1710,7 @@ $ curl -s 'http://localhost:8000/prestamos.php?busca=an&orden=dias' | grep 'type
 
 **Tareas.**
 
-- **(a) Caza el error.** Con un tarro de cookies, pide `apuntarse.php` y cuenta los campos del sello: `grep -c 'name="sello"'`. Después envía el formulario con cualquier sello. El guion está bien y no se toca: saca el sello de la sesión y se lo entrega a la plantilla, como dice su contrato. Localiza qué le falta a la plantilla, arréglalo y comprueba el envío bueno: `302`, y a la vuelta, el mensaje.
+- **(a) Caza el error.** Abre `apuntarse.php` y busca en su código fuente el campo del sello (`name="sello"`). Después pulsa el botón, con la pestaña Red abierta. El guion está bien y no se toca: saca el sello de la sesión y se lo entrega a la plantilla, como dice su contrato. Localiza qué le falta a la plantilla, arréglalo y comprueba el envío bueno: `302`, y a la vuelta, el mensaje.
 - **(b) Verificar y decir dónde.** En la calculadora, escribe la verificación en una función que reciba los valores y devuelva los errores **por campo** (`campo => mensaje`), todos y no solo el primero: la referencia es obligatoria y tiene que ser la de una parcela que exista; los minutos, un número entero entre 10 y 120; hay que marcar al menos un día, y todos tienen que estar en la lista. Solo se verifica si el formulario se ha enviado. En la plantilla, pinta cada mensaje **junto a su campo**, en un `<span class="error">`.
 - **(c) Devolver lo escrito.** Cuando hay errores, el formulario vuelve con lo que el usuario escribió, también lo que está mal, y con sus días marcados. Envía `ref=<H03>` y comprueba cómo llega al atributo `value`.
 - **(d) El resultado, solo si procede.** Si no hay ningún error, calcula los litros en el guion y pinta el resultado en un `<p class="resultado">` encima del formulario; si lo hay, ese párrafo no existe. Prueba un envío válido, la página recién abierta y estas cuatro peticiones fabricadas: `minutos=5`, `minutos=media+hora`, `dias=lunes` (un texto donde se espera una lista) y `dias[]=festivo`.
@@ -1709,67 +1718,82 @@ $ curl -s 'http://localhost:8000/prestamos.php?busca=an&orden=dias' | grep 'type
 - **(e) Desde cero.** Otro formulario `GET`, `reparto.php`: dos parcelas comparten un turno y los minutos se reparten según la superficie de cada una. Tres campos: `primera`, `segunda` y `minutos` (un entero entre 20 y 180). Las dos referencias tienen que existir y la segunda no puede ser la misma que la primera: ese error va junto al campo de la segunda. El resultado, una línea por parcela. Para la primera, los minutos por su superficie entre la suma de las dos, convertido a entero con `(int)`; el resto, para la segunda. Pruébalo con estas peticiones y compara letra a letra:
 
 ```
-$ curl -s 'http://localhost:8000/reparto.php?primera=H01&segunda=H08&minutos=50&repartir=1' | grep -E '<li>|class="error"'
+view-source:http://localhost:3000/reparto.php?primera=H01&segunda=H08&minutos=50&repartir=1
     <li>H01: 20 min</li>
     <li>H08: 30 min</li>
-$ curl -s 'http://localhost:8000/reparto.php?primera=H03&segunda=H04&minutos=90&repartir=1' | grep -E '<li>|class="error"'
+
+view-source:http://localhost:3000/reparto.php?primera=H03&segunda=H04&minutos=90&repartir=1
     <li>H03: 40 min</li>
     <li>H04: 50 min</li>
-$ curl -s 'http://localhost:8000/reparto.php?primera=H03&segunda=H03&minutos=500&repartir=1' | grep -E '<li>|class="error"'
+
+view-source:http://localhost:3000/reparto.php?primera=H03&segunda=H03&minutos=500&repartir=1
         <span class="error">Tiene que ser una parcela distinta de la primera.</span>
         <span class="error">Tiene que ser un número entero entre 20 y 180.</span>
-$ curl -s 'http://localhost:8000/reparto.php?primera=H99&segunda=H04&minutos=60&repartir=1' | grep -E '<li>|class="error"'
+
+view-source:http://localhost:3000/reparto.php?primera=H99&segunda=H04&minutos=60&repartir=1
         <span class="error">No hay ninguna parcela con esa referencia.</span>
-$ curl -s http://localhost:8000/reparto.php | grep -c -E '<li>|class="error"'
-0
+
+view-source:http://localhost:3000/reparto.php
+(ninguna línea con «<li>» o «class="error"»)
 ```
 
 **Cómo trabajar.** El orden es siempre el mismo: leer, verificar, y solo entonces decidir qué se pinta. La plantilla no verifica nada: pregunta si hay un error para este campo y, si lo hay, lo escribe. Salidas esperadas de la práctica resuelta — el botón de la tarea (a), un envío con tres errores, lo que vuelve escrito, y los envíos de la tarea (d):
 
 ```
-$ curl -s -c tarro.txt -b tarro.txt http://localhost:8000/apuntarse.php | grep -c 'name="sello"'
-1
-$ SELLO=$(curl -s -c tarro.txt -b tarro.txt http://localhost:8000/apuntarse.php | grep -o 'value="[0-9a-f]*"' | cut -d'"' -f2)
-$ curl -s -i -c tarro.txt -b tarro.txt -d "sello=$SELLO" http://localhost:8000/apuntarse.php | grep -E 'HTTP|Location'
+view-source:http://localhost:3000/apuntarse.php
+(líneas con «name="sello"»: 1)
+
+Red › apuntarse.php › Encabezados de respuesta (al pulsar el botón)
 HTTP/1.1 302 Found
 Location: apuntarse.php
-$ curl -s -c tarro.txt -b tarro.txt http://localhost:8000/apuntarse.php | grep aviso
+
+view-source:http://localhost:3000/apuntarse.php
 <p class="aviso">Estás en la lista. Trae guantes y azada.</p>
 ```
 
 ```
-$ curl -s -g 'http://localhost:8000/calculadora.php?ref=H99&minutos=45,5&calcular=1' | grep 'class="error"'
+view-source:http://localhost:3000/calculadora.php?ref=H99&minutos=45,5&calcular=1
         <span class="error">No hay ninguna parcela con esa referencia.</span>
         <span class="error">Tiene que ser un número entero entre 10 y 120.</span>
         <span class="error">Marca al menos un día.</span>
 ```
 
+![Captura de Chrome: la calculadora del riego devuelta con errores junto a sus campos; la referencia H99 y los minutos 45,5 siguen escritos y el martes sigue marcado](figuras/cp4-6-cap-calculadora-errores.png)
+
+*Captura de la CP4.6. La calculadora con errores: cada mensaje junto a su campo, y lo escrito, en su sitio. `http://localhost:3000/calculadora.php?ref=H99&minutos=45,5&dias[]=martes&calcular=1`*
+
 ```
-$ curl -s -g 'http://localhost:8000/calculadora.php?ref=H99&minutos=45,5&dias[]=martes&calcular=1' | grep -E 'value="(H99|45,5)"|checked'
+view-source:http://localhost:3000/calculadora.php?ref=H99&minutos=45,5&dias[]=martes&calcular=1
         <input type="text" id="ref" name="ref" value="H99">
         <input type="text" id="minutos" name="minutos" value="45,5">
         <label><input type="checkbox" name="dias[]" value="martes" checked> martes</label>
-$ curl -s -G --data-urlencode 'ref=<H03>' -d calcular=1 http://localhost:8000/calculadora.php | grep 'id="ref"'
+
+view-source:http://localhost:3000/calculadora.php?ref=%3CH03%3E&calcular=1
         <input type="text" id="ref" name="ref" value="&lt;H03&gt;">
 ```
 
 ```
-$ curl -s -g 'http://localhost:8000/calculadora.php?ref=H03&minutos=50&dias[]=martes&dias[]=jueves&calcular=1' | grep -E 'resultado|class="error"'
+view-source:http://localhost:3000/calculadora.php?ref=H03&minutos=50&dias[]=martes&dias[]=jueves&calcular=1
 <p class="resultado">La parcela H03 gasta 800 litros a la semana.</p>
-$ curl -s -g 'http://localhost:8000/calculadora.php?ref=H04&minutos=30&dias[]=lunes&calcular=1' | grep -E 'resultado|class="error"'
+
+view-source:http://localhost:3000/calculadora.php?ref=H04&minutos=30&dias[]=lunes&calcular=1
 <p class="resultado">La parcela H04 gasta 1200 litros a la semana.</p>
-$ curl -s http://localhost:8000/calculadora.php | grep -c -E 'resultado|class="error"'
-0
+
+view-source:http://localhost:3000/calculadora.php
+(ninguna línea con «resultado» o «class="error"»)
 ```
 
 ```
-$ curl -s -g 'http://localhost:8000/calculadora.php?ref=H03&minutos=5&dias[]=lunes&calcular=1' | grep -E 'resultado|class="error"'
+view-source:http://localhost:3000/calculadora.php?ref=H03&minutos=5&dias[]=lunes&calcular=1
         <span class="error">Tiene que ser un número entero entre 10 y 120.</span>
-$ curl -s -g 'http://localhost:8000/calculadora.php?ref=H03&minutos=media+hora&dias[]=lunes&calcular=1' | grep -E 'resultado|class="error"'
+
+view-source:http://localhost:3000/calculadora.php?ref=H03&minutos=media+hora&dias[]=lunes&calcular=1
         <span class="error">Tiene que ser un número entero entre 10 y 120.</span>
-$ curl -s -g 'http://localhost:8000/calculadora.php?ref=H03&minutos=50&dias=lunes&calcular=1' | grep -E 'resultado|class="error"'
+
+view-source:http://localhost:3000/calculadora.php?ref=H03&minutos=50&dias=lunes&calcular=1
         <span class="error">Marca al menos un día.</span>
-$ curl -s -g 'http://localhost:8000/calculadora.php?ref=H03&minutos=50&dias[]=festivo&calcular=1' | grep -E 'resultado|class="error"'
+
+view-source:http://localhost:3000/calculadora.php?ref=H03&minutos=50&dias[]=festivo&calcular=1
         <span class="error">Hay un día que no está en la lista.</span>
 ```
 
@@ -1785,7 +1809,7 @@ $ curl -s -g 'http://localhost:8000/calculadora.php?ref=H03&minutos=50&dias[]=fe
 
 **Tareas.**
 
-- **(a) Caza el error.** Pide el panel con los tres supuestos y cuenta en cada uno los bloques (`grep -c '<section'`) y los avisos de PHP (`grep -c Warning`). En uno de los tres la página se rompe: lee el primer aviso, abre la plantilla por esa línea y di qué dato ha llegado con un valor que la plantilla no esperaba. Arréglalo como pide el apartado 8: si ese dato no existe, **su bloque entero no se pinta**.
+- **(a) Caza el error.** Pide el panel con los tres supuestos y cuenta en cada uno los bloques (`<section`, con `Ctrl+F` en el código fuente) y los avisos de PHP que salen en la página. En uno de los tres la página se rompe: lee el primer aviso, abre la plantilla por esa línea y di qué dato ha llegado con un valor que la plantilla no esperaba. Arréglalo como pide el apartado 8: si ese dato no existe, **su bloque entero no se pinta**.
 - **(b) Listas vacías.** Con el supuesto `vacio`, el bloque de avisos es un título sobre una lista sin nada, y el de parcelas libres, una tabla con su cabecera y ninguna línea. Decide para cada bloque qué pasa cuando no hay datos: el de avisos desaparece; el de turnos dice «Hoy no riega nadie.»; el de parcelas libres dice «No hay parcelas libres.» y no pinta la tabla.
 - **(c) Una avería cambia la página.** Los datos de cada día dicen cómo está la bomba, y la plantilla ni se entera. Cuando esté averiada, la página lleva arriba un bloque nuevo, `<section class="alerta">`, con el título «Bomba averiada» y el texto «Riego suspendido hasta que se repare la bomba.», y el bloque de turnos **no está**. La pregunta «¿hay riego?» se contesta una vez, en el guion, y la plantilla recibe la respuesta en una variable.
 - **(d) El contenido también cambia.** El título del bloque de avisos lleva cuántos son, «Avisos (3)»; los urgentes van los primeros y dentro de un `<strong>`; y encima de la tabla de parcelas libres un párrafo dice «1 parcela libre» o «3 parcelas libres». Ordenar los avisos y montar ese texto es preparar: va en el guion.
@@ -1793,39 +1817,53 @@ $ curl -s -g 'http://localhost:8000/calculadora.php?ref=H03&minutos=50&dias[]=fe
 - **(e) Desde cero.** Una página nueva, `hoja.php?ref=H03`: la hoja de una parcela, con bloques que dependen de sus datos. El título lleva la referencia, la zona y la superficie. Si la parcela está adjudicada, un bloque «Quién la lleva» con la persona; si está libre, un bloque «Cómo solicitarla». Si se riega por goteo, un bloque «Riego por goteo»; si no, «Riego a manta». Una referencia que no existe responde con un `404` y su propia plantilla. Los textos de dentro de cada bloque los pones tú; los títulos son estos. Pruébalo con estas peticiones y compara letra a letra:
 
 ```
-$ curl -s -o /dev/null -w '%{http_code}\n' 'http://localhost:8000/hoja.php?ref=H03'
-200
-$ curl -s 'http://localhost:8000/hoja.php?ref=H03' | grep -E '<h1>|<h2>'
+Red › hoja.php?ref=H03 › Encabezados de respuesta
+HTTP/1.1 200 OK
+
+view-source:http://localhost:3000/hoja.php?ref=H03
 <h1>Parcela H03 · Eras · 80 m²</h1>
     <h2>Quién la lleva</h2>
     <h2>Riego por goteo</h2>
-$ curl -s -o /dev/null -w '%{http_code}\n' 'http://localhost:8000/hoja.php?ref=H02'
-200
-$ curl -s 'http://localhost:8000/hoja.php?ref=H02' | grep -E '<h1>|<h2>'
+
+Red › hoja.php?ref=H02 › Encabezados de respuesta
+HTTP/1.1 200 OK
+
+view-source:http://localhost:3000/hoja.php?ref=H02
 <h1>Parcela H02 · Ribera · 45 m²</h1>
     <h2>Cómo solicitarla</h2>
     <h2>Riego a manta</h2>
-$ curl -s -o /dev/null -w '%{http_code}\n' 'http://localhost:8000/hoja.php?ref=H99'
-404
-$ curl -s 'http://localhost:8000/hoja.php?ref=H99' | grep -E '<h1>|<h2>'
+
+Red › hoja.php?ref=H99 › Encabezados de respuesta
+HTTP/1.1 404 Not Found
+
+view-source:http://localhost:3000/hoja.php?ref=H99
 <h1>Parcela desconocida</h1>
 ```
 
 **Cómo trabajar.** Una plantilla probada con un solo juego de datos está a medio probar. Para cada dato que recibe, pregúntate qué pinta si viene vacío, si no viene y si trae un valor que cambia las reglas. Y que la plantilla pregunte lo menos posible: un `if` sobre algo que el guion ya ha decidido. Salidas esperadas de la práctica resuelta — el recuento de la tarea (a), los títulos de cada supuesto y los detalles de la tarea (d):
 
 ```
-$ for s in normal averia vacio; do curl -s "http://localhost:8000/panel.php?supuesto=$s" | grep -c '<section'; done
-4
-4
-2
-$ for s in normal averia vacio; do curl -s "http://localhost:8000/panel.php?supuesto=$s" | grep -c Warning; done
-0
-0
-0
+view-source:http://localhost:3000/panel.php?supuesto=normal
+(líneas con «<section»: 4)
+
+view-source:http://localhost:3000/panel.php?supuesto=averia
+(líneas con «<section»: 4)
+
+view-source:http://localhost:3000/panel.php?supuesto=vacio
+(líneas con «<section»: 2)
+
+view-source:http://localhost:3000/panel.php?supuesto=normal
+(ninguna línea con «Warning»)
+
+view-source:http://localhost:3000/panel.php?supuesto=averia
+(ninguna línea con «Warning»)
+
+view-source:http://localhost:3000/panel.php?supuesto=vacio
+(ninguna línea con «Warning»)
 ```
 
 ```
-$ curl -s 'http://localhost:8000/panel.php?supuesto=normal' | grep -E '<section|<h2>'
+view-source:http://localhost:3000/panel.php?supuesto=normal
 <section>
     <h2>Avisos (3)</h2>
 <section>
@@ -1836,8 +1874,12 @@ $ curl -s 'http://localhost:8000/panel.php?supuesto=normal' | grep -E '<section|
     <h2>Próxima asamblea</h2>
 ```
 
+![Captura de Chrome: el panel del día con un bloque «Bomba averiada» arriba, «Riego suspendido hasta que se repare la bomba.», y sin el bloque de turnos de riego](figuras/cp4-7-cap-panel-averia.png)
+
+*Captura de la CP4.7. El panel el día de la avería: un bloque nuevo arriba y uno menos. `http://localhost:3000/panel.php?supuesto=averia`*
+
 ```
-$ curl -s 'http://localhost:8000/panel.php?supuesto=averia' | grep -E '<section|<h2>'
+view-source:http://localhost:3000/panel.php?supuesto=averia
 <section class="alerta">
     <h2>Bomba averiada</h2>
 <section>
@@ -1849,7 +1891,7 @@ $ curl -s 'http://localhost:8000/panel.php?supuesto=averia' | grep -E '<section|
 ```
 
 ```
-$ curl -s 'http://localhost:8000/panel.php?supuesto=vacio' | grep -E '<section|<h2>'
+view-source:http://localhost:3000/panel.php?supuesto=vacio
 <section>
     <h2>Turnos de riego de hoy</h2>
 <section>
@@ -1857,18 +1899,22 @@ $ curl -s 'http://localhost:8000/panel.php?supuesto=vacio' | grep -E '<section|<
 ```
 
 ```
-$ curl -s 'http://localhost:8000/panel.php?supuesto=normal' | grep '<li>' | head -n 3
+view-source:http://localhost:3000/panel.php?supuesto=normal
         <li><strong>Cuotas del año: último día de pago</strong></li>
         <li>Reparto de compost en las Eras</li>
         <li>Riego &amp; abonado: cambio de turno</li>
-$ curl -s 'http://localhost:8000/panel.php?supuesto=normal' | grep 'libres</p>'
+
+view-source:http://localhost:3000/panel.php?supuesto=normal
     <p>3 parcelas libres</p>
-$ curl -s 'http://localhost:8000/panel.php?supuesto=averia' | grep -E 'libre</p>|strong'
+
+view-source:http://localhost:3000/panel.php?supuesto=averia
         <li><strong>Avería en la bomba: presión &lt;1 bar</strong></li>
     <p>1 parcela libre</p>
-$ curl -s 'http://localhost:8000/panel.php?supuesto=averia' | grep -c 'Turnos de riego'
-0
-$ curl -s 'http://localhost:8000/panel.php?supuesto=vacio' | grep '<p>'
+
+view-source:http://localhost:3000/panel.php?supuesto=averia
+(ninguna línea con «Turnos de riego»)
+
+view-source:http://localhost:3000/panel.php?supuesto=vacio
     <p>Hoy no riega nadie.</p>
     <p>No hay parcelas libres.</p>
 ```
@@ -1885,53 +1931,98 @@ $ curl -s 'http://localhost:8000/panel.php?supuesto=vacio' | grep '<p>'
 
 **Tareas.**
 
-- **(a) Caza el error.** Entra como hortelano con un tarro: `curl -s -L -c hortelano.txt -b hortelano.txt 'http://localhost:8000/entrar-como.php?perfil=hortelano' | grep '<section'`. Después busca en lo que ha recibido ese hortelano el nombre de alguien que debe una cuota. Explica qué hace el atributo `hidden`, quién lo obedece y quién no, y por qué un dato que viaja está entregado aunque no se vea.
+- **(a) Caza el error.** Entra como hortelano: abre `http://localhost:3000/entrar-como.php?perfil=hortelano`, que te deja en el panel. Mira qué bloques ves. Después busca en el código fuente de lo que ha recibido ese hortelano (`Ctrl+U` y `Ctrl+F`) el nombre de alguien que debe una cuota. Explica qué hace el atributo `hidden`, quién lo obedece y quién no, y por qué un dato que viaja está entregado aunque no se vea.
 - **(b) La matriz, como dato.** Escribe en un fichero nuevo, `permisos.php`, la matriz bloque → perfiles que lo ven (cuenta también con el `visitante`, que solo ve los avisos) y una función que conteste si un perfil ve un bloque. Lo que no esté anotado no lo ve nadie. El guion prepara cada bloque **solo si** ese perfil lo ve; la plantilla pinta los bloques que le llegan con datos y no pregunta por perfiles.
-- **(c) Recuento.** Con un tarro por perfil, cuenta los bloques que recibe cada uno y busca en cada respuesta el nombre de quien debe una cuota y el de quien abrió una incidencia. Ningún bloque puede llevar ya el atributo `hidden`.
+- **(c) Recuento.** Con cada perfil (`entrar-como.php?perfil=…` cambia de uno a otro en la misma ventana), cuenta en el código fuente los bloques que recibe y busca en él el nombre de quien debe una cuota y el de quien abrió una incidencia. Ningún bloque puede llevar ya el atributo `hidden`.
 - **(d) Un bloque nuevo solo toca el dato.** Añade la lista de espera, que solo ve presidencia. Está en `datos/panel.php`. Una línea en la matriz y un bloque en la plantilla: el guion no cambia.
 
-**Cómo trabajar.** La prueba de una página con perfiles no es mirarla: es pedirla con cada perfil y buscar en lo recibido lo que ese perfil no debería tener. Salidas esperadas de la práctica resuelta — el recuento por perfil (bloques, quien debe una cuota, quien abrió una incidencia, atributos `hidden`) y los títulos que reciben dos perfiles y un visitante:
+**Cómo trabajar.** La prueba de una página con perfiles no es mirarla: es pedirla con cada perfil y buscar en su código fuente lo que ese perfil no debería tener. Salidas esperadas de la práctica resuelta — el recuento por perfil (bloques, quien debe una cuota, quien abrió una incidencia, atributos `hidden`) y los títulos que reciben dos perfiles y un visitante:
 
 ```
-$ for p in visitante hortelano vocal tesoreria presidencia; do curl -s -L -c $p.txt -b $p.txt "http://localhost:8000/entrar-como.php?perfil=$p" | grep -c '<section'; done
-1
-1
-2
-2
-4
-$ for p in visitante hortelano vocal tesoreria presidencia; do curl -s -b $p.txt http://localhost:8000/panel.php | grep -c 'Julia Bergés'; done
-0
-0
-0
-1
-1
-$ for p in visitante hortelano vocal tesoreria presidencia; do curl -s -b $p.txt http://localhost:8000/panel.php | grep -c 'Rubén Asín'; done
-0
-0
-1
-0
-1
-$ for p in visitante hortelano vocal tesoreria presidencia; do curl -s -b $p.txt http://localhost:8000/panel.php | grep -c ' hidden'; done
-0
-0
-0
-0
-0
+view-source:http://localhost:3000/panel.php   (como visitante)
+(líneas con «<section»: 1)
+
+view-source:http://localhost:3000/panel.php   (como hortelano)
+(líneas con «<section»: 1)
+
+view-source:http://localhost:3000/panel.php   (como vocal)
+(líneas con «<section»: 2)
+
+view-source:http://localhost:3000/panel.php   (como tesoreria)
+(líneas con «<section»: 2)
+
+view-source:http://localhost:3000/panel.php   (como presidencia)
+(líneas con «<section»: 4)
+
+view-source:http://localhost:3000/panel.php   (como visitante)
+(ninguna línea con «Julia Bergés»)
+
+view-source:http://localhost:3000/panel.php   (como hortelano)
+(ninguna línea con «Julia Bergés»)
+
+view-source:http://localhost:3000/panel.php   (como vocal)
+(ninguna línea con «Julia Bergés»)
+
+view-source:http://localhost:3000/panel.php   (como tesoreria)
+(líneas con «Julia Bergés»: 1)
+
+view-source:http://localhost:3000/panel.php   (como presidencia)
+(líneas con «Julia Bergés»: 1)
+
+view-source:http://localhost:3000/panel.php   (como visitante)
+(ninguna línea con «Rubén Asín»)
+
+view-source:http://localhost:3000/panel.php   (como hortelano)
+(ninguna línea con «Rubén Asín»)
+
+view-source:http://localhost:3000/panel.php   (como vocal)
+(líneas con «Rubén Asín»: 1)
+
+view-source:http://localhost:3000/panel.php   (como tesoreria)
+(ninguna línea con «Rubén Asín»)
+
+view-source:http://localhost:3000/panel.php   (como presidencia)
+(líneas con «Rubén Asín»: 1)
+
+view-source:http://localhost:3000/panel.php   (como visitante)
+(ninguna línea con « hidden»)
+
+view-source:http://localhost:3000/panel.php   (como hortelano)
+(ninguna línea con « hidden»)
+
+view-source:http://localhost:3000/panel.php   (como vocal)
+(ninguna línea con « hidden»)
+
+view-source:http://localhost:3000/panel.php   (como tesoreria)
+(ninguna línea con « hidden»)
+
+view-source:http://localhost:3000/panel.php   (como presidencia)
+(ninguna línea con « hidden»)
 ```
 
 ```
-$ curl -s -b vocal.txt http://localhost:8000/panel.php | grep '<h2>'
+view-source:http://localhost:3000/panel.php   (como vocal)
     <h2>Avisos</h2>
     <h2>Incidencias abiertas</h2>
-$ curl -s -b presidencia.txt http://localhost:8000/panel.php | grep '<h2>'
+
+view-source:http://localhost:3000/panel.php   (como presidencia)
     <h2>Avisos</h2>
     <h2>Cuotas pendientes</h2>
     <h2>Incidencias abiertas</h2>
     <h2>Lista de espera</h2>
-$ curl -s http://localhost:8000/panel.php | grep -E 'como:|<h2>'
+
+view-source:http://localhost:3000/panel.php
 <p>Estás viendo el panel como: visitante</p>
     <h2>Avisos</h2>
 ```
+
+![Captura de Chrome: el panel de la asociación para un hortelano, con los bloques que le corresponden](figuras/cp4-8-cap-panel-hortelano.png)
+
+*Captura de la CP4.8. El panel para un hortelano. `http://localhost:3000/panel.php`*
+
+![Captura de Chrome: el panel de la asociación para presidencia, con más bloques: entre ellos, las cuotas pendientes, las incidencias abiertas y la lista de espera](figuras/cp4-8-cap-panel-presidencia.png)
+
+*Captura de la CP4.8. El mismo panel para presidencia. `http://localhost:3000/panel.php`*
 
 ### CP4.9 · La misma página, mal traducida
 
@@ -1981,7 +2072,7 @@ $ php ver.php | grep -c 'Pendiente'
 
 **Qué refuerza.** El apartado 9 de la [UD4](ud4-generacion-dinamica-plantillas.md): la carpeta que se sirve, las búsquedas que vigilan las plantillas y la lista de comprobación de la unidad. Y la pregunta del CP3.9, hecha ahora a esas comprobaciones: antes de fiarte de un «bien», di qué habría hecho falta para que saliera mal.
 
-**Ficheros de partida.** `cp4-10/web/` (tres guiones de página y la carpeta `datos/`), `cp4-10/comun/utilidades.php`, `cp4-10/plantillas/` (el layout, tres plantillas y `parciales/enlace.php`) y `cp4-10/plantillas.php`, en el repositorio de recursos (enlace en Classroom). Aquí el servidor se lanza desde la carpeta de la práctica diciéndole cuál es la suya: `php -d display_errors=1 -d html_errors=0 -S localhost:8000 -t web`.
+**Ficheros de partida.** `cp4-10/web/` (tres guiones de página y la carpeta `datos/`), `cp4-10/comun/utilidades.php`, `cp4-10/plantillas/` (el layout, tres plantillas y `parciales/enlace.php`) y `cp4-10/plantillas.php`, en el repositorio de recursos (enlace en Classroom). Aquí PHP Server sirve solo `web/`. La partida trae el ajuste hecho, en `cp4-10/.vscode/settings.json` (`"phpserver.relativePath": "web"`): basta abrir la carpeta de la práctica en VS Code y lanzar el servidor. Las direcciones no llevan `web/` (`http://localhost:3000/avisos.php`), y la que abre PHP Server al arrancar no vale: escríbela tú.
 
 **Enunciado.** La asociación ha repartido su web en carpetas, como pide el apartado 9: lo que se sirve, en `web/`; las funciones, en `comun/`; las plantillas, fuera. Quien lo hizo pasó las comprobaciones de la unidad con prisa y lo dio por bueno. Tu trabajo tiene dos mitades. Primero, pasarlas tú y arreglar lo que cacen. Después, lo contrario: estropear la aplicación a propósito y anotar si la comprobación que debería enterarse se entera. En esta práctica no se escribe ningún guion: cada orden se lanza a mano y se lee lo que contesta. Lo que traes a la corrección es una tabla con una fila por defecto.
 
@@ -2007,7 +2098,7 @@ $ php ver.php | grep -c 'Pendiente'
 echo 'Cuotas pendientes: H04 y H08' > web/notas.txt
 ```
 
-- **(c) Dos alarmas.** Ahora al revés. Antes de tocar nada, guarda la página buena con `curl -s http://localhost:8000/avisos.php > buena.html`. Aplica el 6: comprueba con `diff` que la página sigue siendo la misma, y lanza la búsqueda de impresiones. Deshazlo y aplica el 7: no cambia nada de lo que se pinta, y lanza la búsqueda de lógica. En cada caso decide qué se toca, la plantilla o la comprobación, y por qué.
+- **(c) Dos alarmas.** Ahora al revés. Antes de tocar nada, guarda la página buena con `curl -s http://localhost:3000/avisos.php > buena.html`: comparar dos respuestas línea a línea es trabajo de terminal. Aplica el 6: comprueba con `diff` que la página sigue siendo la misma, y lanza la búsqueda de impresiones. Deshazlo y aplica el 7: no cambia nada de lo que se pinta, y lanza la búsqueda de lógica. En cada caso decide qué se toca, la plantilla o la comprobación, y por qué.
 
 ```
 6. plantillas/parciales/enlace.php — cambia el trozo  <?php if ($actual): ?> aria-current="page"<?php endif; ?>  por este:
@@ -2024,19 +2115,28 @@ echo 'Cuotas pendientes: H04 y H08' > web/notas.txt
 ```
 $ grep -rnE '\$_(GET|POST|SESSION|SERVER|COOKIE)|\b(require|include)(_once)?\b|filter_var|header\(' plantillas/ | wc -l
 0
+
 $ grep -rnoE '(<\?=|\b(echo|print)\b) *[^ ;?]*' plantillas/ | grep -vE '(<\?=|echo|print) *e\(' | sort
 plantillas/layout.php:15:<?= $contenido
+
 $ grep -rl "<!doctype" plantillas/
 plantillas/layout.php
-$ curl -s http://localhost:8000/avisos.php | grep -c "aria-current"
-1
+
+view-source:http://localhost:3000/avisos.php
+(líneas con «aria-current»: 1)
 ```
 
 ```
-$ curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8000/plantillas/layout.php
-404
-$ curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8000/comun/utilidades.php
-404
-$ curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8000/datos/parcelas.php
-404
+Red › plantillas/layout.php › Encabezados de respuesta
+HTTP/1.1 404 Not Found
+
+Red › comun/utilidades.php › Encabezados de respuesta
+HTTP/1.1 404 Not Found
+
+Red › datos/parcelas.php › Encabezados de respuesta
+HTTP/1.1 404 Not Found
 ```
+
+![Captura de Chrome: la página de avisos de la asociación, con su menú de tres enlaces y la lista de avisos](figuras/cp4-10-cap-avisos.png)
+
+*Captura de la CP4.10. La página de avisos, servida solo desde `web/`. `http://localhost:3000/avisos.php`*
