@@ -2757,7 +2757,7 @@ Una frontera para terminar. Esto todavía no es la arquitectura de la UD5: cada 
 
 ## Apartado 10. Errores frecuentes
 
-Los seis errores de este apartado tienen algo en común: dejan una pista, casi siempre una traza de PHP, y la pista dice dónde mirar. Las trazas son las que se leen en la página con los errores a la vista, y de cada mensaje va su primera línea. Donde quien pide es `curl`, el mensaje llega con las etiquetas con que PHP lo adorna para el navegador.
+Los seis errores de este apartado tienen algo en común: dejan una pista, casi siempre una traza de PHP, y la pista dice dónde mirar. Las trazas son las que se leen en la página con los errores a la vista, y de cada mensaje va su primera línea. Donde quien pide es `curl`, el mensaje llega con las etiquetas con que PHP lo adorna para el navegador. Las direcciones dicen sobre qué aplicación se reproduce cada error: las que llevan `ud4/` son de la aplicación antes de repartirla en carpetas, servida desde la raíz del repositorio, y la del error 4, que no lo lleva, es de la aplicación ya repartida del apartado 9, servida desde `ud4/publico/`.
 
 1. **`Undefined variable` en una plantilla: el contrato no se cumple.** La plantilla espera un dato y el guion no se lo pasa, o se lo pasa con otro nombre. Aquí el guion del calendario envía `listado` y la plantilla recibe `lista`:
 
