@@ -114,6 +114,15 @@ Relación entre tablas:
 clientes 1───∞ pedidos 1───∞ lineas_pedido ∞───1 productos
 ```
 
+El mismo esquema, en la notación de la UD3 (clave primaria en negrita, cada clave ajena con su flecha a la tabla de destino):
+
+- `clientes(`**id**`, nombre, email, provincia, alta)`
+- `productos(`**id**`, nombre, categoria, precio, stock)`
+- `pedidos(`**id**`, cliente_id → clientes, fecha)`
+- `lineas_pedido(`**pedido_id** `→ pedidos,` **producto_id** `→ productos, cantidad)`
+
+Las tres flechas son el mapa de la unidad: en el apartado 7, cada `JOIN` recorrerá una de ellas.
+
 Observa dos detalles del juego de datos que usaremos constantemente: **Sara no tiene provincia** (NULL) y **Sara y Ana no tienen ningún pedido**. Están puestos a propósito: son los casos límite donde las consultas mal escritas fallan en silencio.
 
 ### Comprueba que se ha cargado
@@ -173,6 +182,64 @@ Resultado:
 +----+--------------+-------------------+-----------+------------+
 ```
 
+Y las otras tres tablas, para tenerlas a la vista: en esta unidad se te pedirá muchas veces predecir un resultado antes de ejecutar, y se predice mirando los datos.
+
+```sql
+SELECT * FROM productos;
+```
+
+Resultado:
+
+```
++----+----------------------+-------------+--------+-------+
+| id | nombre               | categoria   | precio | stock |
++----+----------------------+-------------+--------+-------+
+|  1 | Teclado mecánico 60% | Periféricos |  79.90 |    12 |
+|  2 | Ratón inalámbrico    | Periféricos |  24.50 |    40 |
+|  3 | Monitor 27" QHD      | Monitores   | 249.00 |     5 |
+|  4 | Hub USB-C 7 puertos  | Accesorios  |  35.00 |     0 |
+|  5 | Alfombrilla XL       | Accesorios  |   9.99 |    60 |
+|  6 | Webcam 1080p         | Periféricos |  45.00 |     8 |
++----+----------------------+-------------+--------+-------+
+```
+
+```sql
+SELECT * FROM pedidos;
+```
+
+Resultado:
+
+```
++----+------------+------------+
+| id | cliente_id | fecha      |
++----+------------+------------+
+|  1 |          1 | 2026-04-02 |
+|  2 |          1 | 2026-06-15 |
+|  3 |          2 | 2026-05-20 |
+|  4 |          4 | 2026-06-28 |
++----+------------+------------+
+```
+
+```sql
+SELECT * FROM lineas_pedido;
+```
+
+Resultado:
+
+```
++-----------+-------------+----------+
+| pedido_id | producto_id | cantidad |
++-----------+-------------+----------+
+|         1 |           1 |        1 |
+|         1 |           5 |        2 |
+|         2 |           3 |        1 |
+|         3 |           2 |        1 |
+|         3 |           5 |        1 |
+|         3 |           6 |        1 |
+|         4 |           2 |        2 |
++-----------+-------------+----------+
+```
+
 Si en lugar de eso recibes `ERROR 1046: No database selected`, es que en esta sesión no has elegido la base de datos. Cada vez que abras Workbench, lo primero es ejecutar `USE tiendadaw;`.
 
 **Cómo leer los resultados de estos apuntes.** Debajo de cada consulta de la unidad está su resultado, tal como lo devuelve MySQL con estos datos. En Workbench lo verás en una rejilla en vez de en texto, pero con las mismas filas y las mismas columnas. Si a ti te sale otra cosa, para y averigua por qué antes de seguir: esa comparación es la manera de comprobar tu trabajo en toda la unidad.
@@ -219,7 +286,7 @@ Devuelve dos columnas de todas las filas de `productos`. El resultado de un SELE
 
 Reglas de estilo del módulo desde hoy:
 
-1. **Nunca `SELECT *` en código que se entrega.** Pide las columnas que necesitas. `*` rompe cuando la tabla cambia, arrastra datos que no usas y, en la aplicación web que haréis en 2.º, significa enviar por la red columnas que nadie pidió.
+1. **Nunca `SELECT *` en código que se entrega.** El asterisco devuelve todas las columnas de la tabla: es cómodo para echar un vistazo, como hiciste en el apartado 0, y nada más. En lo que entregas, pide las columnas que necesitas. `*` rompe cuando la tabla cambia, arrastra datos que no usas y, en la aplicación web que haréis en 2.º, significa enviar por la red columnas que nadie pidió.
 2. Palabras clave en mayúsculas, identificadores en minúsculas. No es obligatorio para el SGBD; es obligatorio para que tu código se lea.
 3. **Comentarios con `-- ` (dos guiones y un espacio).** Lo que va detrás, hasta el final de la línea, MySQL lo ignora. El espacio es obligatorio: `--AE1`, todo junto, da `ERROR 1064`. Todo lo que entregues llevará cada consulta numerada y comentada así.
 
@@ -250,6 +317,30 @@ Resultado:
 ```
 
 El alias solo existe en el resultado: no modifica la tabla ni se guarda en ningún sitio. Si el alias lleva espacios, necesita comillas invertidas en MySQL (`` AS `precio con IVA` ``), pero evítalo: los alias con espacios dan problemas al consumirlos desde código.
+
+Cuidado con las comas. Como `AS` es opcional, MySQL toma por alias cualquier palabra que siga a una columna sin una coma por medio. Si te dejas la coma entre `nombre` y `precio`:
+
+```sql
+SELECT nombre precio
+FROM productos;
+```
+
+Resultado:
+
+```
++----------------------+
+| precio               |
++----------------------+
+| Teclado mecánico 60% |
+| Ratón inalámbrico    |
+| Monitor 27" QHD      |
+| Hub USB-C 7 puertos  |
+| Alfombrilla XL       |
+| Webcam 1080p         |
++----------------------+
+```
+
+No hay ningún error: sale una sola columna, la de los nombres, titulada `precio`. Cuando una columna «desaparezca» de un resultado, busca la coma que falta.
 
 ### Eliminar duplicados: DISTINCT
 
@@ -426,6 +517,26 @@ Resultado:
 +-------------------+
 ```
 
+**Mayúsculas y tildes.** Con la configuración con la que se instala MySQL, las comparaciones de texto no distinguen mayúsculas de minúsculas, ni letras con tilde de letras sin ella:
+
+```sql
+SELECT nombre
+FROM productos
+WHERE nombre LIKE 'raton%';
+```
+
+Resultado:
+
+```
++-------------------+
+| nombre            |
++-------------------+
+| Ratón inalámbrico |
++-------------------+
+```
+
+No pasa en todos los gestores ni con todas las configuraciones: si un filtro de texto te devuelve filas de más o de menos, es lo primero que hay que mirar.
+
 **Valor desconocido con `IS NULL`.** NULL nunca se compara con `=` (lo verás un poco más abajo):
 
 ```sql
@@ -469,18 +580,44 @@ Resultado:
 
 ```sql
 -- ¿Qué quiere decir esto?
-WHERE categoria = 'Periféricos' OR categoria = 'Accesorios' AND precio < 20
+SELECT nombre, categoria, precio
+FROM productos
+WHERE categoria = 'Periféricos' OR categoria = 'Accesorios' AND precio < 20;
+```
+
+Resultado:
+
+```
++----------------------+-------------+--------+
+| nombre               | categoria   | precio |
++----------------------+-------------+--------+
+| Teclado mecánico 60% | Periféricos |  79.90 |
+| Ratón inalámbrico    | Periféricos |  24.50 |
+| Alfombrilla XL       | Accesorios  |   9.99 |
+| Webcam 1080p         | Periféricos |  45.00 |
++----------------------+-------------+--------+
 ```
 
 Sin paréntesis, se interpreta como `Periféricos OR (Accesorios AND precio < 20)`: devuelve TODOS los periféricos sin importar el precio. Si lo que querías era "productos de esas dos categorías que cuesten menos de 20 €":
 
 ```sql
+SELECT nombre, categoria, precio
+FROM productos
 WHERE (categoria = 'Periféricos' OR categoria = 'Accesorios')
-  AND precio < 20
--- o mejor:
-WHERE categoria IN ('Periféricos', 'Accesorios')
-  AND precio < 20
+  AND precio < 20;
 ```
+
+Resultado:
+
+```
++----------------+------------+--------+
+| nombre         | categoria  | precio |
++----------------+------------+--------+
+| Alfombrilla XL | Accesorios |   9.99 |
++----------------+------------+--------+
+```
+
+O mejor, sin `OR`: `WHERE categoria IN ('Periféricos', 'Accesorios') AND precio < 20`, que devuelve lo mismo y no deja lugar a dudas.
 
 Regla del módulo: en cuanto mezclas AND y OR, paréntesis obligatorios, aunque "no hagan falta".
 
@@ -490,6 +627,61 @@ Regla del módulo: en cuanto mezclas AND y OR, paréntesis obligatorios, aunque 
 
 - `WHERE provincia = NULL` no devuelve *nada nunca*, aunque Sara exista. La forma correcta es `IS NULL`.
 - Más traicionero: `WHERE provincia <> 'Zaragoza'` **tampoco devuelve a Sara**, porque `NULL <> 'Zaragoza'` es desconocido, no verdadero. Si quieres "los que no son de Zaragoza, incluidos los de provincia desconocida", necesitas `WHERE provincia <> 'Zaragoza' OR provincia IS NULL`.
+
+Compruébalo. Primero la comparación suelta (un `SELECT` sin `FROM` calcula sobre los valores que le des, sin leer ninguna tabla):
+
+```sql
+SELECT NULL = NULL          AS nulo_igual_a_nulo,
+       NULL <> 'Zaragoza'   AS nulo_distinto_de_texto;
+```
+
+Resultado:
+
+```
++-------------------+------------------------+
+| nulo_igual_a_nulo | nulo_distinto_de_texto |
++-------------------+------------------------+
+| NULL              | NULL                   |
++-------------------+------------------------+
+```
+
+Ni verdadero (1) ni falso (0): desconocido. Y ahora las dos consultas:
+
+```sql
+SELECT nombre, provincia
+FROM clientes
+WHERE provincia <> 'Zaragoza';
+```
+
+Resultado:
+
+```
++-------------+-----------+
+| nombre      | provincia |
++-------------+-----------+
+| Marc Ferrer | Huesca    |
+| Ana Peralta | Teruel    |
++-------------+-----------+
+```
+
+```sql
+SELECT nombre, provincia
+FROM clientes
+WHERE provincia <> 'Zaragoza'
+   OR provincia IS NULL;
+```
+
+Resultado:
+
+```
++-------------+-----------+
+| nombre      | provincia |
++-------------+-----------+
+| Marc Ferrer | Huesca    |
+| Sara Osuna  | NULL      |
+| Ana Peralta | Teruel    |
++-------------+-----------+
+```
 
 Este es el error silencioso más caro de la unidad: no da mensaje de error, simplemente devuelve menos filas de las que esperas. En la tienda real, esto es un cliente que no recibe el email de campaña y nadie sabe por qué.
 
@@ -553,6 +745,32 @@ Resultado:
 
 Ordena por provincia y, dentro de cada provincia, del cliente más reciente al más antiguo. Los NULL de ordenación van, en MySQL, antes que cualquier valor en ASC (Sara saldrá la primera).
 
+También se puede ordenar por una columna calculada, nombrándola por su alias:
+
+```sql
+SELECT nombre,
+       ROUND(precio * 1.21, 2) AS con_iva
+FROM productos
+ORDER BY con_iva DESC;
+```
+
+Resultado:
+
+```
++----------------------+---------+
+| nombre               | con_iva |
++----------------------+---------+
+| Monitor 27" QHD      |  301.29 |
+| Teclado mecánico 60% |   96.68 |
+| Webcam 1080p         |   54.45 |
+| Hub USB-C 7 puertos  |   42.35 |
+| Ratón inalámbrico    |   29.65 |
+| Alfombrilla XL       |   12.09 |
++----------------------+---------+
+```
+
+El alias vale en el `ORDER BY`, pero no en el `WHERE`: `WHERE con_iva > 50` responde `ERROR 1054: Unknown column 'con_iva' in 'where clause'`, y hay que repetir la expresión (`WHERE precio * 1.21 > 50`). El porqué lo verás en el apartado 6, con el orden en que se evalúa una consulta.
+
 `LIMIT n` corta el resultado a n filas; `LIMIT n OFFSET m` salta las m primeras y devuelve las n siguientes. Este segundo formato es la base de la **paginación** que implementaréis en la web ("mostrando resultados 21–40"):
 
 ```sql
@@ -573,6 +791,8 @@ Resultado:
 | Ratón inalámbrico |  24.50 |
 +-------------------+--------+
 ```
+
+La cuenta es siempre la misma: para la página *p*, con *t* filas por página, `LIMIT t OFFSET (p − 1) × t`. Y para que las páginas no bailen de una ejecución a otra: si dos filas empatan en la clave de ordenación, el orden entre ellas no está garantizado; añade una segunda clave que desempate, como `ORDER BY precio, id`.
 
 Aviso importante: `LIMIT` sin `ORDER BY` es una lotería — "dame 3 productos cualesquiera". Casi siempre que escribas LIMIT, debe haber un ORDER BY delante.
 
@@ -615,6 +835,29 @@ Resultado:
 +--------------+----------------+----------------------------------+--------------+
 ```
 
+Una sorpresa de `LENGTH`: cuenta **bytes**, no letras, y las vocales con tilde y la ñ ocupan dos. Para contar caracteres está `CHAR_LENGTH`:
+
+```sql
+SELECT nombre,
+       LENGTH(nombre)      AS bytes,
+       CHAR_LENGTH(nombre) AS caracteres
+FROM clientes;
+```
+
+Resultado:
+
+```
++--------------+-------+------------+
+| nombre       | bytes | caracteres |
++--------------+-------+------------+
+| Lucía Aranda |    13 |         12 |
+| Marc Ferrer  |    11 |         11 |
+| Sara Osuna   |    10 |         10 |
+| Raúl Domingo |    13 |         12 |
+| Ana Peralta  |    11 |         11 |
++--------------+-------+------------+
+```
+
 `CONCAT` merece atención por su comportamiento con NULL: si cualquier argumento es NULL, el resultado entero es NULL. `CONCAT('Provincia: ', provincia)` devuelve NULL para Sara, no "Provincia: ". Para dar un valor por defecto existe `COALESCE`, que devuelve el primer argumento no nulo:
 
 ```sql
@@ -638,6 +881,29 @@ Resultado:
 ```
 
 `COALESCE` es de las funciones más usadas en aplicaciones reales: es la traducción de "si no hay dato, muestra esto".
+
+Dos funciones más, para trocear un texto por un separador. `LOCATE(busca, texto)` devuelve la posición en la que aparece lo buscado (0 si no está), y `SUBSTRING_INDEX(texto, separador, n)` devuelve lo que hay antes del separador número *n*; con *n* negativo cuenta desde el final y devuelve lo que hay después:
+
+```sql
+SELECT email,
+       LOCATE('@', email)              AS posicion_arroba,
+       SUBSTRING_INDEX(email, '@', -1) AS dominio
+FROM clientes;
+```
+
+Resultado:
+
+```
++-------------------+-----------------+-------------+
+| email             | posicion_arroba | dominio     |
++-------------------+-----------------+-------------+
+| ana@example.org   |               4 | example.org |
+| lucia@example.org |               6 | example.org |
+| marc@example.org  |               5 | example.org |
+| raul@example.org  |               5 | example.org |
+| sara@example.org  |               5 | example.org |
++-------------------+-----------------+-------------+
+```
 
 ### Números
 
@@ -689,7 +955,7 @@ Resultado el 20/11/2026 (lo que se calcula con `CURDATE()` cambia cada día):
 +--------------+------------+-----------+-------------------+--------------------+
 ```
 
-`DATEDIFF` da días. Para contar **unidades completas** entre dos fechas —meses cumplidos, años cumplidos— está `TIMESTAMPDIFF(unidad, desde, hasta)`. Aquí, los meses completos que habrá cumplido cada pedido el último día de 2026, junto a los días, para comparar:
+`MONTH(fecha)` y `DAY(fecha)` hacen con el mes y el día lo que `YEAR` hace con el año. `DATEDIFF` da días. Para contar **unidades completas** entre dos fechas —meses cumplidos, años cumplidos— está `TIMESTAMPDIFF(unidad, desde, hasta)`. Aquí, los meses completos que habrá cumplido cada pedido el último día de 2026, junto a los días, para comparar:
 
 ```sql
 SELECT id,
@@ -712,7 +978,7 @@ Resultado:
 +----+------------+-----------------+------+
 ```
 
-La tentación es calcular los años dividiendo los días entre 365, o restando los años de las dos fechas. Ninguna de las dos cuenta años **cumplidos**. Pruébalo con el día anterior a un primer aniversario (un `SELECT` sin `FROM` calcula sobre los valores que le des, sin leer ninguna tabla):
+La tentación es calcular los años dividiendo los días entre 365, o restando los años de las dos fechas. Ninguna de las dos cuenta años **cumplidos**. Pruébalo con el día anterior a un primer aniversario:
 
 ```sql
 SELECT TIMESTAMPDIFF(YEAR, '2025-03-10', '2026-03-09') AS anios_completos,
@@ -799,6 +1065,8 @@ Si lo que necesitas es un 0, se lo pides tú con la función del apartado 4: `CO
 
 Y una regla sintáctica sin excepciones: **no se puede usar un agregado en el WHERE** (`WHERE COUNT(*) > 3` es error siempre). El WHERE se evalúa fila a fila, antes de que exista ningún recuento. Para filtrar sobre agregados está el HAVING del apartado siguiente.
 
+Y una tentación: pedir, junto al agregado, una columna normal. `SELECT nombre, MAX(precio) FROM productos;` parece que pregunta por el nombre del producto más caro, y lo que responde MySQL es `ERROR 1140`: el agregado ha reducido las seis filas a una, y «el nombre» de seis productos no es ninguno. Cómo se pregunta de verdad por el más caro lo verás en el apartado 8.
+
 ### Ejercicios del apartado
 
 - **E18.** ¿Cuánto dinero vale todo el stock de la tienda? (una sola cifra)
@@ -837,6 +1105,33 @@ Resultado:
 
 Visualiza lo que ocurre: el SGBD reparte las 6 filas en 3 montones (Periféricos, Monitores, Accesorios) y ejecuta los agregados dentro de cada montón. El resultado tiene una fila por grupo.
 
+Se puede agrupar por más de una columna: cada **combinación** distinta de valores forma un grupo.
+
+```sql
+-- ¿Cuántos clientes de cada provincia se dieron de alta cada año?
+SELECT provincia,
+       YEAR(alta) AS anio_alta,
+       COUNT(*)   AS num_clientes
+FROM clientes
+GROUP BY provincia, YEAR(alta);
+```
+
+Resultado:
+
+```
++-----------+-----------+--------------+
+| provincia | anio_alta | num_clientes |
++-----------+-----------+--------------+
+| Zaragoza  |      2025 |            1 |
+| Huesca    |      2025 |            1 |
+| NULL      |      2026 |            1 |
+| Zaragoza  |      2026 |            1 |
+| Teruel    |      2026 |            1 |
++-----------+-----------+--------------+
+```
+
+Zaragoza, que agrupando solo por provincia sería un montón de dos clientes, se parte en dos montones de uno. Y fíjate en Sara: al agrupar, los NULL **sí** se juntan entre sí y forman su propio grupo, al revés de lo que pasaba en las comparaciones del apartado 2.
+
 **Regla de oro:** en un SELECT con `GROUP BY`, cada columna que aparezca fuera de una función de agregado debe estar en el `GROUP BY`. Si escribes `SELECT categoria, nombre, COUNT(*) ... GROUP BY categoria`, la pregunta "¿qué nombre?" no tiene respuesta: en el montón "Periféricos" hay tres nombres. MySQL en modo estricto (`only_full_group_by`, el de nuestras máquinas) te dará error; otros modos devuelven un nombre arbitrario, que es peor porque parece funcionar.
 
 ### Filtrar grupos: HAVING
@@ -865,6 +1160,8 @@ La distinción que cae seguro en el examen: **`WHERE` filtra filas antes de agru
 ```
 FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT
 ```
+
+Este orden explica lo que viste en el apartado 3: el alias de una columna nace en el SELECT, así que el WHERE, que va antes, todavía no lo conoce, y el ORDER BY, que va después, sí.
 
 Ejemplo con los dos filtros, léelo siguiendo ese orden:
 
@@ -929,7 +1226,7 @@ Resultado:
 +----+------------+--------------+
 ```
 
-Fíjate en los **alias de tabla** (`p`, `c`): obligatorios en este módulo en cuanto hay más de una tabla, porque `id` existe en ambas y sin prefijo la consulta es ambigua.
+Fíjate en los **alias de tabla** (`p`, `c`): obligatorios en este módulo en cuanto hay más de una tabla, porque `id` existe en ambas y sin prefijo la consulta es ambigua. El alias de tabla se escribe sin `AS` (lo admite, pero la costumbre es omitirlo). Y `JOIN` a secas significa lo mismo que `INNER JOIN`: lo encontrarás escrito de las dos maneras.
 
 El mecanismo: para cada fila de `pedidos`, el SGBD busca las filas de `clientes` cuyo `id` coincide con su `cliente_id`, y produce una fila combinada por cada pareja. Las filas sin pareja **desaparecen**: Sara y Ana no salen porque no tienen pedidos. Con nuestros datos: 4 pedidos → 4 filas.
 
@@ -957,7 +1254,7 @@ Resultado:
 +--------------+--------+------------+
 ```
 
-Ahora salen 6 filas: los 4 pedidos con su cliente, más Sara y Ana con `pedido` y `fecha` a **NULL**. El LEFT JOIN promete: "todas las filas de la tabla izquierda saldrán, casen o no". (RIGHT JOIN es lo mismo conservando la derecha; en la práctica casi todo el mundo escribe LEFT y ordena las tablas para ello.)
+Ahora salen 6 filas: los 4 pedidos con su cliente, más Sara y Ana con `pedido` y `fecha` a **NULL**. El LEFT JOIN promete: "todas las filas de la tabla izquierda saldrán, casen o no". (RIGHT JOIN es lo mismo conservando la derecha; en la práctica casi todo el mundo escribe LEFT y ordena las tablas para ello. La composición que conserva las dos tablas a la vez, `FULL OUTER JOIN`, existe en otros gestores pero no en MySQL: cuando haga falta, se construye uniendo un LEFT y un RIGHT con el `UNION` del apartado 9.)
 
 De esa promesa sale el patrón más útil del comercio real:
 
@@ -982,7 +1279,48 @@ Resultado:
 
 Léelo despacio: traigo a todos los clientes, engancho sus pedidos, y me quedo con las filas donde el enganche falló. Este patrón (**LEFT JOIN + IS NULL**) hay que saber explicarlo con tus palabras en la defensa; es de las preguntas favoritas.
 
-Un matiz avanzado que distingue el sobresaliente: en un LEFT JOIN, **no es lo mismo poner una condición en el ON que en el WHERE**. `LEFT JOIN pedidos p ON p.cliente_id = c.id AND p.fecha >= '2026-06-01'` conserva a todos los clientes y solo engancha sus pedidos de junio; la misma condición en el WHERE (`WHERE p.fecha >= '2026-06-01'`) elimina las filas con fecha NULL... y de paso convierte tu LEFT JOIN en un INNER encubierto. Ejecuta ambas contra nuestros datos y compara.
+Un matiz avanzado que distingue el sobresaliente: en un LEFT JOIN, **no es lo mismo poner una condición en el ON que en el WHERE**. `LEFT JOIN pedidos p ON p.cliente_id = c.id AND p.fecha >= '2026-06-01'` conserva a todos los clientes y solo engancha sus pedidos de junio; la misma condición en el WHERE (`WHERE p.fecha >= '2026-06-01'`) elimina las filas con fecha NULL... y de paso convierte tu LEFT JOIN en un INNER encubierto. Compara. Con la condición en el `ON`:
+
+```sql
+SELECT c.nombre, p.id AS pedido, p.fecha
+FROM clientes c
+LEFT JOIN pedidos p ON p.cliente_id = c.id
+                   AND p.fecha >= '2026-06-01';
+```
+
+Resultado:
+
+```
++--------------+--------+------------+
+| nombre       | pedido | fecha      |
++--------------+--------+------------+
+| Lucía Aranda |      2 | 2026-06-15 |
+| Marc Ferrer  |   NULL | NULL       |
+| Sara Osuna   |   NULL | NULL       |
+| Raúl Domingo |      4 | 2026-06-28 |
+| Ana Peralta  |   NULL | NULL       |
++--------------+--------+------------+
+```
+
+Los cinco clientes siguen ahí; Marc, que solo compró en mayo, se queda sin pareja. Con la misma condición en el `WHERE`:
+
+```sql
+SELECT c.nombre, p.id AS pedido, p.fecha
+FROM clientes c
+LEFT JOIN pedidos p ON p.cliente_id = c.id
+WHERE p.fecha >= '2026-06-01';
+```
+
+Resultado:
+
+```
++--------------+--------+------------+
+| nombre       | pedido | fecha      |
++--------------+--------+------------+
+| Lucía Aranda |      2 | 2026-06-15 |
+| Raúl Domingo |      4 | 2026-06-28 |
++--------------+--------+------------+
+```
 
 ### Apartado 7.3. CROSS JOIN y el producto cartesiano
 
@@ -1048,11 +1386,39 @@ Resultado:
 
 (Agrupamos por `c.id` además de por nombre: dos clientes podrían llamarse igual, y la clave primaria es lo que de verdad identifica al cliente.)
 
+Si el informe tiene que incluir a quien no tiene nada —los clientes sin pedidos, con un 0—, el JOIN pasa a ser LEFT, y entonces importa **qué** se cuenta:
+
+```sql
+-- Número de pedidos de cada cliente, también de los que no tienen ninguno
+SELECT c.nombre,
+       COUNT(*)    AS con_asterisco,
+       COUNT(p.id) AS con_columna
+FROM clientes c
+LEFT JOIN pedidos p ON p.cliente_id = c.id
+GROUP BY c.id, c.nombre;
+```
+
+Resultado:
+
+```
++--------------+---------------+-------------+
+| nombre       | con_asterisco | con_columna |
++--------------+---------------+-------------+
+| Lucía Aranda |             2 |           2 |
+| Marc Ferrer  |             1 |           1 |
+| Sara Osuna   |             1 |           0 |
+| Raúl Domingo |             1 |           1 |
+| Ana Peralta  |             1 |           0 |
++--------------+---------------+-------------+
+```
+
+`COUNT(*)` cuenta filas, y el LEFT JOIN ha fabricado una fila para Sara y otra para Ana, con los datos del pedido a NULL: les sale 1, que es falso. `COUNT(p.id)` cuenta solo las filas en las que hay pedido, y da 0. Regla: después de un LEFT JOIN se cuenta una columna de la tabla derecha, nunca el asterisco. Se comprueba mirando a quien sabes que no tiene nada: si a Sara le sale un 1, estás contando la fila de relleno.
+
 ### Ejercicios del apartado
 
 - **E27.** Listado de líneas de pedido "legible": fecha del pedido, nombre del producto y cantidad, ordenado por fecha.
 - **E28.** Productos que no se han vendido nunca (nombre y stock). Usa el patrón del apartado 7.2.
-- **E29.** Número de pedidos por cliente, **incluyendo con 0 a los que nunca han comprado**. Pista: LEFT JOIN + un COUNT sobre la columna adecuada (piensa por qué `COUNT(*)` daría 1 en vez de 0 para Sara).
+- **E29.** Para cada producto, en cuántos pedidos aparece, **incluyendo con 0 a los que no se han vendido nunca**. Antes de ejecutar, di qué producto debe salir con 0, y úsalo para comprobar que no estás contando la fila de relleno.
 - **E30.** Facturación total por categoría de producto.
 - **E31.** Ejecuta la consulta 7.4 cambiando el primer INNER por LEFT (y razona si los siguientes también deben cambiar). ¿Qué filas nuevas aparecen y con qué valores? Escribe la respuesta antes de ejecutar y comprueba.
 
@@ -1218,7 +1584,7 @@ Cómo se comprueba: antes de fiarte de un `NOT IN`, ejecuta sola la subconsulta 
 
 ### Ejercicios del apartado
 
-- **E32.** Productos más caros que el producto medio de su misma tienda (consulta (a) adaptada — ya la tienes casi hecha).
+- **E32.** Productos más baratos que el precio medio de los productos **que tienen stock** (adapta la consulta (a): piensa en cuál de los dos SELECT va el filtro del stock).
 - **E33.** Con subconsulta e IN: clientes que han comprado algún producto de la categoría Periféricos.
 - **E34.** Reescribe E33 con JOIN. ¿Necesitas `DISTINCT`? ¿Por qué?
 - **E35.** Con NOT EXISTS: productos que no aparecen en ninguna línea de pedido. Compara mentalmente con tu solución de E28.
@@ -1370,6 +1736,30 @@ Resultado:
 
 Sí: es la **tercera** manera de resolver "productos nunca vendidos", junto al LEFT JOIN + IS NULL del apartado 7 y al NOT EXISTS del apartado 8. En versiones sin INTERSECT/EXCEPT, los patrones de los apartados 7 y 8 son el sustituto. En la defensa se te puede pedir traducir entre las tres formas.
 
+`INTERSECT` se escribe igual y se queda con lo que está en los dos resultados:
+
+```sql
+-- Clientes de Zaragoza que además han comprado alguna vez
+SELECT nombre FROM clientes WHERE provincia = 'Zaragoza'
+INTERSECT
+SELECT c.nombre
+FROM clientes c
+INNER JOIN pedidos p ON p.cliente_id = c.id;
+```
+
+Resultado:
+
+```
++--------------+
+| nombre       |
++--------------+
+| Lucía Aranda |
+| Raúl Domingo |
++--------------+
+```
+
+Lucía tiene dos pedidos y aun así sale una vez: como `UNION`, `INTERSECT` y `EXCEPT` eliminan duplicados.
+
 ### Ejercicios del apartado
 
 - **E37.** Directorio unificado: una sola consulta que devuelva dos columnas (`tipo`, `nombre`) con todos los clientes etiquetados como `'CLIENTE'` y todos los productos etiquetados como `'PRODUCTO'`, ordenado por tipo y nombre.
@@ -1386,9 +1776,9 @@ Sí: es la **tercera** manera de resolver "productos nunca vendidos", junto al L
 
 Hasta aquí hemos juzgado las consultas por una sola cosa: si devuelven el resultado correcto. Ese es el 90% de la nota — pero el SQL correcto que tarda 30 segundos en responder **rompe la aplicación web** igual que el incorrecto. Este apartado te da el 10% restante: criterios para escribir consultas eficientes y, más importante, la herramienta para **medir** en lugar de opinar.
 
-### Apartado 10.1. Un juego de datos donde el tiempo se note
+### Apartado 10.1. Un juego de datos donde el plan importe
 
-Con las 4 filas de `pedidos` todo es instantáneo. Carga este script, que crea un histórico sintético de **100.000 pedidos** — y fíjate: solo usa piezas de esta unidad (`CROSS JOIN` del apartado 7.3 para multiplicar filas y `UNION ALL` del apartado 9 para fabricar los dígitos 0-9); la sentencia `INSERT ... SELECT` que lo envuelve la estudiaremos a fondo en la UD6, hoy basta con ejecutarla:
+Con las 4 filas de `pedidos` todo es instantáneo. Con 100.000 tampoco vas a notar la espera a simple vista —un equipo actual las lee en centésimas de segundo—, pero el plan de ejecución ya cambia, y el plan es lo que crece con los datos: lo que aquí son cien mil filas leídas de más, en la tabla de una tienda real son cien millones. Carga este script, que crea un histórico sintético de **100.000 pedidos** — y fíjate: solo usa piezas de esta unidad (`CROSS JOIN` del apartado 7.3 para multiplicar filas y `UNION ALL` del apartado 9 para fabricar los dígitos 0-9); la sentencia `INSERT ... SELECT` que lo envuelve la estudiaremos a fondo en la UD6, hoy basta con ejecutarla:
 
 ```sql
 DROP TABLE IF EXISTS pedidos_hist;
@@ -1457,6 +1847,10 @@ El plan es una fila con una docena de columnas (aquí se muestran las que import
 | `key` | Índice que va a usar | `NULL` = ninguno |
 | `rows` | Estimación de filas que examinará | Cuanto más cerca del tamaño real del resultado, mejor |
 
+Hay una cuarta columna, `Extra`, con anotaciones. Te bastan tres: `Using index` (le ha bastado el índice, sin ir a la tabla), `Using filesort` (ha tenido que ordenar el resultado por su cuenta: caro en tablas grandes) y `Backward index scan` (recorre un índice de atrás adelante, y así se ahorra ordenar).
+
+El plan es una fila muy ancha. En Workbench se lee bien en la rejilla; si la prefieres en vertical, el menú **Query** tiene *Execute Current Statement (Vertical Text Output)*. En la consola `mysql` se consigue lo mismo terminando la sentencia en `\G` en vez de en `;`.
+
 `rows` es una **estimación** del optimizador, no un recuento: sirve para comparar tamaños (cien mil frente a tres mil), no para cuadrar cifras, y puede variar un poco de un equipo a otro.
 
 En la consulta de arriba verás `type: ALL`, `key: NULL` y `rows` ≈ 100.000: para responder va a leer **la tabla entera** y aplicar `YEAR()` y `MONTH()` a cada fila. Eso se llama *full table scan*, y es el enemigo a batir.
@@ -1469,7 +1863,7 @@ Un **índice** es una estructura ordenada auxiliar (en MySQL, un árbol B) que e
 CREATE INDEX idx_pedidos_hist_fecha ON pedidos_hist (fecha);
 ```
 
-(`CREATE INDEX` es formalmente DDL y lo situaremos en la UD5 con el resto de la definición de datos; aquí lo usamos como herramienta.) Las claves primarias y las UNIQUE ya llevan índice automático — por eso `WHERE id = 7` siempre ha sido instantáneo.
+(`CREATE INDEX` es formalmente DDL y lo situaremos en la UD5 con el resto de la definición de datos; aquí lo usamos como herramienta.) Las claves primarias y las UNIQUE ya llevan índice automático — por eso `WHERE id = 7` siempre ha sido instantáneo. En MySQL lo llevan también las claves ajenas: `SHOW INDEX FROM pedidos;` te enseña uno sobre `cliente_id` que nadie ha creado a mano.
 
 Dos herramientas más, para no perderte: `SHOW INDEX FROM pedidos_hist;` lista los índices que tiene una tabla, y `DROP INDEX idx_pedidos_hist_fecha ON pedidos_hist;` borra el que acabas de crear, por si quieres volver al «antes» y repetir el experimento. Si ejecutas dos veces el `CREATE INDEX` sin borrarlo entre medias, MySQL responde `ERROR 1061: Duplicate key name 'idx_pedidos_hist_fecha'`: no se ha roto nada, el índice ya estaba.
 
@@ -1520,7 +1914,7 @@ La transformación mental es siempre la misma: **mueve el cálculo al lado del v
 
 ### Apartado 10.4. Todo tiene un precio: por qué no indexar todo
 
-Si los índices aceleran, ¿por qué no crear uno por columna? Porque un índice se paga en cada escritura: cada `INSERT`, `UPDATE` o `DELETE` sobre la tabla debe actualizar además **todos** sus índices, y cada uno ocupa espacio comparable a la columna que indexa. Una tabla con diez índices lee rápido y escribe lento — y `pedidos` en una tienda real es una tabla que **escribe** constantemente. Criterio: se indexan las columnas por las que se **busca, filtra, ordena o enlaza** con frecuencia (las claves ajenas de los JOIN son las primeras candidatas), y se comprueba con EXPLAIN que el índice se usa de verdad. Un índice que ningún plan utiliza es coste puro.
+Si los índices aceleran, ¿por qué no crear uno por columna? Porque un índice se paga en cada escritura: cada `INSERT`, `UPDATE` o `DELETE` sobre la tabla debe actualizar además **todos** sus índices, y cada uno ocupa espacio comparable a la columna que indexa. Una tabla con diez índices lee rápido y escribe lento — y `pedidos` en una tienda real es una tabla que **escribe** constantemente. Criterio: se indexan las columnas por las que se **busca, filtra, ordena o enlaza** con frecuencia (las columnas de los `ON` de tus JOIN son las primeras candidatas; como en MySQL las claves ajenas ya traen su índice, antes de crear uno mira con `SHOW INDEX` si existe), y se comprueba con EXPLAIN que el índice se usa de verdad. Un índice que ningún plan utiliza es coste puro.
 
 ### Apartado 10.5. La checklist de optimización del módulo
 
@@ -1546,7 +1940,7 @@ Esto es el nivel de 1.º: criterios y medida. El afinado profesional (índices c
 
 <div style="page-break-before: always;"></div>
 
-## Errores frecuentes y cómo depurarlos
+## Apartado 11. Errores frecuentes y cómo depurarlos
 
 **1. `ERROR 1052: Column 'id' in field list is ambiguous`**
 Hay más de una tabla con esa columna y no has puesto prefijo. Solución: alias de tabla y prefijar *todas* las columnas en consultas multitabla.
@@ -1581,11 +1975,14 @@ Has nombrado una columna que no existe en las tablas de la consulta. Suele ser u
 **11. `ERROR 1046: No database selected` y `ERROR 1146: Table '...' doesn't exist`**
 El primero: en esta sesión no has ejecutado `USE tiendadaw;`. El segundo: el nombre de la tabla está mal escrito, o estás en otra base de datos; `SHOW TABLES;` te dice qué hay en la que tienes elegida.
 
+**12. `ERROR 1242: Subquery returns more than 1 row`**
+Has comparado con `=`, `<` o `>` contra una subconsulta que devuelve varias filas, y esos operadores esperan un solo valor (la forma (a) del apartado 8). O la subconsulta debía devolver uno solo —le falta un agregado o un filtro— o lo que querías era `IN`.
+
 ---
 
 <div style="page-break-before: always;"></div>
 
-## La IA en esta unidad
+## Apartado 12. La IA en esta unidad
 
 Un asistente de IA escribe consultas SELECT correctas para casos sencillos con total soltura, y lo sabéis. Uso razonable en esta unidad: pedirle consultas alternativas a la tuya para comparar enfoques, o que te explique una consulta que no entiendes. Lo que es responsabilidad tuya, la use quien la use: (1) **verificar el resultado contra los datos** — ejecuta la consulta sobre el juego de datos del apartado 0 y comprueba con casos que conozcas que devuelve lo que debe, especialmente con los NULL de Sara y con las filas sin pareja en los JOIN, que es donde más falla el código generado; (2) **poder explicar cada cláusula**. En la defensa de la práctica se te pedirá justificar por qué un JOIN es LEFT y no INNER, reescribir una subconsulta como JOIN, elegir entre UNION y UNION ALL, o interpretar el EXPLAIN de una de tus consultas, con el guion cerrado. "Me lo dio la IA" no es una explicación; "lo verifiqué así" sí lo es.
 
@@ -1593,7 +1990,7 @@ Un asistente de IA escribe consultas SELECT correctas para casos sencillos con t
 
 <div style="page-break-before: always;"></div>
 
-## Actividad evaluativa final
+## Apartado 13. Actividad evaluativa final
 
 **Contexto:** la dirección de TiendaDAW te pide un pequeño cuadro de mando de ventas y una revisión de rendimiento. Trabajas sobre el esquema y los datos del apartado 0 (para AE10 necesitas además el histórico del apartado 10.1). **Tiempo estimado:** 2 horas 30 minutos. **Entrega:** un único script `.sql` con las consultas numeradas y comentadas, por el canal vigente de la evaluación según el escalonado publicado en la programación — consulta el [kit de arranque de la UD0](ud0-presentacion.md) y el manual del alumnado; en caso de duda, manda lo anunciado en el Classroom del módulo. Cada consulta debe ejecutar sin errores y devolver exactamente lo pedido — se corrige ejecutando.
 
@@ -1614,7 +2011,7 @@ Un asistente de IA escribe consultas SELECT correctas para casos sencillos con t
 
 <div style="page-break-before: always;"></div>
 
-## Para ampliar
+## Apartado 14. Para ampliar
 
 - [Manual de referencia de MySQL 8 — capítulo *SELECT Statement*](https://dev.mysql.com/doc/refman/8.4/en/select.html).
 - Manual de referencia de MySQL 8 — [*Set Operations* (UNION, INTERSECT, EXCEPT)](https://dev.mysql.com/doc/refman/8.4/en/set-operations.html) y [*EXPLAIN Output Format*](https://dev.mysql.com/doc/refman/8.4/en/explain-output.html).
