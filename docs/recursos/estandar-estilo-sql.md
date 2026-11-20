@@ -38,20 +38,18 @@ En cualquier equipo profesional, el SQL se escribe con una guía de estilo comú
 Una consulta escrita al estándar, sobre el juego de datos TiendaDAW de la UD4:
 
 ```sql
--- AE4 · Ticket medio por cliente (JOIN interno: solo clientes con compras)
+-- Ejemplo · Facturación total por cliente (JOIN interno: solo clientes con compras)
 SELECT c.nombre,
-       COUNT(DISTINCT p.id)                 AS num_pedidos,
-       ROUND(SUM(lp.cantidad * pr.precio)
-             / COUNT(DISTINCT p.id), 2)     AS gasto_medio_pedido
+       SUM(lp.cantidad * pr.precio) AS total_facturado
 FROM clientes c
-    INNER JOIN pedidos p        ON p.cliente_id = c.id
-    INNER JOIN lineas_pedido lp ON lp.pedido_id = p.id
-    INNER JOIN productos pr     ON pr.id = lp.producto_id
+INNER JOIN pedidos p        ON p.cliente_id = c.id
+INNER JOIN lineas_pedido lp ON lp.pedido_id = p.id
+INNER JOIN productos pr     ON pr.id        = lp.producto_id
 GROUP BY c.id, c.nombre
-ORDER BY gasto_medio_pedido DESC;
+ORDER BY total_facturado DESC;
 ```
 
-Fíjate: número de ejercicio y decisión justificada en el comentario, palabras clave en mayúsculas, una cláusula por línea con los `JOIN` sangrados, alias cortos y todas las columnas prefijadas, alias de resultado en `snake_case`, y punto y coma final.
+Fíjate: rótulo y decisión justificada en el comentario (en una entrega, el rótulo es el número del ejercicio), palabras clave en mayúsculas, una cláusula por línea —también cada `JOIN`—, alias cortos y todas las columnas prefijadas, alias de resultado en `snake_case`, y punto y coma final.
 
 ## Apartado 6. Estatus de estas reglas
 
