@@ -71,7 +71,7 @@ error medio regla aprendida (4.38 €/m2): 101.2 €
 error medio recta ajustada (3.71 €/m2 + 68 €): 97.2 €
 ```
 
-Tres lecciones en cuatro líneas. Primera: aprender **un** número de los datos casi no mejora la regla a mano (101,8 → 101,2 €): la superficie sola no explica el precio. Segunda: dar al modelo **un parámetro más** (el término independiente) ayuda un poco (97,2 €). Tercera, la que importa: con las mismas 320 filas, el modelo del apartado 3 que use también la localidad, el estado y el tipo bajará ese error medio a unos 59 € — no porque el algoritmo sea más listo, sino porque **le has dado la información que faltaba**. Lo que se aprende de los datos nunca es mejor que los datos.
+Tres lecciones en cuatro líneas. Primera: aprender **un** número de los datos casi no mejora la regla a mano (101,8 → 101,2 €): la superficie sola no explica el precio. Segunda: dar al modelo **un parámetro más** (el término independiente) ayuda un poco (97,2 €). Tercera, la que importa: con las mismas 320 filas, el modelo del apartado 3 que use también la localidad, el estado y el tipo bajará ese error medio a unos 59 €, medidos además sobre anuncios que no ha visto — no porque el algoritmo sea más listo, sino porque **le has dado la información que faltaba**. Lo que se aprende de los datos nunca es mejor que los datos.
 
 Fíjate también en lo que **no** ha pasado: no has escrito ningún `if`. La recta la calculó `fit` a partir de los ejemplos; tú elegiste la forma (una recta) y los datos. Esa división del trabajo — la persona elige la pregunta, la forma del modelo y los datos; el algoritmo calcula los parámetros — es la que rige toda la unidad.
 
@@ -82,7 +82,7 @@ Los algoritmos se agrupan por **qué información tienen para aprender**. La pre
 **Aprendizaje supervisado.** Cada ejemplo lleva su **respuesta** conocida — la etiqueta —: el precio al que se alquiló la vivienda, si se alquiló rápido o no. El modelo aprende la relación entre las características (`X`, la tabla de entrada) y la respuesta (`y`, la columna objetivo), y luego predice la respuesta de ejemplos nuevos que no la tienen. Dentro del supervisado hay dos familias según el tipo de respuesta:
 
 - **Regresión**: la respuesta es un **número** continuo. ¿A cuánto alquilar este piso? ¿Cuántos kilos por hectárea dará esta parcela? Algoritmo de la unidad: la **regresión lineal** (apartado 3). Métrica principal: el **coeficiente de determinación**.
-- **Clasificación**: la respuesta es una **categoría** de un conjunto cerrado. ¿Se alquilará en menos de un mes, sí o no? ¿Qué tipo de incidencia es este aviso? Algoritmo de la unidad: el **árbol de decisión** (apartado 4). Métrica principal: la **matriz de confusión** y lo que se calcula a partir de ella.
+- **Clasificación**: la respuesta es una **categoría** de un conjunto cerrado. ¿Se alquilará en 30 días o menos, sí o no? ¿Qué tipo de incidencia es este aviso? Algoritmo de la unidad: el **árbol de decisión** (apartado 4). Métrica principal: la **matriz de confusión** y lo que se calcula a partir de ella.
 
 **Aprendizaje no supervisado.** No hay etiqueta: nadie ha dicho cuál es la respuesta correcta porque no existe una. El modelo busca **estructura** en `X` sola: qué ejemplos se parecen entre sí, qué combinaciones de columnas resumen la tabla. La familia de la unidad es el **agrupamiento** (*clustering*): ¿qué perfiles de vivienda hay en el portal? Algoritmo: **k-medias** (apartado 6). Aquí la calidad no se mide contra una respuesta correcta, porque no la hay; se mide por la coherencia interna de los grupos y, sobre todo, por si tienen sentido para quien los va a usar. La otra familia no supervisada, la **reducción de dimensiones** (resumir muchas columnas en pocas), se menciona para que sepas que existe; no se trabaja en la unidad.
 
@@ -95,7 +95,7 @@ Una tabla vale más que cuatro párrafos cuando hay que decidir. Las cuatro preg
 | Pregunta del portal | ¿Hay respuesta conocida en los datos? | Enfoque | Algoritmo de la unidad | Métrica |
 |---|---|---|---|---|
 | ¿A qué precio publicar este anuncio nuevo? | Sí, `precio_mes` (un número) | Supervisado — regresión | Regresión lineal | Coeficiente de determinación, error medio en euros |
-| ¿Este anuncio se alquilará en menos de 30 días? | Sí, `alquilada_rapido` (sí/no) | Supervisado — clasificación | Árbol de decisión | Matriz de confusión: exactitud, precisión, sensibilidad |
+| ¿Este anuncio se alquilará en 30 días o menos? | Sí, `alquilada_rapido` (sí/no) | Supervisado — clasificación | Árbol de decisión | Matriz de confusión: exactitud, precisión, sensibilidad |
 | ¿Qué perfiles de vivienda se anuncian en el portal? | No: nadie ha definido los perfiles | No supervisado — agrupamiento | k-medias | Inercia, silueta y sentido para el portal |
 | ¿Qué foto poner primero en cada anuncio para que reciba más contactos? | No como tabla: se aprende probando | Por refuerzo | (fuera de la unidad) | Recompensa acumulada |
 
@@ -151,14 +151,14 @@ scikit-learn es la librería de aprendizaje automático clásico de Python: regr
 
 ### Apartado 2.1. Cargar con la ley delante
 
-El reflejo de la UD2 no cambia porque ahora vayas a entrenar: antes de cargar, la lista de comprobación. `viviendas.csv` tiene una columna de dato personal, `contacto_anunciante`; la pregunta del portal no la necesita, así que **no se carga**. Y tiene dos columnas que no son dato personal pero tampoco pueden ser entrada del modelo: `dias_hasta_alquiler` y `alquilada_rapido` son la **respuesta** — lo que ocurrió después de publicar el anuncio —, y `visitas_anuncio` es un dato que **tampoco existe** cuando se publica. Se cargan, porque las dos primeras son los objetivos de los apartados 3 y 4, pero se apartan de `X`; la tercera vuelve en el apartado 7 con nombre propio.
+El reflejo de la UD2 no cambia porque ahora vayas a entrenar: antes de cargar, la lista de comprobación. `viviendas.csv` tiene una columna de dato personal, `contacto_anunciante`; la pregunta del portal no la necesita, así que **no se carga**. Y tiene dos columnas que no son dato personal pero tampoco pueden ser entrada del modelo: `dias_hasta_alquiler` y `alquilada_rapido` son la **respuesta** — lo que ocurrió después de publicar el anuncio: `alquilada_rapido` vale «sí» cuando `dias_hasta_alquiler` es 30 o menos —, y `visitas_anuncio` es un dato que **tampoco existe** cuando se publica. Se cargan, porque las dos primeras son los objetivos de los apartados 3 y 4, pero se apartan de `X`; la tercera vuelve en el apartado 7 con nombre propio.
 
 ```python
 import pandas as pd
 
 v = pd.read_csv("viviendas.csv", usecols=lambda c: c != "contacto_anunciante")
 print(v.shape)
-print(v[["id", "localidad", "tipo", "superficie_m2", "estado", "precio_mes", "alquilada_rapido"]].head())
+print(v[["id", "localidad", "tipo", "superficie_m2", "estado", "precio_mes", "alquilada_rapido"]].head().to_string())
 print(v.dtypes)
 ```
 
@@ -169,7 +169,7 @@ print(v.dtypes)
 1  VIV-002    Tauste     casa            147  reformado         685               sí
 2  VIV-003    Sádaba     casa            211      bueno         710               sí
 3  VIV-004    Sádaba  adosado            149  reformado         685               no
-4  VIV-005    Sádaba    piso             52      bueno         240               sí
+4  VIV-005    Sádaba     piso             52      bueno         240               sí
 id                           str
 localidad                    str
 tipo                         str
@@ -189,7 +189,7 @@ alquilada_rapido             str
 dtype: object
 ```
 
-Dieciséis columnas cargadas de diecisiete (la del correo nunca ha estado en memoria), tipos que dicen la verdad — números como `int64`, texto como `str` —, y el parte rápido que confirma que llega limpio: `v.isna().sum().sum()` da `0` y `v.duplicated().sum()` da `0`. La distribución del objetivo de regresión, para tener la escala en la cabeza cuando midas errores en euros:
+Dieciséis columnas cargadas de diecisiete (la del correo nunca ha estado en memoria; `to_string()` imprime la tabla entera aunque no quepa en el ancho de la pantalla), tipos que dicen la verdad — números como `int64`, texto como `str` —, y el parte rápido que confirma que llega limpio: `v.isna().sum().sum()` da `0` y `v.duplicated().sum()` da `0`. La distribución del objetivo de regresión, para tener la escala en la cabeza cuando midas errores en euros:
 
 ```python
 print(v["precio_mes"].describe().round(1))
@@ -358,7 +358,7 @@ print(len(preprocesado.get_feature_names_out()))
 
 De once columnas a treinta y una: las cinco numéricas intactas y las seis categóricas desplegadas en veintiséis indicadores (ocho localidades, tres tipos, dos valores de ascensor, cuatro estados, siete letras energéticas, dos de calefacción). `get_feature_names_out` te da el nombre de cada una, que necesitarás en el apartado 3 para leer coeficientes.
 
-`Pipeline` encadena el preprocesado y el estimador en **un solo objeto** que se entrena, predice y se guarda como cualquier estimador. Es la forma correcta — la única que evita que el preprocesado vea el conjunto de prueba — y la que se exige en toda entrega de la unidad:
+`Pipeline` encadena el preprocesado y el estimador en **un solo objeto** que se entrena, predice y se guarda como cualquier estimador. Es la forma correcta — la única que evita que el preprocesado vea el conjunto de prueba — y la que se exige en toda entrega de la unidad. Cada paso es una pareja (nombre, objeto): los nombres `"pre"` y `"reg"` los eliges tú, `named_steps["reg"]` recupera el paso por su nombre, y esos mismos nombres volverán en el apartado 5.4, cuando haya que decir a qué paso pertenece cada hiperparámetro:
 
 ```python
 from sklearn.pipeline import Pipeline
@@ -379,12 +379,52 @@ print(round(modelo.score(X_pru, y_pru), 3))
 
 `fit` sobre el pipeline ha hecho dos cosas en orden: ajustar el codificador con las categorías **del entrenamiento** y, con la tabla ya numérica, ajustar la recta; `score` sobre la prueba ha aplicado la misma codificación aprendida y ha medido. Treinta y un coeficientes (uno por columna transformada) y un coeficiente de determinación de 0,884 en datos que el modelo no había visto: es el modelo múltiple del apartado 3, adelantado. Allí aprenderás a leerlo; aquí solo importa la gramática: **crear → `fit` → `predict`/`score`**, con el preprocesado dentro.
 
-Cuando falten valores, la pieza que se añade al `ColumnTransformer` es `SimpleImputer` (con la mediana o la moda del entrenamiento), y cuando el algoritmo mide distancias — k-medias en el apartado 6 —, `StandardScaler`, que pone todas las columnas numéricas en la misma escala. Siempre dentro del pipeline, nunca sobre el `DataFrame` completo: imputar o escalar con la media de **todas** las filas es contar al modelo algo del conjunto de prueba, y eso tiene nombre en el apartado 7.
+**Cuando faltan valores.** Los ficheros del hilo no tienen ausentes, así que para ver la pieza que falta se fabrican tres: se borra la antigüedad de tres anuncios en una copia del entrenamiento y se entrena el mismo pipeline.
+
+```python
+con_huecos = X_ent.copy()
+con_huecos["antiguedad_anios"] = con_huecos["antiguedad_anios"].astype(float)
+con_huecos.loc[con_huecos.index[:3], "antiguedad_anios"] = float("nan")
+print(con_huecos["antiguedad_anios"].isna().sum())
+modelo.fit(con_huecos, y_ent)
+```
+
+```
+3
+ValueError: Input X contains NaN.
+```
+
+El mensaje sigue varias líneas; con la primera basta: el estimador no admite ausentes. La pieza que se añade al `ColumnTransformer` es **`SimpleImputer`**, que rellena cada ausente con un valor aprendido de su columna — la mediana con `strategy="median"`, la moda con `strategy="most_frequent"` —. Ocupa el sitio de `"passthrough"` en la parte numérica:
+
+```python
+from sklearn.impute import SimpleImputer
+
+con_imputador = Pipeline([
+    ("pre", ColumnTransformer([
+        ("num", SimpleImputer(strategy="median"), numericas),
+        ("cat", OneHotEncoder(handle_unknown="ignore"), categoricas),
+    ])),
+    ("reg", LinearRegression()),
+])
+con_imputador.fit(con_huecos, y_ent)
+medianas = con_imputador.named_steps["pre"].named_transformers_["num"].statistics_
+print(dict(zip(numericas, medianas.tolist())))
+print(X["antiguedad_anios"].median(), round(con_imputador.score(X_pru, y_pru), 3))
+```
+
+```
+{'superficie_m2': 112.5, 'habitaciones': 4.0, 'banos': 2.0, 'antiguedad_anios': 33.0, 'planta': 0.0}
+31.5 0.884
+```
+
+Ahora entrena, y `statistics_` enseña con qué ha rellenado: una mediana por columna numérica. Fíjate en la de la antigüedad: **33,0**, la del entrenamiento, y no 31,5, la de las 320 filas del fichero. Por eso el imputador va dentro del pipeline: lo que aprende sale solo del entrenamiento, y con ese mismo 33,0 rellenará la prueba y los anuncios nuevos. Un `fillna` con la mediana de la tabla entera antes de dividir le habría dado al modelo un dato calculado con filas de prueba, y eso tiene nombre en el apartado 7.
+
+Cuando el algoritmo mide distancias — k-medias en el apartado 6 — la pieza que se añade es `StandardScaler`, que pone todas las columnas numéricas en la misma escala, con la misma regla: siempre dentro del pipeline, nunca sobre el `DataFrame` completo.
 
 **Ejercicios del apartado.**
 
 - **E4.** Reproduce el error `could not convert string to float` con tu propio código y después escribe el `ColumnTransformer` para `viviendas.csv` **sin** las columnas `planta` y `calificacion_energetica`. Comprueba cuántas columnas produce (razona el número antes de ejecutar y compáralo con `get_feature_names_out`), entrena el pipeline con `LinearRegression` con la semilla 26 y anota el `score` en prueba junto al 0,884 del apartado. Explica en dos frases si la diferencia te parece relevante y por qué no puedes decidirlo con una sola división.
-- **E5.** Entrena un `DummyRegressor` con estrategia `"median"` dentro de un pipeline sobre las mismas `X_ent`, `y_ent` del apartado 2.4 y obtén su `score` en `X_pru`. Explica por qué no da exactamente 0,0 como el de la media (pista: R² se define contra la media, no contra la mediana) y qué significa un R² negativo. Después escribe una aserción que compruebe que el modelo del apartado 2.4 supera a este `Dummy` en prueba.
+- **E5.** Entrena un `DummyRegressor` con estrategia `"median"` dentro de un pipeline sobre las mismas `X_ent`, `y_ent` del apartado 2.4 y obtén su `score` en `X_pru`. Explica por qué no da 0,0 (pista: R² compara con la media del conjunto en el que se mide, y este modelo predice la mediana de otro conjunto, el de entrenamiento) y qué significa un R² negativo. Después escribe una aserción que compruebe que el modelo del apartado 2.4 supera a este `Dummy` en prueba.
 - **E6.** Divide `viviendas.csv` para clasificación (`alquilada_rapido`) con tres semillas distintas, con y sin `stratify`, y construye una tabla de seis filas con la proporción de «no» en el conjunto de prueba en cada caso. Escribe qué rango de variación has observado sin estratificar y una frase, dirigida al portal, sobre por qué un modelo evaluado sobre 24 «no» y otro sobre 32 «no» no son comparables aunque su exactitud coincida.
 
 <div style="page-break-before: always;"></div>
@@ -529,9 +569,9 @@ print(round(res["residuo"].mean(), 1), round(res["residuo"].std(), 1))
  real  prediccion  residuo      id              localidad tipo  superficie_m2    estado
   780      1003.0   -223.0 VIV-276                 Tauste casa            246     bueno
  1210       996.0    214.0 VIV-067 Ejea de los Caballeros casa            216 reformado
-  610       802.0    -192.0 VIV-255                   Erla casa            235     bueno
- 1350       1166.0    184.0 VIV-256 Ejea de los Caballeros casa            258 reformado
-  845       1002.0    -157.0 VIV-155                 Sádaba casa            245 reformado
+  610       802.0   -192.0 VIV-255                   Erla casa            235     bueno
+ 1350      1166.0    184.0 VIV-256 Ejea de los Caballeros casa            258 reformado
+  845      1002.0   -157.0 VIV-155                 Sádaba casa            245 reformado
 -2.2 79.8
 ```
 
@@ -539,7 +579,26 @@ Los cinco peores residuos son **casas de más de doscientos metros**, unas por e
 
 ![Precio real frente a precio predicho en los 80 anuncios de prueba, con la diagonal de predicción perfecta; cuadrados para el modelo de una variable, círculos para el de once](figuras/ud3-fig02-real-vs-predicho.png)
 
-El gráfico **real frente a predicho** es la figura estándar de cualquier regresión: un punto por anuncio de prueba, y la diagonal discontinua donde caerían si el modelo acertara siempre. Los círculos (once características) se pegan a la diagonal donde los cuadrados (solo superficie) se dispersan; en la esquina superior derecha, las casas caras, los dos modelos se alejan. Es la figura que va en la ficha de cada modelo de regresión que entregues.
+El gráfico **real frente a predicho** es la figura estándar de cualquier regresión: un punto por anuncio de prueba, y la diagonal discontinua donde caerían si el modelo acertara siempre. Los círculos (once características) se pegan a la diagonal donde los cuadrados (solo superficie) se dispersan; en la esquina superior derecha, las casas caras, los dos modelos se alejan. Es la figura que va en la ficha de cada modelo de regresión que entregues, y se dibuja con lo que ya sabes de la UD2 — una nube de puntos por modelo — más una línea entre el precio real más bajo y el más alto, que es la diagonal:
+
+```python
+import os
+import matplotlib.pyplot as plt
+
+os.makedirs("figuras", exist_ok=True)
+fig, ax = plt.subplots(figsize=(7, 6))
+ax.scatter(y_pru, recta.predict(X_pru[["superficie_m2"]]), marker="s", alpha=0.6, label="solo superficie")
+ax.scatter(y_pru, pred_pru, marker="o", alpha=0.8, label="once características")
+extremos = [y_pru.min(), y_pru.max()]
+ax.plot(extremos, extremos, linestyle="--", label="predicción perfecta")
+ax.set_xlabel("Precio real (€/mes)")
+ax.set_ylabel("Precio predicho (€/mes)")
+ax.set_title("Precio real frente a precio predicho — 80 anuncios de prueba")
+ax.legend()
+fig.savefig("figuras/real_vs_predicho.png", dpi=150)
+```
+
+En el eje horizontal va siempre lo real y en el vertical lo predicho: un punto por encima de la diagonal es un anuncio al que el modelo pone más precio del que tuvo.
 
 ### Apartado 3.4. Utilizar el modelo: los anuncios nuevos
 
@@ -589,11 +648,11 @@ Tres cosas que son norma de la unidad. Primera: **la predicción se presenta com
 
 ## Apartado 4. Árboles de decisión: clasificar
 
-La segunda pregunta del portal es de clasificación: ¿este anuncio se alquilará en menos de treinta días? La respuesta no es un número sino una de dos categorías, `alquilada_rapido` vale «sí» o «no», y el algoritmo con el que la abordas es el **árbol de decisión**: una cadena de preguntas sobre las columnas — ¿es un piso? ¿está nuevo? ¿tiene más de dieciocho años? — que termina en una clase. Es el modelo más fácil de leer que existe, y por eso es el mejor para aprender a **juzgar** un clasificador, que es lo que este apartado enseña de verdad.
+La segunda pregunta del portal es de clasificación: ¿este anuncio se alquilará en treinta días o menos? La respuesta no es un número sino una de dos categorías, `alquilada_rapido` vale «sí» o «no», y el algoritmo con el que la abordas es el **árbol de decisión**: una cadena de preguntas sobre las columnas — ¿es un piso? ¿está nuevo? ¿tiene más de dieciocho años? — que termina en una clase. Es el modelo más fácil de leer que existe, y por eso es el mejor para aprender a **juzgar** un clasificador, que es lo que este apartado enseña de verdad.
 
 ### Apartado 4.1. Cómo decide un árbol y cómo se lee
 
-El pipeline es el del apartado 2.4 con dos cambios: el objetivo es la categoría, el estimador es `DecisionTreeClassifier`, y entre las características entra `precio_mes` — el precio al que se publicó el anuncio existe cuando hay que predecir, así que es entrada legítima. `max_depth=4` limita a cuatro el número de preguntas encadenadas; en el apartado 5 verás por qué ese límite no es cosmético.
+El pipeline es el del apartado 2.4 con tres cambios: el objetivo es la categoría, el estimador es `DecisionTreeClassifier`, y entre las características entra `precio_mes` — el precio al que se publicó el anuncio existe cuando hay que predecir, así que es entrada legítima. `max_depth=4` limita a cuatro el número de preguntas encadenadas; en el apartado 5 verás por qué ese límite no es cosmético.
 
 ```python
 import pandas as pd
@@ -647,11 +706,31 @@ print(arbol.named_steps["clf"].classes_)
 ['no' 'sí']
 ```
 
-`export_text` imprime el árbol como texto; con `max_depth=2` se ven los dos primeros niveles y las ramas más profundas aparecen truncadas, que es lo sensato con veintiún nodos. Se lee de arriba abajo, cada sangría es una pregunta más. La raíz pregunta por `estado_nuevo`: para las columnas codificadas, `<= 0` significa «no es de ese estado» y `> 0` «sí lo es». Los `weights` son las filas de entrenamiento de cada clase que llegan a la hoja, en el orden de `classes_` (primero «no», luego «sí»): la hoja `[16, 0]` dice que las dieciséis viviendas nuevas que no son casas se alquilaron **todas** despacio, y la hoja `[0, 15]` que los quince pisos a reformar se alquilaron **todos** rápido. Son las dos reglas limpias que el árbol ha encontrado — lo nuevo se publica caro y tarda; lo barato vuela —, y tienen sentido para el portal.
+`export_text` imprime el árbol como texto; con `max_depth=2` se ven los dos primeros niveles y las ramas más profundas aparecen truncadas, que es lo sensato con veintiún nodos. Se lee de arriba abajo, cada sangría es una pregunta más.
+
+**Cómo elige cada pregunta.** En cada paso el árbol prueba todas las preguntas posibles — cada columna, cada punto de corte — y se queda con la que deja a cada lado los grupos más **puros**, es decir, más de una sola clase. Al empezar tiene 83 «no» y 157 «sí» mezclados; la pregunta ganadora, `estado_nuevo`, aparta a un lado 26 anuncios de los que 21 son «no», y deja al otro 214 de los que 152 son «sí». Después repite lo mismo dentro de cada lado, hasta la profundidad que le dejes. Cuando ya no pregunta más, queda una **hoja**, y la hoja responde la clase que más filas tiene: eso es el `class:` de cada línea. La medida de pureza que usa por defecto se llama *gini*; existe otra, *entropy*, y se elige con el hiperparámetro `criterion`.
+
+La raíz pregunta por `estado_nuevo`: para las columnas codificadas, `<= 0` significa «no es de ese estado» y `> 0` «sí lo es». Los `weights` son las filas de entrenamiento de cada clase que llegan a la hoja, en el orden de `classes_` (primero «no», luego «sí»): la hoja `[16, 0]` dice que las dieciséis viviendas nuevas que no son casas se alquilaron **todas** despacio, y la hoja `[0, 15]` que los quince pisos a reformar se alquilaron **todos** rápido. Son dos reglas limpias — lo nuevo se publica caro y tarda; lo barato vuela —, y tienen sentido para el portal. Hay una tercera, escondida en una rama truncada: de las 63 casas y adosados que no son nuevos ni reformados y no están en Uncastillo, 62 se alquilaron rápido.
 
 ![Dos primeros niveles del árbol de decisión de profundidad 4: cada nodo muestra la pregunta, las filas que llegan y el reparto entre «no» y «sí»](figuras/ud3-fig03-arbol-decision.png)
 
-`plot_tree` dibuja lo mismo; en cada nodo, `value = [83, 157]` es el reparto de las 240 filas de entrenamiento antes de la primera pregunta. Y ahora la lectura crítica: las ramas de la izquierda, por donde pasan 214 de los 240 anuncios, reparten la clase casi a partes iguales (`[62, 152]`, luego `[49, 65]`) y se resuelven con preguntas que no dicen nada al portal — ¿reformado y más de 47 años? —. El árbol ha encontrado dos reglas buenas y el resto es ruido ajustado. Con las columnas tal cual, **no puede ver** lo que decide si un piso se alquila rápido: no es el precio ni la superficie, es el precio *en relación con* la superficie y la localidad, y un árbol solo pregunta por una columna cada vez. El apartado 5 lo resuelve.
+`plot_tree` dibuja lo mismo; en cada nodo, `value = [83, 157]` es el reparto de las 240 filas de entrenamiento antes de la primera pregunta:
+
+```python
+import os
+import matplotlib.pyplot as plt
+from sklearn.tree import plot_tree
+
+os.makedirs("figuras", exist_ok=True)
+fig, ax = plt.subplots(figsize=(14, 7))
+plot_tree(arbol.named_steps["clf"], feature_names=nombres, class_names=list(arbol.named_steps["clf"].classes_),
+          max_depth=2, impurity=False, fontsize=9, ax=ax)
+fig.savefig("figuras/arbol_decision.png", dpi=150)
+```
+
+Dos diferencias con el texto impreso. La figura escribe el corte tal como es, `<= 0.5`, donde `export_text` con `decimals=0` lo redondeaba a `<= 0`: es la misma pregunta; y si algún `value` sale con decimales (`[62.0, 152.0]`), son las mismas filas. Y la flecha de la izquierda, rotulada `True` en la raíz, es la de las filas que **cumplen** la condición — aquí, las que *no* son de ese estado —.
+
+Y ahora la lectura crítica. Por la izquierda de la raíz pasan 214 de los 240 anuncios. Las casas y adosados (`[13, 87]`) se resuelven casi solos: es la tercera regla. Los **pisos** (`[49, 65]`) no: la clase va casi a partes iguales y el árbol los reparte con preguntas que no dicen nada al portal — ¿tiene calefacción? — hasta dejar su hoja más poblada, con 72 pisos de los que 44 son «no». Ahí el árbol apenas mejora a una moneda. Con las columnas tal cual, **no puede ver** lo que decide si un piso se alquila rápido: no es el precio ni la superficie, es el precio *en relación con* la superficie y la localidad, y un árbol solo pregunta por una columna cada vez. El apartado 5 lo resuelve.
 
 ### Apartado 4.2. La matriz de confusión y lo que se calcula con ella
 
@@ -685,7 +764,9 @@ Primera fila: de los 28 anuncios que **de verdad** se alquilaron despacio, el á
 
 - **Sensibilidad** (*recall*): de los que son de esa clase, ¿qué fracción detecta el modelo? Para «no», 23 de 28 = **0,82**. Es la métrica de «¿se me escapan?».
 - **Precisión**: de los que el modelo dice que son de esa clase, ¿qué fracción lo es? Para «no», 23 de 36 = **0,64**: de cada tres anuncios que el árbol marca como lentos, uno era rápido. Es la métrica de «¿doy falsas alarmas?».
-- **F1** es la media armónica de las dos, un resumen útil cuando no sabes cuál pesa más.
+- **F1** resume las dos en una cifra, útil cuando no sabes cuál pesa más: `F1 = 2 × precisión × sensibilidad / (precisión + sensibilidad)`. Para «no», 2 × 0,64 × 0,82 / (0,64 + 0,82) = **0,72**. Es una media que castiga el desequilibrio: con una de las dos a cero, F1 es cero por alta que sea la otra.
+
+Las demás cifras del informe: `support` son las filas **reales** de cada clase en la prueba (28 «no» y 52 «sí»); `macro avg` promedia las dos clases dándoles el mismo peso, y `weighted avg` las promedia según sus filas, así que se parece más a la clase grande.
 
 Y aquí la pregunta que ningún informe responde por ti: **¿qué le importa al portal?** Los anuncios que se alquilan solos no necesitan nada; los que van a tardar son los que hay que llamar, ajustar de precio, mover a la portada. La clase que importa es «no», y de ella importa **no dejar escapar** ninguno: sensibilidad de «no», 0,82. Que la precisión de «no» sea baja significa alguna llamada de más; que la sensibilidad fuera baja significaría anuncios estancados sin que nadie lo supiera. Cada problema tiene su métrica, y elegirla es una decisión de negocio que se escribe en `DECISIONES.md` antes de entrenar.
 
@@ -705,9 +786,29 @@ print(round(tonto.score(X_pru, y_pru), 3))
 
 **Un 65 % de exactitud sin mirar una sola columna**, porque el 65 % de los anuncios son rápidos. Es la **exactitud tramposa**: con clases desequilibradas, la exactitud sola no distingue un modelo de una moneda cargada. Su matriz lo delata — la primera columna está vacía, no detecta ni un lento — y por eso la matriz se enseña siempre junto a la cifra. El árbol sube la exactitud doce puntos y medio, pero lo que de verdad ha ganado el portal está en la primera fila: 23 lentos detectados donde el tonto detectaba cero.
 
+La matriz también se dibuja, y en un informe se lee mejor dibujada. `ConfusionMatrixDisplay.from_predictions` recibe lo mismo que `confusion_matrix` — lo real, lo predicho y las etiquetas en el orden que tú digas — y pinta sobre los ejes que le pases:
+
+```python
+import os
+import matplotlib.pyplot as plt
+from sklearn.metrics import ConfusionMatrixDisplay
+
+os.makedirs("figuras", exist_ok=True)
+fig, ax = plt.subplots(figsize=(4.5, 4))
+ConfusionMatrixDisplay.from_predictions(y_pru, pred_pru, labels=["no", "sí"], ax=ax, colorbar=False)
+ax.set_xlabel("Predicción")
+ax.set_ylabel("Realidad")
+ax.set_title("Árbol de profundidad 4 — 80 anuncios de prueba")
+fig.savefig("figuras/matriz_confusion.png", dpi=150, bbox_inches="tight")
+```
+
+![Matriz de confusión del árbol de profundidad 4 en los 80 anuncios de prueba: realidad en filas, predicción en columnas; 23 y 39 en la diagonal, 5 y 13 fuera](figuras/ud3-fig07-matriz-confusion.png)
+
+Los rótulos de los ejes salen en inglés si no los cambias; con `set_xlabel` y `set_ylabel` quedan como la regla: fila = realidad, columna = predicción. El color solo acompaña: cuanto más claro, más anuncios; la lectura está en las cuatro cifras.
+
 ### Apartado 4.3. Utilizar el modelo: predicción y probabilidad
 
-El árbol no solo devuelve la clase: `predict_proba` devuelve, para cada fila, la proporción de cada clase en la hoja donde cae — una **probabilidad estimada**, en el orden de `classes_`. Los ocho anuncios nuevos no tienen precio publicado todavía; la pregunta natural del portal es «si los publicamos al precio orientativo del apartado 3, ¿se alquilarán rápido?», así que se toma ese precio como `precio_mes`:
+El árbol no solo devuelve la clase: `predict_proba` devuelve, para cada fila, la proporción de cada clase en la hoja donde cae — una **probabilidad estimada**, en el orden de `classes_`. Los ocho anuncios nuevos no tienen precio publicado todavía; la pregunta natural del portal es «si los publicamos al precio orientativo del apartado 3, ¿se alquilarán rápido?», así que se toma ese precio como `precio_mes` (el fichero `resultados/precios_orientativos.csv` lo escribió el código del apartado 3.4: si has empezado un cuaderno nuevo para este apartado, ejecútalo antes):
 
 ```python
 nuevas = pd.read_csv("resultados/precios_orientativos.csv").rename(columns={"precio_orientativo": "precio_mes"})
@@ -752,7 +853,24 @@ NUE-07 reformado                34         no      0.39    11               72
 NUE-08     nuevo                11         no      0.00    17                3
 ```
 
-Mira NUE-08: casa nueva a 1.097 €, probabilidad de alquilarse rápido **0,00**. Parece la predicción más segura de la tabla y es la menos fiable: la hoja 17 la sostienen **tres** anuncios de entrenamiento — las casas nuevas de menos de dieciocho años que había en el portal —, y tres de tres es una casualidad, no una ley. Compáralo con NUE-03, NUE-05 y NUE-06, que caen en la hoja 4 con 63 ejemplos y un 0,98: ahí sí hay base. Un árbol sin restricciones en el tamaño de las hojas produce probabilidades extremas con dos o tres filas detrás, y `min_samples_leaf` — apartado 5 — existe precisamente para impedirlo. NUE-01, con 0,47 sobre 19 ejemplos, está en el filo: la predicción dice «no» porque 0,47 es menos de la mitad, pero decir «no lo sabemos» sería más honesto. El árbol ha decidido que un umbral del 50 % separa las clases; nada obliga a mantenerlo: un portal que prefiera no perderse ningún lento puede marcar como «no» todo lo que baje de 0,60. Con la probabilidad y el soporte en la mano, ese umbral es una decisión tuya, no del algoritmo. Y una cautela que viene del apartado 3: los precios de entrada son predicciones con 59 € de error medio, así que estas probabilidades heredan esa incertidumbre; un modelo que se alimenta de otro modelo no es más preciso que el peor de los dos.
+Mira NUE-08: casa nueva a 1.097 €, probabilidad de alquilarse rápido **0,00**. Parece la predicción más segura de la tabla y es la menos fiable: la hoja 17 la sostienen **tres** anuncios de entrenamiento — las casas nuevas de dieciocho años o menos que había en el portal —, y tres de tres es una casualidad, no una ley. Compáralo con NUE-03, NUE-05 y NUE-06, que caen en la hoja 4 con 63 ejemplos y un 0,98: ahí sí hay base. Un árbol sin restricciones en el tamaño de las hojas produce probabilidades extremas con dos o tres filas detrás, y `min_samples_leaf` — apartado 5 — existe precisamente para impedirlo. NUE-01, con 0,47 sobre 19 ejemplos, está en el filo: la predicción dice «no» porque 0,47 es menos de la mitad, pero decir «no lo sabemos» sería más honesto. El árbol ha decidido que un umbral del 50 % separa las clases; nada obliga a mantenerlo: un portal que prefiera no perderse ningún lento puede marcar como «no» todo lo que no llegue a un umbral más alto. Antes de moverlo, mira qué probabilidades da este árbol:
+
+```python
+proba_pru = arbol.predict_proba(X_pru)[:, list(arbol.classes_).index("sí")]
+print(sorted(set(proba_pru.round(2).tolist())))
+for umbral in [0.50, 0.60, 0.85]:
+    pred_umbral = ["no" if p < umbral else "sí" for p in proba_pru]
+    print(umbral, confusion_matrix(y_pru, pred_umbral, labels=["no", "sí"]).tolist())
+```
+
+```
+[0.0, 0.39, 0.47, 0.81, 0.98, 1.0]
+0.5 [[23, 5], [13, 39]]
+0.6 [[23, 5], [13, 39]]
+0.85 [[25, 3], [21, 31]]
+```
+
+Seis valores en ochenta anuncios: cada hoja da **una** probabilidad, la misma para todo lo que cae en ella. Por eso subir el umbral de 0,50 a 0,60 **no cambia nada**: no hay ninguna hoja entre las dos cifras. Un umbral solo hace algo cuando cruza una de las probabilidades que el árbol produce: con 0,85 cruza la hoja de 0,81, y se detectan 25 de los 28 lentos en vez de 23, a cambio de 21 falsas alarmas en vez de 13. Si un cambio de umbral deja la matriz igual, no es un error de tu código. Con las probabilidades y el soporte en la mano, el umbral es una decisión tuya, no del algoritmo. Y una cautela que viene del apartado 3: los precios de entrada son predicciones con 59 € de error medio, así que estas probabilidades heredan esa incertidumbre; un modelo que se alimenta de otro modelo no es más preciso que el peor de los dos.
 
 ### Apartado 4.4. El mismo algoritmo para regresión
 
@@ -785,7 +903,7 @@ Aquí el árbol pierde, y conviene saber por qué: el precio crece con la superf
 **Ejercicios del apartado.**
 
 - **E11.** Imprime el árbol completo de profundidad 4 con `export_text` (sin `max_depth`, con `show_weights=True`) y localiza las dos hojas más pobladas. Escribe la regla de cada una en una frase en castellano que el portal pueda entender, con el reparto de clases que la respalda, y di cuál de las dos te fías menos y por qué (pista: cuenta las filas que llegan y lo mezcladas que están). Después usa `apply` y `tree_.n_node_samples` sobre el conjunto de prueba para listar cuántos anuncios de prueba caen en hojas sostenidas por menos de cinco ejemplos de entrenamiento.
-- **E12.** A partir de la matriz `[[23, 5], [13, 39]]`, calcula a mano exactitud, precisión y sensibilidad de las dos clases y F1 de «no», y comprueba los ocho valores con el informe. Después inventa una matriz de confusión con la **misma exactitud** (62 aciertos de 80) pero con sensibilidad de «no» por debajo de 0,5, y explica en tres frases por qué el portal preferiría el árbol del apartado a ese modelo inventado.
+- **E12.** A partir de la matriz `[[23, 5], [13, 39]]`, calcula a mano exactitud, precisión y sensibilidad de las dos clases y F1 de «no», y comprueba los seis valores con el informe. Después inventa una matriz de confusión con la **misma exactitud** (62 aciertos de 80) pero con sensibilidad de «no» por debajo de 0,5, y explica en tres frases por qué el portal preferiría el árbol del apartado a ese modelo inventado.
 - **E13.** Cambia el umbral de decisión: con `predict_proba` sobre el conjunto de prueba, marca como «no» todo anuncio cuya probabilidad de «sí» sea menor de 0,60 y calcula la nueva matriz de confusión. Construye una tabla con los umbrales 0,40, 0,50, 0,60 y 0,70 y, para cada uno, sensibilidad y precisión de «no». Escribe qué umbral recomendarías al portal si cada llamada de más cuesta poco y cada anuncio estancado cuesta mucho.
 - **E14.** Entrena un `DecisionTreeRegressor` con `max_depth` 2, 3, 5 y 8 sobre el precio y calcula para cada uno R² y MAE en prueba. Dibuja, para el de profundidad 2, la predicción frente a la superficie (los escalones) sobre la nube de puntos de prueba, y explica con la figura por qué un árbol de regresión no puede reproducir una pendiente.
 
@@ -797,11 +915,29 @@ En el apartado 4 el árbol tenía `max_depth=4` porque lo decía el código. Est
 
 ### Apartado 5.1. Hiperparámetros y parámetros
 
-Un modelo tiene dos clases de números. Los **parámetros** los aprende `fit` — los coeficientes de la recta, las preguntas del árbol — y no los tocas. Los **hiperparámetros** los fijas tú al crear el estimador — `get_params` los enseña — y `fit` no los cambia: la profundidad máxima de un árbol (`max_depth`), el mínimo de filas que debe tener una hoja (`min_samples_leaf`), si las clases deben pesar igual o compensar el desequilibrio (`class_weight`), la fuerza de la regularización en una regresión (`alpha` en `Ridge`). Cada uno controla **cuánta libertad** tiene el modelo para ajustarse a los datos, y esa libertad tiene un precio.
+Un modelo tiene dos clases de números. Los **parámetros** los aprende `fit` — los coeficientes de la recta, las preguntas del árbol — y no los tocas. Los **hiperparámetros** los fijas tú al crear el estimador — `get_params` los enseña — y `fit` no los cambia: la profundidad máxima de un árbol (`max_depth`), el mínimo de filas que debe tener una hoja (`min_samples_leaf`), si todas las filas pesan lo mismo o se compensa el desequilibrio (`class_weight`: con `"balanced"`, equivocarse en un «no» cuenta más que equivocarse en un «sí», porque hay menos «no», y el árbol deja de inclinarse hacia la clase grande), la fuerza de la regularización en una regresión (`alpha` en `Ridge`). Cada uno controla **cuánta libertad** tiene el modelo para ajustarse a los datos, y esa libertad tiene un precio.
 
 ### Apartado 5.2. Sobreajuste e infraajuste
 
 Deja crecer el árbol sin límite y mira lo que pasa con dos exactitudes: la de entrenamiento y la de **validación cruzada**, que se explica en el apartado siguiente y que por ahora puedes leer como «la exactitud esperable en datos nuevos, estimada sin usar la prueba». La función `curva` entrena un árbol por profundidad y anota las dos, para las columnas del apartado 4 y para esas columnas más una **característica derivada**: el precio por metro cuadrado, que se calcula a partir de dos columnas que ya existen cuando se publica el anuncio.
+
+**Para seguir este apartado en un cuaderno nuevo.** El código continúa el del apartado 4. Si abres un cuaderno aparte, empieza por esta celda; si sigues en el mismo, repetirla no estropea nada.
+
+```python
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import confusion_matrix
+
+v = pd.read_csv("viviendas.csv", usecols=lambda c: c != "contacto_anunciante")
+categoricas = ["localidad", "tipo", "ascensor", "estado", "calificacion_energetica", "calefaccion"]
+```
+
+Y la curva:
 
 ```python
 from sklearn.model_selection import cross_val_score
@@ -856,11 +992,32 @@ print(tabla_m2.to_string(index=False))
 
 ![Exactitud de entrenamiento y de validación cruzada frente a la profundidad del árbol, con y sin la característica precio_m2, y la línea del clasificador tonto en 0,65](figuras/ud3-fig04-profundidad-sobreajuste.png)
 
+La figura sale de las dos tablas. El único detalle es el eje horizontal: `None` no es un número, y si dibujas la columna `profundidad` tal cual, el último punto se rotula `nan`; por eso se construye una lista de rótulos de texto y se dibuja contra ella.
+
+```python
+import os
+import matplotlib.pyplot as plt
+
+os.makedirs("figuras", exist_ok=True)
+rotulos = ["sin límite" if p is None else str(p) for p in profundidades]
+fig, ax = plt.subplots(figsize=(10, 6))
+ax.plot(rotulos, tabla_base["entrenamiento"], marker="o", label="entrenamiento — columnas base")
+ax.plot(rotulos, tabla_base["validacion_cruzada"], marker="o", linestyle="--", label="validación cruzada — columnas base")
+ax.plot(rotulos, tabla_m2["entrenamiento"], marker="^", label="entrenamiento — base + precio_m2")
+ax.plot(rotulos, tabla_m2["validacion_cruzada"], marker="^", linestyle="--", label="validación cruzada — base + precio_m2")
+ax.axhline(0.65, linestyle=":", color="gray", label="clasificador tonto, 0,65")
+ax.set_xlabel("Profundidad máxima del árbol (max_depth)")
+ax.set_ylabel("Exactitud")
+ax.set_title("Sobreajuste: exactitud de entrenamiento frente a validación cruzada")
+ax.legend()
+fig.savefig("figuras/profundidad_sobreajuste.png", dpi=150)
+```
+
 La figura resume tres ideas que valen para cualquier algoritmo.
 
 **Sobreajuste.** Con las columnas base, la exactitud de entrenamiento sube sin parar hasta 1,000 — el árbol sin límite se sabe las 240 filas de memoria — mientras la validación cruzada se queda plana entre 0,65 y 0,70, pegada a la línea del clasificador tonto. Un modelo que mejora en entrenamiento y no en validación **está memorizando, no aprendiendo**: ajusta el ruido de sus datos y ese ruido no se repite en los nuevos. La distancia entre las dos curvas es la medida del sobreajuste, y es lo que hay que mirar; la columna `prueba` de la tabla, con 80 filas, sube y baja sin lógica (0,775 a profundidad 4, 0,750 a 6, 0,775 a 8) y por eso no sirve para decidir.
 
-**Infraajuste.** En el otro extremo, el árbol de profundidad 1 o 2 con columnas base no llega a 0,72 ni en entrenamiento: le falta libertad para representar lo que hay. Ni tan simple que no aprenda ni tan libre que memorice; el punto bueno está en medio y **se busca**, no se adivina.
+**Infraajuste.** En el otro extremo, el árbol de profundidad 1 o 2 con columnas base se queda en 0,72 incluso en entrenamiento: le falta libertad para representar lo que hay. Ni tan simple que no aprenda ni tan libre que memorice; el punto bueno está en medio y **se busca**, no se adivina.
 
 **La característica manda.** Con `precio_m2`, la curva de validación cruzada entera sube en torno a ocho puntos, y lo hace ya con **profundidad 1**: un árbol de una sola pregunta — ¿cuánto cuesta el metro cuadrado? — alcanza 0,758, más que cualquier árbol sobre columnas crudas a cualquier profundidad. Es la lección que el apartado 4.1 dejó pendiente: el árbol no podía combinar precio y superficie, y en cuanto alguien lo hace por él, aprende. Antes de subir la profundidad o cambiar de algoritmo, pregúntate qué columna le falta al modelo. Esa columna la construyes en el `DataFrame`, con lo que sabes del problema, y es la parte del oficio que ningún hiperparámetro sustituye.
 
@@ -939,6 +1096,28 @@ print(confusion_matrix(y_pru, busqueda_no.best_estimator_.predict(X_pru), labels
 
 Cincuenta y seis combinaciones evaluadas con cinco pliegues cada una — 280 entrenamientos — en unos segundos. La primera búsqueda optimiza la exactitud y elige profundidad 6 sin restricciones: 0,783 en validación cruzada y, medido **una vez** en la prueba, 0,812. La segunda búsqueda optimiza otra cosa, la sensibilidad de «no» que el apartado 4.2 identificó como la métrica del portal, y elige un modelo completamente distinto — más simple, con hojas de al menos veinte filas y las clases equilibradas —: detecta **26 de los 28** lentos, a cambio de veinte falsas alarmas y una exactitud de 0,725. Ninguno es «el mejor»: **se obtiene lo que se optimiza**, y la métrica que le das a `scoring` es la decisión de negocio traducida a código. Mira siempre las dos matrices antes de quedarte con una.
 
+`scoring` admite un nombre entre comillas (`"accuracy"`, `"r2"`) o, cuando la métrica se refiere a **una** clase, `make_scorer`, que convierte una función de métrica en algo que `scoring` entiende: `make_scorer(recall_score, pos_label="no")` es la sensibilidad de «no»; `pos_label` dice de qué clase.
+
+La búsqueda no guarda solo al ganador: `cv_results_` tiene una entrada por combinación probada.
+
+```python
+resultados = pd.DataFrame(busqueda.cv_results_)
+columnas = ["param_clf__max_depth", "param_clf__min_samples_leaf", "param_clf__class_weight",
+            "mean_test_score", "std_test_score"]
+print(resultados[columnas].sort_values("mean_test_score", ascending=False).head(5).round(3).to_string(index=False))
+```
+
+```
+param_clf__max_depth  param_clf__min_samples_leaf param_clf__class_weight  mean_test_score  std_test_score
+                   6                            1                     NaN            0.783           0.115
+                   8                            5                     NaN            0.771           0.132
+                   6                            5                     NaN            0.767           0.134
+                None                            5                     NaN            0.767           0.132
+                   8                           20                     NaN            0.762           0.114
+```
+
+`mean_test_score` es la media de los cinco pliegues y `std_test_score` su desviación típica (el `NaN` de `class_weight` es el `None` de la rejilla). Los cinco primeros están a dos centésimas unos de otros y cada uno baila más de una décima entre pliegues: el ganador lo es **por muy poco**. Con esta tabla se escribe en `DECISIONES.md` qué se descartó y por cuánto.
+
 Dos advertencias de honestidad. `best_score_` es una estimación de validación cruzada, y el modelo ganador se eligió *por* esa estimación, así que está ligeramente inflada; la cifra de prueba, que nadie eligió, es la que se comunica. Y cada búsqueda es un experimento que se apunta en la tabla de `DECISIONES.md`: rejilla, métrica, ganador, cifras. Quien lea tu entrega debe poder ver qué probaste y no solo con qué te quedaste.
 
 **La regularización en regresión.** Ajustar también se aplica a la recta del apartado 3. `Ridge` es una regresión lineal con un hiperparámetro, `alpha`, que penaliza los coeficientes grandes y reparte de otra forma el efecto entre características correlacionadas:
@@ -983,6 +1162,15 @@ La tercera pregunta del portal no tiene respuesta en los datos: «¿qué perfile
 
 ### Apartado 6.1. Escalar antes de medir distancias
 
+**Para seguir este apartado en un cuaderno nuevo.** Como en el apartado 5: el código continúa el de los anteriores. En un cuaderno aparte, empieza por esta celda. El apartado 6.3 lee además `resultados/precios_orientativos.csv`, que escribe el código del apartado 3.4.
+
+```python
+import pandas as pd
+from sklearn.pipeline import Pipeline
+
+v = pd.read_csv("viviendas.csv", usecols=lambda c: c != "contacto_anunciante")
+```
+
 Para agrupar viviendas se toman tres columnas numéricas — superficie, precio y antigüedad — y se prueba primero sin preparar nada:
 
 ```python
@@ -1003,10 +1191,10 @@ print(v.groupby("grupo_sin_escalar")[columnas].agg(["min", "max"]).to_string())
 grupo_sin_escalar                                                         
 0                            86  246        490   815                4  95
 1                            45  206        160   500                1  95
-2                            168  258        820  1530                2  65
+2                           168  258        820  1530                2  65
 ```
 
-Los tres grupos son **tramos de precio** — hasta 500 €, de 490 a 815, más de 820 — y nada más: la superficie se solapa entre grupos y la antigüedad va de 1 a 95 en dos de ellos. La razón es aritmética. El precio va de 160 a 1.530, la antigüedad de 0 a 95: una diferencia de 400 € pesa en la distancia cuatro veces más que la mayor diferencia de antigüedad posible, y el algoritmo solo ve precios. **Escalar** — restar la media y dividir por la desviación típica, con `StandardScaler` — pone las tres columnas en la misma unidad, y se hace dentro de un pipeline por la misma razón que en el apartado 2.4: para que la escala se aprenda una vez y se aplique igual a los anuncios nuevos.
+Los tres grupos son **tramos de precio** — hasta 500 €, de 490 a 815, más de 820 — y nada más: la superficie se solapa entre grupos y la antigüedad va de 1 a 95 en dos de ellos. La razón es aritmética. El precio va de 160 a 1.530, la antigüedad de 1 a 95: una diferencia de 400 € pesa en la distancia cuatro veces más que la mayor diferencia de antigüedad posible, y el algoritmo solo ve precios. **Escalar** — restar la media y dividir por la desviación típica, con `StandardScaler` — pone las tres columnas en la misma unidad, y se hace dentro de un pipeline por la misma razón que en el apartado 2.4: para que la escala se aprenda una vez y se aplique igual a los anuncios nuevos.
 
 ```python
 agrupador = Pipeline([("escala", StandardScaler()),
@@ -1028,7 +1216,7 @@ Dos opciones del estimador que no son cosméticas. `random_state` fija los centr
 
 ### Apartado 6.2. Elegir k
 
-k-medias no decide cuántos grupos hay: *k* es un hiperparámetro y lo fijas tú. Sin etiqueta no hay exactitud que maximizar, así que se usan dos medidas internas. La **inercia** es la suma de las distancias al cuadrado de cada fila a su centroide: siempre baja al aumentar *k* (con 320 grupos sería cero), y lo que se busca es el **codo**, el punto a partir del cual añadir un grupo apenas la reduce. El **coeficiente de silueta** mide, para cada fila, cómo de cerca está de su propio grupo comparado con el grupo vecino: va de −1 a 1, y su media es mejor cuanto mayor.
+k-medias no decide cuántos grupos hay: *k* es un hiperparámetro y lo fijas tú. Sin etiqueta no hay exactitud que maximizar, así que se usan dos medidas internas. La **inercia** es la suma de las distancias al cuadrado de cada fila a su centroide: siempre baja al aumentar *k* (con 320 grupos sería cero), y lo que se busca es el **codo**, el punto a partir del cual añadir un grupo apenas la reduce. El **coeficiente de silueta** mide, para cada fila, cómo de cerca está de su propio grupo comparado con el grupo vecino: va de −1 a 1, y su media es mejor cuanto mayor. Para calcularlas se escala la tabla una vez, fuera del pipeline — `fit_transform` es `fit` y `transform` seguidos —: aquí no hay conjunto de prueba al que se le pueda contar nada, porque en un agrupamiento todas las filas son de entrenamiento.
 
 ```python
 from sklearn.metrics import silhouette_score
@@ -1079,7 +1267,7 @@ tipo   adosado  casa  piso
 grupo                     
 0           11    67     1
 1           17    28   126
-2           9    13    48
+2            9    13    48
 alquilada_rapido    no    sí
 grupo                       
 0                 0.23  0.77
@@ -1138,7 +1326,25 @@ Ya sabes medir: coeficiente de determinación, errores en euros, matriz de confu
 
 ### Apartado 7.1. La línea base: un modelo se juzga contra no tener modelo
 
-Toda métrica es relativa. Un R² de 0,884 o una exactitud de 0,775 solo significan algo comparados con lo que se conseguiría **sin aprender nada**: predecir la media, o la clase más frecuente. Ya conoces los dos estimadores tontos; aquí se formaliza la costumbre de ponerlos siempre en la misma tabla que el modelo:
+Toda métrica es relativa. Un R² de 0,884 o una exactitud de 0,775 solo significan algo comparados con lo que se conseguiría **sin aprender nada**: predecir la media, o la clase más frecuente. Ya conoces los dos estimadores tontos; aquí se formaliza la costumbre de ponerlos siempre en la misma tabla que el modelo.
+
+**Para seguir este apartado en un cuaderno nuevo.** Empieza por esta celda, que reúne lo que el apartado usa de los anteriores:
+
+```python
+import pandas as pd
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+
+v = pd.read_csv("viviendas.csv", usecols=lambda c: c != "contacto_anunciante")
+num_reg = ["superficie_m2", "habitaciones", "banos", "antiguedad_anios", "planta"]
+categoricas = ["localidad", "tipo", "ascensor", "estado", "calificacion_energetica", "calefaccion"]
+```
+
+Y la tabla:
 
 ```python
 from sklearn.dummy import DummyRegressor, DummyClassifier
@@ -1307,7 +1513,7 @@ Uso previsto: sugerir un precio al anunciante al publicar. NO es una tasación.
 
 ## 2. Datos de entrenamiento
 `viviendas.csv`, 320 anuncios ya alquilados (datos ficticios de aula), sin ausentes ni duplicados.
-Rango cubierto: 45-258 m², 0-95 años, ocho localidades de las Cinco Villas, 160-1.530 €/mes.
+Rango cubierto: 45-258 m², 1-95 años, ocho localidades de las Cinco Villas, 160-1.530 €/mes.
 
 ## 3. Columnas de entrada y por qué
 superficie_m2, habitaciones, banos, antiguedad_anios, planta (numéricas, tal cual);
@@ -1355,7 +1561,7 @@ El `DECISIONES.md` de esta unidad hereda la estructura del módulo — protecci�
 # DECISIONES — UD3, portal comarcal de vivienda
 
 ## Protección de datos (UD2, apartado 1.3)
-- `viviendas.csv` y `viviendas_nuevas.csv`: `contacto_anunciante` es dato personal → NO se carga (`usecols`).
+- `viviendas.csv`: `contacto_anunciante` es dato personal → NO se carga (`usecols`). `viviendas_nuevas.csv` no trae esa columna.
   Aserción en cada cuaderno: ninguna tabla contiene `@`. Resto de columnas: características de la vivienda, sin personas.
 
 ## Preguntas y enfoques (apartado 1)
@@ -1386,7 +1592,7 @@ El `DECISIONES.md` de esta unidad hereda la estructura del módulo — protecci�
 - Línea base al lado de cada modelo: regresión −0,010 / 180,9 € ; clasificación 0,65 ; agrupamiento asignación aleatoria.
 - Error por subgrupo: casas 93 € frente a pisos 38 €; localidades con menos de 8 filas de prueba no se interpretan.
 - Estabilidad: R² 0,884-0,943 en cinco semillas. Se comunica el rango.
-- Dominio: entradas fuera de 45-258 m² o 0-95 años se marcan antes de predecir.
+- Dominio: entradas fuera de 45-258 m² o 1-95 años se marcan antes de predecir.
 
 ## Herramientas de IA
 - Asistente usado para: (declarar aquí, o "no se ha usado").
@@ -1488,11 +1694,11 @@ Los mensajes de scikit-learn son largos pero precisos; la mayoría de los errore
 
 **`ValueError: Found input variables with inconsistent numbers of samples: [300, 320]`** `X` e `y` no tienen las mismas filas: has filtrado una (`.head(300)`, `dropna`, una condición) y la otra no. Filtra siempre el `DataFrame` **antes** de separar `X` e `y`, nunca después.
 
-**`NotFittedError: This LinearRegression instance is not fitted yet. Call 'fit' with appropriate arguments before using this estimator.`** Has llamado a `predict`, `score` o a un atributo con guion bajo (`coef_`) antes de `fit`. En un pipeline, el mismo error aparece si usas `named_steps["pre"].transform` sin haber entrenado el pipeline completo.
+**`NotFittedError: This LinearRegression instance is not fitted yet. Call 'fit' with appropriate arguments before using this estimator.`** Has llamado a `predict` o a `score` antes de `fit`. En un pipeline, el mismo error — con el nombre de la pieza, `This ColumnTransformer instance…` — aparece si usas `named_steps["pre"].transform` sin haber entrenado el pipeline completo. Pedir antes de `fit` un atributo con guion bajo es el mismo descuido con otro mensaje: `AttributeError: 'LinearRegression' object has no attribute 'coef_'`.
 
 **`KeyError: "['superficie'] not in index"`** Un nombre de columna que no existe, en la lista de características o en un `groupby`. pandas lo dice de dos formas: esta, cuando pides varias columnas y alguna no existe, y `KeyError: "None of [Index(['superficie'], dtype='str')] are in the [columns]"` cuando **ninguna** de las pedidas existe (por ejemplo, solo la mal escrita). `list(v.columns)` lo aclara en un segundo; el error suele ser una tilde, un guion bajo o una mayúscula.
 
-**`ValueError: The feature names should match those that were passed during fit. Feature names seen at fit time, yet now missing: - planta`** Predices con una tabla que no tiene las mismas columnas — o no en el mismo orden — que la de entrenamiento. Usa siempre la **misma lista** de nombres para construir `X` en entrenamiento y en predicción (`nuevas[numericas + categoricas]`), y guarda esa lista como constante en el script.
+**`ValueError: The feature names should match those that were passed during fit. Feature names seen at fit time, yet now missing: - planta`** Predices con una tabla que no tiene las mismas columnas — o no en el mismo orden — que la de entrenamiento. Este es el mensaje de un estimador suelto. Con el pipeline de la unidad, que empieza por un `ColumnTransformer`, la columna que falta se anuncia más corto, `ValueError: columns are missing: {'planta'}`, y el orden deja de importar, porque el `ColumnTransformer` busca cada columna por su nombre. Usa siempre la **misma lista** de nombres para construir `X` en entrenamiento y en predicción (`nuevas[numericas + categoricas]`), y guarda esa lista como constante en el script.
 
 **`ValueError: Found unknown categories ['Ejea de los Caballeros'] in column 0 during transform`** Una categoría que no estaba en el entrenamiento aparece al predecir, y el codificador no tiene `handle_unknown="ignore"`. Ponlo siempre; y si una categoría nueva aparece a menudo, el modelo necesita reentrenarse con datos que la incluyan.
 
