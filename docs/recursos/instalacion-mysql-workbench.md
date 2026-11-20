@@ -24,7 +24,7 @@ En los equipos del aula la instalación necesita una cuenta con permisos de admi
 
 Para la serie 8.4 el camino es el instalador **MSI del servidor**, que trae consigo la aplicación **MySQL Configurator**. El antiguo «MySQL Installer», que instalaba todos los productos a la vez, no forma parte de la instalación de esta serie: si encuentras un tutorial que lo usa, es de una versión anterior.
 
-1. Descarga el MSI de **MySQL Community Server** desde la página oficial de descargas (`https://dev.mysql.com/downloads/mysql/`), eligiendo la serie **8.4 LTS** y el sistema **Microsoft Windows**. Es un fichero `.msi`.
+1. Descarga el MSI de **MySQL Community Server** desde la página oficial de descargas (`https://dev.mysql.com/downloads/mysql/`), eligiendo la serie **8.4 LTS** y el sistema **Microsoft Windows**. Es un fichero `.msi`. En «Select Version» la página propone la versión más reciente (26.x). Cámbiala a 8.4.x LTS antes de pulsar Download.
 2. El servidor necesita el paquete **Microsoft Visual C++ 2019 Redistributable**: si no está en el equipo, instálalo antes desde la web de Microsoft.
 3. Ejecuta el MSI, acepta la licencia y deja el tipo de instalación que viene. El servidor se instala en `C:\Program Files\MySQL\MySQL Server 8.4\`.
 4. Al terminar, el asistente ofrece abrir **MySQL Configurator**. Ábrelo: **el servidor no arranca hasta que se configura.**
@@ -52,7 +52,7 @@ Si algún día necesitas cambiar algo, MySQL Configurator se puede volver a abri
 
 Los pasos de los apartados 4 a 6 son los mismos; solo cambia la instalación.
 
-- **Servidor:** descarga el paquete **DMG** de MySQL Community Server 8.4 desde la misma página de descargas, ábrelo y ejecuta el fichero `.pkg` que contiene. El asistente te pide la **contraseña de `root`** (apúntala) y te deja marcar que el servidor arranque al terminar. Después, el servidor se arranca y se para desde el panel de preferencias **MySQL**.
+- **Servidor:** descarga el paquete **DMG** de MySQL Community Server 8.4 desde la misma página de descargas (en «Select Version», cámbiala a 8.4.x LTS), ábrelo y ejecuta el fichero `.pkg` que contiene. El asistente te pide la **contraseña de `root`** (apúntala) y te deja marcar que el servidor arranque al terminar. Después, el servidor se arranca y se para desde el panel de preferencias **MySQL**.
 - **Workbench:** descarga su DMG, ábrelo y arrastra el icono de MySQL Workbench a la carpeta Aplicaciones.
 
 ## Apartado 4. Crear la conexión
