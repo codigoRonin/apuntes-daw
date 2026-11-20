@@ -79,6 +79,7 @@ nav:
       - "Portada de recursos": recursos/index.md
       - "Entorno de trabajo: VS Code para PHP": recursos/entorno-vscode-php.md
       - "Entorno de trabajo: VS Code para Python": recursos/entorno-vscode-python.md
+      - "Instalación de MySQL Server y MySQL Workbench": recursos/instalacion-mysql-workbench.md
       - "Guía rápida de draw.io": recursos/guia-drawio.md
       - "Estándar de estilo SQL": recursos/estandar-estilo-sql.md
       - "Rúbrica de defensa y de verificación de autoría": recursos/rubrica-defensa.md
