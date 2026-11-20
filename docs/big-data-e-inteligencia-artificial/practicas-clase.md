@@ -7,11 +7,11 @@ Este cuaderno reúne **ejercicios extra de clase**: prácticas más largas que l
 Cómo funciona:
 
 - Cada práctica lleva el código **CPu.n**: cuaderno de prácticas, unidad *u*, número *n*. CP1.1 es la primera práctica de la UD1.
-- Las de la UD1 están pensadas **para casa**, como repaso de una unidad ya impartida; las de la UD2 se trabajan **en clase**, de forma individual o en pareja, según se indique ese día. Lo que no te dé tiempo a terminar en el aula lo acabas en casa y lo traes a la sesión de corrección.
+- Las de la UD1 están pensadas **para casa**, como repaso de una unidad ya impartida; las de la UD2 y la UD3 se trabajan **en clase**, de forma individual o en pareja, según se indique ese día. Lo que no te dé tiempo a terminar en el aula lo acabas en casa y lo traes a la sesión de corrección.
 - **La solución no está aquí.** Se corrige en clase y, después de corregirla, el docente la publica en el Classroom del módulo, con los ficheros resueltos para que los ejecutes y los compares con los tuyos.
-- Las prácticas se hacen con el mismo entorno de la unidad: el **entorno virtual** de la UD1 activo (con `(.venv)` delante del indicador), `python -m py_compile fichero.py` como primer reflejo antes de ejecutar, scripts desde el terminal y cuadernos donde el enunciado lo pida, y VS Code configurado como explica el recurso [Entorno de trabajo: VS Code para Python](../recursos/entorno-vscode-python.md). Trabaja en una carpeta local propia (por ejemplo `cuaderno/ud1/cp1-1/`), fuera de tu repositorio de la unidad en el aula de código, para no mezclarlas con la entrega evaluable. Los ficheros de partida de las prácticas que los necesitan están en el repositorio de recursos (enlace en Classroom); cada práctica se ejecuta **desde su carpeta**, porque las rutas de los datos se resuelven desde donde lanzas `python`.
+- Las prácticas se hacen con el mismo entorno de la unidad: el **entorno virtual** de la UD1 activo (con `(.venv)` delante del indicador), `python -m py_compile fichero.py` como primer reflejo antes de ejecutar, scripts desde el terminal y cuadernos donde el enunciado lo pida, y VS Code configurado como explica el recurso [Entorno de trabajo: VS Code para Python](../recursos/entorno-vscode-python.md). Las de la UD3 usan el entorno de esa unidad, que además tiene scikit-learn. Trabaja en una carpeta local propia (por ejemplo `cuaderno/ud1/cp1-1/`), fuera de tu repositorio de la unidad en el aula de código, para no mezclarlas con la entrega evaluable. Los ficheros de partida de las prácticas que los necesitan están en el repositorio de recursos (enlace en Classroom); cada práctica se ejecuta **desde su carpeta**, porque las rutas de los datos se resuelven desde donde lanzas `python`.
 - Cada práctica indica su **nivel** (básico, intermedio, avanzado o tipo prueba) y un **tiempo orientativo**. Son acumulativas: cada una puede usar todo lo visto en las anteriores. Las intermedias y avanzadas terminan con una tarea **(e) Desde cero**: fichero vacío, el enunciado dice qué hace el programa y da la salida esperada, y los nombres y la estructura los decides tú.
-- **Casi todas traen un error que cazar** en su fichero de partida, del tipo de los del apartado de errores frecuentes de cada unidad (el 9 de la UD1 y el 8 de la UD2). Encontrarlo, entender el mensaje —leído de abajo arriba— y arreglarlo es parte de la práctica. Las trazas que se muestran aquí son las de nuestro equipo: en el tuyo cambiarán las rutas, no el diagnóstico.
+- **Casi todas traen un error que cazar** en su fichero de partida, del tipo de los del apartado de errores frecuentes de cada unidad (el 9 de la UD1, el 8 de la UD2 y el 9 de la UD3). Encontrarlo, entender el mensaje —leído de abajo arriba— y arreglarlo es parte de la práctica. Las trazas que se muestran aquí son las de nuestro equipo: en el tuyo cambiarán las rutas, no el diagnóstico.
 - Las salidas esperadas se han obtenido ejecutando: compara **letra a letra**. Una cifra que no cuadra es un dato, no un detalle.
 - Puedes usar un asistente de IA en estas prácticas, con cabeza y con responsabilidad sobre el resultado, con la misma regla del módulo: el uso se declara —aquí, de palabra, cuando se corrige en clase, porque no hay entrega— y lo que traes lo explicas. Ejecuta y comprueba todo código que te dé un asistente: la IA se equivoca con soltura en nombres de parámetros y de librerías (ver el apartado 10 de la UD1 y el 9 de la UD2). Y recuerda la regla de la UD2: un fichero con datos personales no se pega en un chat.
 
@@ -19,9 +19,9 @@ El cuaderno crece durante el curso: solo aparecen las unidades que tienen práct
 
 ## Los datos del cuaderno
 
-Todas las prácticas, de las dos unidades y el simulacro, trabajan sobre un mismo caso, distinto de los alojamientos rurales y del servicio de deportes de la UD1 y de la calidad del aire y los edificios públicos de la UD2: una **red de observadores de aves de las Cinco Villas**, una asociación ficticia de aficionados que censa aves en seis puntos de la comarca —dos sotos, un embalse, dos zonas de estepa y un pinar— y anota cada **avistamiento**: una especie, en un punto, un día, por un observador, con el número de ejemplares contados y, a veces, una nota de campo. Los datos son de aula, inventados: los topónimos son reales; los puntos, las personas, los recuentos y las notas, no. Los correos usan el dominio reservado `example.org`.
+Todas las prácticas, de las tres unidades y el simulacro, trabajan sobre un mismo caso, distinto de los alojamientos rurales y del servicio de deportes de la UD1, de la calidad del aire y los edificios públicos de la UD2 y del portal de vivienda y la cooperativa de la UD3: una **red de observadores de aves de las Cinco Villas**, una asociación ficticia de aficionados que censa aves en seis puntos de la comarca —dos sotos, un embalse, dos zonas de estepa y un pinar— y anota cada **avistamiento**: una especie, en un punto, un día, por un observador, con el número de ejemplares contados y, a veces, una nota de campo. Los datos son de aula, inventados: los topónimos son reales; los puntos, las personas, los recuentos y las notas, no. Los correos usan el dominio reservado `example.org`.
 
-Vocabulario fijo, para que una palabra signifique siempre lo mismo: un **avistamiento** es una fila del registro; una **bandada** es un avistamiento de **50 ejemplares o más**; un **punto** es un lugar de observación de la red; la **temporada** de la UD1 y la UD2 es el otoño de 2025, del 1 de septiembre al 30 de noviembre; y la **semana** es la del calendario. Si una tarea cambia el umbral, dice «avistamientos de N o más». El registro de la UD2 es el mismo otoño, ensuciado: dos bandadas perdieron su recuento, y por eso la UD2 cuenta 36 y la UD1 38. Limpiar no recupera lo que se perdió al recoger.
+Vocabulario fijo, para que una palabra signifique siempre lo mismo: un **avistamiento** es una fila del registro; una **bandada** es un avistamiento de **50 ejemplares o más**; un **punto** es un lugar de observación de la red; la **temporada** de la UD1 y la UD2 es el otoño de 2025, del 1 de septiembre al 30 de noviembre; y la **semana** es la del calendario. Si una tarea cambia el umbral, dice «avistamientos de N o más». El registro de la UD2 es el mismo otoño, ensuciado: dos bandadas perdieron su recuento, y por eso la UD2 cuenta 36 y la UD1 38. Limpiar no recupera lo que se perdió al recoger. En la UD3 aparece una palabra más, la **jornada**: una visita de censo a un punto en un día, con todo lo que se anotó en ella.
 ## UD1 · Python para datos e IA: lenguaje especializado, entorno y librerías
 
 Cinco prácticas de repaso, una por tramo de la unidad (apartados 1-3, 4-5, 6, 7 y 8), pensadas para casa. Las tres primeras no necesitan el modelo de lenguaje; las dos últimas usan `es_core_news_sm`, el que instalaste en la UD1, y ninguna descarga nada nuevo. Los datos son los de la red de observadores: `avistamientos.csv` (los 194 avistamientos del otoño de 2025), `puntos.json` (los seis puntos), `especies.json` (las diez especies, con su grupo y su estatus) y `notas_campo.csv` (veinte notas de campo). Muestra del registro principal (cabecera y cinco filas; fichero íntegro en el repositorio de recursos):
@@ -1116,3 +1116,322 @@ salta con una fecha fuera de la temporada: hay fechas fuera de la temporada
 #### Al terminar
 
 Ejecuta `python respuestas_ra1.py` y `python respuestas_ra2.py`: tienen que decir `ninguna` en la línea de sin contestar. Después compara tus salidas con las esperadas tarea a tarea y anota qué te ha faltado y por qué: lo que falte en la Parte RA1 se repasa en la UD1; lo de la Parte RA2, en la UD2. Las claves de las cerradas se publican en Classroom con la solución.
+
+## UD3 · Aprendizaje automático: enfoques, modelos, ajuste y validación
+
+Las prácticas de esta unidad se trabajan en clase, una por apartado. La actividad evaluativa de la unidad te pide **usar** las piezas de scikit-learn sobre un caso; estas prácticas te piden **abrirlas**: hacer a mano, sobre tablas pequeñas, lo que la librería hace en una línea, predecir sobre papel antes de ejecutar y cazar errores en código que ya está escrito. Por eso los modelos vienen hechos en los ficheros de partida: aquí no se trata de escribirlos, sino de entender qué hacen. Se usa el entorno de la UD3, con scikit-learn instalado, y la semilla de la unidad, 26.
+
+Los datos son de la misma red de observadores, con una tabla nueva: `jornadas.csv`, las 300 **jornadas de censo** de tres temporadas (otoño de 2024, primavera de 2025 y otoño de 2025). Llega **limpia** y no tiene ninguna columna de persona: en estas prácticas no hay nada que apartar por protección de datos. Muestra (cabecera y cinco filas; fichero íntegro en el repositorio de recursos):
+
+```
+jornada_id,fecha,punto_id,habitat,mes,hora_inicio,duracion_h,temperatura,viento_kmh,nubosidad,observadores,especies,ejemplares,hubo_bandada
+JOR-001,2024-09-02,PUN-01,soto,9,10,3.5,23.6,22,despejado,2,6,269,sí
+JOR-002,2024-09-02,PUN-04,estepa,9,16,2.0,26.3,18,nubes,2,3,50,no
+JOR-003,2024-09-03,PUN-03,estepa,9,9,3.5,18.2,1,despejado,1,7,155,no
+JOR-004,2024-09-03,PUN-06,soto,9,8,3.5,22.5,15,despejado,4,9,124,no
+JOR-005,2024-09-03,PUN-06,soto,9,8,3.5,22.0,19,nubes,3,9,135,no
+```
+
+Las columnas: `fecha` y `mes` de la jornada, `punto_id` y `habitat` del punto, `hora_inicio` (la hora a la que empezó el censo), `duracion_h` horas que duró, `temperatura` en grados, `viento_kmh`, `nubosidad` (despejado, nubes o cubierto), `observadores` (cuántas personas censaron), y lo que se supo **al terminar**: `especies` (cuántas especies distintas se anotaron), `ejemplares` (cuántas aves en total) y `hubo_bandada` («sí» si algún avistamiento de la jornada fue una bandada, 50 ejemplares o más).
+
+### CP3.1 · La regla que se busca sola
+
+**Nivel** básico · **Tiempo orientativo** 20 min.
+
+**Qué refuerza.** El apartado 1 de la [UD3](ud3-aprendizaje-automatico.md): qué es un modelo —una función con parámetros que se ajustan a los datos—, qué es el error y qué quiere decir entrenar; y la pregunta que decide el enfoque: ¿está la respuesta en los datos?
+
+**Ficheros de partida.** `cp3-1/regla.py` y la carpeta `cp3-1/datos/` con `mini_jornadas.csv` (las diez primeras jornadas, con su duración y sus especies) y `jornadas.csv`, en el repositorio de recursos (enlace en Classroom). Se ejecuta desde `cp3-1/`.
+
+**Enunciado.** La red quiere estimar cuántas especies se anotarán en una jornada según las horas que dure. Antes de dejar que una librería lo calcule, lo haces tú: dos reglas a ojo, sus errores con lápiz, y un bucle que busca la regla que menos se equivoca. Las cinco primeras jornadas:
+
+```
+jornada_id,duracion_h,especies
+JOR-001,3.5,6
+JOR-002,2.0,3
+JOR-003,3.5,7
+JOR-004,3.5,9
+JOR-005,3.5,9
+```
+
+**Tareas.**
+
+- **(a) Con lápiz.** Para esas cinco jornadas, calcula lo que diría la regla «especies = 2 × horas» y lo que diría «especies = 3 × horas», el error de cada una en cada jornada (lo real menos lo estimado, sin signo) y el **error medio** de cada regla. Anota cuál de las dos se equivoca menos.
+- **(b) Caza el error.** Ejecuta `python regla.py`: se para con un `KeyError`. El mensaje dice qué nombre de columna no existe; `print(mini.columns.tolist())` te dice cómo se llama de verdad. Arréglalo y compara con tus cuentas de la (a). Última línea de la traza de partida y salida esperada tras el arreglo:
+
+```
+KeyError: 'duracion'
+```
+
+```
+especies = 2 × horas → error medio 1.20
+especies = 3 × horas → error medio 2.80
+```
+
+- **(c) La regla que se busca sola.** Dos reglas son pocas. Donde lo indica el fichero, calcula primero el error medio de las dos reglas sobre las **300** jornadas de `j`. Después escribe un bucle que pruebe todos los multiplicadores de 0,0 a 6,0 de décima en décima (`for decimas in range(0, 61)` y `multiplicador = decimas / 10`), calcule el error medio de cada uno y se quede con el menor. El fichero ya trae, al final, la recta que calcula `LinearRegression`. Salida esperada:
+
+```
+especies = 2 × horas → error medio 1.61
+especies = 3 × horas → error medio 2.03
+el multiplicador que menos se equivoca: 2.3 → error medio 1.53
+especies = 1.07 × horas + 3.17 → error medio 1.21
+```
+
+Escribe en tres líneas: qué ha hecho tu bucle que no hicieras tú a ojo; por qué la recta de `fit` se equivoca menos que tu mejor multiplicador (cuenta cuántos números ha podido ajustar cada una); y qué parte del trabajo sigue siendo tuya aunque el bucle busque solo.
+
+- **(d) ¿Está la respuesta en la tabla?** Para cada una de estas seis preguntas de la red, mira la cabecera de `jornadas.csv` y contesta en un fichero `respuestas.md`: si la respuesta está en una columna (y cuál), si es un número o una categoría, y qué es entonces: regresión, clasificación, agrupamiento o «con esta tabla no se puede». (1) ¿Cuántas especies anotaremos el sábado en el embalse? (2) ¿Habrá bandada? (3) ¿Qué tipos de jornada hacemos, sin que nadie los haya definido antes? (4) ¿Cuántas aves contaremos en total? (5) ¿Qué observador cuenta mejor? (6) ¿Lloverá?
+
+**Cómo trabajar.** La (a) se hace antes de ejecutar nada: son diez multiplicaciones y diez restas, y es la única forma de saber qué significa la cifra que luego imprime el programa. En la (c), fíjate en que tú has elegido la forma de la regla (un número por las horas) y los datos; el bucle solo ha buscado el número. Eso, con matemáticas en vez de con un bucle, es `fit`.
+
+### CP3.2 · Lo que entra y lo que sale
+
+**Nivel** intermedio · **Tiempo orientativo** 40 min (25 + 15 de la tarea desde cero).
+
+**Qué refuerza.** El apartado 2 de la [UD3](ud3-aprendizaje-automatico.md): `X` es siempre una tabla, qué devuelve `train_test_split` y qué cambia `stratify`, en qué se convierten las columnas de texto con `OneHotEncoder` y qué hace `handle_unknown="ignore"` con una categoría que no estaba en el entrenamiento.
+
+**Ficheros de partida.** `cp3-2/entradas.py` y `cp3-2/datos/jornadas.csv`, en el repositorio de recursos (enlace en Classroom). Se ejecuta desde `cp3-2/`. El preprocesado viene escrito: aquí no lo escribes, lo sigues.
+
+**Enunciado.** Antes de entrenar nada conviene saber qué forma tiene cada pieza que entra y que sale. En esta práctica **predices sobre papel** cada forma y cada recuento, y solo después ejecutas para comprobarlo.
+
+**Tareas.**
+
+- **(a) Caza el error.** Ejecuta `python entradas.py`. Se para en `fit`: la primera frase del mensaje dice qué esperaba y qué ha recibido. Arréglalo con dos corchetes más y ejecuta. Última línea de la traza de partida y salida esperada tras el arreglo:
+
+```
+ValueError: Expected a 2-dimensional container but got <class 'pandas.Series'> instead. Pass a DataFrame containing a single row (i.e. single sample) or a single column (i.e. single feature) instead.
+```
+
+```
+[6.92 5.31 6.92]
+```
+
+- **(b) Las cuatro piezas.** La tabla tiene 300 jornadas y `X` lleva nueve columnas. **Antes de ejecutar**, escribe la forma de `X_ent`, `X_pru`, `y_ent` e `y_pru` con `test_size=0.2` y con `test_size=0.25`. Después, sabiendo que hay 105 «sí» entre las 300, calcula cuántos «sí» debería tener una prueba de 75 jornadas que conserve la proporción. Escribe el código que lo comprueba, con `random_state=26`: las formas con los dos tamaños, y los «sí» y «no» de la prueba sin `stratify` y con él. Salida esperada:
+
+```
+0.2 (240, 9) (60, 9) (240,) (60,)
+0.25 (225, 9) (75, 9) (225,) (75,)
+{'no': 195, 'sí': 105}
+sin stratify: {'no': 50, 'sí': 25}
+con stratify: {'no': 49, 'sí': 26}
+```
+
+- **(c) Cuántas columnas.** El preprocesado deja pasar las seis numéricas y codifica tres columnas de texto. Imprime `X_ent[categoricas].nunique()` y, **antes de seguir**, calcula cuántas columnas tendrá la tabla transformada. Compruébalo con la forma de `pre.transform(X_ent)` y con cuántos nombres devuelve `get_feature_names_out()`. Salida esperada:
+
+```
+{'punto_id': 6, 'habitat': 4, 'nubosidad': 3}
+(225, 19) 19
+```
+
+- **(d) Una jornada de un sitio nuevo.** La red estrena un punto, `PUN-07`, en un carrizal. El fichero ya codifica esa jornada e imprime sus columnas de punto, hábitat y nubosidad. **Antes de mirar la salida**, escribe qué valdrá cada una. Después quita `handle_unknown="ignore"` del codificador, ejecuta otra vez y lee el mensaje. Salida esperada con `handle_unknown="ignore"` y última línea de la traza sin él:
+
+```
+ cat__punto_id_PUN-01  cat__punto_id_PUN-02  cat__punto_id_PUN-03  cat__punto_id_PUN-04  cat__punto_id_PUN-05  cat__punto_id_PUN-06
+                  0.0                   0.0                   0.0                   0.0                   0.0                   0.0
+ cat__habitat_embalse  cat__habitat_estepa  cat__habitat_pinar  cat__habitat_soto  cat__nubosidad_cubierto  cat__nubosidad_despejado  cat__nubosidad_nubes
+                  0.0                  0.0                 0.0                0.0                      0.0                       0.0                   1.0
+```
+
+```
+ValueError: Found unknown categories ['PUN-07'] in column 0 during transform
+```
+
+Escribe en dos líneas qué le está diciendo al modelo una fila con todos los hábitats a cero, y si te fiarías de su predicción.
+
+- **(e) Desde cero.** Fichero vacío en `cp3-2/`. Sin scikit-learn ni pandas: un programa que lea `datos/jornadas.csv`, saque los hábitats distintos en orden alfabético, y codifique el hábitat de las seis primeras jornadas en una lista de ceros y unos, una posición por hábitat; al final, codifica también el hábitat «carrizal», que no existe en el fichero. Salida esperada:
+
+```
+columnas: ['habitat_embalse', 'habitat_estepa', 'habitat_pinar', 'habitat_soto']
+JOR-001  soto     [0, 0, 0, 1]
+JOR-002  estepa   [0, 1, 0, 0]
+JOR-003  estepa   [0, 1, 0, 0]
+JOR-004  soto     [0, 0, 0, 1]
+JOR-005  soto     [0, 0, 0, 1]
+JOR-006  soto     [0, 0, 0, 1]
+nueva    carrizal [0, 0, 0, 0]
+```
+
+**Cómo trabajar.** Escribe cada predicción antes de ejecutar: si ejecutas primero, la práctica se queda en copiar números. En la (d), el mensaje sin `handle_unknown` nombra la primera columna que encuentra con una categoría nueva, no todas. Y la (e) es el codificador hecho a mano: cuando la termines, `OneHotEncoder` deja de ser una caja.
+
+### CP3.3 · Una recta, a mano
+
+**Nivel** intermedio · **Tiempo orientativo** 40 min (25 + 15 de la tarea desde cero).
+
+**Qué refuerza.** El apartado 3 de la [UD3](ud3-aprendizaje-automatico.md): qué es un coeficiente y en qué unidades se lee, cómo sale una predicción de los coeficientes y del término independiente, y qué miden el error absoluto medio y el coeficiente de determinación, calculados una vez a mano.
+
+**Ficheros de partida.** `cp3-3/recta.py` y la carpeta `cp3-3/datos/` con `jornadas.csv`, `tres_jornadas.csv` (tres jornadas previstas) y `predicciones_reg.csv` (lo real y lo predicho en veinte jornadas de prueba), en el repositorio de recursos (enlace en Classroom). Se ejecuta desde `cp3-3/`. El modelo viene escrito y entrenado: una regresión lineal que estima `especies` a partir de la duración, los observadores, el viento y el hábitat.
+
+**Enunciado.** Un modelo lineal no tiene nada escondido: con sus coeficientes impresos y una calculadora, la predicción la puedes hacer tú. En esta práctica la haces, cambias las unidades de una columna para ver qué le pasa al coeficiente, y calculas las dos métricas de la regresión con lápiz.
+
+**Tareas.**
+
+- **(a) Caza el error.** Ejecuta `python recta.py`. La red ha decidido no usar las 30 últimas jornadas, que están sin revisar, y el programa se para al dividir. El mensaje da dos números: di de dónde sale cada uno, y arréglalo apartando las jornadas **antes** de separar `X` e `y`. Última línea de la traza de partida y salida esperada tras el arreglo:
+
+```
+ValueError: Found input variables with inconsistent numbers of samples: [270, 300]
+```
+
+```
+(202, 4) (68, 4) 0.811
+```
+
+- **(b) Tres predicciones con calculadora.** El fichero imprime los coeficientes y el término independiente. Con ellos, calcula a mano las especies que el modelo estima para las tres jornadas de `tres_jornadas.csv`: cada jornada suma el término independiente, cada numérica por su coeficiente y **solo** el coeficiente de su hábitat. Después compruébalo con `predict`. Tu cuenta puede diferir en una centésima, porque los coeficientes impresos están redondeados. Salida esperada:
+
+```
+num__duracion_h         0.958
+num__observadores       0.399
+num__viento_kmh        -0.052
+cat__habitat_embalse    1.222
+cat__habitat_estepa    -0.773
+cat__habitat_pinar     -1.409
+cat__habitat_soto       0.959
+término independiente 3.185
+ duracion_h  observadores  viento_kmh habitat  prediccion
+        2.0             2          10 embalse        6.60
+        3.5             1          25   pinar        4.24
+        1.5             4           0  estepa        5.44
+```
+
+- **(c) La misma duración, en minutos.** Crea la columna `duracion_min` (`duracion_h` por 60) y entrena el mismo pipeline con ella en lugar de `duracion_h`: la función `recta_de` del fichero recibe la lista de numéricas. **Antes de ejecutar**, escribe qué le pasará al coeficiente de la duración, a las predicciones y al R² en prueba. Comprueba las tres cosas. Salida esperada:
+
+```
+coeficiente por minuto: 0.016 | por 60: 0.958
+R² en prueba: 0.811
+mayor diferencia entre las predicciones de los dos modelos: 0.0
+```
+
+- **(d) Dos métricas con lápiz.** El fichero imprime lo real y lo predicho en seis jornadas de prueba. Rellena a mano una tabla con el error de cada una, su valor sin signo y su cuadrado, y saca el error absoluto medio y el R² con la fórmula del apartado 3.3 (necesitas también la media de los seis valores reales). Compruébalo con código. Después cambia la primera predicción por un disparate, 0, y vuelve a calcular las dos: ¿cuál se mueve más y por qué? Salida esperada:
+
+```
+     real  predicho
+125     9       8.8
+261     4       3.6
+249     6       5.5
+241     6       7.2
+122     7       6.2
+237     4       4.2
+MAE 0.55 | R² 0.857
+con un disparate → MAE 2.02 | R² -3.641
+```
+
+- **(e) Desde cero.** Fichero vacío en `cp3-3/`. Sin scikit-learn ni pandas: un programa que lea `datos/predicciones_reg.csv` con `csv.DictReader` y calcule, con un bucle, el error absoluto medio y el R² de esas veinte jornadas (`abs(x)` devuelve un número sin su signo). Salida esperada:
+
+```
+jornadas: 20 | media de especies: 5.50
+MAE: 0.53 especies
+R²: 0.779
+```
+
+**Cómo trabajar.** En la (b), el error más frecuente es sumar los cuatro coeficientes de hábitat: una jornada está en un solo hábitat, y los otros tres indicadores valen cero. En la (c), piensa en lo que dice el coeficiente con sus unidades al lado —especies por hora, especies por minuto— y la respuesta sale sola. Y en la (d), el R² negativo no es un error de tu cuenta: mira la fórmula y lo que ha pasado en el numerador.
+
+### CP3.4 · Seguir una jornada por el árbol
+
+**Nivel** intermedio · **Tiempo orientativo** 45 min (30 + 15 de la tarea desde cero).
+
+**Qué refuerza.** El apartado 4 de la [UD3](ud3-aprendizaje-automatico.md): cómo se lee un árbol impreso y cómo elige cada pregunta, de dónde sale la probabilidad de una hoja y cuántos ejemplos la sostienen, cómo se lee una matriz de confusión —fila, realidad; columna, predicción— y qué dicen la exactitud, la sensibilidad y la precisión.
+
+**Ficheros de partida.** `cp3-4/bandadas.py` y la carpeta `cp3-4/datos/` con `jornadas.csv`, `cinco_jornadas.csv` (cinco jornadas previstas), `doce_jornadas.csv` (doce jornadas con tres preguntas ya contestadas con 0 y 1) y `predicciones_clf.csv` (lo real y lo predicho en cuarenta jornadas de prueba), en el repositorio de recursos (enlace en Classroom). Se ejecuta desde `cp3-4/`. El árbol viene entrenado: profundidad 3, y predice `hubo_bandada`.
+
+**Enunciado.** La red quiere saber, antes de salir, si en una jornada habrá bandada. Alguien entrenó un árbol y dejó escrito que «detecta el 80 % de las bandadas». El programa no falla. La cifra no es verdad.
+
+**Tareas.**
+
+- **(a) Caza el error, que esta vez no avisa.** Ejecuta `python bandadas.py`. Imprime una matriz y una sensibilidad de «sí». En la prueba hay 26 jornadas con bandada: cuenta con `pd.crosstab(y_pru, pred)` cuántas de ellas predijo el árbol como «sí» y compara con lo que dice el programa. Encuentra en qué orden ha pedido las etiquetas la matriz y de qué clase es en realidad la cifra impresa; arréglalo con las etiquetas en el orden de `classes_`. Salida de partida y salida esperada tras el arreglo:
+
+```
+[[18  8]
+ [10 39]]
+sensibilidad de «sí»: 0.8
+```
+
+```
+col_0         no  sí
+hubo_bandada        
+no            39  10
+sí             8  18
+[[39 10]
+ [ 8 18]]
+sensibilidad de «sí»: 0.69
+```
+
+- **(b) Cinco jornadas, a mano.** Con el árbol impreso delante, baja cada una de las cinco jornadas de `cinco_jornadas.csv` por las preguntas y anota en qué hoja acaba, qué clase responde y qué proporción de «sí» tiene esa hoja (los `weights` van en el orden de `classes_`). Recuerda que `cat__habitat_pinar <= 0.5` quiere decir «no es pinar». Después compruébalo: añade a la tabla la predicción, la probabilidad de «sí», la hoja (`apply`) y los ejemplos que la sostienen (`tree_.n_node_samples`). El árbol y la salida esperada:
+
+```
+['no' 'sí']
+|--- num__mes <= 9.5
+|   |--- num__mes <= 3.5
+|   |   |--- num__duracion_h <= 2.5
+|   |   |   |--- weights: [11.0, 5.0] class: no
+|   |   |--- num__duracion_h >  2.5
+|   |   |   |--- weights: [0.0, 6.0] class: sí
+|   |--- num__mes >  3.5
+|   |   |--- num__observadores <= 2.5
+|   |   |   |--- weights: [52.0, 8.0] class: no
+|   |   |--- num__observadores >  2.5
+|   |   |   |--- weights: [50.0, 0.0] class: no
+|--- num__mes >  9.5
+|   |--- cat__habitat_pinar <= 0.5
+|   |   |--- num__viento_kmh <= 23.5
+|   |   |   |--- weights: [20.0, 48.0] class: sí
+|   |   |--- num__viento_kmh >  23.5
+|   |   |   |--- weights: [0.0, 12.0] class: sí
+|   |--- cat__habitat_pinar >  0.5
+|   |   |--- weights: [13.0, 0.0] class: no
+```
+
+```
+ mes  hora_inicio  duracion_h  viento_kmh  observadores habitat prediccion  p_bandada  hoja  ejemplos
+  11            8         3.0          12             2 embalse         sí       0.71    10        68
+  10            9         2.0           8             3   pinar         no       0.00    12        13
+   3            7         3.5          20             1    soto         sí       1.00     4         6
+   5           16         1.5           5             4  estepa         no       0.00     7        50
+   9           10         2.5          30             2    soto         no       0.13     6        60
+```
+
+De las cinco probabilidades, di cuál te parece la más segura y cuál lo es de verdad, mirando la columna `ejemplos`.
+
+- **(c) La primera pregunta.** `doce_jornadas.csv` tiene doce jornadas y tres preguntas contestadas con 0 (no) y 1 (sí): si era octubre o noviembre, si el punto tiene agua y si hacía viento fuerte. Para cada pregunta, separa las doce jornadas en sus dos lados, haz que cada lado responda lo que más tenga, y cuenta cuántas jornadas quedarían **mal clasificadas**. La pregunta con menos fallos es la que deja los lados más puros. Después quita la almohadilla de la última línea de ese bloque y mira qué pregunta ha puesto en la raíz un árbol de una sola pregunta. El fichero completo y la salida esperada:
+
+```
+octubre_o_noviembre,con_agua,viento_fuerte,hubo_bandada
+1,1,0,sí
+1,1,1,sí
+1,0,0,sí
+1,1,0,sí
+1,0,1,no
+1,1,1,sí
+0,1,0,no
+0,1,1,no
+0,0,0,no
+0,1,0,sí
+0,0,1,no
+0,1,0,no
+```
+
+```
+octubre_o_noviembre  fallos si cada lado responde su mayoría: 2
+con_agua             fallos si cada lado responde su mayoría: 4
+viento_fuerte        fallos si cada lado responde su mayoría: 5
+|--- octubre_o_noviembre <= 0.5
+|   |--- weights: [5.0, 1.0] class: no
+|--- octubre_o_noviembre >  0.5
+|   |--- weights: [1.0, 5.0] class: sí
+```
+
+- **(d) Tres clasificadores, dos necesidades.** Tres clasificadores han predicho las mismas 75 jornadas de prueba (49 sin bandada y 26 con ella). Sus matrices, con «no» primero: A = `[[39, 10], [8, 18]]`, B = `[[47, 2], [16, 10]]` y C = `[[30, 19], [2, 24]]`. Calcula a mano la exactitud de cada uno y la sensibilidad y la precisión de «sí». Después elige uno para cada caso y di por qué: la red quiere avisar a los fotógrafos y no perderse ninguna bandada; la red paga el desplazamiento de un equipo de filmación y no quiere mandarlo en balde. Salida esperada de la comprobación:
+
+```
+A: exactitud 0.76 | sensibilidad de «sí» 0.69 | precisión de «sí» 0.64
+B: exactitud 0.76 | sensibilidad de «sí» 0.38 | precisión de «sí» 0.83
+C: exactitud 0.72 | sensibilidad de «sí» 0.92 | precisión de «sí» 0.56
+```
+
+- **(e) Desde cero.** Fichero vacío en `cp3-4/`. Sin scikit-learn ni pandas: un programa que lea `datos/predicciones_clf.csv` y cuente la matriz de confusión con un diccionario cuya clave sea la pareja (real, predicho); que la imprima con «no» primero y saque la exactitud y la sensibilidad de «sí». Salida esperada:
+
+```
+                 predicho no   predicho sí
+real no                 18             9
+real sí                  5             8
+exactitud: 26 de 40 = 0.65
+sensibilidad de «sí»: 8 de 13 = 0.62
+```
+
+**Cómo trabajar.** La (a) no tiene traza que leer: se caza contando. Si dos formas de contar lo mismo no coinciden, una está mal, y casi siempre es la que nadie comprobó. En la (d), A y B tienen la misma exactitud: es la prueba de que esa cifra sola no distingue dos clasificadores que hacen cosas opuestas.
