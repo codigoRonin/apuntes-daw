@@ -18,7 +18,7 @@ Un aviso que conviene conocer desde el principio: el manual de Workbench dice qu
 
 ## Apartado 2. Instalar en Windows
 
-En los equipos del aula la instalación necesita una cuenta con permisos de administrador: si no la tienes, la hace el docente. En tu equipo de casa puedes seguir estos pasos tal cual.
+**En los equipos del aula no instalas tú:** la instalación necesita permisos de administrador y la hace el servicio de informática del centro, con una contraseña de `root` común a todos los puestos, que te dará el docente. En el aula empiezas en el apartado 4. En tu equipo de casa puedes seguir estos pasos tal cual.
 
 ### Apartado 2.1. MySQL Server
 
@@ -34,7 +34,7 @@ En MySQL Configurator, pantalla a pantalla:
 | Pantalla | Qué eliges |
 |---|---|
 | **Type and Networking** | Tipo de configuración de desarrollo (*Development*) y el puerto **3306**, que es el que viene. No cambies nada más |
-| **Accounts and Roles** | La contraseña del usuario `root`, el administrador del servidor. **Apúntala**: sin ella no podrás conectarte. En el aula, la que indique el docente. No hace falta crear más usuarios |
+| **Accounts and Roles** | La contraseña del usuario `root`, el administrador del servidor. **Apúntala**: sin ella no podrás conectarte. No hace falta crear más usuarios |
 | **Windows Service** | Déjalo como viene: el servidor se configura como servicio de Windows y arranca con el equipo |
 | **Server File Permissions** | La opción que viene marcada |
 | **Sample Databases** | Ninguna: no las usamos |
@@ -61,7 +61,7 @@ Workbench no sabe todavía dónde está tu servidor: hay que decírselo una vez.
 
 1. En la pantalla inicial de Workbench, pulsa el **[+]** que hay junto a **MySQL Connections**. Se abre el cuadro **Setup New Connection**.
 2. En **Connection Name** escribe un nombre que reconozcas, por ejemplo `local-daw`. Los demás valores sirven como vienen para un servidor instalado en tu propio equipo: el puerto `3306` y el usuario `root`.
-3. Pulsa **Test Connection**. Cuando te pida la contraseña, es la de `root` del apartado 2.1. Si la prueba falla, casi siempre es por una de estas dos cosas: la contraseña no es la que apuntaste, o el servidor no está arrancado.
+3. Pulsa **Test Connection**. Cuando te pida la contraseña, es la de `root`: en casa, la que apuntaste en el apartado 2.1; en el aula, la común que te ha dado el docente. Si la prueba falla, casi siempre es por una de estas dos cosas: la contraseña no es la que apuntaste, o el servidor no está arrancado.
 4. Pulsa **OK**. La conexión queda en la pantalla inicial: un clic sobre ella abre el editor de SQL.
 
 ## Apartado 5. Ejecutar SQL y ver los resultados
