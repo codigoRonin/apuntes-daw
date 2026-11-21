@@ -10,6 +10,7 @@ Cómo funciona:
 - Se trabaja **en clase**, de forma individual o en pareja, según se indique ese día. Lo que no te dé tiempo a terminar en el aula lo acabas en casa y lo traes a la sesión de corrección.
 - **La solución no está aquí.** Se corrige en clase y, después de corregirla, el docente la publica en el Classroom del módulo, con los ficheros de la herramienta para que los abras y los compares con los tuyos.
 - Las prácticas de diagramas se hacen con **draw.io**, como las entregas de la unidad: la [guía rápida de draw.io](../recursos/guia-drawio.md) explica los gestos, la biblioteca de formas y el nombrado de los ficheros. Los diagramas en Chen siguen la convención completa de la UD2 (ver apartado 3.4 de la [UD2](ud2-modelo-entidad-relacion.md)): la pareja (mín, máx) escrita junto a una entidad dice cuántas ocurrencias de esa entidad se asocian con cada ocurrencia de la otra, y sobre cada rombo va la etiqueta de su tipo (1:1, 1:N o N:M).
+- Las prácticas de SQL, desde la UD4, se hacen con **MySQL Workbench** sobre una base de datos que cargas tú con un guion: la [guía de instalación](../recursos/instalacion-mysql-workbench.md) explica cómo instalarlo, cómo ejecutar un guion y dónde mirar los resultados y los errores.
 
 El cuaderno crece durante el curso: solo aparecen las unidades que tienen prácticas extra, y cada unidad va ganando prácticas a medida que se trabajan en clase.
 
@@ -361,3 +362,372 @@ La hoja, tal como está hoy (las ocho filas de los últimos recibos emitidos; im
 **Puntuación y nota.** Parte A, 4,00 puntos: A1 1,25 · A2 1,25 · A3 0,75 · A4 0,75. Parte B, 6,00 puntos: B1 1,00 · B2 1,00 · B3 1,50 · B4 0,75 · B5 1,25 · B6 0,50. Nota del RA1 = puntos de A ÷ 4 × 10; nota del RA6 = puntos de B ÷ 6 × 10; nota del examen = A + B. Mínimos del examen: 5 en el examen y 4 en cada RA (1,60 puntos en A y 2,40 en B).
 
 **Cómo trabajar.** Reparte el tiempo por piezas como está escrito y no te quedes en la que no sale: en B3 valen más diez tablas con una clave ajena mal que tres tablas perfectas. Lee las parejas de la figura junto a la entidad en la que están escritas, con la pregunta del apartado 3.4 de la UD2 («dado UN x, ¿cuántos y?»). En B5, las dependencias salen de las cinco frases, y las filas de la hoja solo sirven para refutar. Y escribe las políticas y las restricciones con su frase: en el examen, una decisión sin su frase es una decisión a medias.
+
+## UD4 · Consultas de datos con SQL
+
+Las prácticas de esta unidad cambian otra vez de materia prima: ya no hay diagrama que dibujar ni esquema que deducir. Hay una **base de datos cargada** y preguntas que contestar con SQL. Se trabajan con MySQL Workbench, como los apuntes; si aún no lo tienes instalado, empieza por la [guía de instalación](../recursos/instalacion-mysql-workbench.md).
+
+Todas las prácticas de la unidad usan la misma base de datos, distinta de la TiendaDAW de los apuntes para que tengas que pensar las consultas en vez de recordarlas: el **servicio comarcal de transporte a demanda** de las Cinco Villas. Son microbuses que cubren rutas fijas entre pueblos, pero solo salen si alguien lo ha pedido: cada viajero registrado hace una *solicitud* para un viaje concreto, diciendo en qué parada sube, en cuál baja y cuántas plazas necesita. Los lugares son reales; las personas, los vehículos, los viajes y las solicitudes son inventados.
+
+**Ficheros de partida de toda la unidad.** Un solo guion, `transporte.sql`, en el repositorio de recursos (enlace en Classroom), carpeta `bases-de-datos/ud4/practicas-clase/`. Crea la base de datos `transporte` y sus ocho tablas, y se puede ejecutar tantas veces como haga falta.
+
+El esquema, en la notación de la UD3 (clave primaria en negrita, cada clave ajena con su flecha):
+
+- `rutas(`**cod_ruta**`, nombre_ruta, km_ruta, tarifa)`
+- `paradas(`**cod_parada**`, nombre_parada, municipio, marquesina)`
+- `ruta_parada(`**cod_ruta** `→ rutas,` **cod_parada** `→ paradas, orden, minuto)`
+- `vehiculos(`**matricula**`, plazas, anio_matriculacion, adaptado, itv_hasta)`
+- `conductores(`**cod_conductor**`, nombre_conductor, alta_conductor, movil)`
+- `viajeros(`**cod_viajero**`, nombre_viajero, municipio, anio_nacimiento, tarjeta, alta_viajero)`
+- `viajes(`**cod_viaje**`, cod_ruta → rutas, dia, hora_salida, matricula → vehiculos, cod_conductor → conductores)`
+- `solicitudes(`**cod_solicitud**`, cod_viaje → viajes, cod_viajero → viajeros, sube_en → paradas, baja_en → paradas, plazas_pedidas, estado, valoracion)`
+
+Lo que conviene saber de los datos antes de empezar:
+
+- `tarifa` es el precio del billete en euros, y `km_ruta` la longitud de la ruta. `minuto`, en `ruta_parada`, son los minutos que tarda el microbús en llegar a esa parada desde la salida.
+- `marquesina` y `adaptado` valen 1 (sí) o 0 (no).
+- `tarjeta` es la tarjeta de descuento del viajero: `'mayor'` (nacidos en 1961 o antes), `'joven'` (nacidos en 2001 o después) o NULL si no tiene ninguna.
+- `estado` de una solicitud: `'confirmada'`, `'anulada'` o `'no presentado'`. `valoracion` es la nota de 1 a 5 que el viajero puso al viaje, si la puso.
+- Hay viajes desde el 9 de noviembre hasta el 11 de diciembre de 2026. Los posteriores al 27 de noviembre están programados pero aún no se han hecho, y a muchos todavía no se les ha asignado vehículo ni conductor.
+- Como en TiendaDAW, hay **casos límite puestos a propósito**: columnas con NULL, una ruta sin viajes, un vehículo que no ha salido nunca, viajeros que no han pedido nada. Descubrirlos es parte de las prácticas.
+
+Las tareas marcadas con **Salida esperada** enseñan lo que tiene que devolver tu consulta: si te sale otra cosa, no sigas hasta saber por qué. Las tareas de **predecir** no la llevan, a propósito: se escribe la predicción, se ejecuta y se explica la diferencia.
+
+### CP4.1 · Puesta en marcha: la base del transporte a demanda
+
+**Nivel** básico · **Tiempo orientativo** 50 min · **Criterios** RA3.a y RA3.b.
+
+**Qué refuerza.** Los apartados 0 y 1 de la [UD4](ud4-consultas-sql.md): cargar un guion, comprobar la carga con `SHOW TABLES`, `DESCRIBE` y `SELECT *`, la consulta mínima, las columnas calculadas con alias y `DISTINCT`; y la lectura de los mensajes de error del apartado 11 (errores 9, 10 y 11). Nada del apartado 2 en adelante: en esta práctica no hay ningún `WHERE`.
+
+**Ficheros de partida.** `transporte.sql`.
+
+**Enunciado.** Te incorporas a la oficina del servicio de transporte a demanda. Nadie te va a explicar la base de datos: te dan el guion y una mañana para cargarla, mirarla y dejar escrita una ficha con lo que hay.
+
+**Tareas.**
+
+- **(a) Carga y comprueba.** Abre `transporte.sql` en una pestaña de consulta de Workbench y ejecútalo entero. Después, lista las tablas. **Salida esperada:**
+
+```
++----------------------+
+| Tables_in_transporte |
++----------------------+
+| conductores          |
+| paradas              |
+| ruta_parada          |
+| rutas                |
+| solicitudes          |
+| vehiculos            |
+| viajeros             |
+| viajes               |
++----------------------+
+```
+
+- **(b) La ficha del esquema.** Ejecuta `DESCRIBE` sobre cada una de las ocho tablas y rellena una ficha con tres datos de cada una: su clave primaria, cuántas columnas tiene y qué columnas **admiten NULL** (la columna `Null` del resultado dice `YES`). Salida esperada de `DESCRIBE viajes;`, para que veas en qué fijarte:
+
+```
++---------------+---------+------+-----+---------+-------+
+| Field         | Type    | Null | Key | Default | Extra |
++---------------+---------+------+-----+---------+-------+
+| cod_viaje     | int     | NO   | PRI | NULL    |       |
+| cod_ruta      | char(2) | NO   | MUL | NULL    |       |
+| dia           | date    | NO   |     | NULL    |       |
+| hora_salida   | time    | NO   |     | NULL    |       |
+| matricula     | char(8) | YES  | MUL | NULL    |       |
+| cod_conductor | int     | YES  | MUL | NULL    |       |
++---------------+---------+------+-----+---------+-------+
+```
+
+  Con la ficha hecha, contesta sin ejecutar nada más: ¿cuántas de las ocho tablas tienen alguna columna que admite NULL?, ¿y qué significa, en el negocio, que `matricula` pueda estar vacía en un viaje?
+
+- **(c) Mira los datos.** Con `SELECT *`, mira las tablas `rutas` y `vehiculos` enteras. Hay un vehículo que tiene un dato sin rellenar: di cuál es y qué dato. **Salida esperada** de `rutas`:
+
+```
++----------+-------------------------------+---------+--------+
+| cod_ruta | nombre_ruta                   | km_ruta | tarifa |
++----------+-------------------------------+---------+--------+
+| R1       | Ejea - Sádaba - Uncastillo    |    34.5 |   2.40 |
+| R2       | Ejea - Tauste                 |    27.0 |   2.10 |
+| R3       | Ejea - Erla - Luna            |    26.5 |   2.10 |
+| R4       | Sádaba - Sos del Rey Católico |    31.0 |   2.40 |
+| R5       | Tauste - Pradilla - Remolinos |    18.5 |   1.60 |
++----------+-------------------------------+---------+--------+
+```
+
+- **(d) Tus primeras consultas.** Ya sin asterisco, escribe una consulta para cada petición:
+    1. El nombre de cada ruta, su tarifa y una columna `ida_y_vuelta` con lo que cuestan los dos billetes.
+    2. El nombre de cada ruta y una columna `euros_por_km` con lo que se paga por kilómetro, redondeado a tres decimales.
+    3. Los municipios en los que hay alguna parada, cada uno una sola vez. Antes de ejecutar, escribe cuántas filas esperas; `paradas` tiene 14 filas.
+
+  **Salida esperada** de la segunda:
+
+```
++-------------------------------+--------------+
+| nombre_ruta                   | euros_por_km |
++-------------------------------+--------------+
+| Ejea - Sádaba - Uncastillo    |        0.070 |
+| Ejea - Tauste                 |        0.078 |
+| Ejea - Erla - Luna            |        0.079 |
+| Sádaba - Sos del Rey Católico |        0.077 |
+| Tauste - Pradilla - Remolinos |        0.086 |
++-------------------------------+--------------+
+```
+
+- **(e) Cuatro sentencias rotas.** Ejecuta, una a una, estas cuatro sentencias. Tres dan error: copia el número del error y su mensaje, di qué significa y arréglala. La otra **no da error** y es la peor: explica qué ha pasado con sus columnas.
+
+```
+SELECT nombre_ruta, FROM rutas;
+SELECT nombre FROM rutas;
+SELECT * FROM ruta;
+SELECT nombre_ruta tarifa FROM rutas;
+```
+
+**Cómo trabajar.** No pases de la tarea (a) hasta ver las ocho tablas: todo lo demás depende de eso. Si una consulta responde `ERROR 1046: No database selected`, ejecuta `USE transporte;` y repite. En la (b), la ficha es para ti: la vas a consultar en todas las prácticas de la unidad, así que hazla en un documento que conserves. En la (e), lee cada mensaje antes de mirar la sentencia: el texto que sigue a `near` señala dónde dejó de entender MySQL.
+
+### CP4.2 · Predice antes de ejecutar: filtros, NULL, orden y páginas
+
+**Nivel** básico · **Tiempo orientativo** 50 min · **Criterios** RA3.b.
+
+**Qué refuerza.** Los apartados 2 y 3 de la [UD4](ud4-consultas-sql.md): los operadores de comparación, `BETWEEN`, `IN`, `LIKE` y sus negaciones, la precedencia de `AND` sobre `OR`, la lógica de tres valores de NULL, `ORDER BY` con varias claves y la paginación con `LIMIT … OFFSET`.
+
+**Ficheros de partida.** `transporte.sql`, ya cargado.
+
+**Enunciado.** Saber SQL no es solo escribir consultas: es saber qué va a devolver una consulta antes de ejecutarla. En la oficina del transporte hay ocho consultas sobre la tabla `viajeros` que alguien dejó escritas. Tu trabajo es decir qué devuelve cada una **sin ejecutarla**, y después comprobarlo.
+
+**Tareas.**
+
+- **(a) Ocho predicciones.** Ejecuta `SELECT * FROM viajeros;` y deja el resultado a la vista: son 24 filas. Para cada una de estas consultas, escribe primero **cuántas filas** devuelve y, si son cinco o menos, **cuáles**. Solo entonces ejecútala. Donde tu predicción falle, escribe en una línea qué regla de los apuntes no aplicaste.
+
+```
+-- 1
+SELECT nombre_viajero FROM viajeros
+WHERE tarjeta = 'mayor' OR tarjeta = 'joven' AND anio_nacimiento > 2006;
+-- 2
+SELECT nombre_viajero FROM viajeros WHERE municipio <> 'Biota';
+-- 3
+SELECT nombre_viajero FROM viajeros WHERE anio_nacimiento BETWEEN 1953 AND 1962;
+-- 4
+SELECT nombre_viajero FROM viajeros WHERE tarjeta = NULL;
+-- 5
+SELECT nombre_viajero FROM viajeros WHERE nombre_viajero LIKE '%a %';
+-- 6
+SELECT nombre_viajero FROM viajeros WHERE municipio NOT IN ('Tauste', 'Luna', 'Erla');
+-- 7
+SELECT nombre_viajero, anio_nacimiento FROM viajeros
+ORDER BY anio_nacimiento, nombre_viajero LIMIT 3;
+-- 8
+SELECT nombre_viajero, alta_viajero FROM viajeros
+ORDER BY alta_viajero DESC LIMIT 4 OFFSET 4;
+```
+
+- **(b) La 2 y la 6, arregladas.** Las consultas 2 y 6 dejan fuera a alguien que quien las escribió seguramente quería dentro. Di a quién, y reescribe las dos para que lo incluyan.
+
+- **(c) Ahora escribes tú.** Una consulta para cada petición:
+    1. Los viajeros que **tienen derecho a una tarjeta y no la tienen**: nombre, año de nacimiento y municipio. Las condiciones de cada tarjeta están en la presentación de la unidad.
+    2. Los vehículos cuya ITV **no caduca en 2026**, contando también aquel del que no consta fecha: matrícula y fecha, ordenados por fecha.
+    3. La **tercera página** del listado de paradas ordenado por municipio y, dentro de cada municipio, por nombre de parada, a cuatro paradas por página: municipio y nombre.
+
+  **Salida esperada** de las tres, en ese orden:
+
+```
++----------------+-----------------+-----------+
+| nombre_viajero | anio_nacimiento | municipio |
++----------------+-----------------+-----------+
+| Dámaso Duarte  |            1953 | Sádaba    |
+| Octavio Orús   |            2009 | Sádaba    |
++----------------+-----------------+-----------+
+```
+
+```
++-----------+------------+
+| matricula | itv_hasta  |
++-----------+------------+
+| 3312 JHC  | NULL       |
+| 4821 LKM  | 2027-03-14 |
+| 5507 MTG  | 2027-06-21 |
+| 8094 NCP  | 2029-02-10 |
++-----------+------------+
+```
+
+```
++----------------------+--------------------+
+| municipio            | nombre_parada      |
++----------------------+--------------------+
+| Sádaba               | Castillo           |
+| Sádaba               | Plaza de la Villa  |
+| Sos del Rey Católico | Portal de la Reina |
+| Tauste               | Centro de salud    |
++----------------------+--------------------+
+```
+
+**Cómo trabajar.** La predicción se escribe, no se piensa: si no está en el papel antes de ejecutar, te convencerás de que «ya lo sabías». En la consulta 1 de la (a), pon tú los paréntesis que MySQL pone por su cuenta y luego cuenta. En la (c.1) hay un `AND` y un `OR` en la misma condición: la regla del módulo dice qué hacer. En la (c.2), fíjate en dónde ha colocado MySQL la fila sin fecha y pregúntate por qué.
+
+### CP4.3 · La hoja de servicio: cadenas, números y fechas
+
+**Nivel** intermedio · **Tiempo orientativo** 40 min · **Criterios** RA3.b.
+
+**Qué refuerza.** El apartado 4 de la [UD4](ud4-consultas-sql.md): `UPPER`, `CHAR_LENGTH` frente a `LENGTH`, `CONCAT` y su comportamiento con NULL, `SUBSTRING`, `LOCATE` y `SUBSTRING_INDEX`; `ROUND`, `FLOOR` y `CEIL`; y `YEAR`, `MONTH`, `DAY`, `DATEDIFF` y `DATE_ADD`. Los filtros son los de la CP4.2.
+
+**Ficheros de partida.** `transporte.sql`, ya cargado.
+
+**Enunciado.** Cada lunes la oficina imprime la hoja de servicio de la semana: una lista de vehículos y conductores con los datos «arreglados» para leerlos de un vistazo. Los datos están en la base; la presentación la pones tú con funciones.
+
+**Tareas.**
+
+- **(a) Predice los vacíos.** Sin ejecutarlas, di en qué filas la segunda columna saldrá vacía (NULL) y por qué. Después ejecútalas.
+
+```
+SELECT nombre_conductor, CONCAT(nombre_conductor, ' · ', movil) AS contacto
+FROM conductores;
+
+SELECT nombre_viajero, anio_nacimiento + 65 AS anio_en_que_cumple_65
+FROM viajeros;
+```
+
+- **(b) La etiqueta del vehículo.** Para cada vehículo, tres columnas: `etiqueta`, con la matrícula y las plazas en la forma `4821 LKM (9 plazas)`; `numeros`, con las cuatro cifras de la matrícula; y `letras`, con sus tres letras. **Salida esperada:**
+
+```
++----------------------+---------+--------+
+| etiqueta             | numeros | letras |
++----------------------+---------+--------+
+| 1946 KZR (16 plazas) |    1946 | KZR    |
+| 3312 JHC (22 plazas) |    3312 | JHC    |
+| 4821 LKM (9 plazas)  |    4821 | LKM    |
+| 5507 MTG (16 plazas) |    5507 | MTG    |
+| 7730 MBD (9 plazas)  |    7730 | MBD    |
+| 8094 NCP (9 plazas)  |    8094 | NCP    |
++----------------------+---------+--------+
+```
+
+- **(c) Nombres que engañan.** Lista los conductores con su nombre en mayúsculas, el número de **caracteres** de su nombre y el número de **bytes**. Después, usando esas dos funciones en un `WHERE`, quédate solo con los conductores en los que las dos cifras no coinciden, y explica qué tienen en común sus nombres. **Salida esperada** de la segunda consulta:
+
+```
++----------------------+--------------+---------+
+| conductor            | n_caracteres | n_bytes |
++----------------------+--------------+---------+
+| PILAR NAVARRO ABADÍA |           20 |      21 |
+| JESÚS LAMBÁN CORTÉS  |           19 |      22 |
+| ÍÑIGO USÓN GARCÉS    |           17 |      21 |
+| ÓSCAR AÑAÑOS SANZ    |           17 |      20 |
+| NURIA CIUDAD LONGÁS  |           19 |      20 |
++----------------------+--------------+---------+
+```
+
+- **(d) Redondeos.** Para cada ruta: su nombre, sus kilómetros, y los kilómetros redondeados de tres maneras, al entero más próximo, hacia abajo y hacia arriba. Antes de ejecutar, di en qué rutas las tres columnas darán el mismo número. **Salida esperada:**
+
+```
++-------------------------------+---------+----------------+-------------+--------------+
+| nombre_ruta                   | km_ruta | al_mas_proximo | hacia_abajo | hacia_arriba |
++-------------------------------+---------+----------------+-------------+--------------+
+| Ejea - Sádaba - Uncastillo    |    34.5 |             35 |          34 |           35 |
+| Ejea - Tauste                 |    27.0 |             27 |          27 |           27 |
+| Ejea - Erla - Luna            |    26.5 |             27 |          26 |           27 |
+| Sádaba - Sos del Rey Católico |    31.0 |             31 |          31 |           31 |
+| Tauste - Pradilla - Remolinos |    18.5 |             19 |          18 |           19 |
++-------------------------------+---------+----------------+-------------+--------------+
+```
+
+- **(e) La ITV, a 27 de noviembre de 2026.** Para cada vehículo: matrícula, fecha hasta la que tiene la ITV, el año y el mes de esa fecha en dos columnas, los días que faltan contados desde el 27 de noviembre de 2026 (escribe esa fecha en la consulta, no uses la de hoy) y la fecha en que caducará la ITV siguiente, si la pasa a tiempo y vale un año. Ordena por los días que faltan. **Salida esperada:**
+
+```
++-----------+------------+------+------+-----------------+---------------+
+| matricula | itv_hasta  | anio | mes  | dias_que_faltan | itv_siguiente |
++-----------+------------+------+------+-----------------+---------------+
+| 3312 JHC  | NULL       | NULL | NULL |            NULL | NULL          |
+| 1946 KZR  | 2026-11-30 | 2026 |   11 |               3 | 2027-11-30    |
+| 7730 MBD  | 2026-12-05 | 2026 |   12 |               8 | 2027-12-05    |
+| 4821 LKM  | 2027-03-14 | 2027 |    3 |             107 | 2028-03-14    |
+| 5507 MTG  | 2027-06-21 | 2027 |    6 |             206 | 2028-06-21    |
+| 8094 NCP  | 2029-02-10 | 2029 |    2 |             806 | 2030-02-10    |
++-----------+------------+------+------+-----------------+---------------+
+```
+
+**Cómo trabajar.** En la (b) hay dos caminos para separar las cifras de las letras: por posición, porque todas las matrículas miden lo mismo, o por el espacio que las separa; prueba los dos. En la (e), usa una fecha fija y no `CURDATE()`: así tu resultado se puede comparar con la salida esperada cualquier día. Y mira la fila del vehículo sin ITV: cuatro de sus columnas están vacías sin que hayas hecho nada para ello; di por qué con una frase de los apuntes.
+
+### CP4.4 · Del listado al resumen: recuentos, medias y grupos
+
+**Nivel** intermedio · **Tiempo orientativo** 50 min · **Criterios** RA3.e.
+
+**Qué refuerza.** Los apartados 5 y 6 de la [UD4](ud4-consultas-sql.md): `COUNT(*)`, `COUNT(columna)` y `COUNT(DISTINCT …)`, los agregados y los NULL, los agregados sobre cero filas, `GROUP BY` con una y con dos columnas, la regla de oro, `HAVING` y la diferencia entre filtrar filas y filtrar grupos. Todo sobre **una sola tabla** cada vez.
+
+**Ficheros de partida.** `transporte.sql`, ya cargado.
+
+**Enunciado.** La gerencia del servicio quiere números, no listados. Casi todas sus preguntas se contestan con la tabla `solicitudes`, que tiene 187 filas: demasiadas para contarlas a ojo, pocas para que un resumen mal hecho se note.
+
+**Tareas.**
+
+- **(a) Tres maneras de contar.** En una sola consulta sobre `solicitudes`, tres columnas: cuántas solicitudes hay, cuántas tienen valoración y cuántos viajeros distintos han hecho alguna. Antes de ejecutar, ordena las tres cifras de mayor a menor y di por qué. **Salida esperada:**
+
+```
++-------------+-----------+--------------------+
+| solicitudes | valoradas | viajeros_distintos |
++-------------+-----------+--------------------+
+|         187 |        68 |                 21 |
++-------------+-----------+--------------------+
+```
+
+- **(b) La media, y la media que no es.** Calcula la valoración media del servicio, con dos decimales. Después calcula, en otra columna de la misma consulta, la suma de las valoraciones dividida entre el número total de solicitudes, también con dos decimales. Son dos cifras muy distintas: explica qué pregunta contesta cada una y cuál de las dos le darías a la gerencia como «nota media del servicio». **Salida esperada:**
+
+```
++-------+------------------+
+| media | suma_entre_todas |
++-------+------------------+
+|  3.84 |             1.40 |
++-------+------------------+
+```
+
+- **(c) Resumir la nada.** Predice, sin ejecutar, qué devuelven el número de solicitudes y la valoración media en estos dos casos: las solicitudes en estado `'anulada'` y las solicitudes en estado `'en espera'`. Después ejecuta las dos consultas y explica por qué las dos medias salen igual y los dos recuentos no.
+
+- **(d) ¿Filas o grupos?** Seis peticiones de la gerencia. **Antes de escribir nada**, clasifica cada una: ¿necesita `WHERE`, `HAVING`, los dos o ninguno? Después escribe las seis.
+    1. Cuántas solicitudes hay en cada estado.
+    2. Cuántos viajes tiene cada ruta en la semana del 23 al 27 de noviembre de 2026.
+    3. Los viajeros (basta su código) cuya valoración media es de 4,5 o más, con esa media.
+    4. Contando solo las solicitudes confirmadas, los viajeros que han pedido más de 15 plazas en total, con ese total.
+    5. Cuántos viajes sin vehículo asignado tiene cada ruta.
+    6. Los vehículos que han hecho viajes en las cuatro rutas que tienen servicio.
+
+  **Salida esperada** de la 2 y de la 4:
+
+```
++----------+--------+
+| cod_ruta | viajes |
++----------+--------+
+| R1       |      5 |
+| R2       |      5 |
+| R3       |      3 |
+| R5       |      3 |
++----------+--------+
+```
+
+```
++-------------+--------+
+| cod_viajero | plazas |
++-------------+--------+
+|           5 |     17 |
+|          13 |     17 |
+|          15 |     17 |
+|          23 |     17 |
++-------------+--------+
+```
+
+- **(e) Agrupar por dos columnas.** Para la ruta `R5`, cuántos viajes ha hecho, o tiene programados, cada vehículo. Añade después la ruta a la agrupación y quita el filtro: antes de ejecutar, di cuántas filas puede haber como máximo y qué significa la fila en la que la matrícula está vacía. **Salida esperada** de la primera consulta:
+
+```
++-----------+--------+
+| matricula | viajes |
++-----------+--------+
+| 5507 MTG  |      2 |
+| 1946 KZR  |      3 |
+| 8094 NCP  |      1 |
+| 4821 LKM  |      4 |
+| 7730 MBD  |      2 |
+| NULL      |      3 |
++-----------+--------+
+```
+
+- **(f) La regla de oro, rota.** Esta consulta da error. Copia el número y el mensaje, explícalo con el ejemplo del «montón» de los apuntes y escribe **dos** consultas distintas, las dos correctas, que podrían ser lo que su autor quería.
+
+```
+SELECT cod_ruta, dia, COUNT(*) FROM viajes GROUP BY cod_ruta;
+```
+
+**Cómo trabajar.** En la (d), la clasificación va primero y por escrito; la pregunta que la resuelve es siempre la misma: la condición, ¿se puede comprobar mirando **una fila**, o hace falta haber contado o sumado antes? En la (d.4) conviven los dos filtros: léela siguiendo el orden de evaluación del apartado 6. En la (c), la base de datos no tiene ninguna solicitud «en espera», y eso no es un error de la consulta.
