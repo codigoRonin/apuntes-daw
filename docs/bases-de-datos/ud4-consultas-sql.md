@@ -40,9 +40,11 @@
 
 Toda la unidad usa la misma base de datos: **TiendaDAW**, una tienda online de ejemplo. Es un dominio pequeño, elegido para que el esquema no te distraiga de las consultas. En esta unidad no basta con leer: cada consulta hay que ejecutarla, romperla y arreglarla.
 
-**Antes de empezar** necesitas MySQL Server y MySQL Workbench instalados y una conexión que funcione: la [guía de instalación de MySQL Server y MySQL Workbench](../recursos/instalacion-mysql-workbench.md) lo explica paso a paso y termina con una comprobación. Después, abre una pestaña de consulta en Workbench, pega este guion **entero** y ejecútalo completo, sin seleccionar nada. Sus dos primeras líneas crean la base de datos `tiendadaw` y la eligen como base de trabajo; son sentencias de definición de datos, que estudiaremos en la UD5 y que aquí usamos como herramienta. Puedes ejecutar el guion tantas veces como quieras: cada vez deja la base de datos como al principio, con sus cuatro tablas (borra también la tabla `pedidos_hist`, que crearás en el apartado 10).
+**Antes de empezar** necesitas MySQL Server y MySQL Workbench instalados y una conexión que funcione: la [guía de instalación de MySQL Server y MySQL Workbench](../recursos/instalacion-mysql-workbench.md) lo explica paso a paso y termina con una comprobación. Después, abre una pestaña de consulta en Workbench, pega este guion **entero** y ejecútalo completo, sin seleccionar nada. Su primera línea le dice al servidor que el guion está escrito en UTF-8, para que las tildes y las eñes de los datos se guarden bien sea cual sea el programa desde el que lo cargues. Las dos siguientes crean la base de datos `tiendadaw` y la eligen como base de trabajo; son sentencias de definición de datos, que estudiaremos en la UD5 y que aquí usamos como herramienta. Puedes ejecutar el guion tantas veces como quieras: cada vez deja la base de datos como al principio, con sus cuatro tablas (borra también la tabla `pedidos_hist`, que crearás en el apartado 10).
 
 ```sql
+SET NAMES utf8mb4;
+
 CREATE DATABASE IF NOT EXISTS tiendadaw;
 USE tiendadaw;
 
