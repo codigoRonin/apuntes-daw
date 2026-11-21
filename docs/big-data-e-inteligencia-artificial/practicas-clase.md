@@ -1119,7 +1119,7 @@ Ejecuta `python respuestas_ra1.py` y `python respuestas_ra2.py`: tienen que deci
 
 ## UD3 · Aprendizaje automático: enfoques, modelos, ajuste y validación
 
-Las prácticas de esta unidad se trabajan en clase, una por apartado. La actividad evaluativa de la unidad te pide **usar** las piezas de scikit-learn sobre un caso; estas prácticas te piden **abrirlas**: hacer a mano, sobre tablas pequeñas, lo que la librería hace en una línea, predecir sobre papel antes de ejecutar y cazar errores en código que ya está escrito. Por eso los modelos vienen hechos en los ficheros de partida: aquí no se trata de escribirlos, sino de entender qué hacen. Se usa el entorno de la UD3, con scikit-learn instalado, y la semilla de la unidad, 26.
+Ocho prácticas, una por cada apartado del 1 al 8 de la unidad, que se trabajan en clase. La actividad evaluativa de la unidad te pide **usar** las piezas de scikit-learn sobre un caso; estas prácticas te piden **abrirlas**: hacer a mano, sobre tablas pequeñas, lo que la librería hace en una línea, predecir sobre papel antes de ejecutar y cazar errores en código que ya está escrito. Por eso los modelos vienen hechos en los ficheros de partida: aquí no se trata de escribirlos, sino de entender qué hacen. Se usa el entorno de la UD3, con scikit-learn instalado, y la semilla de la unidad, 26.
 
 Los datos son de la misma red de observadores, con una tabla nueva: `jornadas.csv`, las 300 **jornadas de censo** de tres temporadas (otoño de 2024, primavera de 2025 y otoño de 2025). Llega **limpia** y no tiene ninguna columna de persona: en estas prácticas no hay nada que apartar por protección de datos. Muestra (cabecera y cinco filas; fichero íntegro en el repositorio de recursos):
 
@@ -1435,3 +1435,256 @@ sensibilidad de «sí»: 8 de 13 = 0.62
 ```
 
 **Cómo trabajar.** La (a) no tiene traza que leer: se caza contando. Si dos formas de contar lo mismo no coinciden, una está mal, y casi siempre es la que nadie comprobó. En la (d), A y B tienen la misma exactitud: es la prueba de que esa cifra sola no distingue dos clasificadores que hacen cosas opuestas.
+
+### CP3.5 · Cinco pliegues y una lotería
+
+**Nivel** avanzado · **Tiempo orientativo** 45 min (30 + 15 de la tarea desde cero).
+
+**Qué refuerza.** El apartado 5 de la [UD3](ud3-aprendizaje-automatico.md): qué prueba una búsqueda con `GridSearchCV` y cuántas veces entrena, qué dicen la media y la desviación de los pliegues de una validación cruzada, y por qué el conjunto de prueba deja de medir en cuanto se usa para elegir.
+
+**Ficheros de partida.** `cp3-5/ajuste.py` y la carpeta `cp3-5/datos/` con `jornadas.csv` y `jornadas_posteriores.csv` (80 jornadas de la primavera de 2026, posteriores a todas las demás, con su resultado), en el repositorio de recursos (enlace en Classroom). Se ejecuta desde `cp3-5/`. La búsqueda viene escrita: aquí no la escribes, la sigues.
+
+**Enunciado.** El árbol de bandadas de la CP3.4 tenía profundidad 3 porque sí. Alguien ha escrito una búsqueda para decidirlo con datos, y otra persona ha tenido una idea más rápida: probar muchos árboles y quedarse con el que mejor salga en la prueba. Las jornadas posteriores, que nadie ha usado para nada, dirán qué vale cada cifra.
+
+**Tareas.**
+
+- **(a) Caza el error.** Ejecuta `python ajuste.py`. Se para en `fit` de la búsqueda con un mensaje largo: la primera línea dice qué parámetro no reconoce y de qué estimador, y la última, cuáles sí admite ese estimador. Compara las claves de la rejilla con la regla del apartado 5.4 —el nombre del paso, dos guiones bajos y el hiperparámetro— y arréglalas. Primera y última línea del mensaje, y salida esperada tras el arreglo:
+
+```
+ValueError: Invalid parameter 'class_weight' for estimator Pipeline(steps=[('pre',
+…
+('clf', DecisionTreeClassifier(random_state=26))]). Valid parameters are: ['memory', 'steps', 'transform_input', 'verbose'].
+```
+
+```
+{'clf__class_weight': None, 'clf__max_depth': 3, 'clf__min_samples_leaf': 5} 0.84
+```
+
+- **(b) Cuántas veces entrena.** **Antes de mirarlo**, calcula con la rejilla delante cuántas combinaciones prueba la búsqueda y cuántos entrenamientos hace en total con `cv=5`, contando el último, el del ganador con todo el entrenamiento. Compruébalo con el número de entradas de `busqueda.cv_results_["mean_test_score"]`. Después mira el ganador: ¿alguno de sus tres valores está en un extremo de su lista? Di qué harías si lo estuviera. Salida esperada:
+
+```
+24
+```
+
+- **(c) Dos candidatos, con lápiz.** El fichero imprime los cinco pliegues de un árbol de profundidad 3 y de otro de profundidad 6. Calcula a mano la media de cada uno. Después mira pliegue a pliegue: ¿en cuántos gana el de profundidad 3? Compruébalo con `.mean()` y `.std()`, y escribe en dos líneas si con estas cifras afirmarías que uno es mejor que el otro, y con cuánta seguridad. Salida esperada:
+
+```
+3 [0.778 0.889 0.844 0.822 0.8  ] | media 0.827 | desviación 0.038
+6 [0.689 0.844 0.778 0.822 0.8  ] | media 0.787 | desviación 0.054
+```
+
+- **(d) La lotería.** El último bloque del fichero entrena 45 árboles distintos, mide **cada uno en la prueba** y se queda con el mejor: lo deja en `elegido_mirando`. Mide ese árbol en la prueba y en las jornadas posteriores; y mide el ganador de la búsqueda, `busqueda.best_estimator_`, en los mismos dos sitios, con su cifra de validación cruzada al lado. Salida esperada:
+
+```
+45 candidatos medidos en la prueba; el mejor: (3, 10) con 0.853
+elegido mirando la prueba   → prueba 0.853 | jornadas posteriores 0.787
+elegido por validación cruzada → validación 0.84 | prueba 0.76 | jornadas posteriores 0.775
+```
+
+Contesta en cuatro líneas: cuál de las cifras de la primera fila se habría llevado la persona que eligió mirando la prueba, y cuánto vale de verdad su árbol en jornadas nuevas; por qué la mejor de 45 cifras medidas sobre las mismas 75 jornadas sale alta aunque el árbol no sea mejor; qué le pasa también a la cifra de validación del ganador de la búsqueda; y cuál de todas las cifras de la tabla comunicarías a la red.
+
+- **(e) Desde cero.** Fichero vacío en `cp3-5/`. La validación cruzada, escrita por ti: para la regresión lineal que estima `especies` con `duracion_h`, `observadores` y `viento_kmh` (división con `test_size=0.25` y `random_state=26`), parte las 225 filas de entrenamiento en cinco tramos consecutivos de 45; en cada vuelta, entrena con los otros cuatro y mide el R² en el que queda fuera. Para elegir las filas por su posición te sirve una serie con la posición de cada una, `pd.Series(range(len(X_ent)), index=X_ent.index)`, y los filtros con `&` y `|` de la UD2. La media tiene que coincidir con la de `cross_val_score`. Salida esperada:
+
+```
+tramo 1: entrena con 180 filas, mide con 45 → R² 0.150
+tramo 2: entrena con 180 filas, mide con 45 → R² 0.547
+tramo 3: entrena con 180 filas, mide con 45 → R² 0.314
+tramo 4: entrena con 180 filas, mide con 45 → R² 0.383
+tramo 5: entrena con 180 filas, mide con 45 → R² 0.192
+media a mano: 0.317
+cross_val_score: 0.317
+```
+
+**Cómo trabajar.** En la (a), lee la primera línea y la última: lo de en medio es el pipeline entero impreso. La (d) es la razón de la regla más repetida de la unidad: la prueba se mira una vez. No hace falta mala fe para romperla; basta con comparar dos modelos «a ver cuál sale mejor». Y fíjate en la (e): los cinco tramos van de 0,15 a 0,55 con el mismo modelo; la media sola no cuenta eso.
+
+### CP3.6 · K-medias con lápiz
+
+**Nivel** intermedio · **Tiempo orientativo** 40 min (25 + 15 de la tarea desde cero).
+
+**Qué refuerza.** El apartado 6 de la [UD3](ud3-aprendizaje-automatico.md): qué hace k-medias en cada vuelta —asignar cada fila al centro más cercano y mover cada centro a la media de sus filas—, por qué mide distancias y qué les pasa a las distancias cuando las columnas no están en la misma escala, y qué es la inercia.
+
+**Ficheros de partida.** `cp3-6/grupos.py` y la carpeta `cp3-6/datos/` con `jornadas.csv` y `ocho_jornadas.csv` (ocho jornadas con su duración y sus especies), en el repositorio de recursos (enlace en Classroom). Se ejecuta desde `cp3-6/`.
+
+**Enunciado.** K-medias cabe en una hoja de papel si las filas son ocho y las columnas, dos. En esta práctica haces tú las vueltas del algoritmo, ves con tres jornadas por qué hay que escalar, y lees una tabla de inercias sabiendo de dónde sale cada cifra. Las ocho jornadas:
+
+```
+jornada,duracion_h,especies
+A,1.0,2
+B,1.5,3
+C,1.5,2
+D,2.0,3
+E,3.0,6
+F,3.5,7
+G,4.0,6
+H,2.5,5
+```
+
+**Tareas.**
+
+- **(a) Caza el error.** Ejecuta `python grupos.py`. El primer bloque quiere agrupar las 300 jornadas y se para: el mensaje dice qué valor no ha podido convertir. Explica en una línea por qué un algoritmo que mide distancias no puede recibir esa columna tal cual, quítala de la lista y ejecuta. Última línea de la traza de partida y salida esperada tras el arreglo:
+
+```
+ValueError: could not convert string to float: 'soto'
+```
+
+```
+{0: 158, 1: 142}
+```
+
+- **(b) Las vueltas, a mano.** Dos grupos, y dos centros para empezar: el primero en (1,0 horas, 2 especies) y el segundo en (2,0 horas, 3 especies). En cada vuelta: calcula para cada jornada la distancia **al cuadrado** a cada centro (la diferencia de horas al cuadrado más la diferencia de especies al cuadrado), asígnala al más cercano, y mueve cada centro a la media de las jornadas que le han tocado. Repite hasta que una vuelta no cambie ningún reparto. Anota los centros de cada vuelta. Después escribe tu reparto final en una columna `grupo` de la tabla y compáralo con el de `KMeans`, con una tabla cruzada, porque los números de grupo son arbitrarios. Salida esperada de la comprobación:
+
+```
+col_0  0  1
+grupo      
+0      4  0
+1      0  4
+```
+
+- **(c) La más cercana, según la escala.** Tres jornadas, con su duración y los ejemplares contados: A (2,0 h, 100), B (4,0 h, 110) y C (2,0 h, 140). Calcula la distancia al cuadrado de A a B y de A a C: ¿cuál se parece más a A? El fichero imprime la desviación típica de las dos columnas en las 300 jornadas: divide cada diferencia por la desviación de su columna y repite la cuenta. Escribe en dos líneas qué ha cambiado y cuál de las dos respuestas tiene sentido para alguien de la red. Salida esperada:
+
+```
+{'duracion_h': 0.9, 'ejemplares': 125.16}
+A-B: distancia al cuadrado sin escalar 104.0 | escalada 4.94
+A-C: distancia al cuadrado sin escalar 1600.0 | escalada 0.10
+```
+
+- **(d) La inercia.** El último bloque agrupa las ocho jornadas con k de 1 a 8 e imprime la inercia de cada uno y lo que baja en cada paso. Contesta: por qué con k = 8 vale 0; por qué eso no convierte a 8 en el mejor k; y entre qué dos valores de k está el salto que importa. Salida esperada:
+
+```
+k = 1: inercia 35.38
+k = 2: inercia 4.75  baja 30.62
+k = 3: inercia 2.67  baja 2.08
+k = 4: inercia 1.42  baja 1.25
+k = 5: inercia 0.75  baja 0.67
+k = 6: inercia 0.25  baja 0.50
+k = 7: inercia 0.12  baja 0.12
+k = 8: inercia 0.00  baja 0.12
+```
+
+- **(e) Desde cero.** Fichero vacío en `cp3-6/`. Sin scikit-learn ni pandas: un programa con los dos centros a los que has llegado en la (b) escritos en el propio programa, que lea `datos/ocho_jornadas.csv`, asigne cada jornada a su centro más cercano y sume las distancias al cuadrado de todas: eso es la inercia, y tiene que coincidir con la de k = 2 de la tabla de la (d). Salida esperada:
+
+```
+A  (1.0, 2) → grupo 0, a 0.5000 de su centro
+B  (1.5, 3) → grupo 0, a 0.2500 de su centro
+C  (1.5, 2) → grupo 0, a 0.2500 de su centro
+D  (2.0, 3) → grupo 0, a 0.5000 de su centro
+E  (3.0, 6) → grupo 1, a 0.0625 de su centro
+F  (3.5, 7) → grupo 1, a 1.0625 de su centro
+G  (4.0, 6) → grupo 1, a 0.5625 de su centro
+H  (2.5, 5) → grupo 1, a 1.5625 de su centro
+inercia: 4.75
+```
+
+**Cómo trabajar.** La (b) necesita orden: una tabla con una fila por jornada y dos columnas de distancias por vuelta. Son tres vueltas y la última solo confirma. En la (c) no hace falta raíz cuadrada: para saber cuál está más cerca basta comparar los cuadrados.
+
+### CP3.7 · Los errores que no avisan
+
+**Nivel** avanzado · **Tiempo orientativo** 35 min.
+
+**Qué refuerza.** El apartado 7 de la [UD3](ud3-aprendizaje-automatico.md) y los errores sin mensaje del apartado 9: una cifra no vale nada sin saber con qué filas se midió, una métrica demasiado buena es una pregunta, y las columnas de `predict_proba` van en el orden de `classes_`.
+
+**Ficheros de partida.** `cp3-7/informe-ajeno.md`, `cp3-7/modelo_ajeno.py` y `cp3-7/datos/jornadas_export.csv`, en el repositorio de recursos (enlace en Classroom). Se ejecuta desde `cp3-7/`.
+
+**Enunciado.** Otra persona de la red ha entrenado un árbol que predice si habrá bandada y ha escrito un informe de seis afirmaciones para la junta. El programa no da ningún error. Tu trabajo es el de quien revisa: pedirle a cada cifra que se explique. No hay traza que leer en toda la práctica. El informe:
+
+```
+# Modelo de bandadas — informe para la junta de la red
+
+Datos: la exportación de jornadas de censo (`jornadas_export.csv`). Modelo: un árbol de decisión que dice si en una jornada habrá bandada. Código: `modelo_ajeno.py`.
+
+1. El fichero tiene 600 jornadas de censo.
+2. El modelo acierta el 100 % de las jornadas.
+3. Se probó con el 25 % de las jornadas, que el modelo no había visto.
+4. Sin modelo se acertaría la mitad de las veces.
+5. Para la jornada del sábado, en el pinar, la probabilidad de bandada es del 100 %.
+6. Los observadores con más experiencia detectan más bandadas.
+
+Conclusión: el modelo está listo para decidir a qué jornadas se convoca a los socios.
+```
+
+**Tareas.**
+
+- **(a) ¿Con qué filas?** Ejecuta `python modelo_ajeno.py`. Imprime una exactitud de 1,0. La función `medir_arbol` devuelve cinco cosas: mira cuál de ellas es la que se imprime y con qué filas se ha calculado. Imprime también la otra exactitud. Salida de partida y salida esperada:
+
+```
+exactitud: 1.0
+```
+
+```
+exactitud en entrenamiento: 1.0
+exactitud en prueba: 0.947
+```
+
+- **(b) Demasiado bueno.** La cifra de prueba sigue siendo muy alta para un árbol sin límite de profundidad. Cuenta las filas del fichero, las jornadas distintas (`nunique` sobre `jornada_id`) y las filas repetidas (`duplicated`). La función ya devuelve cuántas jornadas de la prueba están **también** en el entrenamiento: imprímelo. Después quita las repetidas **antes** de dividir, vuelve a medir, y calcula qué se acertaría diciendo siempre «no». Salida esperada:
+
+```
+filas: 600 | jornadas distintas: 300 | filas repetidas: 300
+jornadas de la prueba que también están en el entrenamiento: 116 de 150
+sin repetidas → filas: 300 | a los dos lados: 0 de 75
+sin repetidas → exactitud en entrenamiento: 1.0 | en prueba: 0.707
+si dijera siempre «no»: 0.65
+```
+
+Explica en tres líneas por qué una jornada repetida a los dos lados de la división es el «examen con las respuestas» del apartado 1.3, y por qué a un árbol sin límite le aprovecha tanto.
+
+- **(c) La columna de la probabilidad.** El script da la probabilidad de bandada del sábado leyendo la columna 0 de `predict_proba`. Imprime `classes_` y las dos probabilidades, y corrige la lectura sin suponer en qué posición está cada clase. Salida de partida y salida esperada:
+
+```
+probabilidad de bandada: 1.0
+```
+
+```
+['no' 'sí'] [1. 0.]
+probabilidad de bandada: 0.0
+```
+
+- **(d) El veredicto.** En un fichero `informe-revisado.md`, una tabla con las seis afirmaciones del informe: cuadra, no cuadra o no se puede comprobar con esta tabla, y la orden que lo demuestra. Reescribe las que no cuadran con la cifra correcta, y di qué harías con la que no se puede comprobar. Termina con una línea: ¿está el modelo «listo para decidir»?
+
+**Cómo trabajar.** Ninguno de estos errores lo habría cazado el intérprete. Se cazan con tres preguntas, siempre las mismas: con qué filas se ha medido, si esas filas eran de verdad nuevas para el modelo, y si la cifra que leo es la de la clase que creo. Cuando una cifra te parezca demasiado buena, empieza por ahí.
+
+### CP3.8 · El modelo que nadie puede repetir
+
+**Nivel** intermedio · **Tiempo orientativo** 40 min (25 + 15 de la tarea desde cero).
+
+**Qué refuerza.** El apartado 8 de la [UD3](ud3-aprendizaje-automatico.md): qué hace falta para que otra persona obtenga tus mismas cifras —la semilla escrita, la carpeta creada, el pipeline entero guardado y comprobado—, y qué dice una ficha de modelo cuando se la compara con el código que documenta.
+
+**Ficheros de partida.** `cp3-8/guardar_modelo.py`, `cp3-8/ficha-ajena.md` y `cp3-8/datos/jornadas.csv`, en el repositorio de recursos (enlace en Classroom). Se ejecuta desde `cp3-8/`.
+
+**Enunciado.** Heredas un modelo que estima las especies de una jornada: un script que lo entrena y lo guarda, y su ficha. La ficha dice que basta ejecutar el script para obtener las mismas cifras. En esta práctica no escribes un script ni una ficha: reparas el script ajeno en tres puntos y anotas la ficha ajena.
+
+**Tareas.**
+
+- **(a) Caza el error.** Ejecuta `python guardar_modelo.py`. Entrena, imprime una cifra y se para al guardar. Lee la última línea de la traza: `joblib.dump` no crea carpetas. Arréglalo como en el apartado 3.4. Última línea de la traza de partida:
+
+```
+FileNotFoundError: [Errno 2] No such file or directory: 'modelos/especies.joblib'
+```
+
+- **(b) Dos ejecuciones.** Ejecútalo dos veces seguidas y compara la cifra de R² que imprime cada vez. Encuentra qué línea hace que cambie y arréglalo con una constante al principio del fichero. Mira también con qué filas se calcula esa cifra, e imprime la de entrenamiento y la de prueba, cada una con su nombre.
+- **(c) El fichero guardado.** Ahora se para más abajo, al predecir con el modelo recuperado. El mensaje cambia con la versión de scikit-learn —unas dicen que reciben 5 columnas y esperan 10, otras que no pueden convertir un texto en número—, y las dos dicen lo mismo: al modelo recuperado le llega la tabla sin preparar. Mira qué se guardó exactamente con `joblib.dump`, guarda lo que hay que guardar y añade la aserción de que el modelo recuperado predice lo mismo que el recién entrenado. Última línea de la traza (una u otra, según tu versión) y salida esperada del script reparado:
+
+```
+ValueError: X has 5 features, but LinearRegression is expecting 10 features as input.
+ValueError: could not convert string to float: 'soto'
+```
+
+```
+filas: 300 | entrenamiento: 225 | prueba: 75
+R² en entrenamiento: 0.71
+R² en prueba: 0.71
+guardado y comprobado: Pipeline [6.18 8.08 6.07]
+```
+
+- **(d) La ficha, casilla a casilla.** Con la salida del script reparado y su código delante, repasa las diez casillas de `ficha-ajena.md` y anota en `ficha-anotada.md`, para cada una: cuadra, no cuadra (y qué debería decir) o no se puede comprobar con lo que tienes. No escribas una ficha nueva: anota la ajena.
+
+- **(e) Desde cero.** Fichero vacío en `cp3-8/`. Un programa que use el modelo guardado, como lo haría una aplicación: una jornada escrita como diccionario en el propio programa (3,0 horas, 2 observadores, viento de 10 km/h, embalse, nubes); una lista constante con las cinco columnas que el modelo espera; si al diccionario le falta alguna, lo dice y sale con `sys.exit(1)`; si no, carga `modelos/especies.joblib`, predice e imprime las especies con un decimal. Pruébalo también borrando una clave del diccionario. Salida esperada con la jornada completa, y sin `habitat`:
+
+```
+Especies estimadas para la jornada: 7.6
+```
+
+```
+No puedo predecir: faltan las columnas ['habitat']
+```
+
+**Cómo trabajar.** Tres defectos y ninguno es de aprendizaje automático: una carpeta, una semilla y qué objeto se guarda. Son los que hacen que un modelo que funcionaba en un equipo no funcione en otro. En la (d), una casilla que no puedes comprobar no es una casilla correcta: anótala como lo que es.
