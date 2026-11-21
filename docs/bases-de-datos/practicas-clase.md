@@ -844,7 +844,7 @@ SELECT cod_solicitud, MAX(valoracion) FROM solicitudes;
 - **(c) Tres listados.**
     1. La hoja de la ruta `R1`: sus paradas en orden, con el orden, el nombre de la parada, el municipio y el minuto.
     2. El parte del 27 de noviembre de 2026: hora de salida, nombre de la ruta, matrícula y nombre del conductor de cada viaje de ese día, por hora.
-    3. Los billetes del viaje 43: nombre del viajero, **nombre** de la parada en la que sube, **nombre** de la parada en la que baja y plazas. Necesitas la tabla `paradas` dos veces en la misma consulta, cada vez con un alias distinto; el diagrama te dice por qué.
+    3. Los billetes del viaje 43: nombre del viajero, **nombre y municipio** de la parada en la que sube, **nombre y municipio** de la parada en la que baja, y plazas. Necesitas la tabla `paradas` dos veces en la misma consulta, cada vez con un alias distinto; el diagrama te dice por qué. Cuando la tengas, quita de la consulta los dos municipios y mira el billete de Dámaso Duarte: explica qué ha pasado y por qué `nombre_parada` no podría ser la clave primaria de `paradas`.
 
   **Salida esperada** de las tres, en ese orden:
 
@@ -873,14 +873,14 @@ SELECT cod_solicitud, MAX(valoracion) FROM solicitudes;
 ```
 
 ```
-+----------------+-----------------------+-----------------+----------------+
-| nombre_viajero | sube                  | baja            | plazas_pedidas |
-+----------------+-----------------------+-----------------+----------------+
-| Ángela Aznárez | Estación de autobuses | Plaza de España |              2 |
-| Octavio Orús   | Centro de salud       | Plaza de España |              3 |
-| Dámaso Duarte  | Centro de salud       | Centro de salud |              3 |
-| Sofía Sarasa   | Estación de autobuses | Plaza de España |              1 |
-+----------------+-----------------------+-----------------+----------------+
++----------------+-----------------------+------------------------+-----------------+----------------+----------------+
+| nombre_viajero | sube                  | municipio_sube         | baja            | municipio_baja | plazas_pedidas |
++----------------+-----------------------+------------------------+-----------------+----------------+----------------+
+| Ángela Aznárez | Estación de autobuses | Ejea de los Caballeros | Plaza de España | Tauste         |              2 |
+| Octavio Orús   | Centro de salud       | Tauste                 | Plaza de España | Tauste         |              3 |
+| Dámaso Duarte  | Centro de salud       | Ejea de los Caballeros | Centro de salud | Tauste         |              3 |
+| Sofía Sarasa   | Estación de autobuses | Ejea de los Caballeros | Plaza de España | Tauste         |              1 |
++----------------+-----------------------+------------------------+-----------------+----------------+----------------+
 ```
 
 - **(d) Agregar sobre una composición.** Cuántos viajeros **distintos** han hecho alguna solicitud en cada ruta, con el nombre de la ruta. **Salida esperada:**
