@@ -369,7 +369,7 @@ Las prácticas de esta unidad cambian otra vez de materia prima: ya no hay diagr
 
 Todas las prácticas de la unidad usan la misma base de datos, distinta de la TiendaDAW de los apuntes para que tengas que pensar las consultas en vez de recordarlas: el **servicio comarcal de transporte a demanda** de las Cinco Villas. Son microbuses que cubren rutas fijas entre pueblos, pero solo salen si alguien lo ha pedido: cada viajero registrado hace una *solicitud* para un viaje concreto, diciendo en qué parada sube, en cuál baja y cuántas plazas necesita. Los lugares son reales; las personas, los vehículos, los viajes y las solicitudes son inventados.
 
-**Ficheros de partida de toda la unidad.** Un solo guion, `transporte.sql`, en el repositorio de recursos (enlace en Classroom), carpeta `bases-de-datos/ud4/practicas-clase/`. Crea la base de datos `transporte` y sus ocho tablas, y se puede ejecutar tantas veces como haga falta.
+**Ficheros de partida de toda la unidad.** Un solo guion, `transporte.sql`, en el repositorio de recursos (enlace en Classroom), carpeta `bases-de-datos/ud4/practicas-clase/`. Crea la base de datos `transporte` y sus ocho tablas, y se puede ejecutar tantas veces como haga falta. La última práctica, la CP4.10, añade un segundo guion, `validaciones.sql`, que está en la misma carpeta.
 
 El esquema, en la notación de la UD3 (clave primaria en negrita, cada clave ajena con su flecha):
 
@@ -731,3 +731,498 @@ SELECT cod_ruta, dia, COUNT(*) FROM viajes GROUP BY cod_ruta;
 ```
 
 **Cómo trabajar.** En la (d), la clasificación va primero y por escrito; la pregunta que la resuelve es siempre la misma: la condición, ¿se puede comprobar mirando **una fila**, o hace falta haber contado o sumado antes? En la (d.4) conviven los dos filtros: léela siguiendo el orden de evaluación del apartado 6. En la (c), la base de datos no tiene ninguna solicitud «en espera», y eso no es un error de la consulta.
+
+### CP4.5 · Caza de errores: consultas que funcionan y mienten
+
+**Nivel** intermedio · **Tiempo orientativo** 40 min · **Criterios** RA3.b y RA3.e.
+
+**Qué refuerza.** Los errores de los apartados 1 a 6 de la [UD4](ud4-consultas-sql.md), vistos desde el otro lado: no escribes consultas, **revisas las de otro**. La coma olvidada, la precedencia de `AND` y `OR`, las comparaciones con NULL, `COUNT(*)` frente a `COUNT(columna)`, los extremos de un rango, el `LIMIT` sin `ORDER BY`, y los errores 1054, 1111 y 1140.
+
+**Ficheros de partida.** `transporte.sql`, ya cargado.
+
+**Enunciado.** Un compañero de la oficina te pasa nueve consultas «que ya funcionan» para que les eches un vistazo antes de enviar los datos a la gerencia. Seis se ejecutan sin error y devuelven algo que **no es lo que dice su comentario**. Las otras tres ni siquiera se ejecutan.
+
+**Tareas.**
+
+- **(a) Las seis que mienten.** Para cada consulta: ejecútala, di **qué devuelve en realidad**, por qué no es lo que su comentario promete, y escribe la versión correcta. Como prueba, anota cuántas filas devuelve cada versión (o la cifra, si es un recuento).
+
+```
+-- 1. Matrícula y plazas de cada vehículo
+SELECT matricula plazas FROM vehiculos;
+
+-- 2. Viajeros de Tauste o de Luna que tienen la tarjeta de mayor
+SELECT nombre_viajero, municipio, tarjeta FROM viajeros
+WHERE municipio = 'Tauste' OR municipio = 'Luna' AND tarjeta = 'mayor';
+
+-- 3. Solicitudes que nadie ha valorado
+SELECT cod_solicitud FROM solicitudes WHERE valoracion = NULL;
+
+-- 4. Cuántos viajes tienen ya un vehículo asignado
+SELECT COUNT(*) AS con_vehiculo FROM viajes;
+
+-- 5. Viajes de noviembre de 2026
+SELECT cod_viaje, dia FROM viajes
+WHERE dia > '2026-11-01' AND dia < '2026-11-30';
+
+-- 6. Los tres viajeros que se han dado de alta más recientemente
+SELECT nombre_viajero, alta_viajero FROM viajeros LIMIT 3;
+```
+
+  **Salida esperada** de las versiones correctas de la 2 y de la 4:
+
+```
++------------------+-----------+---------+
+| nombre_viajero   | municipio | tarjeta |
++------------------+-----------+---------+
+| Hilario Hernando | Luna      | mayor   |
++------------------+-----------+---------+
+```
+
+```
++--------------+
+| con_vehiculo |
++--------------+
+|           63 |
++--------------+
+```
+
+- **(b) Las tres que no arrancan.** Para cada una: copia el número y el mensaje del error, explica qué regla de los apuntes rompe y escribe una consulta que haga lo que dice el comentario.
+
+```
+-- 7. Viajeros cuya valoración media no llega a 3,5
+SELECT cod_viajero, AVG(valoracion) FROM solicitudes
+WHERE AVG(valoracion) < 3.5 GROUP BY cod_viajero;
+
+-- 8. Solicitudes de más de dos plazas, con el doble de plazas por si se amplía el viaje
+SELECT cod_solicitud, plazas_pedidas * 2 AS doble FROM solicitudes WHERE doble > 4;
+
+-- 9. La solicitud con la valoración más alta
+SELECT cod_solicitud, MAX(valoracion) FROM solicitudes;
+```
+
+  **Salida esperada** de la versión correcta de la 7:
+
+```
++-------------+-------+
+| cod_viajero | media |
++-------------+-------+
+|           3 |  3.33 |
+|          10 |  3.00 |
+|          12 |  2.50 |
+|          15 |  3.40 |
+|          17 |  2.33 |
++-------------+-------+
+```
+
+  La 9 no tiene arreglo con lo que sabes de los apartados 1 a 6: explica por qué la pregunta «¿cuál es *la* solicitud con la valoración más alta?» está mal planteada con estos datos, y deja escrita la consulta que al menos devuelve esa valoración máxima.
+
+**Cómo trabajar.** En la (a), el orden es siempre el mismo: leer el comentario, **predecir** qué debería salir, ejecutar y comparar. Una consulta que devuelve cero filas, o todas, casi nunca está contestando lo que se le preguntó. En la 6, ejecuta la versión original dos veces: que salga lo mismo no la hace correcta; di qué tendría que garantizar y no garantiza.
+
+### CP4.6 · Seguir las flechas: composiciones internas
+
+**Nivel** intermedio · **Tiempo orientativo** 50 min · **Criterios** RA3.c.
+
+**Qué refuerza.** Los apartados 7.1 y 7.4 de la [UD4](ud4-consultas-sql.md): `INNER JOIN`, los alias de tabla, encadenar composiciones siguiendo las claves ajenas y agregar sobre el resultado. Y el diagrama lógico de la UD3, que aquí deja de ser un entregable y pasa a ser un **mapa**.
+
+**Ficheros de partida.** `transporte.sql`, ya cargado, y el diagrama lógico de la base de datos:
+
+![Figura CP4.6. Diagrama lógico en pata de gallo de la base de datos transporte: las tablas rutas, ruta_parada, paradas, viajes, solicitudes, viajeros, vehiculos y conductores con sus columnas, sus claves primarias y sus nueve claves ajenas; solicitudes apunta dos veces a paradas, con los roles sube en y baja en](img/cp4-transporte-logico.svg)
+
+**Enunciado.** Ninguna pregunta interesante de la oficina cabe en una sola tabla: el nombre de la ruta está en `rutas`, el día en `viajes`, quién viaja en `solicitudes` y `viajeros`. Cada línea del diagrama es una clave ajena, y cada clave ajena es un `ON` esperando a que lo escribas.
+
+**Tareas.**
+
+- **(a) Caminos.** Sin escribir SQL todavía. Para ir de una tabla a otra hay que pasar por las tablas intermedias, siguiendo las líneas. Escribe el camino, tabla a tabla y con la clave ajena de cada paso, entre: `viajeros` y `rutas`; `conductores` y `viajeros`; `rutas` y `paradas`. En el tercer caso hay **dos** caminos: di qué significa cada uno.
+
+- **(b) Contar antes de componer.** Predice cuántas filas devuelve cada composición y después compruébalo con un `SELECT COUNT(*)`. Te hacen falta dos datos: `viajes` tiene 78 filas y `solicitudes`, 187.
+    1. `viajes` con `rutas`.
+    2. `viajes` con `vehiculos`.
+    3. `solicitudes` con `viajes` y con `rutas`.
+
+  Dos de las tres cifras salen sin pensar. La otra no: explica qué filas se han perdido y por qué.
+
+- **(c) Tres listados.**
+    1. La hoja de la ruta `R1`: sus paradas en orden, con el orden, el nombre de la parada, el municipio y el minuto.
+    2. El parte del 27 de noviembre de 2026: hora de salida, nombre de la ruta, matrícula y nombre del conductor de cada viaje de ese día, por hora.
+    3. Los billetes del viaje 43: nombre del viajero, **nombre** de la parada en la que sube, **nombre** de la parada en la que baja y plazas. Necesitas la tabla `paradas` dos veces en la misma consulta, cada vez con un alias distinto; el diagrama te dice por qué.
+
+  **Salida esperada** de las tres, en ese orden:
+
+```
++-------+-----------------------+------------------------+--------+
+| orden | nombre_parada         | municipio              | minuto |
++-------+-----------------------+------------------------+--------+
+|     1 | Estación de autobuses | Ejea de los Caballeros |      0 |
+|     2 | Centro de salud       | Ejea de los Caballeros |      5 |
+|     3 | Cruce de la carretera | Biota                  |     20 |
+|     4 | Plaza de la Villa     | Sádaba                 |     30 |
+|     5 | Castillo              | Sádaba                 |     34 |
+|     6 | Plaza del Mercado     | Uncastillo             |     50 |
++-------+-----------------------+------------------------+--------+
+```
+
+```
++-------------+-------------------------------+-----------+---------------------+
+| hora_salida | nombre_ruta                   | matricula | nombre_conductor    |
++-------------+-------------------------------+-----------+---------------------+
+| 08:15:00    | Ejea - Sádaba - Uncastillo    | 7730 MBD  | Íñigo Usón Garcés   |
+| 09:30:00    | Ejea - Tauste                 | 7730 MBD  | Óscar Añaños Sanz   |
+| 10:45:00    | Ejea - Erla - Luna            | 1946 KZR  | Jesús Lambán Cortés |
+| 16:00:00    | Tauste - Pradilla - Remolinos | 5507 MTG  | Rosa Biel Ezquerra  |
++-------------+-------------------------------+-----------+---------------------+
+```
+
+```
++----------------+-----------------------+-----------------+----------------+
+| nombre_viajero | sube                  | baja            | plazas_pedidas |
++----------------+-----------------------+-----------------+----------------+
+| Ángela Aznárez | Estación de autobuses | Plaza de España |              2 |
+| Octavio Orús   | Centro de salud       | Plaza de España |              3 |
+| Dámaso Duarte  | Centro de salud       | Centro de salud |              3 |
+| Sofía Sarasa   | Estación de autobuses | Plaza de España |              1 |
++----------------+-----------------------+-----------------+----------------+
+```
+
+- **(d) Agregar sobre una composición.** Cuántos viajeros **distintos** han hecho alguna solicitud en cada ruta, con el nombre de la ruta. **Salida esperada:**
+
+```
++-------------------------------+--------------------+
+| nombre_ruta                   | viajeros_distintos |
++-------------------------------+--------------------+
+| Ejea - Sádaba - Uncastillo    |                 19 |
+| Ejea - Tauste                 |                 21 |
+| Ejea - Erla - Luna            |                 19 |
+| Tauste - Pradilla - Remolinos |                 14 |
++-------------------------------+--------------------+
+```
+
+- **(e) Una tabla de más.** Alguien quería saber cuántos viajes ha conducido cada conductor y escribió esto. Ejecútalo, y después cuenta los viajes de un conductor cualquiera directamente en `viajes`: no coinciden. Explica de dónde salen las filas de más y corrige la consulta **quitando** lo que sobra.
+
+```
+SELECT c.nombre_conductor, COUNT(*) AS viajes
+FROM conductores c
+INNER JOIN viajes v      ON v.cod_conductor = c.cod_conductor
+INNER JOIN solicitudes s ON s.cod_viaje     = v.cod_viaje
+GROUP BY c.cod_conductor, c.nombre_conductor;
+```
+
+  **Salida esperada** de la consulta corregida:
+
+```
++----------------------+--------+
+| nombre_conductor     | viajes |
++----------------------+--------+
+| Pilar Navarro Abadía |     10 |
+| Jesús Lambán Cortés  |     11 |
+| Íñigo Usón Garcés    |     19 |
+| Rosa Biel Ezquerra   |      9 |
+| Óscar Añaños Sanz    |     14 |
++----------------------+--------+
+```
+
+**Cómo trabajar.** Antes de escribir cada consulta, pon el dedo en el diagrama: tabla de salida, tabla de llegada, y las líneas que recorres; cada línea es un `INNER JOIN … ON`. Prefija **todas** las columnas con su alias, aunque no haga falta: `municipio` existe en dos tablas y `cod_ruta` en tres. En la (e), no arregles el recuento con un truco: pregúntate qué pregunta contesta la consulta tal como está, y quita la tabla que la pregunta original no necesita.
+
+### CP4.7 · Los que no casan: composiciones externas y producto cartesiano
+
+**Nivel** intermedio · **Tiempo orientativo** 50 min · **Criterios** RA3.d.
+
+**Qué refuerza.** Los apartados 7.2 y 7.3 de la [UD4](ud4-consultas-sql.md): `LEFT JOIN`, el patrón `LEFT JOIN … IS NULL`, la diferencia entre poner una condición en el `ON` o en el `WHERE`, las cadenas de composiciones externas y el `CROSS JOIN`.
+
+**Ficheros de partida.** `transporte.sql`, ya cargado, y el diagrama de la CP4.6.
+
+**Enunciado.** En la CP4.6 se perdían filas y había que explicar por qué. Aquí se trata de **no perderlas**: la oficina necesita ver también lo que falta, los viajes sin vehículo, los vehículos parados, los viajeros que se registraron y nunca pidieron nada.
+
+**Tareas.**
+
+- **(a) Tres recuentos.** Predice cuántas filas devuelve cada composición y compruébalo. Los datos que necesitas: 78 viajes, de los que 63 tienen vehículo; 6 vehículos, de los que uno no ha salido nunca.
+    1. `viajes` con `INNER JOIN` a `vehiculos`.
+    2. `viajes` con `LEFT JOIN` a `vehiculos`.
+    3. `vehiculos` con `LEFT JOIN` a `viajes`.
+
+- **(b) `ON` o `WHERE`.** Estas dos consultas solo se diferencian en dónde está la condición del día. Predice cuántas filas devuelve cada una y **qué vehículos aparecen** en cada una; después ejecútalas y di cuál de las dos contesta a «qué hace cada vehículo de la flota el 27 de noviembre».
+
+```
+SELECT ve.matricula, v.cod_viaje, v.hora_salida
+FROM vehiculos ve
+LEFT JOIN viajes v ON v.matricula = ve.matricula
+                  AND v.dia = '2026-11-27';
+
+SELECT ve.matricula, v.cod_viaje, v.hora_salida
+FROM vehiculos ve
+LEFT JOIN viajes v ON v.matricula = ve.matricula
+WHERE v.dia = '2026-11-27';
+```
+
+- **(c) Lo que falta.**
+    1. Los viajeros registrados que no han hecho ninguna solicitud: nombre y fecha de alta.
+    2. Todos los viajes del 30 de noviembre y del 1 de diciembre de 2026, con su día, su hora, el nombre de la ruta, la matrícula y el nombre del conductor, **también los que aún no tienen vehículo ni conductor**, ordenados por día y hora. Decide qué composiciones tienen que ser externas y cuáles no hace falta que lo sean.
+
+  **Salida esperada** de las dos:
+
+```
++----------------+--------------+
+| nombre_viajero | alta_viajero |
++----------------+--------------+
+| Inés Ibor      | 2025-11-23   |
+| Valentín Villa | 2026-01-19   |
+| Íker Ñíguez    | 2026-10-08   |
++----------------+--------------+
+```
+
+```
++------------+-------------+-------------------------------+-----------+----------------------+
+| dia        | hora_salida | nombre_ruta                   | matricula | nombre_conductor     |
++------------+-------------+-------------------------------+-----------+----------------------+
+| 2026-11-30 | 08:15:00    | Ejea - Sádaba - Uncastillo    | NULL      | NULL                 |
+| 2026-11-30 | 09:30:00    | Ejea - Tauste                 | NULL      | NULL                 |
+| 2026-11-30 | 10:45:00    | Ejea - Erla - Luna            | 5507 MTG  | Íñigo Usón Garcés    |
+| 2026-11-30 | 16:00:00    | Tauste - Pradilla - Remolinos | 7730 MBD  | Pilar Navarro Abadía |
+| 2026-12-01 | 08:15:00    | Ejea - Sádaba - Uncastillo    | 7730 MBD  | Óscar Añaños Sanz    |
+| 2026-12-01 | 09:30:00    | Ejea - Tauste                 | 1946 KZR  | Jesús Lambán Cortés  |
++------------+-------------+-------------------------------+-----------+----------------------+
+```
+
+- **(d) Un uso legítimo del producto cartesiano.** La oficina quiere saber qué vehículos **no han cubierto nunca** cada ruta. Hazlo en dos pasos. Primero, con `CROSS JOIN`, todas las parejas posibles de ruta y vehículo: di cuántas son antes de ejecutar. Después, engancha a esas parejas los viajes que las cumplen y quédate con las parejas que no tienen ninguno: código de ruta y matrícula. Antes de ejecutar el segundo paso, di cuántas parejas salen **seguro**, sin mirar los viajes, sabiendo que hay una ruta sin servicio y un vehículo que no ha salido nunca; después compara esa cifra con el resultado y di qué significa que coincidan o no. **Salida esperada** (ordenada por ruta y matrícula):
+
+```
++----------+-----------+
+| cod_ruta | matricula |
++----------+-----------+
+| R1       | 3312 JHC  |
+| R2       | 3312 JHC  |
+| R3       | 3312 JHC  |
+| R4       | 1946 KZR  |
+| R4       | 3312 JHC  |
+| R4       | 4821 LKM  |
+| R4       | 5507 MTG  |
+| R4       | 7730 MBD  |
+| R4       | 8094 NCP  |
+| R5       | 3312 JHC  |
++----------+-----------+
+```
+
+- **(e) El `LEFT` que se pierde.** Esta consulta quería listar **todos** los viajeros con los días en que han pedido viaje, y los tres que no han pedido nada no salen. Explica en qué composición desaparecen y corrígela.
+
+```
+SELECT vi.nombre_viajero, v.dia
+FROM viajeros vi
+LEFT JOIN solicitudes s ON s.cod_viajero = vi.cod_viajero
+INNER JOIN viajes v     ON v.cod_viaje   = s.cod_viaje;
+```
+
+**Cómo trabajar.** Para cada `LEFT JOIN`, di en voz alta qué tabla es la que «se conserva entera»: es la de la izquierda, y la consulta entera se lee desde ella. En la (c.2), el `ON` de cada composición externa lleva dos alias: asegúrate de que la condición del día está donde tiene que estar. En la (d), haz el primer paso solo y mira su resultado antes de añadir el segundo; en el segundo, el `ON` tiene **dos** condiciones.
+
+### CP4.8 · Una pregunta, varias escrituras: subconsultas
+
+**Nivel** avanzado · **Tiempo orientativo** 50 min · **Criterios** RA3.f.
+
+**Qué refuerza.** El apartado 8 de la [UD4](ud4-consultas-sql.md): la subconsulta escalar, la de lista con `IN`, la correlada con `EXISTS`, la subconsulta en el `FROM` para encadenar dos niveles de agregación, y el criterio para elegir entre subconsulta y composición.
+
+**Ficheros de partida.** `transporte.sql`, ya cargado, y el diagrama de la CP4.6.
+
+**Enunciado.** En la defensa de las entregas se pide a menudo lo mismo: «esto que has escrito así, escríbelo de otra manera». Quien solo conoce una forma de preguntar no sabe si la suya es la mejor. Esta práctica es de traducir.
+
+**Tareas.**
+
+- **(a) Comparar con un valor calculado.** Las rutas más largas que la media: nombre y kilómetros. Calcula antes la media con una consulta aparte, para saber qué esperas. **Salida esperada:**
+
+```
++-------------------------------+---------+
+| nombre_ruta                   | km_ruta |
++-------------------------------+---------+
+| Ejea - Sádaba - Uncastillo    |    34.5 |
+| Sádaba - Sos del Rey Católico |    31.0 |
++-------------------------------+---------+
+```
+
+- **(b) Una pregunta, tres escrituras.** «¿Qué viajeros han hecho alguna solicitud para un viaje de la ruta `R5`?» Escríbela tres veces, devolviendo siempre el nombre del viajero:
+    1. Con `IN` y una subconsulta.
+    2. Con `EXISTS` y una subconsulta correlada.
+    3. Con composiciones, sin subconsultas.
+
+  Las dos primeras devuelven el mismo número de filas. La tercera, tal como sale a la primera, devuelve más: di cuántas más, por qué, y qué hay que añadirle para que las tres coincidan. **Salida esperada** de cualquiera de las tres, una vez coinciden (ordenada por nombre, primeras seis filas):
+
+```
++----------------+
+| nombre_viajero |
++----------------+
+| Adela Abad     |
+| Benito Bernués |
+| Carmen Cinto   |
+| Dámaso Duarte  |
+| Elvira Espés   |
+| Gloria Gracia  |
++----------------+
+```
+
+- **(c) Dos niveles.** La gerencia pregunta: «de media, ¿cuántas solicitudes hace un viajero?», y después: «¿cuántos viajeros están por encima de esa media?».
+    1. Escribe la consulta que cuenta las solicitudes de cada viajero.
+    2. Úsala como subconsulta en el `FROM` para calcular la media de esos recuentos, con dos decimales.
+    3. Cuenta cuántos viajeros superan esa media. Necesitas la consulta del paso 1 dos veces.
+
+  **Salida esperada** de los pasos 2 y 3:
+
+```
++-------------------+
+| media_por_viajero |
++-------------------+
+|              8.90 |
++-------------------+
+```
+
+```
++------------------------+
+| por_encima_de_la_media |
++------------------------+
+|                     11 |
++------------------------+
+```
+
+- **(d) Una subconsulta que devuelve demasiado.** Esta consulta da error. Copia el número y el mensaje, explica qué esperaba MySQL de la subconsulta y qué ha recibido, y arréglala cambiando un solo operador.
+
+```
+SELECT nombre_parada, municipio
+FROM paradas
+WHERE cod_parada = (SELECT cod_parada FROM ruta_parada WHERE cod_ruta = 'R3');
+```
+
+**Cómo trabajar.** En todas las tareas, escribe y ejecuta **primero la subconsulta sola**: si no sabes qué devuelve por dentro, no sabes qué estás comparando por fuera. En la (b.3), cuenta las filas antes de añadir nada y busca un viajero que salga repetido: mirar sus filas te dice qué pasa. En la (c), la media del paso 2 incluye solo a los viajeros que han hecho alguna solicitud; piensa si eso es lo que la gerencia ha preguntado.
+
+### CP4.9 · Apilar resultados: operaciones de conjuntos
+
+**Nivel** intermedio · **Tiempo orientativo** 40 min · **Criterios** RA3.g.
+
+**Qué refuerza.** El apartado 9 de la [UD4](ud4-consultas-sql.md): `UNION` y `UNION ALL`, las tres reglas de compatibilidad, `ORDER BY` y `LIMIT` por rama, e `INTERSECT` y `EXCEPT` con su traducción a las formas de los apartados 7 y 8.
+
+**Ficheros de partida.** `transporte.sql`, ya cargado.
+
+**Enunciado.** La palabra `municipio` aparece en dos tablas que no tienen nada que ver entre sí: dónde hay paradas y dónde viven los viajeros. Comparar esas dos listas —qué hay en las dos, qué hay solo en una— es justo lo que hacen las operaciones de conjuntos.
+
+**Tareas.**
+
+- **(a) Tres uniones rotas.** La primera da un error; la segunda no da ninguno y devuelve un disparate; la tercera da otro error. Para cada una, di qué regla del apartado 9 incumple y arréglala para que haga lo que dice su comentario.
+
+```
+-- 1. Directorio de personas: nombre y fecha de alta de conductores y viajeros
+SELECT nombre_conductor, alta_conductor FROM conductores
+UNION ALL
+SELECT nombre_viajero FROM viajeros;
+
+-- 2. El mismo directorio
+SELECT nombre_conductor, alta_conductor FROM conductores
+UNION ALL
+SELECT alta_viajero, nombre_viajero FROM viajeros;
+
+-- 3. Los dos vehículos más nuevos y los dos más antiguos
+SELECT matricula, anio_matriculacion FROM vehiculos ORDER BY anio_matriculacion DESC LIMIT 2
+UNION ALL
+SELECT matricula, anio_matriculacion FROM vehiculos ORDER BY anio_matriculacion ASC LIMIT 2;
+```
+
+  **Salida esperada** de la 3, arreglada y con el conjunto ordenado del más nuevo al más antiguo:
+
+```
++-----------+--------------------+
+| matricula | anio_matriculacion |
++-----------+--------------------+
+| 8094 NCP  |               2025 |
+| 5507 MTG  |               2023 |
+| 1946 KZR  |               2019 |
+| 3312 JHC  |               2016 |
++-----------+--------------------+
+```
+
+- **(b) ¿Cuántas filas?** Une los municipios de `paradas` con los municipios de `viajeros`, una vez con `UNION` y otra con `UNION ALL`. Antes de ejecutar, predice cuántas filas devuelve cada una: `paradas` tiene 14 filas y `viajeros`, 24. Después explica de dónde sale la cifra del `UNION`, y qué fila de su resultado no es un municipio.
+
+- **(c) Lo común y lo que sobra.**
+    1. Con `INTERSECT`: los municipios que tienen parada **y** algún viajero.
+    2. Con `EXCEPT`: los municipios con parada en los que no vive ningún viajero.
+    3. Con `EXCEPT`, al revés: los «municipios» de viajeros que no tienen parada. Explica la única fila que sale.
+    4. Reescribe la consulta 1 sin `INTERSECT`, con `IN` y una subconsulta, y comprueba que devuelve lo mismo.
+
+  **Salida esperada** de la 2 y de la 3:
+
+```
++-------------+
+| municipio   |
++-------------+
+| Castiliscar |
++-------------+
+```
+
+```
++-----------+
+| municipio |
++-----------+
+| NULL      |
++-----------+
+```
+
+- **(d) Elegir.** Di, para cada petición, si usarías `UNION` o `UNION ALL`, y por qué: una lista de todos los municipios en los que el servicio tiene algo que ver (parada o viajero), sin repetir; y un recuento de «presencias» del servicio por municipio, donde cada parada y cada viajero cuentan. No hace falta escribirlas.
+
+**Cómo trabajar.** Ejecuta siempre cada rama por separado antes de unirlas: una operación de conjuntos solo puede fallar por la forma de sus ramas (número de columnas, tipos, orden) y eso se ve mirándolas una a una. En la (b), la cuenta del `UNION` no sale restando a ojo: sale de contar valores distintos, y uno de ellos es especial.
+
+### CP4.10 · Medir antes de opinar: planes e índices
+
+**Nivel** avanzado · **Tiempo orientativo** 50 min · **Criterios** RA3.h.
+
+**Qué refuerza.** El apartado 10 de la [UD4](ud4-consultas-sql.md): `EXPLAIN` y sus columnas `type`, `possible_keys`, `key`, `rows` y `Extra`; crear, listar y borrar índices; las condiciones sargables; la relación entre un índice y el `ORDER BY`; y el coste de indexar.
+
+**Ficheros de partida.** `validaciones.sql`, en la misma carpeta del repositorio de recursos que `transporte.sql`. Crea, dentro de la base `transporte`, la tabla `validaciones`: un histórico inventado de 200.000 validaciones de billete, con el número de tarjeta, el viaje, el importe y el momento de cada una. Al cargarlo, la tabla queda sin más índice que el de su clave primaria; si quieres volver a ese punto, vuelve a ejecutarlo.
+
+**Enunciado.** Con 78 viajes y 187 solicitudes, cualquier consulta es instantánea y cualquier opinión sobre rendimiento parece buena. Con 200.000 filas ya se puede **medir**. Esta práctica es un cuaderno de laboratorio: antes de cada experimento escribes lo que esperas, y después, lo que el plan dice.
+
+**Tareas.**
+
+- **(a) Clasifica sin ejecutar.** Supón que hay un índice sobre cada columna que aparece. Di, para cada condición, si es sargable o no, y por qué:
+
+```
+1. num_tarjeta = 'CV-001234'
+2. num_tarjeta LIKE 'CV-0012%'
+3. num_tarjeta LIKE '%1234'
+4. UPPER(num_tarjeta) = 'CV-001234'
+5. cod_viaje = 50
+6. cod_viaje * 2 = 100
+7. cod_viaje IN (10, 20, 30)
+8. importe * 1.10 > 2.50
+```
+
+- **(b) Compruébalo con el texto.** Carga `validaciones.sql`. Pide el plan de `SELECT * FROM validaciones WHERE …` con la condición 1 y anota `type`, `key` y `rows`. Crea un índice sobre `num_tarjeta` y pide el plan de las condiciones 1, 2, 3 y 4. **Salida esperada** (solo `type` y `key`: `rows` es una estimación y puede variar en tu equipo):
+
+```
++-----------+----------------------------------+-------+-----------------+
+| condición | WHERE                            | type  | key             |
++-----------+----------------------------------+-------+-----------------+
+|         1 | num_tarjeta = 'CV-001234'        | ref   | idx_val_tarjeta |
+|         2 | num_tarjeta LIKE 'CV-0012%'      | range | idx_val_tarjeta |
+|         3 | num_tarjeta LIKE '%1234'         | ALL   | NULL            |
+|         4 | UPPER(num_tarjeta) = 'CV-001234' | ALL   | NULL            |
++-----------+----------------------------------+-------+-----------------+
+```
+
+- **(c) Compruébalo con el número.** Crea un índice sobre `cod_viaje` y pide el plan de las condiciones 5, 6 y 7. Después reescribe la 6 para que sea sargable sin cambiar lo que devuelve, y comprueba las dos cosas: que el plan mejora y que el recuento de filas es el mismo. **Salida esperada** de los tres planes:
+
+```
++-----------+---------------------------+-------+---------------+
+| condición | WHERE                     | type  | key           |
++-----------+---------------------------+-------+---------------+
+|         5 | cod_viaje = 50            | ref   | idx_val_viaje |
+|         6 | cod_viaje * 2 = 100       | ALL   | NULL          |
+|         7 | cod_viaje IN (10, 20, 30) | range | idx_val_viaje |
++-----------+---------------------------+-------+---------------+
+```
+
+- **(d) El orden que ya está hecho.** Pide el plan de esta consulta y anota `type`, `key` y `Extra`. Crea un índice sobre `momento`, vuelve a pedirlo y explica qué ha desaparecido de `Extra` y qué ha aparecido.
+
+```
+SELECT cod_validacion, momento
+FROM validaciones
+ORDER BY momento DESC
+LIMIT 5;
+```
+
+- **(e) ¿Hasta dónde le compensa?** Con el índice sobre `cod_viaje` creado, pide el plan de `SELECT * FROM validaciones WHERE cod_viaje BETWEEN 1 AND n` para *n* = 1, 5, 10, 15, 20 y 40. Hay 78 viajes, así que cada uno es poco más del 1 % de la tabla. Haz una tabla con *n*, `type`, `key` y `rows`, y localiza entre qué dos valores de *n* el optimizador deja de usar el índice. Explica con el apartado 10.3 por qué eso no es un fallo.
+
+- **(f) La cuenta.** Lista los índices de la tabla con `SHOW INDEX`: di cuántos hay y cuál no has creado tú. Explica qué le costará ahora a la tabla cada nueva validación que se inserte, comparado con el momento en que la cargaste, y borra los índices que has creado.
+
+**Cómo trabajar.** Cada experimento, en tres líneas: lo que espero, lo que sale, y por qué coinciden o no. No copies `rows` como si fuera un dato exacto: es la estimación del optimizador y cambia de un equipo a otro; lo que se compara son los tamaños. En la (e) no hay una respuesta «correcta» para el punto de cambio: depende de tu servidor, y lo que se valora es que lo encuentres y lo expliques. Si un plan no te sale como al resto de la clase, ejecuta `validaciones.sql` otra vez y repite desde el principio.
