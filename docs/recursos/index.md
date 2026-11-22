@@ -11,6 +11,7 @@ Aquí están los materiales que no pertenecen a ninguna unidad concreta: guías 
 | [Entorno de trabajo: VS Code para PHP](entorno-vscode-php.md) | Desarrollo Web en Entorno Servidor | Montar una sola vez el editor con el que trabajarás todo el módulo |
 | [Entorno de trabajo: VS Code para Python](entorno-vscode-python.md) | Big Data e Inteligencia Artificial | Añadir al mismo editor lo necesario para Python y los cuadernos de Jupyter |
 | [Instalación de MySQL Server y MySQL Workbench](instalacion-mysql-workbench.md) | Bases de Datos | Instalar una sola vez el gestor y el cliente con los que se trabaja desde la UD4 |
+| [Git para entregar: guía básica](guia-git-entregas.md) | Bases de Datos | Instalar Git y entregar en tu repositorio del aula de código, desde la actividad evaluativa de la UD4 |
 | [Guía rápida de draw.io](guia-drawio.md) | Bases de Datos | Cómo dibujar y entregar los diagramas; qué dibujar está en cada unidad |
 | [Estándar de estilo SQL](estandar-estilo-sql.md) | Bases de Datos | Cómo se escribe, se entrega y se corrige el SQL de todas las entregas |
 | [Rúbrica de defensa y de verificación de autoría](rubrica-defensa.md) | Los tres módulos | Cómo se valora la defensa de cada entrega evaluable y qué ocurre si no se supera |
@@ -18,7 +19,7 @@ Aquí están los materiales que no pertenecen a ninguna unidad concreta: guías 
 ## Apartado 2. Cómo usarlos
 
 1. **Los de entorno, al empezar el módulo.** Se siguen una vez, de principio a fin, y después solo se vuelve a ellos si algo deja de funcionar.
-2. **Los de entrega, antes de entregar.** La guía de draw.io y el estándar de SQL dicen cómo tiene que llegar tu trabajo para que se pueda corregir; repásalos antes de cada entrega de ese tipo.
+2. **Los de entrega, antes de entregar.** La guía de draw.io y el estándar de SQL dicen cómo tiene que llegar tu trabajo para que se pueda corregir; repásalos antes de cada entrega de ese tipo. La guía de Git dice cómo se sube al repositorio y cómo comprobar que ha llegado.
 3. **La rúbrica de defensa, antes de cada defensa.** Te dice qué se te va a pedir en esos minutos y cómo prepararte.
 
 Si un recurso y una unidad parecen decir cosas distintas, manda la unidad, y conviene que lo comentes en clase para corregirlo.

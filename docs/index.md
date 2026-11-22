@@ -20,6 +20,7 @@ Cada módulo tiene, además, un cuaderno de prácticas: ejercicios extra de clas
 - [Entorno de trabajo: VS Code para PHP](recursos/entorno-vscode-php.md) — cómo montar el editor y sus extensiones para trabajar en el módulo; se configura una sola vez.
 - [Entorno de trabajo: VS Code para Python](recursos/entorno-vscode-python.md) — cómo hacer que el editor, el terminal y los cuadernos usen el Python de cada unidad; se configura una vez por unidad.
 - [Instalación de MySQL Server y MySQL Workbench](recursos/instalacion-mysql-workbench.md) — cómo instalar el gestor y el cliente de Bases de Datos y comprobar que funcionan; se hace una sola vez.
+- [Git para entregar: guía básica](recursos/guia-git-entregas.md) — cómo instalar Git, entregar en tu repositorio del aula de código y comprobar que ha llegado.
 - [Guía rápida de draw.io para las entregas de diagramas](recursos/guia-drawio.md)
 - [Estándar de estilo SQL del módulo](recursos/estandar-estilo-sql.md) — cómo se escribe y se corrige el SQL de todas las entregas.
 - [Rúbrica de defensa y de verificación de autoría](recursos/rubrica-defensa.md) — cómo se valora la defensa de cada entrega evaluable, qué pasa si no se hace o no se supera y cómo funciona la verificación de autoría; común a los tres módulos.
