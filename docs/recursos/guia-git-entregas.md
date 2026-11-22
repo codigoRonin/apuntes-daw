@@ -49,7 +49,7 @@ Todo lo demás, sin tocar. Con las opciones que vienen, Git queda disponible en 
 git --version
 ```
 
-Tiene que contestar con una línea como esta; el número puede ser otro:
+Tiene que contestar con una línea como esta; el número puede ser otro y, en Windows, termina en `.windows.1` (por ejemplo, `git version 2.47.1.windows.1`):
 
 ```text
 git version 2.43.0
@@ -152,7 +152,7 @@ Quiere decir: tu copia y la de GitHub son iguales y no hay nada pendiente. Otro 
 
 ![Dónde se guarda el fichero SQL: bien, dentro de la carpeta del repositorio; mal, fuera de ella aunque esté en la misma carpeta Documentos](img/git-fig4-donde-se-guarda.svg)
 
-- **El `.sql`.** En Workbench, ábrelo con el primer botón de la barra (*Open a script file in this editor*) eligiendo el fichero **que ya está en la carpeta del repositorio**. Escribe y guarda con Ctrl+S: así se guarda en su sitio. No crees una pestaña nueva para guardarla después en otra parte.
+- **El `.sql`.** En Workbench, ábrelo con el menú **File → Open SQL Script…** eligiendo el fichero **que ya está en la carpeta del repositorio**. Escribe y guarda con Ctrl+S: así se guarda en su sitio. No crees una pestaña nueva para guardarla después en otra parte.
 - **`DECISIONES.md`.** Es un fichero de texto: ábrelo con el Bloc de notas (clic derecho → Abrir con) y rellena sus dos apartados, las decisiones técnicas y el uso de herramientas de IA. En una entrega evaluable, sin él la entrega no se admite.
 - **Tu alias, nunca tu nombre,** en la cabecera del script.
 
