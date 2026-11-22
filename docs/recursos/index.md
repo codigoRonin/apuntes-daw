@@ -1,7 +1,5 @@
 # Recursos transversales
 
-**Ciclo DAW · IES Río Arba · Curso 2026-27**
-
 Aquí están los materiales que no pertenecen a ninguna unidad concreta: guías para montar tu entorno de trabajo, normas comunes de entrega y las reglas con las que se valora la defensa de tus trabajos. Se consultan cuando hacen falta, y cada uno indica al principio a qué módulo sirve.
 
 ## Apartado 1. Qué hay y para qué sirve
