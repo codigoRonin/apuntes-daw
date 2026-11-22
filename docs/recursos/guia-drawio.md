@@ -1,6 +1,6 @@
 # Guía rápida de draw.io para las entregas de diagramas
 
-**IES Río Arba · Departamento de Informática · Recursos del ciclo DAW**
+**Recurso transversal — Módulo 0484, Bases de Datos · 1.º DAW**
 
 Esta guía cubre lo mínimo para entregar diagramas correctos con draw.io. El criterio de qué dibujar en cada notación está en los apuntes de cada unidad (para el modelo E/R, la tabla de equivalencias del apartado 7.2 de la UD2 de Bases de Datos); aquí solo está el **cómo**.
 
@@ -10,13 +10,9 @@ Esta guía cubre lo mínimo para entregar diagramas correctos con draw.io. El cr
 2. En el primer diálogo, elige **"Dispositivo"** (guardar en local) y después **"Crear diagrama nuevo"** con la plantilla en blanco.
 3. El archivo se guarda como `.drawio` en tu equipo. Guarda con frecuencia (Ctrl+S): el navegador no guarda por ti.
 
-[CAPTURA: diálogo inicial de app.diagrams.net con la opción "Dispositivo" señalada]
-
 ## Apartado 2. La biblioteca de formas para pata de gallo
 
 En el panel izquierdo de formas, busca la sección **"Entity Relation"** (Entidad-Relación). Si no aparece: botón **"Más formas"** (abajo a la izquierda) → grupo **Software** → marca **Entity Relation** → Aplicar. De esa sección usarás las tablas de entidad con filas de atributos; las cardinalidades de pata de gallo se ponen en los **extremos de las líneas** (apartado 3, gesto 5).
-
-[CAPTURA: diálogo "Más formas" con la casilla Entity Relation marcada dentro del grupo Software]
 
 ## Apartado 3. Los gestos esenciales
 
@@ -29,8 +25,6 @@ En el panel izquierdo de formas, busca la sección **"Entity Relation"** (Entida
 3. **Crear una relación.** Acerca el puntero al borde de una entidad hasta que aparezcan las flechas azules direccionales; arrastra desde el borde hasta la otra entidad. Suelta cuando la entidad destino quede resaltada: la línea queda **anclada** (se mueve con las entidades).
 4. **Etiquetar la relación.** Doble clic sobre la línea y escribe el verbo (`realiza`). Puedes añadir en la misma etiqueta el tipo (`1:N`), como recomiendan los apuntes de la UD2.
 5. **Poner las cardinalidades de los extremos.** Selecciona la línea y, en el panel derecho, pestaña **Estilo**, despliega las opciones de **inicio y fin de línea**: elige el símbolo de pata de gallo que corresponda en cada extremo (muchos, uno, cero-o-uno…). Comprueba los dos extremos: el error clásico es dejar uno con la flecha por defecto.
-
-    [CAPTURA: panel Estilo con los desplegables de inicio y fin de línea mostrando los terminadores de pata de gallo]
 
 **Resultado esperado de los gestos 3-5** — línea anclada, etiqueta con verbo y tipo, terminadores correctos en los dos extremos:
 
