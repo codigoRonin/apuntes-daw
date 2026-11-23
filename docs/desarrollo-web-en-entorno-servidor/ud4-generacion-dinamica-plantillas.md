@@ -73,7 +73,7 @@ php -d display_errors=0 -S localhost:3000 -t .
 
 Es la orden de siempre con dos añadidos: `-d` fija una directiva solo para ese arranque, y `-t .` dice qué carpeta se sirve. Se para con `Ctrl+C`, y después vuelves a PHP Server.
 
-**El terminal sigue ahí.** Las órdenes que no pasan por el servidor (`php -l`, `php cartel.php`, las búsquedas con `grep`) se escriben como siempre, **desde `ud4/`**. El terminal integrado de VS Code se abre en la raíz del repositorio: empieza por `cd ud4`.
+**El terminal sigue ahí.** Las órdenes que no pasan por el servidor (`php -l`, `php cartel.php`, las búsquedas con `grep`) se escriben como siempre, **desde `ud4/`**. El terminal integrado de VS Code se abre en la raíz del repositorio: empieza por `cd ud4`. En Windows, ese terminal se usa con **Git Bash**, que viene con Git para Windows y ya usas para `git push`; en Mac y Linux, con el Terminal de siempre. Con él funcionan tal como están escritas las órdenes de `grep` y de `curl` de la unidad. Se elige en la flecha que hay junto al «+» del panel del terminal, y para dejarlo como predeterminado se añade a `.vscode/settings.json`, en la raíz del repositorio, la línea `"terminal.integrated.defaultProfile.windows": "Git Bash"`. Para saber si lo tienes, escribe en el símbolo del sistema `dir "C:\Program Files\Git\bin\bash.exe"`: si no aparece, instala Git para Windows.
 
 **Dónde sigue `curl`.** En cuatro sitios, y solo en ellos: para **enviar lo que el formulario no deja enviar** (un valor fuera de su lista o de su cota, un campo como lista), que es la única forma de probar la validación del servidor; para **ver un `302` sin seguirlo**, cuando lo que importa es que no lleva cuerpo; para **enviar un POST sin el token**; y cuando hay que **repetir una batería de comprobaciones o comparar dos respuestas** línea a línea, que es trabajo de un guion. En los tres primeros hay otra forma de hacerlo sin salir del navegador, editando el formulario en el panel Elementos, y se te da como opción. Las órdenes de `curl` son las que conoces, con la dirección nueva: `http://localhost:3000/ud4/…`. Todos llegan a partir del apartado 7.
 
@@ -2652,7 +2652,8 @@ Y lo mismo en las dos funciones que cargan datos, `cargar_salidas()` y `cargar_u
 
 ```json
 {
-    "phpserver.relativePath": "ud4/publico"
+    "phpserver.relativePath": "ud4/publico",
+    "terminal.integrated.defaultProfile.windows": "Git Bash"
 }
 ```
 
