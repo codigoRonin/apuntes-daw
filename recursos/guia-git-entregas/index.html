@@ -1,0 +1,2514 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Apuntes de los módulos del CFGS Desarrollo de Aplicaciones Web">
+      
+      
+        <meta name="author" content="Arba">
+      
+      
+        <link rel="canonical" href="https://codigoronin.github.io/apuntes-daw/recursos/guia-git-entregas/">
+      
+      
+        <link rel="prev" href="../instalacion-mysql-workbench/">
+      
+      
+        <link rel="next" href="../guia-drawio/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
+    
+    
+      
+        <title>Git para entregar: guía básica - Apuntes DAW</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#git-para-entregar-guia-basica" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Apuntes DAW" class="md-header__button md-logo" aria-label="Apuntes DAW" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Apuntes DAW
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Git para entregar: guía básica
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/codigoronin/apuntes-daw" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Inicio
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../bases-de-datos/" class="md-tabs__link">
+          
+  
+  
+  Bases de Datos (0484)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../desarrollo-web-en-entorno-servidor/" class="md-tabs__link">
+          
+  
+  
+  Desarrollo Web en Entorno Servidor (0613)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../big-data-e-inteligencia-artificial/" class="md-tabs__link">
+          
+  
+  
+  Big Data e Inteligencia Artificial (AOP1089)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Recursos
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Apuntes DAW" class="md-nav__button md-logo" aria-label="Apuntes DAW" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Apuntes DAW
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/codigoronin/apuntes-daw" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bases de Datos (0484)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bases de Datos (0484)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud1-almacenamiento-sgbd-valor-del-dato/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Almacenamiento, SGBD y el valor del dato
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud2-modelo-entidad-relacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2 · Modelo entidad-relación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud3-modelo-relacional-normalizacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3 · Modelo relacional y normalización
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/ud4-consultas-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD4 · Consultas de datos con SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bases-de-datos/practicas-clase/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cuaderno de prácticas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desarrollo Web en Entorno Servidor (0613)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Desarrollo Web en Entorno Servidor (0613)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud1-arquitecturas-tecnologias-servidor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Arquitecturas y tecnologías de programación en servidor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud2-codigo-embebido-php/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2 · Código embebido en lenguajes de marcas: sintaxis, estructuras, funciones y formularios
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud3-estado-sesiones-autenticacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3 · Estado, cookies, sesiones y autenticación; seguridad (usuarios, perfiles, roles)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud4-generacion-dinamica-plantillas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD4 · Generación dinámica con tecnologías y frameworks que añaden código al lenguaje de marcas (plantillas)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/ud5-separacion-mvc-poo-patrones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD5 · Separación presentación/lógica: frameworks MVC, POO y patrones de diseño
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../desarrollo-web-en-entorno-servidor/practicas-clase/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cuaderno de prácticas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Big Data e Inteligencia Artificial (AOP1089)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Big Data e Inteligencia Artificial (AOP1089)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/ud0-presentacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD0 · Presentación del módulo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/ud1-python-datos-ia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD1 · Python para datos e IA: lenguaje especializado, entorno y librerías
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/ud2-preparacion-visualizacion-datos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD2. Preparación, análisis y visualización de datos; protección de datos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/ud3-aprendizaje-automatico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UD3 · Aprendizaje automático
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../big-data-e-inteligencia-artificial/practicas-clase/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cuaderno de prácticas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recursos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Recursos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portada de recursos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entorno-vscode-php/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entorno de trabajo: VS Code para PHP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entorno-vscode-python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entorno de trabajo: VS Code para Python
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instalacion-mysql-workbench/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instalación de MySQL Server y MySQL Workbench
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Git para entregar: guía básica
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Git para entregar: guía básica
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-1-que-es-git-que-es-github-y-que-es-el-aula-de-codigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1. Qué es Git, qué es GitHub y qué es el aula de código
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-2-instalar-git" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2. Instalar Git
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 2. Instalar Git">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-21-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2.1. Windows
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-22-macos-y-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2.2. macOS y Linux
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-23-decirle-a-git-quien-eres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2.3. Decirle a Git quién eres
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-3-el-circuito-de-una-entrega" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3. El circuito de una entrega
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 3. El circuito de una entrega">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-31-aceptar-la-tarea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3.1. Aceptar la tarea
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-32-clonar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3.2. Clonar
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-33-trabajar-todo-se-guarda-dentro-de-la-carpeta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3.3. Trabajar: todo se guarda dentro de la carpeta
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-34-subir-add-commit-y-push" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3.4. Subir: add, commit y push
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-35-comprobar-que-ha-llegado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3.5. Comprobar que ha llegado
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-4-si-cambias-de-equipo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4. Si cambias de equipo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-5-los-cinco-errores-tipicos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5. Los cinco errores típicos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 5. Los cinco errores típicos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-51-la-terminal-esta-en-otra-carpeta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5.1. La terminal está en otra carpeta
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-52-nada-que-guardar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5.2. «Nada que guardar»
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-53-git-no-sabe-quien-eres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5.3. Git no sabe quién eres
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-54-olvidar-el-push" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5.4. Olvidar el push
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-55-push-rechazado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5.5. Push rechazado
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-6-practica-guiada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6. Práctica guiada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-7-chuleta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 7. Chuleta
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#para-ampliar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Para ampliar
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia-drawio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía rápida de draw.io
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../estandar-estilo-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estándar de estilo SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rubrica-defensa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rúbrica de defensa y de verificación de autoría
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-1-que-es-git-que-es-github-y-que-es-el-aula-de-codigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 1. Qué es Git, qué es GitHub y qué es el aula de código
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-2-instalar-git" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2. Instalar Git
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 2. Instalar Git">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-21-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2.1. Windows
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-22-macos-y-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2.2. macOS y Linux
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-23-decirle-a-git-quien-eres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 2.3. Decirle a Git quién eres
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-3-el-circuito-de-una-entrega" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3. El circuito de una entrega
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 3. El circuito de una entrega">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-31-aceptar-la-tarea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3.1. Aceptar la tarea
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-32-clonar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3.2. Clonar
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-33-trabajar-todo-se-guarda-dentro-de-la-carpeta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3.3. Trabajar: todo se guarda dentro de la carpeta
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-34-subir-add-commit-y-push" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3.4. Subir: add, commit y push
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-35-comprobar-que-ha-llegado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 3.5. Comprobar que ha llegado
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-4-si-cambias-de-equipo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 4. Si cambias de equipo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-5-los-cinco-errores-tipicos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5. Los cinco errores típicos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apartado 5. Los cinco errores típicos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apartado-51-la-terminal-esta-en-otra-carpeta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5.1. La terminal está en otra carpeta
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-52-nada-que-guardar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5.2. «Nada que guardar»
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-53-git-no-sabe-quien-eres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5.3. Git no sabe quién eres
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-54-olvidar-el-push" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5.4. Olvidar el push
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apartado-55-push-rechazado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 5.5. Push rechazado
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-6-practica-guiada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 6. Práctica guiada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apartado-7-chuleta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apartado 7. Chuleta
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#para-ampliar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Para ampliar
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="git-para-entregar-guia-basica">Git para entregar: guía básica<a class="headerlink" href="#git-para-entregar-guia-basica" title="Permanent link">&para;</a></h1>
+<p><strong>Recurso transversal — Módulo 0484, Bases de Datos · 1.º DAW</strong></p>
+<p>Desde la segunda evaluación hay entregas que no se suben a Classroom: se dejan en un <strong>repositorio</strong>. La primera es la actividad evaluativa de la UD4. Esta guía enseña lo justo para entregar así: cuatro órdenes y saber leer lo que Git te contesta. Aquí no hay ramas ni trabajo en equipo; eso llega más adelante.</p>
+<p>La primera vez se sigue de principio a fin, con la práctica del apartado 6. Después sirve de chuleta (apartado 7).</p>
+<p>Git habla en inglés. Cada mensaje aparece aquí tal como sale, con lo que quiere decir al lado.</p>
+<h2 id="apartado-1-que-es-git-que-es-github-y-que-es-el-aula-de-codigo">Apartado 1. Qué es Git, qué es GitHub y qué es el aula de código<a class="headerlink" href="#apartado-1-que-es-git-que-es-github-y-que-es-el-aula-de-codigo" title="Permanent link">&para;</a></h2>
+<p>Son cuatro piezas distintas, y cada una hace una sola cosa:</p>
+<p><img alt="Quién es quién: Git es un programa de tu equipo, GitHub una web que guarda tu repositorio, el aula de código reparte la tarea y crea tu repositorio, y Classroom da los avisos y el enlace" src="../img/git-fig2-quien-es-quien.svg" /></p>
+<p>Dos palabras que vas a usar todo el rato:</p>
+<ul>
+<li><strong>Repositorio:</strong> una carpeta de trabajo de la que Git guarda el historial. Tienes uno por tarea.</li>
+<li><strong>Commit:</strong> una foto del repositorio en un momento, con una frase tuya que dice qué has hecho. El historial es la lista de esas fotos.</li>
+</ul>
+<p>Tu trabajo pasa por cuatro sitios, y solo el último cuenta como entregado:</p>
+<p><img alt="Los cuatro sitios por los que pasa tu trabajo: tu carpeta, preparado con git add, guardado con git commit y GitHub con git push" src="../img/git-fig1-cuatro-sitios.svg" /></p>
+<ul>
+<li><strong>Ejemplo.</strong> Escribes una consulta y guardas el fichero: está en tu carpeta. Con <code>git add</code> la preparas, con <code>git commit</code> la guardas en el historial de tu equipo y con <code>git push</code> la envías a GitHub.</li>
+<li><strong>Error típico.</strong> Creer que guardar en Workbench, o hacer el commit, ya es entregar. Sin <code>git push</code> nada ha salido de tu equipo.</li>
+<li><strong>Cómo se comprueba.</strong> Con <code>git status</code> (apartado 3.4) y mirando el repositorio en GitHub (apartado 3.5).</li>
+</ul>
+<h2 id="apartado-2-instalar-git">Apartado 2. Instalar Git<a class="headerlink" href="#apartado-2-instalar-git" title="Permanent link">&para;</a></h2>
+<p><strong>En los equipos del aula no instalas tú:</strong> lo hace el servicio de informática del centro, con las mismas opciones que se indican aquí. En el aula empiezas en el apartado 2.3. En tu ordenador sigue los pasos tal cual; se hace una sola vez.</p>
+<h3 id="apartado-21-windows">Apartado 2.1. Windows<a class="headerlink" href="#apartado-21-windows" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Descarga <strong>Git for Windows</strong> desde la página oficial: <code>https://git-scm.com/download/win</code>. Es un instalador <code>.exe</code>.</li>
+<li>Ejecútalo y avanza con <strong>Next</strong>. El asistente tiene muchas pantallas y casi todas se dejan como vienen. Solo hay que mirar dos:</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Pantalla</th>
+<th>Qué eliges</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>La del <strong>editor por defecto</strong> (<em>default editor</em>)</td>
+<td>En la lista desplegable, <strong>Notepad</strong> (el Bloc de notas). Si dejas el que viene, Git te abrirá un editor de terminal difícil de cerrar</td>
+</tr>
+<tr>
+<td>La del <strong>nombre de la rama inicial</strong> (<em>initial branch</em>)</td>
+<td>La opción de cambiar el nombre (<em>Override</em>), con <code>main</code>. No afecta a tus entregas, porque tus repositorios los clonas ya creados, pero así tu equipo usa el mismo nombre que GitHub</td>
+</tr>
+</tbody>
+</table>
+<p>Todo lo demás, sin tocar. Con las opciones que vienen, Git queda disponible en el símbolo del sistema y se instala el gestor de credenciales, que es quien recuerda tu sesión de GitHub.</p>
+<p><strong>Comprobación.</strong> Abre el <strong>símbolo del sistema</strong> (menú Inicio, escribe <code>cmd</code>) y ejecuta:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git --version
+</code></pre></div>
+<p>Tiene que contestar con una línea como esta; el número puede ser otro y, en Windows, termina en <code>.windows.1</code> (por ejemplo, <code>git version 2.47.1.windows.1</code>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>git version 2.43.0
+</code></pre></div>
+<p>Si contesta que <code>git</code> no se reconoce como orden, cierra esa ventana y abre otra: las que estaban abiertas antes de instalar no se enteran.</p>
+<h3 id="apartado-22-macos-y-linux">Apartado 2.2. macOS y Linux<a class="headerlink" href="#apartado-22-macos-y-linux" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>macOS.</strong> Abre la aplicación <strong>Terminal</strong> y ejecuta <code>git --version</code>. Si Git no está instalado, el propio sistema te ofrece instalarlo: acepta y espera. Al terminar, repite <code>git --version</code> y tiene que contestar con el número de versión.</li>
+<li><strong>Linux.</strong> Se instala con el gestor de paquetes; en Ubuntu o Debian, <code>sudo apt install git</code>.</li>
+</ul>
+<p>Todas las órdenes <code>git</code> de esta guía son las mismas en los tres sistemas. Donde la guía dice «símbolo del sistema», en macOS y Linux es el terminal.</p>
+<h3 id="apartado-23-decirle-a-git-quien-eres">Apartado 2.3. Decirle a Git quién eres<a class="headerlink" href="#apartado-23-decirle-a-git-quien-eres" title="Permanent link">&para;</a></h3>
+<p>Cada commit lleva escrito quién lo hizo. Se configura <strong>una vez en cada equipo</strong>, y se hace con tu <strong>alias</strong>, nunca con tu nombre ni con tu correo personal: esos dos datos quedan a la vista en GitHub.</p>
+<p>GitHub te da un correo que no revela el tuyo. Para verlo, entra en GitHub con la cuenta de tu alias, pulsa tu foto (arriba a la derecha), <strong>Settings</strong> y, en el menú lateral, <strong>Emails</strong>. Marca <strong>Keep my email addresses private</strong>: GitHub escribe tu correo privado en la explicación de esa misma casilla. Tiene esta forma: un número, el signo <code>+</code>, tu alias y <code>@users.noreply.github.com</code>.</p>
+<p>Con esos dos datos, en el símbolo del sistema (aquí con el alias de ejemplo <code>lince-daw</code>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>git config --global user.name "lince-daw"
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>git config --global user.email "12345678+lince-daw@users.noreply.github.com"
+</code></pre></div>
+<p>No contestan nada: es lo normal.</p>
+<p><strong>Comprobación.</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>git config --global --list
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>user.name=lince-daw
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>user.email=12345678+lince-daw@users.noreply.github.com
+</code></pre></div>
+<p>Si te has equivocado, repite la orden con el dato bueno: sustituye al anterior.</p>
+<h2 id="apartado-3-el-circuito-de-una-entrega">Apartado 3. El circuito de una entrega<a class="headerlink" href="#apartado-3-el-circuito-de-una-entrega" title="Permanent link">&para;</a></h2>
+<p><img alt="El circuito de una entrega: aceptar la tarea y clonar una vez; trabajar, subir y comprobar cada vez que avanzas" src="../img/git-fig3-circuito-entrega.svg" /></p>
+<p>Los ejemplos son los de la práctica del apartado 6, con el alias <code>lince-daw</code>.</p>
+<h3 id="apartado-31-aceptar-la-tarea">Apartado 3.1. Aceptar la tarea<a class="headerlink" href="#apartado-31-aceptar-la-tarea" title="Permanent link">&para;</a></h3>
+<p>El enlace de cada tarea está en Classroom y lleva al aula de código (su dirección empieza por <code>classroom50.org/daw-rioarba-2627/</code>). Entra con la cuenta de GitHub de tu alias, la que creaste en la actividad de acogida, y acepta la tarea. El aula de código crea en GitHub un repositorio solo para ti, con los ficheros de partida.</p>
+<p><strong>Comprobación.</strong> Llegas a la página de tu repositorio en GitHub. Su nombre lleva el de la tarea y tu alias, y dentro están los ficheros de partida.</p>
+<h3 id="apartado-32-clonar">Apartado 3.2. Clonar<a class="headerlink" href="#apartado-32-clonar" title="Permanent link">&para;</a></h3>
+<p>Clonar es traer a tu equipo una copia del repositorio, unida a la de GitHub. Se hace <strong>una vez por tarea</strong>.</p>
+<ol>
+<li>En la página del repositorio, pulsa el botón <strong>Code</strong>, elige <strong>HTTPS</strong> y copia la dirección.</li>
+<li>Abre en el Explorador la carpeta donde guardas tus trabajos del módulo, por ejemplo Documentos. Escribe <code>cmd</code> en la barra de direcciones de esa ventana y pulsa Intro: se abre el símbolo del sistema ya colocado en esa carpeta.</li>
+<li>
+<p>Escribe <code>git clone</code>, un espacio, y pega la dirección:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>git clone https://github.com/daw-rioarba-2627/practica-git-lince-daw.git
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Cloning into 'practica-git-lince-daw'...
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>remote: Enumerating objects: 6, done.
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>remote: Counting objects: 100% (6/6), done.
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>remote: Compressing objects: 100% (5/5), done.
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>remote: Total 6 (delta 0), reused 0 (delta 0), pack-reused 0
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>Receiving objects: 100% (6/6), done.
+</code></pre></div>
+<p>La primera vez, Git abre una ventana para que inicies sesión en GitHub: hazlo con la cuenta de tu alias. Tu equipo la recuerda y no vuelve a pedirla.</p>
+</li>
+<li>
+<p>Entra en la carpeta que se acaba de crear. <strong>Todas las órdenes siguientes se dan desde dentro de ella:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>cd practica-git-lince-daw
+</code></pre></div>
+</li>
+</ol>
+<p><strong>Comprobación.</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>git status
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>On branch main
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>Your branch is up to date with 'origin/main'.
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>nothing to commit, working tree clean
+</code></pre></div>
+<p>Quiere decir: tu copia y la de GitHub son iguales y no hay nada pendiente. Otro día no vuelvas a clonar: abre la carpeta del repositorio en el Explorador, escribe <code>cmd</code> en su barra de direcciones y sigue trabajando.</p>
+<h3 id="apartado-33-trabajar-todo-se-guarda-dentro-de-la-carpeta">Apartado 3.3. Trabajar: todo se guarda dentro de la carpeta<a class="headerlink" href="#apartado-33-trabajar-todo-se-guarda-dentro-de-la-carpeta" title="Permanent link">&para;</a></h3>
+<p><img alt="Dónde se guarda el fichero SQL: bien, dentro de la carpeta del repositorio; mal, fuera de ella aunque esté en la misma carpeta Documentos" src="../img/git-fig4-donde-se-guarda.svg" /></p>
+<ul>
+<li><strong>El <code>.sql</code>.</strong> En Workbench, ábrelo con el menú <strong>File → Open SQL Script…</strong> eligiendo el fichero <strong>que ya está en la carpeta del repositorio</strong>. Escribe y guarda con Ctrl+S: así se guarda en su sitio. No crees una pestaña nueva para guardarla después en otra parte.</li>
+<li><strong><code>DECISIONES.md</code>.</strong> Es un fichero de texto: ábrelo con el Bloc de notas (clic derecho → Abrir con) y rellena sus dos apartados, las decisiones técnicas y el uso de herramientas de IA. En una entrega evaluable, sin él la entrega no se admite.</li>
+<li><strong>Tu alias, nunca tu nombre,</strong> en la cabecera del script.</li>
+</ul>
+<h3 id="apartado-34-subir-add-commit-y-push">Apartado 3.4. Subir: add, commit y push<a class="headerlink" href="#apartado-34-subir-add-commit-y-push" title="Permanent link">&para;</a></h3>
+<p>Antes de cada paso, <code>git status</code> te dice dónde estás y qué te falta:</p>
+<p><img alt="Cómo leer git status: con cambios sin preparar falta git add; preparado falta git commit; guardado sin subir falta git push; al día y limpio está entregado" src="../img/git-fig5-leer-git-status.svg" /></p>
+<p>Has guardado el <code>.sql</code> en Workbench. Pregunta a Git qué ve:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>git status
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>On branch main
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>Your branch is up to date with 'origin/main'.
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>Changes not staged for commit:
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>  (use "git add &lt;file&gt;..." to update what will be committed)
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>  (use "git restore &lt;file&gt;..." to discard changes in working directory)
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>    modified:   practica-git.sql
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>no changes added to commit (use "git add" and/or "git commit -a")
+</code></pre></div>
+<p>Quiere decir: <code>practica-git.sql</code> ha cambiado (<em>modified</em>) y aún no está preparado. Mira siempre esa lista: tiene que salir lo que has tocado tú y nada más.</p>
+<p><strong>1. Preparar.</strong> El punto significa «todo lo que ha cambiado en esta carpeta». No contesta nada.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>git add .
+</code></pre></div>
+<p><strong>2. Guardar en el historial,</strong> con una frase que diga qué has hecho:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>git commit -m "Cabecera y primera consulta"
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>[main 4a3f37a] Cabecera y primera consulta
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a> 1 file changed, 4 insertions(+), 2 deletions(-)
+</code></pre></div>
+<p>Las letras y cifras que siguen a <code>main</code> identifican tu commit; las tuyas serán otras.</p>
+<p><strong>3. Enviar a GitHub.</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>git push
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>Enumerating objects: 5, done.
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>Counting objects: 100% (5/5), done.
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>Delta compression using up to 2 threads
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>Compressing objects: 100% (3/3), done.
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>Writing objects: 100% (3/3), 366 bytes | 366.00 KiB/s, done.
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>To https://github.com/daw-rioarba-2627/practica-git-lince-daw.git
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>   1a58c1c..4a3f37a  main -&gt; main
+</code></pre></div>
+<p>La última línea, <code>main -&gt; main</code>, es la que importa: tu commit ha llegado.</p>
+<div class="admonition warning">
+<p class="admonition-title">Lo que subes se queda</p>
+<p>Un commit enviado no se borra con facilidad. No subas tu nombre real, contraseñas ni ficheros que no sean de la tarea. El fichero <code>.gitignore</code> que trae el repositorio es la lista de lo que Git no debe subir (por ejemplo, las copias <code>.bak</code>): no lo borres ni lo cambies.</p>
+</div>
+<p>Haz un commit cada vez que termines una parte, no uno solo al final: el historial enseña cómo has trabajado.</p>
+<h3 id="apartado-35-comprobar-que-ha-llegado">Apartado 3.5. Comprobar que ha llegado<a class="headerlink" href="#apartado-35-comprobar-que-ha-llegado" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>En la terminal,</strong> <code>git status</code> tiene que decir lo mismo que recién clonado: <code>Your branch is up to date with 'origin/main'</code> y <code>nothing to commit, working tree clean</code>.</li>
+<li><strong>En GitHub,</strong> recarga la página del repositorio: el fichero enseña lo que has escrito y, encima de la lista de ficheros, aparece tu último commit con su frase y tu alias.</li>
+</ul>
+<p>Se corrige lo que hay en GitHub a la hora de la entrega. Lo que se quedó en tu equipo no existe.</p>
+<h2 id="apartado-4-si-cambias-de-equipo">Apartado 4. Si cambias de equipo<a class="headerlink" href="#apartado-4-si-cambias-de-equipo" title="Permanent link">&para;</a></h2>
+<p>En el aula trabajas siempre en el mismo equipo, y en él tu sesión de GitHub queda guardada en el <strong>Administrador de credenciales</strong> de Windows: por eso Git no te la pide cada día. No hay que hacer nada al llegar ni al marcharte.</p>
+<p>Solo hay que cerrarla en dos casos: <strong>si un día trabajas en un equipo que no es el tuyo</strong> y <strong>el día de un examen</strong>. Al terminar, en el símbolo del sistema:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>cmdkey /list | findstr /i git
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>cmdkey /delete:git:https://github.com
+</code></pre></div>
+<p>La primera enseña la sesión de GitHub guardada; si no contesta nada, no hay ninguna. La segunda la borra.</p>
+<p><strong>Comprobación.</strong> Repite la primera orden: ya no contesta nada. Cierra también la sesión en el navegador (en GitHub, tu foto → <strong>Sign out</strong>).</p>
+<p>En un equipo que no es el tuyo, además, la identidad del apartado 2.3 puede ser la de otra persona: mírala con <code>git config --global --list</code> antes de tu primer commit.</p>
+<h2 id="apartado-5-los-cinco-errores-tipicos">Apartado 5. Los cinco errores típicos<a class="headerlink" href="#apartado-5-los-cinco-errores-tipicos" title="Permanent link">&para;</a></h2>
+<h3 id="apartado-51-la-terminal-esta-en-otra-carpeta">Apartado 5.1. La terminal está en otra carpeta<a class="headerlink" href="#apartado-51-la-terminal-esta-en-otra-carpeta" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>fatal: not a git repository (or any of the parent directories): .git
+</code></pre></div>
+<ul>
+<li><strong>Qué te dice.</strong> La carpeta en la que está la terminal no es un repositorio. Casi siempre te ha faltado el <code>cd</code> después de clonar.</li>
+<li><strong>Arreglo.</strong> Abre la carpeta del repositorio en el Explorador y escribe <code>cmd</code> en su barra de direcciones.</li>
+<li><strong>Comprobación.</strong> <code>git status</code> contesta <code>On branch main</code>.</li>
+</ul>
+<h3 id="apartado-52-nada-que-guardar">Apartado 5.2. «Nada que guardar»<a class="headerlink" href="#apartado-52-nada-que-guardar" title="Permanent link">&para;</a></h3>
+<p>Has hecho <code>git commit</code> y Git no ha guardado nada. La última línea te dice por qué:</p>
+<table>
+<thead>
+<tr>
+<th>Última línea</th>
+<th>Qué ha pasado</th>
+<th>Arreglo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nothing to commit, working tree clean</code></td>
+<td>Git no ve ningún cambio. O no has guardado en Workbench, o has guardado <strong>fuera</strong> de la carpeta del repositorio (apartado 3.3)</td>
+<td>Guarda con Ctrl+S; si el fichero está en otra carpeta, llévalo a la del repositorio</td>
+</tr>
+<tr>
+<td><code>no changes added to commit (use "git add" and/or "git commit -a")</code></td>
+<td>Hay cambios, pero no los has preparado</td>
+<td><code>git add .</code> y repite el commit</td>
+</tr>
+<tr>
+<td><code>nothing added to commit but untracked files present (use "git add" to track)</code></td>
+<td>Hay un fichero nuevo que Git aún no sigue (<em>untracked</em>)</td>
+<td>Si es de la tarea, <code>git add .</code> y repite el commit; si no lo es, sácalo de la carpeta</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Comprobación.</strong> El commit contesta con una línea que empieza por <code>[main</code> y un resumen de los ficheros cambiados.</p>
+<h3 id="apartado-53-git-no-sabe-quien-eres">Apartado 5.3. Git no sabe quién eres<a class="headerlink" href="#apartado-53-git-no-sabe-quien-eres" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>Author identity unknown
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>*** Please tell me who you are.
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>Run
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>  git config --global user.email "you@example.com"
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>  git config --global user.name "Your Name"
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>to set your account's default identity.
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>Omit --global to set the identity only in this repository.
+</code></pre></div>
+<ul>
+<li><strong>Qué te dice.</strong> En este equipo falta la configuración del apartado 2.3, y el commit no se ha hecho.</li>
+<li><strong>Arreglo.</strong> Las dos órdenes del apartado 2.3, con tu alias y tu correo privado de GitHub (no con los datos de ejemplo del mensaje), y repite el commit.</li>
+<li><strong>Comprobación.</strong> <code>git config --global --list</code> enseña tus dos datos.</li>
+</ul>
+<h3 id="apartado-54-olvidar-el-push">Apartado 5.4. Olvidar el push<a class="headerlink" href="#apartado-54-olvidar-el-push" title="Permanent link">&para;</a></h3>
+<p>No da ningún error, y por eso es el más peligroso: el commit está hecho, pero solo en tu equipo.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>On branch main
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>Your branch is ahead of 'origin/main' by 1 commit.
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>  (use "git push" to publish your local commits)
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>nothing to commit, working tree clean
+</code></pre></div>
+<ul>
+<li><strong>Qué te dice.</strong> Tu copia va un commit por delante (<em>ahead</em>) de la de GitHub.</li>
+<li><strong>Arreglo.</strong> <code>git push</code>.</li>
+<li><strong>Comprobación.</strong> <code>git status</code> dice <code>up to date</code> y el commit se ve en GitHub. Hazlo siempre antes de apagar.</li>
+</ul>
+<h3 id="apartado-55-push-rechazado">Apartado 5.5. Push rechazado<a class="headerlink" href="#apartado-55-push-rechazado" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>To https://github.com/daw-rioarba-2627/practica-git-lince-daw.git
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a> ! [rejected]        main -&gt; main (fetch first)
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>error: failed to push some refs to 'https://github.com/daw-rioarba-2627/practica-git-lince-daw.git'
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>hint: Updates were rejected because the remote contains work that you do not
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>hint: have locally. This is usually caused by another repository pushing to
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>hint: the same ref. If you want to integrate the remote changes, use
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>hint: 'git pull' before pushing again.
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+</code></pre></div>
+<ul>
+<li><strong>Qué te dice.</strong> En GitHub hay un commit que tu equipo no tiene. Pasa cuando has cambiado algo desde la web de GitHub o has trabajado en otro ordenador.</li>
+</ul>
+<p><img alt="Push rechazado: GitHub tiene un commit C que tu equipo no tiene y tú un commit D que no está en GitHub; tras git pull y git push los dos tienen lo mismo" src="../img/git-fig6-push-rechazado.svg" /></p>
+<ul>
+<li><strong>Arreglo.</strong> Trae primero lo que te falta y vuelve a enviar. Escribe la primera orden entera, tal cual:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>git pull --no-rebase --no-edit
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>git push
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>Merge made by the 'ort' strategy.
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a> README.md | 2 ++
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a> 1 file changed, 2 insertions(+)
+</code></pre></div>
+<ul>
+<li><strong>Comprobación.</strong> El <code>git push</code> termina con <code>main -&gt; main</code> y <code>git status</code> dice <code>up to date</code>.</li>
+<li><strong>Si en vez de eso aparece la palabra <code>CONFLICT</code>,</strong> no sigas: los dos cambios tocan las mismas líneas. Avisa al docente.</li>
+<li><strong>Cómo evitarlo.</strong> Si trabajas en dos ordenadores, empieza cada sesión con <code>git pull</code>. Y no edites los ficheros desde la web de GitHub.</li>
+</ul>
+<details class="note">
+<summary>Otros dos que puedes encontrarte</summary>
+<ul>
+<li><strong>Se abre un editor al hacer commit.</strong> Te has dejado el <code>-m "..."</code>. Si es el Bloc de notas, escribe la frase en la primera línea, guarda y ciérralo. Si es una pantalla de texto que no sabes cerrar, escribe <code>:q!</code>, pulsa Intro y repite el commit con <code>-m</code>.</li>
+<li><strong>El push contesta que no tienes permiso</strong> (un error 403 que nombra un alias que no es el tuyo). En ese equipo hay guardada la sesión de otra persona: bórrala como en el apartado 4 y repite el <code>git push</code> iniciando sesión con tu alias.</li>
+</ul>
+</details>
+<h2 id="apartado-6-practica-guiada">Apartado 6. Práctica guiada<a class="headerlink" href="#apartado-6-practica-guiada" title="Permanent link">&para;</a></h2>
+<p>Unos 20 minutos, en clase y sin nota. Sirve para recorrer el circuito entero antes de la primera entrega de verdad.</p>
+<table>
+<thead>
+<tr>
+<th>Paso</th>
+<th>Qué haces</th>
+<th>Qué tiene que salir</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>git --version</code> y las órdenes del apartado 2.3 con tu alias</td>
+<td><code>git config --global --list</code> enseña tu alias y tu correo privado</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Acepta la tarea «Práctica guiada de Git» (enlace en Classroom)</td>
+<td>La página de tu repositorio en GitHub, con cuatro ficheros</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Clona el repositorio, entra en su carpeta y haz <code>git status</code></td>
+<td><code>nothing to commit, working tree clean</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>En Workbench, abre <code>practica-git.sql</code> <strong>desde la carpeta del repositorio</strong>. Pon tu alias y la fecha en la cabecera, añade debajo <code>SELECT VERSION();</code>, ejecútala y guarda</td>
+<td><code>git status</code> enseña <code>modified:   practica-git.sql</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>git add .</code>, <code>git commit -m "Cabecera y primera consulta"</code> y <code>git push</code></td>
+<td>El push termina con <code>main -&gt; main</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Con el Bloc de notas, rellena los dos apartados de <code>DECISIONES.md</code> y guarda. Después, <code>git add .</code>, <code>git commit -m "Registro de decisiones"</code> y <code>git push</code></td>
+<td>Otra vez <code>main -&gt; main</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Provoca un error a propósito: <code>git commit -m "Otra vez"</code></td>
+<td><code>nothing to commit, working tree clean</code>. Búscalo en el apartado 5.2</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Comprobación final.</strong> Tres cosas:</p>
+<ol>
+<li><code>git status</code> dice <code>Your branch is up to date with 'origin/main'</code> y <code>nothing to commit, working tree clean</code>.</li>
+<li><code>git log --oneline</code> enseña el historial, con lo más reciente arriba: tus dos commits y, debajo, el de partida que puso el aula de código. Las letras y cifras del principio serán otras, y la frase del de partida también puede serlo.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>a898bb1 (HEAD -&gt; main, origin/main, origin/HEAD) Registro de decisiones
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>4a3f37a Cabecera y primera consulta
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>1a58c1c Initial commit
+</code></pre></div>
+<ol>
+<li>En GitHub, la página del repositorio enseña tus dos commits, con tu alias, y los dos ficheros con lo que has escrito.</li>
+</ol>
+<p>Si las tres salen, ya sabes entregar.</p>
+<h2 id="apartado-7-chuleta">Apartado 7. Chuleta<a class="headerlink" href="#apartado-7-chuleta" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Orden</th>
+<th>Para qué</th>
+<th>Cuándo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>git clone &lt;dirección&gt;</code></td>
+<td>Traer el repositorio a tu equipo</td>
+<td>Una vez por tarea</td>
+</tr>
+<tr>
+<td><code>git status</code></td>
+<td>Saber dónde estás y qué te falta</td>
+<td>Siempre que dudes</td>
+</tr>
+<tr>
+<td><code>git add .</code></td>
+<td>Preparar lo que ha cambiado</td>
+<td>Después de guardar tu trabajo</td>
+</tr>
+<tr>
+<td><code>git commit -m "qué has hecho"</code></td>
+<td>Guardarlo en el historial</td>
+<td>Después de <code>git add .</code></td>
+</tr>
+<tr>
+<td><code>git push</code></td>
+<td>Enviarlo a GitHub</td>
+<td>Después de cada commit, y siempre antes de apagar</td>
+</tr>
+<tr>
+<td><code>git pull</code></td>
+<td>Traer lo que haya nuevo en GitHub</td>
+<td>Al empezar, si trabajas en dos ordenadores</td>
+</tr>
+<tr>
+<td><code>git log --oneline</code></td>
+<td>Ver el historial</td>
+<td>Para comprobar tus commits</td>
+</tr>
+</tbody>
+</table>
+<h2 id="para-ampliar">Para ampliar<a class="headerlink" href="#para-ampliar" title="Permanent link">&para;</a></h2>
+<p>La documentación oficial está en inglés.</p>
+<ul>
+<li><a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">Pro Git — instalación de Git</a> y <a href="https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup">primera configuración</a>.</li>
+<li><a href="https://docs.github.com/en/account-and-profile/how-tos/email-preferences/setting-your-commit-email-address">Documentación de GitHub — la dirección de correo de tus commits</a>.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Apuntes DAW · <a href="https://github.com/codigoRonin">Código Ronin</a> · IES Río Arba
+    </div>
+  
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/codigoRonin" target="_blank" rel="noopener" title="Código Ronin en GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  </body>
+</html>
