@@ -40,6 +40,22 @@ Hasta ahora, cuando querías que un programa calculara algo, escribías la regla
 
 Un modelo es una función con **parámetros** que se ajustan a los datos. La función la eliges tú (una recta, un árbol de preguntas, unos centros de grupo); los parámetros (la pendiente de la recta, las preguntas del árbol, dónde están los centros) los calcula el algoritmo a partir de ejemplos. **Entrenar** es ese cálculo; **predecir** es aplicar la función ya ajustada a datos nuevos. Y la brújula de todo el proceso es el **error**: cuánto se aleja lo que el modelo dice de lo que ocurrió de verdad.
 
+Las tres formas de la unidad, una por fila:
+
+| Forma que eliges tú | Parámetros que calcula el algoritmo | Nombre en la unidad | Para qué sirve | Apartado |
+|---|---|---|---|---|
+| Una recta | La pendiente y el término independiente | Regresión lineal | Predecir un número | 3 |
+| Un árbol de preguntas | Qué se pregunta en cada paso y en qué orden | Árbol de decisión | Predecir una categoría | 4 |
+| Unos centros de grupo | Dónde está cada centro | k-medias | Agrupar cuando no hay respuesta | 6 |
+
+Con los anuncios del portal, cada una rellena sus huecos así:
+
+- **La recta.** Tú eliges «precio = pendiente × superficie + término independiente». Con 240 anuncios, el algoritmo calcula 3,78 € por metro cuadrado y 66,6 €; para una vivienda nueva de 60 m² responde 294 € (apartado 3.1).
+- **El árbol.** Tú eliges que sea un árbol y hasta qué profundidad llega. El algoritmo decide las preguntas: para saber si un anuncio se alquilará rápido, la primera que elige es «¿el estado es nuevo?» y, si no lo es, la segunda es «¿es un piso?» (apartado 4.1).
+- **Los centros.** Tú eliges que haya tres grupos. El algoritmo los coloca: uno en 200 m², 833 € y 35 años; otro en 99 m², 447 € y 23 años; y el tercero en 99 m², 380 € y 68 años (apartado 6.3).
+
+Un modelo es una fórmula con huecos: tú eliges la fórmula, los datos rellenan los huecos y el error dice si están bien rellenados.
+
 Mira cómo cambia el error con tres versiones de la misma idea sobre los 320 anuncios del portal. La regla escrita a mano — 4 € por metro cuadrado —, la misma regla pero con el número **aprendido de los datos** (la media real de euros por metro cuadrado), y una recta con dos parámetros aprendidos (pendiente y término independiente):
 
 ```python
