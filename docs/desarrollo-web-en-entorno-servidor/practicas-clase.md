@@ -2143,7 +2143,7 @@ HTTP/1.1 404 Not Found
 
 ## UD5 · Separación presentación/lógica: frameworks MVC, POO y patrones de diseño
 
-Las prácticas de esta unidad siguen con el caso del cuaderno, distinto del club de montaña de los apuntes y de la oficina de objetos perdidos de la actividad evaluativa: la **Asociación de Huertos del Soto**, que ha crecido lo bastante como para que sus páginas se contradigan entre sí. Las mismas ocho parcelas de siempre (H01 a H08, en Ribera, Eras y Soto), las cuotas del año y la caseta de herramientas sirven ahora para lo que pide la unidad: que cada norma de la asociación esté escrita en un solo sitio, y que cada pieza del programa sepa solo lo suyo. Los datos son de aula, inventados. Las cuatro primeras prácticas cubren los apartados 1 a 4 de la unidad.
+Las prácticas de esta unidad siguen con el caso del cuaderno, distinto del club de montaña de los apuntes y de la oficina de objetos perdidos de la actividad evaluativa: la **Asociación de Huertos del Soto**, que ha crecido lo bastante como para que sus páginas se contradigan entre sí. Las mismas ocho parcelas de siempre (H01 a H08, en Ribera, Eras y Soto), las cuotas del año y la caseta de herramientas sirven ahora para lo que pide la unidad: que cada norma de la asociación esté escrita en un solo sitio, y que cada pieza del programa sepa solo lo suyo. Los datos son de aula, inventados. Las cuatro primeras prácticas cubren los apartados 1 a 4 de la unidad; de la CP5.5 a la CP5.8, los apartados 5 a 9.
 
 Cuatro cosas valen para todas:
 
@@ -2457,3 +2457,292 @@ GET   /zonas/{zona}          función
 ![Captura de Chrome: una página de texto con el título «Zona Soto», tres parcelas con su superficie y el total de 215 metros cuadrados](figuras/cp5-4-cap-zona.png)
 
 *Captura de la CP5.4. La ruta de la tarea desde cero. `http://localhost:3000/zonas/Soto`*
+
+### CP5.5 · El controlador que hacía de todo
+
+**Nivel** intermedio · **Tiempo orientativo** 45 min.
+
+**Qué refuerza.** Los apartados 5 y 6 de la [UD5](ud5-separacion-mvc-poo-patrones.md): qué hace un controlador y qué no, las reglas del negocio en el modelo y la vista que solo pinta.
+
+**Ficheros de partida.** La carpeta `cp5-5/` entera, en el repositorio de recursos (enlace en Classroom): `publico/index.php`, `rutas.php`, `arranque.php`, `funciones/plantillas.php`, `datos/parcelas.php`, `.vscode/settings.json`, las clases de `src/Nucleo/` y `src/Controladores/`, y las vistas `vistas/layout.php` y `vistas/parcelas.php`. El enrutador y la clase base de los controladores son los de la unidad, con el espacio de nombres de la asociación.
+
+**Enunciado.** La web de la asociación ya tiene controladores y vistas, así que alguien la dio por bien hecha. La portada, que solo tenía que redirigir, enseña un aviso de PHP. Y el controlador de las parcelas filtra, calcula la cuota, suma la recaudación y monta las filas de la tabla: lo hace todo él.
+
+**Tareas.**
+
+- **(a) Caza el error.** Pide `/` y lee el aviso entero: dice en qué fichero y en qué línea empezó la salida. Arréglalo, y di qué norma de la unidad se había saltado esa línea.
+
+```
+http://localhost:3000/
+Redirigiendo…
+Warning:  Cannot modify header information - headers already sent by (output started at /ruta/src/Controladores/PortadaControlador.php:13) in /ruta/src/Nucleo/Controlador.php on line 18
+```
+
+- **(b) Mira lo que sabe el controlador.** Búscalo antes de tocarlo:
+
+```
+Buscar en archivos · expresión regular
+Buscar: superficie'\] \*|<tr>
+Archivos para incluir: src/Controladores
+
+2 resultados en 1 archivo
+src/Controladores/ParcelasControlador.php
+  26: $cuota = $p['superficie'] * 0.5 + ($p['riego'] === 'manta' ? 15 : 0);
+  29: $filas[] = '<tr><td>' . e($p['ref']) . '</td><td>' . e($p['zona']) . '</td><td>' . ($cuota > 0 ? number_format($cuota, 2, ',', '.') . ' €' : 'libre') . '</td></tr>';
+```
+
+- **(c) Las reglas, al modelo.** Escribe en `src/Modelo/` una clase `Parcela`, con su método `cuota()`, y una clase que cargue las parcelas del fichero, las filtre por zona y sume la recaudación de una lista. El controlador recibe esa clase en su constructor: corrige la fábrica de `publico/index.php`.
+- **(d) Las filas, a la vista.** La vista recibe objetos y un número, y escribe ella las filas. El controlador se queda en lo suyo: leer la zona, pedir y elegir la vista.
+- **(e) Sin navegador.** Escribe `probar.php`, que saque por el terminal, para todas las parcelas y para las zonas Eras, Soto y Marte, cuántas hay y cuánto se recauda.
+
+**Cómo trabajar.** Para cada línea del controlador, una pregunta: ¿seguiría haciendo falta si la asociación no tuviera web? Si la respuesta es sí, es del modelo. Salidas esperadas de la práctica resuelta:
+
+```
+Red › localhost › Encabezados de respuesta
+HTTP/1.1 302 Found
+Location: /parcelas
+```
+
+```
+view-source:http://localhost:3000/parcelas?zona=Eras
+    <tr><td>H03</td><td>Eras</td><td>40,00 €</td></tr>
+    <tr><td>H04</td><td>Eras</td><td>65,00 €</td></tr>
+<p class="total">Recaudación: 105,00 €</p>
+
+view-source:http://localhost:3000/parcelas
+<p class="total">Recaudación: 240,00 €</p>
+```
+
+```
+Buscar en archivos · expresión regular
+Buscar: \becho\b|<[a-z]+[ >]
+Archivos para incluir: src/Controladores
+
+No se encontraron resultados.
+```
+
+```
+Buscar en archivos · expresión regular
+Buscar: superficie \*|=== 'manta'
+Archivos para incluir: src, vistas, publico
+
+2 resultados en 1 archivo
+src/Modelo/Parcela.php
+  24: return $this->superficie * 0.5 + ($this->riego === 'manta' ? 15 : 0);
+```
+
+```
+$ php probar.php
+Todas  8 parcelas, 240,00 €
+Eras   2 parcelas, 105,00 €
+Soto   3 parcelas, 60,00 €
+Marte  0 parcelas, 0,00 €
+```
+
+![Captura de Chrome: la tabla de parcelas de la zona Eras, con dos parcelas y sus cuotas, y debajo la recaudación de 105 euros](figuras/cp5-5-cap-parcelas.png)
+
+*Captura de la CP5.5. Por fuera, la página es la misma que antes de repartir el trabajo. `http://localhost:3000/parcelas?zona=Eras`*
+
+### CP5.6 · El turno de riego, sin navegador
+
+**Nivel** intermedio · **Tiempo orientativo** 40 min.
+
+**Qué refuerza.** Los apartados 6 y 12 de la [UD5](ud5-separacion-mvc-poo-patrones.md): un servicio del modelo con sus reglas y sus excepciones, y pruebas automáticas que de verdad pueden fallar.
+
+**Ficheros de partida.** `cp5-6/src/Modelo/Turnos.php`, `cp5-6/src/Modelo/TurnoNoValido.php`, `cp5-6/probar.php` y `cp5-6/arranque.php`, en el repositorio de recursos (enlace en Classroom).
+
+**Enunciado.** La acequia solo da agua a una parcela cada vez. La clase `Turnos` reserva los turnos de un día con tres normas: un turno dura como mucho 90 minutos, una parcela riega una vez al día y dos turnos no se pisan. Trae sus pruebas, y salen todas «bien». Pero los hortelanos se quejan: no pueden coger el turno que empieza justo cuando acaba el anterior.
+
+**Tareas.**
+
+- **(a) Lee las pruebas antes de fiarte.** Ejecuta `probar.php` y después léelo línea a línea. Para cada comprobación, di si **podría** llegar a salir «FALLA» y qué tendría que pasar para ello.
+
+```
+$ php probar.php
+  bien   se puede reservar un turno
+  bien   hay 40 minutos reservados
+  bien   un turno que se pisa con otro se rechaza
+  bien   un turno de dos horas se rechaza
+
+4 comprobaciones, 0 fallos
+```
+
+- **(b) Demuéstralo.** Rompe a propósito una norma en `Turnos.php` (por ejemplo, sube el máximo a 900) y vuelve a ejecutar las pruebas. Si siguen todas «bien», no prueban nada. Deshaz el cambio.
+- **(c) Escribe pruebas de verdad.** Una función que diga si la acequia rechaza un turno, y al menos diez comprobaciones: lo que debe entrar, lo que no, y **los bordes** de cada norma (el turno que empieza justo cuando acaba otro, el de 90 minutos y el de 91).
+- **(d) Caza el error.** Con tus pruebas, la queja de los hortelanos aparece sola. Localiza la línea, explica qué confunde y arréglala.
+
+**Cómo trabajar.** Una prueba se escribe pensando en cómo podría estar mal el código, no en cómo está. Y se estrena viéndola fallar. Salidas esperadas — las pruebas de la práctica resuelta, ejecutadas contra el `Turnos.php` de partida:
+
+```
+$ php probar.php
+  bien   H01, de 7:30 a 8:10, entra
+  bien   hay 40 minutos reservados
+  bien   H03, de 7:40 a 8:10, se pisa con H01
+  bien   el rechazado no ha dejado nada apuntado
+  FALLA  H03, justo cuando acaba H01 (8:10), entra
+  FALLA  H04, que acaba justo cuando empieza H01 (7:30), entra
+  bien   H06, un minuto dentro de H01, no
+  bien   H01 no riega dos veces el mismo día
+  bien   90 minutos es el máximo: entra
+  bien   91 minutos, no
+  bien   cero minutos, tampoco
+  FALLA  al final hay 190 minutos reservados
+
+12 comprobaciones, 3 fallos
+```
+
+Y con el error arreglado:
+
+```
+$ php probar.php
+  bien   H01, de 7:30 a 8:10, entra
+  bien   hay 40 minutos reservados
+  bien   H03, de 7:40 a 8:10, se pisa con H01
+  bien   el rechazado no ha dejado nada apuntado
+  bien   H03, justo cuando acaba H01 (8:10), entra
+  bien   H04, que acaba justo cuando empieza H01 (7:30), entra
+  bien   H06, un minuto dentro de H01, no
+  bien   H01 no riega dos veces el mismo día
+  bien   90 minutos es el máximo: entra
+  bien   91 minutos, no
+  bien   cero minutos, tampoco
+  bien   al final hay 190 minutos reservados
+
+12 comprobaciones, 0 fallos
+```
+
+### CP5.7 · El formulario del turno
+
+**Nivel** intermedio · **Tiempo orientativo** 45 min.
+
+**Qué refuerza.** Los apartados 7 y 8 de la [UD5](ud5-separacion-mvc-poo-patrones.md): controles de servidor que generan su HTML ya escapado, y un formulario que sale, con su validación, de una definición de campos.
+
+**Ficheros de partida.** `cp5-7/solicitud.php`, `cp5-7/src/Modelo/SolicitudTurno.php`, los cuatro controles de `cp5-7/src/Vista/`, `cp5-7/funciones/plantillas.php` y `cp5-7/arranque.php`, en el repositorio de recursos (enlace en Classroom). Los controles son los de la unidad: no hay que modificarlos. La práctica no tiene sesión, y por eso el formulario va sin token.
+
+**Enunciado.** Para pedir un turno de riego hay una página con un formulario generado desde una definición. Solo pide la parcela y los minutos, valida la mitad y, sobre todo, no se ve: en lugar del formulario salen sus etiquetas escritas en la pantalla.
+
+**Tareas.**
+
+- **(a) Caza el error.** Pide `solicitud.php` y mira su código fuente. Busca en la página la línea que imprime el formulario y explica qué le pasa a un HTML que ya venía escapado. Arréglalo, y di cuál es la norma de la unidad sobre lo que devuelve `pintar()`.
+
+```
+view-source:http://localhost:3000/solicitud.php
+&lt;form action=&quot;/solicitud.php&quot; method=&quot;post&quot;&gt;
+    &lt;button type=&quot;submit&quot;&gt;Pedir turno&lt;/button&gt;
+```
+
+- **(b) Un campo más, una línea más.** Añade a la definición el día, entre la parcela y los minutos: una lista de lunes a viernes. No toques ni la página ni los controles, y comprueba que aparece.
+- **(c) Lo que falta por validar.** `validar()` solo sabe comprobar números. Añádele la comprobación de las listas, para que ni una parcela ni un día de fuera de su lista pasen. Compruébalo con un envío fabricado.
+- **(d) Un tipo nuevo.** Añade el campo `nota`, un texto de 5 a 60 caracteres, con su regla. La longitud se cuenta en caracteres, no en bytes.
+
+**Cómo trabajar.** Tres ficheros, tres papeles: la definición dice qué se pide, el control lo pinta y la página solo coloca. Si para añadir un campo abres la página, algo está en el sitio equivocado. Los envíos que el navegador no deja hacer se fabrican editando el formulario en el panel Elementos o con `curl`. Salidas esperadas de la práctica resuelta:
+
+```
+view-source:http://localhost:3000/solicitud.php
+<form action="/solicitud.php" method="post">
+    <label for="ref">Parcela</label>
+    <label for="dia">Día</label>
+    <label for="minutos">Minutos</label>
+    <input type="number" id="minutos" name="minutos" value="" required="required" min="10" max="90">
+    <label for="nota">Nota para quien abre la acequia</label>
+    <input type="text" id="nota" name="nota" value="" required="required" minlength="5" maxlength="60">
+    <button type="submit">Pedir turno</button>
+```
+
+```
+Formulario enviado a http://localhost:3000/solicitud.php
+Campos: ref=H99, dia=domingo, minutos=500, nota=Añ
+    <p class="error">Elige un valor de la lista.</p>
+    <p class="error">Elige un valor de la lista.</p>
+    <input type="number" id="minutos" name="minutos" value="500" required="required" min="10" max="90">
+    <p class="error">Un número entero entre 10 y 90.</p>
+    <input type="text" id="nota" name="nota" value="Añ" required="required" minlength="5" maxlength="60">
+    <p class="error">Entre 5 y 60 caracteres.</p>
+```
+
+```
+Formulario enviado a http://localhost:3000/solicitud.php
+Campos: ref=H04, dia=martes, minutos=45, nota=Abrir la tajadera <2>
+<p class="aviso">Solicitud anotada: H04 · martes · 45 · Abrir la tajadera &lt;2&gt;</p>
+```
+
+![Captura de Chrome: la página «Pedir un turno de riego», con cuatro controles: la parcela y el día en desplegables, los minutos y una nota, y el botón «Pedir turno»](figuras/cp5-7-cap-solicitud.png)
+
+*Captura de la CP5.7. El formulario, ya visible, con los cuatro campos de la definición. `http://localhost:3000/solicitud.php`*
+
+### CP5.8 · La caseta, configurable
+
+**Nivel** básico · **Tiempo orientativo** 30 min.
+
+**Qué refuerza.** El apartado 9 de la [UD5](ud5-separacion-mvc-poo-patrones.md): qué es un parámetro de configuración y qué es una norma, el fichero general y el local, y el error que avisa de una clave mal escrita.
+
+**Ficheros de partida.** `cp5-8/aviso.php`, `cp5-8/vence.php`, `cp5-8/multa.php`, `cp5-8/config/config.php`, `cp5-8/src/Nucleo/Config.php` y `cp5-8/arranque.php`, en el repositorio de recursos (enlace en Classroom). La clase `Config` es la de la unidad.
+
+**Enunciado.** La caseta presta herramientas tres días, abre de nueve a una y cobra diez euros de fianza. Esos valores están escritos a mano en tres guiones. Alguien creó el fichero de configuración y empezó a usarlo en uno, `vence.php`, que desde entonces no funciona.
+
+**Tareas.**
+
+- **(a) Caza el error.** Ejecuta `php vence.php 2027-01-18` y lee el mensaje: lo ha escrito la clase `Config`, no PHP. Compara la clave que se pide con las del fichero. ¿Qué habría pasado si `get()` devolviera `null` en vez de lanzar una excepción?
+
+```
+$ php vence.php 2027-01-18
+Fatal error: Uncaught OutOfBoundsException: Parámetro de configuración desconocido: dias_prestamos in /ruta/src/Nucleo/Config.php:27
+Stack trace:
+#0 /ruta/vence.php(10): Huerto\Nucleo\Config->get('dias_prestamos')
+#1 {main}
+  thrown in /ruta/src/Nucleo/Config.php on line 27
+```
+
+- **(b) ¿Dónde están los valores?** Búscalos antes de cambiar nada:
+
+```
+Buscar en archivos · expresión regular
+Buscar: \b(3|10|13:00|9:00)\b
+Archivos para incluir: aviso.php, multa.php, vence.php
+
+6 resultados en 2 archivos
+aviso.php
+  4: echo "La caseta abre de 9:00 a 13:00.\n";
+  5: echo "Cada herramienta se presta 3 días como máximo.\n";
+  6: echo "Fianza: 10 €, que se devuelve al traer la herramienta.\n";
+multa.php
+  5: $retraso = max(0, $fuera - 3);
+  6: $multa   = min(10, $retraso * 2);                             // dos euros por día de retraso, hasta agotar la fianza
+```
+
+- **(c) A la configuración.** Haz que `aviso.php` y `multa.php` lean sus valores de la configuración. En `multa.php` hay un número que **no** es configuración: di cuál, por qué, y qué haces con él.
+- **(d) El fichero local.** La asociación del pueblo de al lado usa el mismo programa y presta siete días. Crea `config/config.local.php` solo con ese valor, sin tocar nada más, y comprueba los tres guiones. Escribe la línea de `.gitignore` que hace falta.
+
+**Cómo trabajar.** La prueba para cada valor: ¿podría ser distinto en otra asociación sin que cambiaran sus normas? Salidas esperadas de la práctica resuelta, con la configuración general:
+
+```
+$ php aviso.php
+La caseta abre de 9:00 a 13:00.
+Cada herramienta se presta 3 días como máximo.
+Fianza: 10 €, que se devuelve al traer la herramienta.
+$ php vence.php 2027-01-18
+Sale el 2027-01-18 y vuelve, como tarde, el 2027-01-21.
+$ php multa.php 5
+Días fuera: 5 · retraso: 2 · se descuentan 4 € de la fianza
+```
+
+```
+Buscar en archivos · expresión regular
+Buscar: \b(3|10|13:00|9:00)\b
+Archivos para incluir: aviso.php, multa.php, vence.php
+
+No se encontraron resultados.
+```
+
+Y con siete días en el fichero local:
+
+```
+$ php aviso.php
+La caseta abre de 9:00 a 13:00.
+Cada herramienta se presta 7 días como máximo.
+Fianza: 10 €, que se devuelve al traer la herramienta.
+$ php vence.php 2027-01-18
+Sale el 2027-01-18 y vuelve, como tarde, el 2027-01-25.
+$ php multa.php 5
+Días fuera: 5 · retraso: 0 · se descuentan 0 € de la fianza
+```
