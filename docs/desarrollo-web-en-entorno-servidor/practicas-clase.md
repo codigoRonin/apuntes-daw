@@ -2140,3 +2140,320 @@ HTTP/1.1 404 Not Found
 ![Captura de Chrome: la página de avisos de la asociación, con su menú de tres enlaces y la lista de avisos](figuras/cp4-10-cap-avisos.png)
 
 *Captura de la CP4.10. La página de avisos, servida solo desde `web/`. `http://localhost:3000/avisos.php`*
+
+## UD5 · Separación presentación/lógica: frameworks MVC, POO y patrones de diseño
+
+Las prácticas de esta unidad siguen con el caso del cuaderno, distinto del club de montaña de los apuntes y de la oficina de objetos perdidos de la actividad evaluativa: la **Asociación de Huertos del Soto**, que ha crecido lo bastante como para que sus páginas se contradigan entre sí. Las mismas ocho parcelas de siempre (H01 a H08, en Ribera, Eras y Soto), las cuotas del año y la caseta de herramientas sirven ahora para lo que pide la unidad: que cada norma de la asociación esté escrita en un solo sitio, y que cada pieza del programa sepa solo lo suyo. Los datos son de aula, inventados. Las cuatro primeras prácticas cubren los apartados 1 a 4 de la unidad.
+
+Cuatro cosas valen para todas:
+
+- **El terminal es Git Bash en Windows** y el Terminal en Mac y Linux, como explica el [entorno de trabajo de la unidad](ud5-separacion-mvc-poo-patrones.md#entorno-de-trabajo-de-la-unidad). Las prácticas de clases se ejecutan desde la carpeta de la práctica, con `php fichero.php`.
+- **El servidor es PHP Server, con la carpeta de la práctica abierta en VS Code** (por ejemplo `cuaderno/ud5/cp5-1/`), no un repositorio: las direcciones no llevan carpeta delante. Dos ventanas de VS Code no pueden servir a la vez en el puerto 3000.
+- **Las búsquedas se hacen con la búsqueda de VS Code** (`Ctrl+Mayús+F`). Los bloques que empiezan por «Buscar en archivos» traen lo que se escribe y lo que contesta el panel.
+- **Las salidas esperadas son las de la práctica resuelta.** Los bloques que empiezan por `view-source:` traen líneas del código fuente de esa página (`Ctrl+U`); los que empiezan por «Red ›», lo que dice la pestaña Red; los que empiezan por `$`, una orden del terminal y lo que escribe.
+
+### CP5.1 · La norma que estaba en tres sitios
+
+**Nivel** básico · **Tiempo orientativo** 25 min.
+
+**Qué refuerza.** El apartado 1 de la [UD5](ud5-separacion-mvc-poo-patrones.md): reconocer una regla de negocio repartida por varios ficheros, comprobar lo que cuesta, y llevarla a un solo sitio.
+
+**Ficheros de partida.** `cp5-1/cuotas.php`, `cp5-1/recibo.php`, `cp5-1/resumen.php` y `cp5-1/datos/parcelas.php`, en el repositorio de recursos (enlace en Classroom).
+
+**Enunciado.** La cuota anual de una parcela adjudicada es de medio euro por metro cuadrado, más un suplemento si riega a manta. La asamblea subió ese suplemento de 12 a 15 euros, y el tesorero lo cambió «en la página de las cuotas». Ahora la tesorera dice que el resumen que lleva a la asamblea no cuadra con la suma de los recibos.
+
+**Tareas.**
+
+- **(a) ¿Dónde está la norma?** Antes de abrir ningún fichero, búscala con la búsqueda de VS Code. Anota en cuántos archivos está y qué hace cada uno con ella.
+
+```
+Buscar en archivos · expresión regular
+Buscar: superficie'\] \* 0\.5
+Archivos para incluir: la carpeta de la práctica
+
+3 resultados en 3 archivos
+cuotas.php
+  15: <?php $cuota = $p['superficie'] * 0.5 + ($p['riego'] === 'manta' ? 15 : 0); ?>
+recibo.php
+  17: $base       = $parcela['superficie'] * 0.5;
+resumen.php
+  9: $total += $p['superficie'] * 0.5;
+```
+
+- **(b) Caza el error.** Pide `cuotas.php` y suma a mano la columna. Pide `resumen.php`. Explica la diferencia: ¿qué fichero se quedó con la norma vieja, y por qué nadie lo notó al probar el cambio?
+
+```
+view-source:http://localhost:3000/cuotas.php
+    <tr><td><a href="recibo.php?ref=H01">H01</a></td><td>Ribera</td><td>30,00 €</td></tr>
+    <tr><td><a href="recibo.php?ref=H03">H03</a></td><td>Eras</td><td>40,00 €</td></tr>
+    <tr><td><a href="recibo.php?ref=H04">H04</a></td><td>Eras</td><td>65,00 €</td></tr>
+    <tr><td><a href="recibo.php?ref=H06">H06</a></td><td>Soto</td><td>60,00 €</td></tr>
+    <tr><td><a href="recibo.php?ref=H08">H08</a></td><td>Ribera</td><td>45,00 €</td></tr>
+
+view-source:http://localhost:3000/resumen.php
+<p class="total">Recaudación prevista: 237,00 €</p>
+```
+
+- **(c) Un solo sitio.** Crea `reglas.php` con dos funciones, `cuota_anual()` y `suplemento_riego()`, que reciban una parcela. Haz que las tres páginas las usen y no vuelvan a hacer ninguna cuenta. Repite la búsqueda de la tarea (a): tiene que quedar un resultado.
+- **(d) Cambia la norma.** La asamblea aprueba un 10 % de descuento en la cuota de las parcelas de la zona Soto, que es la que más se inunda. Aplícalo. Anota cuántos ficheros has tocado y comprueba las tres páginas.
+
+**Cómo trabajar.** La pregunta de la práctica no es «¿funciona la página?», sino «¿dicen lo mismo todas?». Una norma se prueba mirando **todos** los sitios que la enseñan. Salidas esperadas — tras la tarea (c), con la norma en un solo sitio:
+
+```
+view-source:http://localhost:3000/cuotas.php
+    <tr><td><a href="recibo.php?ref=H01">H01</a></td><td>Ribera</td><td>30,00 €</td></tr>
+    <tr><td><a href="recibo.php?ref=H03">H03</a></td><td>Eras</td><td>40,00 €</td></tr>
+    <tr><td><a href="recibo.php?ref=H04">H04</a></td><td>Eras</td><td>65,00 €</td></tr>
+    <tr><td><a href="recibo.php?ref=H06">H06</a></td><td>Soto</td><td>60,00 €</td></tr>
+    <tr><td><a href="recibo.php?ref=H08">H08</a></td><td>Ribera</td><td>45,00 €</td></tr>
+
+view-source:http://localhost:3000/recibo.php?ref=H04
+<p>Suplemento por riego a manta: 15,00 €</p>
+<p class="total">Total: 65,00 €</p>
+
+view-source:http://localhost:3000/resumen.php
+<p class="total">Recaudación prevista: 240,00 €</p>
+```
+
+```
+Buscar en archivos · expresión regular
+Buscar: superficie'\] \* 0\.5
+Archivos para incluir: la carpeta de la práctica
+
+1 resultado en 1 archivo
+reglas.php
+  7: $cuota = $parcela['superficie'] * 0.5 + suplemento_riego($parcela);
+```
+
+Y tras la tarea (d): la parcela H06, que está en Soto; la H03, que no; y el resumen.
+
+```
+view-source:http://localhost:3000/recibo.php?ref=H06
+<p class="total">Total: 54,00 €</p>
+
+view-source:http://localhost:3000/recibo.php?ref=H03
+<p class="total">Total: 40,00 €</p>
+
+view-source:http://localhost:3000/resumen.php
+<p class="total">Recaudación prevista: 234,00 €</p>
+```
+
+![Captura de Chrome: la tabla de cuotas del año de la asociación, con cinco parcelas adjudicadas, su zona y su cuota; la de la zona Soto, con el descuento](figuras/cp5-1-cap-cuotas.png)
+
+*Captura de la CP5.1. Las cuotas, con la norma en un solo sitio y el descuento de Soto. `http://localhost:3000/cuotas.php`*
+
+### CP5.2 · La parcela se defiende
+
+**Nivel** intermedio · **Tiempo orientativo** 40 min.
+
+**Qué refuerza.** El apartado 2 de la [UD5](ud5-separacion-mvc-poo-patrones.md): visibilidad, propiedades de solo lectura, invariantes comprobados en el constructor y excepciones, propias y de PHP.
+
+**Ficheros de partida.** `cp5-2/Parcela.php`, `cp5-2/alta.php`, `cp5-2/cambio-de-riego.php` y `cp5-2/comprobar.php`, en el repositorio de recursos (enlace en Classroom). `comprobar.php` no se modifica.
+
+**Enunciado.** El secretario escribió una clase `Parcela` con todo a la vista. Funciona, y deja hacer cualquier cosa: una parcela de superficie negativa, un riego que la asociación no tiene y un socio que desaparece sin que nadie lo decida.
+
+**Tareas.**
+
+- **(a) Mira lo que deja hacer.** Ejecuta `alta.php` y `cambio-de-riego.php`. De cada cosa rara que veas, di si es un dato que **nunca** debería existir o algo que puede pasar un día normal y hay que controlar.
+
+```
+$ php alta.php
+H09: cuota de -15,00 €
+H09 es de Rubén Asín
+```
+
+- **(b) Que no pueda nacer mal.** La referencia, la zona y la superficie no cambian nunca: decláralas de solo lectura. El riego y el socio sí cambian: que sean privados. En el constructor, rechaza con `InvalidArgumentException` una superficie que no sea mayor que cero, una zona que no sea Ribera, Eras o Soto y un riego que no sea goteo o manta. Las dos listas, como constantes de la clase.
+- **(c) Caza el error.** Vuelve a ejecutar `cambio-de-riego.php`. Lee el error entero. No lo arregles volviendo a hacer pública la propiedad: añade a la clase el método `cambiarRiego()`, que comprueba el riego nuevo con la misma regla del constructor (escrita una vez), y corrige el guion para que lo use.
+
+```
+$ php cambio-de-riego.php
+Antes:   37,50 €
+
+Fatal error: Uncaught Error: Cannot access private property Parcela::$riego in /ruta/cambio-de-riego.php:8
+Stack trace:
+#0 {main}
+  thrown in /ruta/cambio-de-riego.php on line 8
+```
+
+- **(d) El socio, con sus dos caminos.** `adjudicar()` da la parcela a un socio y lanza `ParcelaOcupada` si ya tiene uno. `liberar()` la deja libre y lanza `ParcelaLibre` si no lo tenía. Las dos excepciones son tuyas y heredan de `DomainException`. Añade `estaLibre()` y `socio()`.
+- **(e) Corrige `alta.php`** para que las dos equivocaciones del secretario se capturen, cada una con su mensaje, y el programa termine bien. Explica por qué no vale un solo `catch (Exception $e)`.
+
+**Cómo trabajar.** Empieza por el constructor y ejecuta `comprobar.php` después de cada tarea: cada línea que pase de error a «hecho», o al revés, te dice qué has conseguido. Salida esperada de `comprobar.php` con la clase terminada. Las clases de las excepciones tienen que coincidir; el texto de los mensajes es tuyo:
+
+```
+$ php comprobar.php
+Alta con -30 m²: InvalidArgumentException — La superficie tiene que ser mayor que cero: -30
+Alta con riego por aspersión: InvalidArgumentException — Riego desconocido: aspersión
+Alta con una zona que no existe: InvalidArgumentException — Zona desconocida: Monte
+H02 libre: true · cuota: 37,50 €
+Adjudicar a Teresa Ansó: hecho
+Adjudicar a Rubén Asín: ParcelaOcupada — La parcela H02 ya es de Teresa Ansó.
+H02 es de Teresa Ansó
+Cambiar a goteo: hecho
+Cambiar a aspersión: InvalidArgumentException — Riego desconocido: aspersión
+H02 cuota: 22,50 €
+Liberar: hecho
+Liberar otra vez: ParcelaLibre — La parcela H02 no tiene socio.
+```
+
+Por comparar, lo que hacía `cambio-de-riego.php` antes de proteger la clase:
+
+```
+$ php cambio-de-riego.php
+Antes:   37,50 €
+Después: 22,50 €
+```
+
+### CP5.3 · Cada clase, en su fichero
+
+**Nivel** intermedio · **Tiempo orientativo** 35 min.
+
+**Qué refuerza.** El apartado 3 de la [UD5](ud5-separacion-mvc-poo-patrones.md): espacios de nombres, la convención entre el nombre de la clase y su fichero, la autocarga y las interfaces como contrato.
+
+**Ficheros de partida.** `cp5-3/todo-junto.php`, `cp5-3/una.php`, `cp5-3/arranque.php`, `cp5-3/src/Modelo/Herramienta.php` y `cp5-3/datos/herramientas.php`, en el repositorio de recursos (enlace en Classroom). `arranque.php` no se modifica.
+
+**Enunciado.** La caseta de herramientas vive en un solo fichero, `todo-junto.php`, con dos clases y una función. Un socio empezó a repartirlo: movió la primera clase a `src/Modelo/` y escribió `una.php` para probarla. No le funciona, y lo dejó ahí.
+
+**Tareas.**
+
+- **(a) El punto de partida.** Ejecuta `todo-junto.php`. Es lo que tiene que seguir saliendo cuando termines.
+
+```
+$ php todo-junto.php
+En la caseta: Carretilla & capazos, Escalera, Sulfatadora
+```
+
+- **(b) Caza el error.** Ejecuta `una.php` y lee el nombre **completo** de la clase que PHP no encuentra. Compáralo, letra a letra, con la primera línea de código de `src/Modelo/Herramienta.php` y con lo que espera `arranque.php`. Arréglalo donde está el fallo.
+
+```
+$ php una.php
+Fatal error: Uncaught Error: Class "Huerto\Modelo\Herramienta" not found in /ruta/una.php:8
+Stack trace:
+#0 {main}
+  thrown in /ruta/una.php on line 8
+```
+
+- **(c) La segunda clase y su contrato.** Lleva `HerramientasEnFichero` a su fichero, con su espacio de nombres. Escribe la interfaz `RepositorioHerramientas`, con el único método que la función `disponibles()` necesita, y haz que la clase la cumpla.
+- **(d) Otra caseta.** Escribe `HerramientasEnMemoria`, que cumpla el mismo contrato y reciba sus herramientas en el constructor. Escribe `inventario.php`: la función `disponibles()`, que ahora pide el contrato y no una clase, usada con las dos casetas. Ningún `require` de clases.
+- **(e) Las mayúsculas.** Cambia el nombre de `Herramienta.php` por `herramienta.php` y ejecuta `inventario.php`. ¿Falla en tu equipo? Explica qué pasaría en un equipo que distinga mayúsculas de minúsculas en los nombres de fichero, y deja el nombre como estaba.
+
+**Cómo trabajar.** El mensaje `Class "…" not found` dice exactamente qué se ha buscado. De ahí a la ruta del fichero hay una regla, la de `arranque.php`: aplícala a mano antes de tocar nada. Salidas esperadas de la práctica resuelta:
+
+```
+$ php una.php
+Escalera: disponible
+```
+
+```
+$ php inventario.php
+En la caseta: Carretilla & capazos, Escalera, Sulfatadora
+En la de prueba: Azada
+```
+
+```
+Buscar en archivos · expresión regular
+Buscar: ^require
+Archivos para incluir: src
+
+No se encontraron resultados.
+```
+
+### CP5.4 · Una puerta para toda la asociación
+
+**Nivel** intermedio · **Tiempo orientativo** 60 min (45 + 15 de la tarea desde cero).
+
+**Qué refuerza.** El apartado 4 de la [UD5](ud5-separacion-mvc-poo-patrones.md): la entrada única, la ruta separada de su cadena de consulta, la tabla de rutas con parámetros y las respuestas `404` y `405` con su código de estado.
+
+**Ficheros de partida.** `cp5-4/publico/index.php`, `cp5-4/rutas.php`, `cp5-4/arranque.php`, `cp5-4/src/Nucleo/Enrutador.php`, `cp5-4/datos/parcelas.php` y `cp5-4/.vscode/settings.json`, en el repositorio de recursos (enlace en Classroom). El enrutador es el de la unidad, con el espacio de nombres de la asociación: no hay que modificarlo. El ajuste de `.vscode/` hace que PHP Server sirva la carpeta `publico/`.
+
+**Enunciado.** La asociación estrena una web con una sola entrada y dos rutas. La lista de parcelas funciona. El filtro por zona, que está escrito y bien escrito, no ha funcionado nunca. Y quien mira la pestaña Red ve algo todavía más raro.
+
+**Tareas.**
+
+- **(a) Caza el primer error.** Pide `/parcelas` y después `/parcelas?zona=Eras`. El fallo no está en `rutas.php`. Mira en `publico/index.php` qué se le pasa al enrutador como ruta, y arréglalo con lo que enseña el apartado 4.
+
+```
+http://localhost:3000/parcelas
+H01 · Ribera · 60 m² · adjudicada
+H02 · Ribera · 45 m² · libre
+H03 · Eras · 80 m² · adjudicada
+H04 · Eras · 100 m² · adjudicada
+H05 · Soto · 40 m² · libre
+H06 · Soto · 120 m² · adjudicada
+H07 · Soto · 55 m² · libre
+H08 · Ribera · 90 m² · adjudicada
+```
+
+```
+http://localhost:3000/parcelas?zona=Eras
+Esa dirección no existe en la web de la asociación.
+```
+
+- **(b) Caza el segundo.** Con la pestaña Red abierta, pide una dirección inventada, `/socios`. Lee el texto de la página y el código de estado. Uno de los dos miente. Arréglalo, y separa los dos casos que hoy se contestan igual: la dirección que no existe y el método que no toca, con su cabecera `Allow`.
+
+```
+Red › parcelas?zona=Eras › Encabezados de respuesta
+HTTP/1.1 200 OK
+
+Red › socios › Encabezados de respuesta
+HTTP/1.1 200 OK
+```
+
+- **(c) Una ruta con parámetro.** Añade `GET /parcelas/{ref}`, que conteste con una línea sobre esa parcela. La ruta encaja con cualquier texto: decide qué pasa cuando la referencia no es de ninguna parcela, y que el código de estado lo diga.
+- **(d) La tabla.** Escribe `tabla.php`, que enseñe por el terminal la tabla de rutas.
+- **(e) Desde cero.** Una ruta nueva, `GET /zonas/{zona}`: las parcelas de esa zona, una por línea con su referencia y su superficie, con el nombre de la zona delante y el total de metros detrás. Una zona sin parcelas no existe.
+
+**Cómo trabajar.** Tres preguntas, en este orden, para cada petición: ¿ha llegado a `index.php`?, ¿qué ruta ha visto el enrutador?, ¿qué código de estado ha salido? La tercera solo se contesta en la pestaña Red. El `POST` sin formulario es de los que se envían con `curl`, desde Git Bash. Salidas esperadas de la práctica resuelta:
+
+```
+http://localhost:3000/parcelas?zona=Eras
+H03 · Eras · 80 m² · adjudicada
+H04 · Eras · 100 m² · adjudicada
+
+http://localhost:3000/parcelas/H04
+Parcela H04: 100 m² en Eras, riego por manta, adjudicada
+
+http://localhost:3000/zonas/Soto
+Zona Soto
+H05 · 40 m²
+H06 · 120 m²
+H07 · 55 m²
+Total: 215 m²
+```
+
+```
+Red › parcelas?zona=Eras › Encabezados de respuesta
+HTTP/1.1 200 OK
+
+Red › parcelas/H99 › Encabezados de respuesta
+HTTP/1.1 404 Not Found
+
+Red › zonas/Marte › Encabezados de respuesta
+HTTP/1.1 404 Not Found
+
+Red › socios › Encabezados de respuesta
+HTTP/1.1 404 Not Found
+
+Red › parcelas/H04/riego › Encabezados de respuesta
+HTTP/1.1 404 Not Found
+```
+
+```
+$ curl -s -i -X POST http://localhost:3000/parcelas
+HTTP/1.1 405 Method Not Allowed
+Allow: GET
+
+Esa dirección no admite ese método.
+```
+
+```
+$ php tabla.php
+GET   /                      función
+GET   /parcelas              función
+GET   /parcelas/{ref}        función
+GET   /zonas/{zona}          función
+```
+
+![Captura de Chrome: una página de texto con el título «Zona Soto», tres parcelas con su superficie y el total de 215 metros cuadrados](figuras/cp5-4-cap-zona.png)
+
+*Captura de la CP5.4. La ruta de la tarea desde cero. `http://localhost:3000/zonas/Soto`*
