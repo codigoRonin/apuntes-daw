@@ -368,7 +368,7 @@ Ha fallado algo: SalidaCompleta
 
 - **E3.** Escribe `Salida.php` y los tres guiones que intentan estropearla. Antes de ejecutar cada uno, escribe qué error esperas y en qué línea. Compara con lo que sale.
 - **E4.** Añade a `Salida` un método `darDeBaja(): void` que quite un inscrito. Decide qué pasa si no hay ninguno, escribe la excepción que lo cuenta y un guion que lo demuestre. ¿Es un dato imposible o algo que puede pasar un día normal? Justifica de qué clase hereda.
-- **E5.** En `inscribir.php`, cambia el `catch (SalidaCompleta $e)` por `catch (Exception $e)` y crea la salida con `new Salida('Peña Oroel', 25, 40)`. Explica qué mensaje ve ahora quien usa el programa y por qué es peor que el error fatal.
+- **E5.** En `inscribir.php`, cambia el `catch (SalidaCompleta $e)` por `catch (Exception $e)` y mueve la creación de la salida a la primera línea dentro del `try` del bucle, ahora con `new Salida('Peña Oroel', 25, 40)`. Explica qué mensaje ve ahora quien usa el programa y por qué es peor que el error fatal.
 
 <div style="page-break-before: always;"></div>
 
